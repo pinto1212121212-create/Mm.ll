@@ -356,6 +356,84 @@ textarea.task-modal-area{width:100%;border:1.5px solid #e5e7eb;border-radius:12p
 .pay-inp-sm{width:100%;border:1.5px solid #ede9fe;border-radius:10px;padding:8px 12px;text-align:right;font-size:13px;outline:none;background:#faf5ff;font-family:inherit;margin-top:6px}
 .pay-inp-sm:focus{border-color:#7c3aed}
 
+/* ── Expenses Tab ── */
+.exp-hero{background:linear-gradient(135deg,#ea580c 0%,#c2410c 100%);border-radius:18px;padding:18px;margin-bottom:14px;color:white;box-shadow:0 8px 24px rgba(234,88,12,.28);position:relative;overflow:hidden}
+.exp-hero::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.08)}
+.exp-hero-lbl{font-size:11px;font-weight:700;opacity:.85;letter-spacing:.5px;margin-bottom:4px;position:relative;z-index:1}
+.exp-hero-val{font-size:30px;font-weight:900;line-height:1;margin-bottom:10px;position:relative;z-index:1;font-variant-numeric:tabular-nums}
+.exp-hero-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;position:relative;z-index:1;padding-top:10px;border-top:1px solid rgba(255,255,255,.18);margin-top:10px}
+.exp-hero-stat{text-align:center}
+.exp-hero-stat-v{font-size:14px;font-weight:800;line-height:1.1}
+.exp-hero-stat-l{font-size:9.5px;opacity:.75;margin-top:2px;font-weight:600}
+.exp-delta{display:inline-block;padding:4px 11px;border-radius:14px;font-size:11px;font-weight:800;position:relative;z-index:1;backdrop-filter:blur(4px);margin-bottom:2px}
+.exp-delta.good{background:rgba(34,197,94,.3);color:#dcfce7}
+.exp-delta.bad{background:rgba(0,0,0,.3);color:#fecaca}
+.exp-delta.neutral{background:rgba(255,255,255,.18);color:rgba(255,255,255,.95)}
+.profit-card{background:white;border-radius:14px;padding:13px 14px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.05);display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.profit-cell{text-align:center;padding:4px 2px}
+.profit-cell+.profit-cell{border-right:1px solid #f3f4f6}
+.profit-cell-lbl{font-size:10px;color:#9ca3af;font-weight:700;margin-bottom:3px}
+.profit-cell-val{font-size:15px;font-weight:900;font-variant-numeric:tabular-nums}
+.profit-cell-val.in{color:#059669}
+.profit-cell-val.out{color:#ea580c}
+.profit-cell-val.net{color:#7c3aed}
+.profit-cell-val.net.neg{color:#dc2626}
+.profit-delta{font-size:9.5px;font-weight:700;margin-top:2px;white-space:nowrap;color:#6b7280}
+.profit-delta.good{color:#059669}
+.profit-delta.bad{color:#dc2626}
+.exp-forecast{background:linear-gradient(135deg,#eef2ff 0%,#e0e7ff 100%);border:1.5px solid #c7d2fe;border-radius:14px;padding:13px 14px;margin-bottom:12px}
+.exp-forecast-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:10px}
+.exp-forecast-title{font-size:12.5px;font-weight:800;color:#4338ca}
+.exp-forecast-btn{background:linear-gradient(135deg,#6366f1,#4f46e5);color:white;border:none;padding:7px 12px;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer;font-family:inherit;white-space:nowrap;box-shadow:0 2px 8px rgba(79,70,229,.3)}
+.exp-forecast-sub{font-size:11px;color:#4c1d95;margin-bottom:8px;font-weight:600;text-align:right}
+.exp-forecast-list{display:flex;flex-direction:column;gap:3px}
+.exp-forecast-item{font-size:11px;color:#4338ca;padding:3px 0;text-align:right}
+.exp-cat-bar{background:white;border-radius:14px;padding:13px 14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.exp-cat-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:11.5px}
+.exp-cat-row:last-child{margin-bottom:0}
+.exp-cat-ico{width:22px;text-align:center;font-size:14px}
+.exp-cat-name{width:68px;font-weight:700;color:#374151;font-size:11px}
+.exp-cat-track{flex:1;height:7px;background:#f3f4f6;border-radius:4px;overflow:hidden}
+.exp-cat-fill{height:100%;border-radius:4px}
+.exp-cat-amt{font-size:11px;font-weight:800;color:#ea580c;min-width:78px;text-align:left;font-variant-numeric:tabular-nums}
+.exp-add-btn{width:100%;padding:13px;background:linear-gradient(135deg,#f97316,#ea580c);color:white;border:none;border-radius:14px;font-size:13.5px;font-weight:800;cursor:pointer;font-family:inherit;margin-bottom:12px;box-shadow:0 4px 14px rgba(249,115,22,.3);display:flex;align-items:center;justify-content:center;gap:6px}
+.exp-form{background:white;border-radius:16px;padding:14px;margin-bottom:14px;box-shadow:0 4px 16px rgba(234,88,12,.1);border:2px solid #fed7aa}
+.exp-form-ttl{font-size:14px;font-weight:800;color:#7c2d12;margin-bottom:12px;text-align:right;display:flex;align-items:center;justify-content:space-between}
+.exp-inp{width:100%;border:1.5px solid #ffedd5;border-radius:10px;padding:9px 12px;text-align:right;font-size:13px;outline:none;background:#fff7ed;font-family:inherit;margin-bottom:8px;box-sizing:border-box}
+.exp-inp:focus{border-color:#ea580c;background:white}
+.exp-cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.exp-cat-btn{padding:8px 4px;border:1.5px solid #ffedd5;border-radius:10px;background:white;cursor:pointer;font-family:inherit;font-size:10.5px;font-weight:700;color:#9a3412;display:flex;flex-direction:column;align-items:center;gap:3px;transition:.15s}
+.exp-cat-btn.on{background:linear-gradient(135deg,#f97316,#ea580c);color:white;border-color:#ea580c;box-shadow:0 2px 8px rgba(234,88,12,.3)}
+.exp-cat-btn-i{font-size:17px}
+.exp-recur{display:flex;align-items:center;gap:8px;padding:9px 12px;background:#fff7ed;border-radius:10px;margin-bottom:10px;cursor:pointer;font-size:12px;font-weight:700;color:#9a3412;border:1.5px solid #ffedd5}
+.exp-recur.on{background:#ffedd5;border-color:#ea580c;color:#7c2d12}
+.exp-recur-chk{width:18px;height:18px;border-radius:5px;border:2px solid #ea580c;display:flex;align-items:center;justify-content:center;background:white;flex-shrink:0;font-size:12px;font-weight:800}
+.exp-recur.on .exp-recur-chk{background:#ea580c;color:white}
+.exp-form-btns{display:flex;gap:8px}
+.exp-form-btns button{flex:1;padding:11px;border-radius:12px;border:none;font-weight:800;cursor:pointer;font-family:inherit;font-size:13px}
+.exp-btn-cancel{background:#f3f4f6;color:#374151}
+.exp-btn-save{background:linear-gradient(135deg,#f97316,#ea580c);color:white;flex:2!important;box-shadow:0 3px 10px rgba(234,88,12,.3)}
+.exp-row{background:white;border-radius:13px;padding:12px 14px;margin-bottom:8px;box-shadow:0 1px 5px rgba(0,0,0,.05);border-right:4px solid #ea580c}
+.exp-row.recurring{border-right-color:#7c3aed}
+.exp-row-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:4px}
+.exp-row-left{text-align:right;flex:1;min-width:0}
+.exp-row-amt{font-size:17px;font-weight:900;color:#ea580c;line-height:1;font-variant-numeric:tabular-nums;flex-shrink:0}
+.exp-row-amt.recurring{color:#7c3aed}
+.exp-row-desc{font-size:13px;font-weight:800;color:#1e1b4b;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis}
+.exp-row-meta{font-size:11px;color:#6b7280;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.exp-row-pill{background:#fff7ed;color:#9a3412;padding:2px 7px;border-radius:10px;font-weight:700;font-size:10px}
+.exp-row-pill.recur{background:#ede9fe;color:#6d28d9}
+.exp-row-date{font-size:10px;color:#a78bfa;font-weight:600;margin-top:3px}
+.exp-row-actions{display:flex;gap:6px;margin-top:8px;border-top:1px solid #f3f4f6;padding-top:8px}
+.exp-row-actions button{flex:1;padding:7px 0;border:none;border-radius:9px;font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit}
+.exp-row-actions .edit{background:#fff7ed;color:#ea580c}
+.exp-row-actions .del{background:#fef2f2;color:#dc2626}
+.exp-empty{background:white;border-radius:16px;padding:32px 20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.exp-empty-i{font-size:42px;margin-bottom:10px;display:block}
+.exp-empty-t{font-size:14px;font-weight:800;color:#4c1d95;margin-bottom:4px}
+.exp-empty-s{font-size:11.5px;color:#9ca3af;line-height:1.5}
+.exp-month-hdr{font-size:10px;font-weight:800;color:#ea580c;letter-spacing:1px;text-transform:uppercase;margin:14px 0 7px;display:flex;justify-content:space-between}
+
 /* ── Monthly Chart — Professional ── */
 .chart-screen{position:fixed;inset:0;z-index:500;background:#f8f7fc;display:flex;flex-direction:column;animation:slideUp .32s cubic-bezier(.22,.68,0,1.2)}
 .chart-hero{background:linear-gradient(160deg,#4c1d95 0%,#7c3aed 50%,#6d28d9 100%);padding:20px 20px 28px;flex-shrink:0;position:relative;overflow:hidden}
@@ -647,7 +725,7 @@ const S={
   tY:now.getFullYear(),tM:now.getMonth()+1,tSel:TD,
   gY:now.getFullYear(),gM:now.getMonth()+1,
   // data
-  DT:{},RT:{},A:{},T:{},G:{},BG:{},CL:{},CANC:{},PKGS:{},showHistory:false,histTab:"upcoming",payFilter:"all",showAddGoal:false,newGoal:{title:"",target:"",period:"month",type:"revenue"},openClient:null,editClient:false,crmSearch:"",crmFilter:"all",showMonthPicker:false,showYearPicker:false,editPayKey:null,showAddPkg:false,editPkgKey:null
+  DT:{},RT:{},A:{},T:{},G:{},BG:{},CL:{},CANC:{},PKGS:{},EXP:{},showHistory:false,histTab:"upcoming",payFilter:"all",expFilter:"all",expCat:"all",showAddGoal:false,newGoal:{title:"",target:"",period:"month",type:"revenue"},openClient:null,editClient:false,crmSearch:"",crmFilter:"all",showMonthPicker:false,showYearPicker:false,editPayKey:null,showAddPkg:false,editPkgKey:null,showAddExp:false,newExp:{amount:"",category:"supplies",description:"",vendor:"",date:"",recurring:false},editExpKey:null
 };
 
 // ── Calendar HTML ─────────────────────────────────────
@@ -1472,6 +1550,84 @@ function getLaserAnim(){
 .pay-inp-sm{width:100%;border:1.5px solid #ede9fe;border-radius:10px;padding:8px 12px;text-align:right;font-size:13px;outline:none;background:#faf5ff;font-family:inherit;margin-top:6px}
 .pay-inp-sm:focus{border-color:#7c3aed}
 
+/* ── Expenses Tab ── */
+.exp-hero{background:linear-gradient(135deg,#ea580c 0%,#c2410c 100%);border-radius:18px;padding:18px;margin-bottom:14px;color:white;box-shadow:0 8px 24px rgba(234,88,12,.28);position:relative;overflow:hidden}
+.exp-hero::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.08)}
+.exp-hero-lbl{font-size:11px;font-weight:700;opacity:.85;letter-spacing:.5px;margin-bottom:4px;position:relative;z-index:1}
+.exp-hero-val{font-size:30px;font-weight:900;line-height:1;margin-bottom:10px;position:relative;z-index:1;font-variant-numeric:tabular-nums}
+.exp-hero-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;position:relative;z-index:1;padding-top:10px;border-top:1px solid rgba(255,255,255,.18);margin-top:10px}
+.exp-hero-stat{text-align:center}
+.exp-hero-stat-v{font-size:14px;font-weight:800;line-height:1.1}
+.exp-hero-stat-l{font-size:9.5px;opacity:.75;margin-top:2px;font-weight:600}
+.exp-delta{display:inline-block;padding:4px 11px;border-radius:14px;font-size:11px;font-weight:800;position:relative;z-index:1;backdrop-filter:blur(4px);margin-bottom:2px}
+.exp-delta.good{background:rgba(34,197,94,.3);color:#dcfce7}
+.exp-delta.bad{background:rgba(0,0,0,.3);color:#fecaca}
+.exp-delta.neutral{background:rgba(255,255,255,.18);color:rgba(255,255,255,.95)}
+.profit-card{background:white;border-radius:14px;padding:13px 14px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.05);display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.profit-cell{text-align:center;padding:4px 2px}
+.profit-cell+.profit-cell{border-right:1px solid #f3f4f6}
+.profit-cell-lbl{font-size:10px;color:#9ca3af;font-weight:700;margin-bottom:3px}
+.profit-cell-val{font-size:15px;font-weight:900;font-variant-numeric:tabular-nums}
+.profit-cell-val.in{color:#059669}
+.profit-cell-val.out{color:#ea580c}
+.profit-cell-val.net{color:#7c3aed}
+.profit-cell-val.net.neg{color:#dc2626}
+.profit-delta{font-size:9.5px;font-weight:700;margin-top:2px;white-space:nowrap;color:#6b7280}
+.profit-delta.good{color:#059669}
+.profit-delta.bad{color:#dc2626}
+.exp-forecast{background:linear-gradient(135deg,#eef2ff 0%,#e0e7ff 100%);border:1.5px solid #c7d2fe;border-radius:14px;padding:13px 14px;margin-bottom:12px}
+.exp-forecast-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:10px}
+.exp-forecast-title{font-size:12.5px;font-weight:800;color:#4338ca}
+.exp-forecast-btn{background:linear-gradient(135deg,#6366f1,#4f46e5);color:white;border:none;padding:7px 12px;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer;font-family:inherit;white-space:nowrap;box-shadow:0 2px 8px rgba(79,70,229,.3)}
+.exp-forecast-sub{font-size:11px;color:#4c1d95;margin-bottom:8px;font-weight:600;text-align:right}
+.exp-forecast-list{display:flex;flex-direction:column;gap:3px}
+.exp-forecast-item{font-size:11px;color:#4338ca;padding:3px 0;text-align:right}
+.exp-cat-bar{background:white;border-radius:14px;padding:13px 14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.exp-cat-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:11.5px}
+.exp-cat-row:last-child{margin-bottom:0}
+.exp-cat-ico{width:22px;text-align:center;font-size:14px}
+.exp-cat-name{width:68px;font-weight:700;color:#374151;font-size:11px}
+.exp-cat-track{flex:1;height:7px;background:#f3f4f6;border-radius:4px;overflow:hidden}
+.exp-cat-fill{height:100%;border-radius:4px}
+.exp-cat-amt{font-size:11px;font-weight:800;color:#ea580c;min-width:78px;text-align:left;font-variant-numeric:tabular-nums}
+.exp-add-btn{width:100%;padding:13px;background:linear-gradient(135deg,#f97316,#ea580c);color:white;border:none;border-radius:14px;font-size:13.5px;font-weight:800;cursor:pointer;font-family:inherit;margin-bottom:12px;box-shadow:0 4px 14px rgba(249,115,22,.3);display:flex;align-items:center;justify-content:center;gap:6px}
+.exp-form{background:white;border-radius:16px;padding:14px;margin-bottom:14px;box-shadow:0 4px 16px rgba(234,88,12,.1);border:2px solid #fed7aa}
+.exp-form-ttl{font-size:14px;font-weight:800;color:#7c2d12;margin-bottom:12px;text-align:right;display:flex;align-items:center;justify-content:space-between}
+.exp-inp{width:100%;border:1.5px solid #ffedd5;border-radius:10px;padding:9px 12px;text-align:right;font-size:13px;outline:none;background:#fff7ed;font-family:inherit;margin-bottom:8px;box-sizing:border-box}
+.exp-inp:focus{border-color:#ea580c;background:white}
+.exp-cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.exp-cat-btn{padding:8px 4px;border:1.5px solid #ffedd5;border-radius:10px;background:white;cursor:pointer;font-family:inherit;font-size:10.5px;font-weight:700;color:#9a3412;display:flex;flex-direction:column;align-items:center;gap:3px;transition:.15s}
+.exp-cat-btn.on{background:linear-gradient(135deg,#f97316,#ea580c);color:white;border-color:#ea580c;box-shadow:0 2px 8px rgba(234,88,12,.3)}
+.exp-cat-btn-i{font-size:17px}
+.exp-recur{display:flex;align-items:center;gap:8px;padding:9px 12px;background:#fff7ed;border-radius:10px;margin-bottom:10px;cursor:pointer;font-size:12px;font-weight:700;color:#9a3412;border:1.5px solid #ffedd5}
+.exp-recur.on{background:#ffedd5;border-color:#ea580c;color:#7c2d12}
+.exp-recur-chk{width:18px;height:18px;border-radius:5px;border:2px solid #ea580c;display:flex;align-items:center;justify-content:center;background:white;flex-shrink:0;font-size:12px;font-weight:800}
+.exp-recur.on .exp-recur-chk{background:#ea580c;color:white}
+.exp-form-btns{display:flex;gap:8px}
+.exp-form-btns button{flex:1;padding:11px;border-radius:12px;border:none;font-weight:800;cursor:pointer;font-family:inherit;font-size:13px}
+.exp-btn-cancel{background:#f3f4f6;color:#374151}
+.exp-btn-save{background:linear-gradient(135deg,#f97316,#ea580c);color:white;flex:2!important;box-shadow:0 3px 10px rgba(234,88,12,.3)}
+.exp-row{background:white;border-radius:13px;padding:12px 14px;margin-bottom:8px;box-shadow:0 1px 5px rgba(0,0,0,.05);border-right:4px solid #ea580c}
+.exp-row.recurring{border-right-color:#7c3aed}
+.exp-row-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:4px}
+.exp-row-left{text-align:right;flex:1;min-width:0}
+.exp-row-amt{font-size:17px;font-weight:900;color:#ea580c;line-height:1;font-variant-numeric:tabular-nums;flex-shrink:0}
+.exp-row-amt.recurring{color:#7c3aed}
+.exp-row-desc{font-size:13px;font-weight:800;color:#1e1b4b;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis}
+.exp-row-meta{font-size:11px;color:#6b7280;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.exp-row-pill{background:#fff7ed;color:#9a3412;padding:2px 7px;border-radius:10px;font-weight:700;font-size:10px}
+.exp-row-pill.recur{background:#ede9fe;color:#6d28d9}
+.exp-row-date{font-size:10px;color:#a78bfa;font-weight:600;margin-top:3px}
+.exp-row-actions{display:flex;gap:6px;margin-top:8px;border-top:1px solid #f3f4f6;padding-top:8px}
+.exp-row-actions button{flex:1;padding:7px 0;border:none;border-radius:9px;font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit}
+.exp-row-actions .edit{background:#fff7ed;color:#ea580c}
+.exp-row-actions .del{background:#fef2f2;color:#dc2626}
+.exp-empty{background:white;border-radius:16px;padding:32px 20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.exp-empty-i{font-size:42px;margin-bottom:10px;display:block}
+.exp-empty-t{font-size:14px;font-weight:800;color:#4c1d95;margin-bottom:4px}
+.exp-empty-s{font-size:11.5px;color:#9ca3af;line-height:1.5}
+.exp-month-hdr{font-size:10px;font-weight:800;color:#ea580c;letter-spacing:1px;text-transform:uppercase;margin:14px 0 7px;display:flex;justify-content:space-between}
+
 /* ── Monthly Chart — Professional ── */
 .chart-screen{position:fixed;inset:0;z-index:500;background:#f8f7fc;display:flex;flex-direction:column;animation:slideUp .32s cubic-bezier(.22,.68,0,1.2)}
 .chart-hero{background:linear-gradient(160deg,#4c1d95 0%,#7c3aed 50%,#6d28d9 100%);padding:20px 20px 28px;flex-shrink:0;position:relative;overflow:hidden}
@@ -2105,7 +2261,7 @@ function updateGoalModal(idx,val){
 // ── Auto sync every 15s ──────────────────────────────
 async function syncData(){
   try{
-    const [a,t,g,bg,cl,canc,pkgs]=await Promise.all([store.get('appts'),store.get('tasks'),store.get('goals'),store.get('bgoals'),store.get('clients'),store.get('cancellations'),store.get('packages')]);
+    const [a,t,g,bg,cl,canc,pkgs,exp]=await Promise.all([store.get('appts'),store.get('tasks'),store.get('goals'),store.get('bgoals'),store.get('clients'),store.get('cancellations'),store.get('packages'),store.get('expenses')]);
     // Only update if data actually changed
     let changed=false;
     if(a&&typeof a==='object'){const prev=JSON.stringify(S.A);S.A=a;if(JSON.stringify(S.A)!==prev)changed=true;}
@@ -2115,6 +2271,7 @@ async function syncData(){
     if(cl&&typeof cl==='object'){const prev=JSON.stringify(S.CL);S.CL=cl;if(JSON.stringify(S.CL)!==prev)changed=true;}
     if(canc&&typeof canc==='object'){const prev=JSON.stringify(S.CANC);S.CANC=canc;if(JSON.stringify(S.CANC)!==prev)changed=true;}
     if(pkgs&&typeof pkgs==='object'){const prev=JSON.stringify(S.PKGS);S.PKGS=pkgs;if(JSON.stringify(S.PKGS)!==prev)changed=true;}
+    if(exp&&typeof exp==='object'){const prev=JSON.stringify(S.EXP);S.EXP=exp;if(JSON.stringify(S.EXP)!==prev)changed=true;}
     // Data updated silently - UI updates only on user interaction
   }catch(e){}
 }
@@ -2218,6 +2375,234 @@ function buildUpcoming(upcoming){
 function buildHistory(history){
   return history.length?history.map(a=>`<div class="hist-card"><div class="hist-time-pill">${a.time}</div><div class="hist-card-info"><div class="hist-card-name">${x(a.d.name)}</div><div class="hist-card-meta">${a.d.type?x(a.d.type):''}${a.d.price?' · ₪'+x(a.d.price):''}<br>📅 ${a.date}</div></div></div>`).join(''):`<div class="empty-state"><span class="empty-icon">🗂️</span>אין היסטוריה</div>`;
 }
+// ── Expenses Functions ──────────────────────────────
+const EXP_CATS={
+  supplies:{i:'🧴',l:'ציוד',c:'#ea580c'},
+  rent:{i:'🏢',l:'שכירות',c:'#7c3aed'},
+  marketing:{i:'📢',l:'שיווק',c:'#0891b2'},
+  utilities:{i:'💡',l:'חשמל/מים',c:'#eab308'},
+  vendors:{i:'🚚',l:'ספקים',c:'#db2777'},
+  tax:{i:'📋',l:'מיסים',c:'#dc2626'},
+  car:{i:'🚗',l:'רכב',c:'#059669'},
+  other:{i:'💼',l:'אחר',c:'#6b7280'}
+};
+function todayISO(){const n=new Date();return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');}
+function saveExpense(){
+  const a=document.getElementById('exp-amt'),d=document.getElementById('exp-desc'),v=document.getElementById('exp-vendor'),dt=document.getElementById('exp-date');
+  const amt=Number(a?.value||0);
+  if(!amt||amt<=0){a?.focus();a&&(a.style.borderColor='#dc2626');return;}
+  const desc=(d?.value||'').trim();
+  if(!desc){d?.focus();d&&(d.style.borderColor='#dc2626');return;}
+  const date=dt?.value||todayISO();
+  const key=S.editExpKey||('e_'+Date.now()+'_'+Math.random().toString(36).substr(2,5));
+  S.EXP[key]={amount:amt,category:S.newExp.category||'other',description:desc,vendor:(v?.value||'').trim(),date,recurring:!!S.newExp.recurring,updated:Date.now()};
+  store.set('expenses',S.EXP);
+  S.showAddExp=false;S.editExpKey=null;
+  S.newExp={amount:"",category:"supplies",description:"",vendor:"",date:"",recurring:false};
+  hRender();
+}
+function deleteExpense(key){
+  if(!confirm('למחוק את ההוצאה?'))return;
+  delete S.EXP[key];
+  store.set('expenses',S.EXP);
+  S.editExpKey=null;
+  hRender();
+}
+function editExpense(key){
+  const e=S.EXP[key];if(!e)return;
+  S.editExpKey=key;
+  S.newExp={amount:e.amount,category:e.category||'other',description:e.description||'',vendor:e.vendor||'',date:e.date||todayISO(),recurring:!!e.recurring};
+  S.showAddExp=true;
+  hRender();
+}
+function toggleExpRecurring(){S.newExp.recurring=!S.newExp.recurring;hRender();}
+function setExpCat(c){S.newExp.category=c;hRender();}
+function openExpForm(){
+  S.showAddExp=true;S.editExpKey=null;
+  S.newExp={amount:"",category:"supplies",description:"",vendor:"",date:todayISO(),recurring:false};
+  hRender();
+}
+function closeExpForm(){S.showAddExp=false;S.editExpKey=null;hRender();}
+function duplicateRecurring(){
+  const n=new Date(),mk=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0');
+  const pm=new Date(n.getFullYear(),n.getMonth()-1,1);
+  const pmk=pm.getFullYear()+'-'+String(pm.getMonth()+1).padStart(2,'0');
+  const prevRecurring=Object.values(S.EXP||{}).filter(e=>e.recurring&&e.date&&e.date.startsWith(pmk));
+  const currMonthDescs=new Set(Object.values(S.EXP||{}).filter(e=>e.date&&e.date.startsWith(mk)).map(e=>(e.description||'').trim()));
+  const missing=prevRecurring.filter(e=>!currMonthDescs.has((e.description||'').trim()));
+  if(!missing.length){alert('אין הוצאות חוזרות חסרות לחודש הזה');return;}
+  const total=missing.reduce((s,e)=>s+Number(e.amount||0),0);
+  if(!confirm(`לשכפל ${missing.length} הוצאות חוזרות לחודש הנוכחי?\nסה"כ: ₪${total.toLocaleString()}\n\n(התאריך יוגדר ל-1 בחודש הנוכחי, תוכל לערוך אחר כך)`))return;
+  const firstDay=mk+'-01';
+  missing.forEach(e=>{
+    const key='e_'+Date.now()+'_'+Math.random().toString(36).substr(2,5);
+    S.EXP[key]={amount:Number(e.amount)||0,category:e.category||'other',description:e.description||'',vendor:e.vendor||'',date:firstDay,recurring:true,updated:Date.now()};
+  });
+  store.set('expenses',S.EXP);
+  hRender();
+}
+
+function renderExpenses(all){
+  const n=new Date(),mk=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0'),yk=String(n.getFullYear());
+  // Previous month key
+  const pm=new Date(n.getFullYear(),n.getMonth()-1,1);
+  const pmk=pm.getFullYear()+'-'+String(pm.getMonth()+1).padStart(2,'0');
+  const pmLbl=MO[pm.getMonth()];
+  
+  const expArr=Object.entries(S.EXP||{}).map(([k,e])=>({k,...e,dt:e.date?new Date(e.date):new Date(0)})).sort((a,b)=>b.dt-a.dt);
+  
+  // Income calculations
+  const incMonth=all.filter(a=>a.dt<=n&&a.d.price&&Number(a.d.price)>0&&a.date.startsWith(mk)).reduce((s,a)=>s+Number(a.d.price),0);
+  const incYear=all.filter(a=>a.dt<=n&&a.d.price&&Number(a.d.price)>0&&a.date.startsWith(yk)).reduce((s,a)=>s+Number(a.d.price),0);
+  const incTotal=all.filter(a=>a.dt<=n&&a.d.price&&Number(a.d.price)>0).reduce((s,a)=>s+Number(a.d.price),0);
+  const incPrevMonth=all.filter(a=>a.dt<=n&&a.d.price&&Number(a.d.price)>0&&a.date.startsWith(pmk)).reduce((s,a)=>s+Number(a.d.price),0);
+  
+  // Expense calculations
+  const expMonth=expArr.filter(e=>e.date&&e.date.startsWith(mk)).reduce((s,e)=>s+Number(e.amount||0),0);
+  const expYear=expArr.filter(e=>e.date&&e.date.startsWith(yk)).reduce((s,e)=>s+Number(e.amount||0),0);
+  const expTotal=expArr.reduce((s,e)=>s+Number(e.amount||0),0);
+  const expPrevMonth=expArr.filter(e=>e.date&&e.date.startsWith(pmk)).reduce((s,e)=>s+Number(e.amount||0),0);
+  const recurCount=expArr.filter(e=>e.recurring).length;
+  
+  // Recurring expenses from previous month (for forecast + duplicate)
+  const prevRecurring=expArr.filter(e=>e.recurring&&e.date&&e.date.startsWith(pmk));
+  const prevRecurringSum=prevRecurring.reduce((s,e)=>s+Number(e.amount||0),0);
+  
+  // Check if current month already has recurring duplicates from prev month
+  const currMonthDescs=new Set(expArr.filter(e=>e.date&&e.date.startsWith(mk)).map(e=>(e.description||'').trim()));
+  const missingRecurring=prevRecurring.filter(e=>!currMonthDescs.has((e.description||'').trim()));
+  
+  // Month filter options
+  const months=['הכל'],mkeys=[];
+  expArr.forEach(e=>{if(!e.date)return;const k=e.date.substring(0,7);if(!mkeys.includes(k)){mkeys.push(k);const[y,m]=k.split('-');months.push(MO[Number(m)-1]+' '+y);}});
+  const filtered=S.expFilter==='all'?expArr:expArr.filter(e=>{if(!e.date)return false;const[y,m]=e.date.split('-');return MO[Number(m)-1]+' '+y===S.expFilter;});
+  
+  // Category breakdown (for filtered period)
+  const catTotals={};
+  filtered.forEach(e=>{const c=e.category||'other';catTotals[c]=(catTotals[c]||0)+Number(e.amount||0);});
+  const totalFiltered=Object.values(catTotals).reduce((s,v)=>s+v,0);
+  const catSorted=Object.entries(catTotals).sort((a,b)=>b[1]-a[1]);
+  
+  // Delta calculations (this month vs previous)
+  let expDeltaPct=null,expDeltaDir='',expDeltaCls='';
+  if(expPrevMonth>0){
+    expDeltaPct=Math.round((expMonth-expPrevMonth)/expPrevMonth*100);
+    expDeltaDir=expDeltaPct>0?'↑':expDeltaPct<0?'↓':'=';
+    // Higher expenses = bad (red), lower = good (green)
+    expDeltaCls=expDeltaPct>5?'bad':expDeltaPct<-5?'good':'neutral';
+  }
+  
+  // Hero - big orange expense card with delta
+  const deltaBadge=expDeltaPct!==null?`<div class="exp-delta ${expDeltaCls}">${expDeltaDir} ${Math.abs(expDeltaPct)}% מ${pmLbl}</div>`:'';
+  const hero=`<div class="exp-hero">
+    <div class="exp-hero-lbl">💸 הוצאות ${MO[n.getMonth()]} ${n.getFullYear()}</div>
+    <div class="exp-hero-val">₪${expMonth.toLocaleString()}</div>
+    ${deltaBadge}
+    <div class="exp-hero-stats">
+      <div class="exp-hero-stat"><div class="exp-hero-stat-v">₪${expYear.toLocaleString()}</div><div class="exp-hero-stat-l">השנה</div></div>
+      <div class="exp-hero-stat"><div class="exp-hero-stat-v">${expArr.length}</div><div class="exp-hero-stat-l">רישומים</div></div>
+      <div class="exp-hero-stat"><div class="exp-hero-stat-v">${recurCount}</div><div class="exp-hero-stat-l">חוזרות</div></div>
+    </div>
+  </div>`;
+  
+  // Profit card - THE MOST IMPORTANT VIEW
+  const netMonth=incMonth-expMonth,netYear=incYear-expYear;
+  const netPrevMonth=incPrevMonth-expPrevMonth;
+  let netDeltaTxt='';
+  if(netPrevMonth!==0){
+    const diff=netMonth-netPrevMonth;
+    const arrow=diff>0?'↑':diff<0?'↓':'=';
+    const cls=diff>0?'good':diff<0?'bad':'';
+    netDeltaTxt=`<div class="profit-delta ${cls}">${arrow} ${diff>=0?'+':''}₪${Math.abs(diff).toLocaleString()} מ${pmLbl}</div>`;
+  }
+  const profit=`<div class="profit-card">
+    <div class="profit-cell"><div class="profit-cell-lbl">הכנסות ${MO[n.getMonth()].substring(0,4)}</div><div class="profit-cell-val in">₪${incMonth.toLocaleString()}</div></div>
+    <div class="profit-cell"><div class="profit-cell-lbl">הוצאות ${MO[n.getMonth()].substring(0,4)}</div><div class="profit-cell-val out">₪${expMonth.toLocaleString()}</div></div>
+    <div class="profit-cell"><div class="profit-cell-lbl">רווח נטו</div><div class="profit-cell-val net${netMonth<0?' neg':''}">${netMonth<0?'-':''}₪${Math.abs(netMonth).toLocaleString()}</div>${netDeltaTxt}</div>
+  </div>`;
+  
+  // Forecast / recurring reminder
+  let forecast='';
+  if(missingRecurring.length>0){
+    const projectedExp=expMonth+prevRecurringSum-prevRecurring.filter(e=>currMonthDescs.has((e.description||'').trim())).reduce((s,e)=>s+Number(e.amount||0),0);
+    const projectedNet=incMonth-projectedExp;
+    forecast=`<div class="exp-forecast">
+      <div class="exp-forecast-top">
+        <div class="exp-forecast-title">🔄 הוצאות חוזרות ממתינות</div>
+        <button class="exp-forecast-btn" onclick="duplicateRecurring()">📋 שכפל הכל</button>
+      </div>
+      <div class="exp-forecast-sub">${missingRecurring.length} הוצאות חוזרות מ${pmLbl} לא הוזנו עדיין (סה"כ ₪${missingRecurring.reduce((s,e)=>s+Number(e.amount||0),0).toLocaleString()})</div>
+      <div class="exp-forecast-list">${missingRecurring.slice(0,4).map(e=>{const info=EXP_CATS[e.category]||EXP_CATS.other;return`<div class="exp-forecast-item">${info.i} ${x(e.description)} · <b>₪${Number(e.amount).toLocaleString()}</b></div>`;}).join('')}${missingRecurring.length>4?`<div class="exp-forecast-item" style="color:#9ca3af">+${missingRecurring.length-4} נוספות...</div>`:''}</div>
+    </div>`;
+  }
+  
+  // Category breakdown bars
+  let catBreakdown='';
+  if(catSorted.length){
+    const maxVal=catSorted[0][1]||1;
+    catBreakdown=`<div class="exp-cat-bar"><div style="font-size:11px;font-weight:800;color:#9a3412;margin-bottom:10px;letter-spacing:.5px;text-align:right">📊 פילוח לפי קטגוריה</div>`+
+      catSorted.map(([c,v])=>{const info=EXP_CATS[c]||EXP_CATS.other,pct=Math.round(v/maxVal*100),pctTotal=totalFiltered?Math.round(v/totalFiltered*100):0;return`<div class="exp-cat-row"><div class="exp-cat-ico">${info.i}</div><div class="exp-cat-name">${info.l}</div><div class="exp-cat-track"><div class="exp-cat-fill" style="width:${pct}%;background:linear-gradient(90deg,${info.c},${info.c})"></div></div><div class="exp-cat-amt">₪${v.toLocaleString()} ·${pctTotal}%</div></div>`;}).join('')+
+      `</div>`;
+  }
+  
+  // Add/Edit form
+  const isEdit=!!S.editExpKey;
+  const form=S.showAddExp?`<div class="exp-form">
+    <div class="exp-form-ttl">${isEdit?'✏️ עריכת הוצאה':'➕ הוצאה חדשה'}<button onclick="closeExpForm()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#9a3412;padding:0">✕</button></div>
+    <input class="exp-inp" id="exp-amt" type="number" inputmode="numeric" placeholder="סכום ₪ *" value="${S.newExp.amount||''}">
+    <input class="exp-inp" id="exp-desc" placeholder="תיאור ההוצאה *" value="${x(S.newExp.description||'')}">
+    <input class="exp-inp" id="exp-vendor" placeholder="ספק/חנות (לא חובה)" value="${x(S.newExp.vendor||'')}">
+    <input class="exp-inp" id="exp-date" type="date" value="${S.newExp.date||todayISO()}">
+    <div style="font-size:11px;color:#9a3412;margin:10px 0 6px;text-align:right;font-weight:700">קטגוריה:</div>
+    <div class="exp-cat-grid">${Object.entries(EXP_CATS).map(([k,v])=>`<button class="exp-cat-btn${S.newExp.category===k?' on':''}" onclick="setExpCat('${k}')"><span class="exp-cat-btn-i">${v.i}</span>${v.l}</button>`).join('')}</div>
+    <div class="exp-recur${S.newExp.recurring?' on':''}" onclick="toggleExpRecurring()"><div class="exp-recur-chk">${S.newExp.recurring?'✓':''}</div><span>🔄 הוצאה חוזרת (שכירות, חשמל וכו')</span></div>
+    <div class="exp-form-btns">
+      <button class="exp-btn-cancel" onclick="closeExpForm()">ביטול</button>
+      <button class="exp-btn-save" onclick="saveExpense()">💾 ${isEdit?'עדכן':'שמור'}</button>
+    </div>
+  </div>`:`<button class="exp-add-btn" onclick="openExpForm()">➕ הוסף הוצאה חדשה</button>`;
+  
+  // Month filter
+  const filterBar=months.length>1?`<div class="pay-filter" style="margin-bottom:10px">${months.map(m=>`<button class="pay-filter-btn${S.expFilter===(m==='הכל'?'all':m)?' on':''}" onclick="S.expFilter='${m==='הכל'?'all':m}';hRender()" style="${S.expFilter===(m==='הכל'?'all':m)?'background:#ea580c;border-color:#ea580c':''}">${m}</button>`).join('')}</div>`:'';
+  
+  // Empty state
+  if(!expArr.length){
+    return hero+profit+form+`<div class="exp-empty"><span class="exp-empty-i">💸</span><div class="exp-empty-t">אין עדיין הוצאות</div><div class="exp-empty-s">הוסף הוצאות עסק כדי לראות רווח נטו,<br>פילוח לפי קטגוריה, וכמה כסף הולך לאן</div></div>`;
+  }
+  
+  // Group by month
+  const byMonth={};
+  filtered.forEach(e=>{if(!e.date)return;const[y,m]=e.date.split('-');const key=MO[Number(m)-1]+' '+y;if(!byMonth[key])byMonth[key]=[];byMonth[key].push(e);});
+  
+  const rows=Object.entries(byMonth).map(([mo,items])=>{
+    const mt=items.reduce((s,e)=>s+Number(e.amount||0),0);
+    return`<div class="exp-month-hdr"><span>₪${mt.toLocaleString()}</span><span>${mo}</span></div>`+items.map(e=>{
+      const info=EXP_CATS[e.category]||EXP_CATS.other;
+      const dateDisp=e.date?e.date.split('-').reverse().join('/'):'';
+      return`<div class="exp-row${e.recurring?' recurring':''}">
+        <div class="exp-row-top">
+          <div class="exp-row-left">
+            <div class="exp-row-desc">${x(e.description||'')}</div>
+            <div class="exp-row-meta">
+              <span class="exp-row-pill">${info.i} ${info.l}</span>
+              ${e.recurring?'<span class="exp-row-pill recur">🔄 חוזרת</span>':''}
+              ${e.vendor?'<span>· '+x(e.vendor)+'</span>':''}
+            </div>
+            <div class="exp-row-date">📅 ${dateDisp}</div>
+          </div>
+          <div class="exp-row-amt${e.recurring?' recurring':''}">₪${Number(e.amount).toLocaleString()}</div>
+        </div>
+        <div class="exp-row-actions">
+          <button class="edit" onclick="editExpense('${e.k}')">✏️ עריכה</button>
+          <button class="del" onclick="deleteExpense('${e.k}')">🗑 מחק</button>
+        </div>
+      </div>`;
+    }).join('');
+  }).join('');
+  
+  return hero+profit+forecast+catBreakdown+form+filterBar+rows;
+}
+
 function renderPayments(all){
   const n=new Date(),mk=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0');
   const paid=all.filter(a=>a.dt<=n&&a.d.price&&Number(a.d.price)>0).sort((a,b)=>b.dt-a.dt);
@@ -2450,14 +2835,33 @@ function exportXLS(){
   const mk=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
   const monthRev=past.filter(a=>a.d.price&&a.d.paid&&a.date.startsWith(mk)).reduce((s,a)=>s+Number(a.d.price),0);
   const monthAppts=past.filter(a=>a.date.startsWith(mk)).length;
+  
+  // Expenses stats
+  const expArr=Object.values(S.EXP||{});
+  const totalExp=expArr.reduce((s,e)=>s+Number(e.amount||0),0);
+  const monthExp=expArr.filter(e=>e.date&&e.date.startsWith(mk)).reduce((s,e)=>s+Number(e.amount||0),0);
+  const netTotal=totalRev-totalExp;
+  const netMonth=monthRev-monthExp;
 
   // ── Sheet 1: סיכום ──
   const summaryData=[
     ['📊 דוח עסקי','',now.toLocaleDateString('he-IL')],
     ['','',''],
+    ['━━ הכנסות ━━','',''],
     ['סה"כ הכנסות','₪'+totalRev.toLocaleString(),''],
     ['הכנסות החודש','₪'+monthRev.toLocaleString(),''],
     ['חובות פתוחים','₪'+totalDebt.toLocaleString(),''],
+    ['','',''],
+    ['━━ הוצאות ━━','',''],
+    ['סה"כ הוצאות','₪'+totalExp.toLocaleString(),''],
+    ['הוצאות החודש','₪'+monthExp.toLocaleString(),''],
+    ['מספר רישומי הוצאות',expArr.length,''],
+    ['','',''],
+    ['━━ רווח נטו ━━','',''],
+    ['רווח נטו כולל','₪'+netTotal.toLocaleString(),netTotal<0?'⚠️ הפסד':''],
+    ['רווח נטו החודש','₪'+netMonth.toLocaleString(),netMonth<0?'⚠️ הפסד':''],
+    ['','',''],
+    ['━━ כללי ━━','',''],
     ['סה"כ לקוחות',totalClients,''],
     ['טיפולים החודש',monthAppts,''],
     ['תורים קרובים',future.length,''],
@@ -2527,6 +2931,39 @@ function exportXLS(){
   const ws4=XLSX.utils.aoa_to_sheet(monthData);
   ws4['!cols']=[{wch:16},{wch:14},{wch:12},{wch:14}];
   XLSX.utils.book_append_sheet(wb,ws4,'חודשי');
+  
+  // ── Sheet 5: הוצאות ──
+  const EXP_CATS_LBL={supplies:'ציוד',rent:'שכירות',marketing:'שיווק',utilities:'חשמל/מים',vendors:'ספקים',tax:'מיסים',car:'רכב',other:'אחר'};
+  const expData=[['תאריך','יום בשבוע','תיאור','קטגוריה','ספק/חנות','סכום ₪','חוזרת']];
+  const expSorted=Object.values(S.EXP||{}).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  expSorted.forEach(e=>{
+    const d=e.date?new Date(e.date+'T12:00:00'):null;
+    expData.push([
+      e.date||'',
+      d?DY_HEB[d.getDay()]:'',
+      e.description||'',
+      EXP_CATS_LBL[e.category]||'אחר',
+      e.vendor||'',
+      Number(e.amount)||0,
+      e.recurring?'כן':''
+    ]);
+  });
+  expData.push(['','','','','','','']);
+  expData.push(['','','','','סה"כ:',totalExp,'']);
+  const ws5=XLSX.utils.aoa_to_sheet(expData);
+  ws5['!cols']=[{wch:12},{wch:10},{wch:24},{wch:12},{wch:16},{wch:10},{wch:8}];
+  XLSX.utils.book_append_sheet(wb,ws5,'הוצאות');
+  
+  // ── Sheet 6: הוצאות לפי קטגוריה ──
+  const catMap={};
+  expSorted.forEach(e=>{const c=e.category||'other';if(!catMap[c])catMap[c]={count:0,total:0};catMap[c].count++;catMap[c].total+=Number(e.amount||0);});
+  const catData=[['קטגוריה','מספר רישומים','סה"כ ₪','אחוז מסך ההוצאות']];
+  Object.entries(catMap).sort((a,b)=>b[1].total-a[1].total).forEach(([c,v])=>{
+    catData.push([EXP_CATS_LBL[c]||'אחר',v.count,v.total,totalExp?Math.round(v.total/totalExp*100)+'%':'0%']);
+  });
+  const ws6=XLSX.utils.aoa_to_sheet(catData);
+  ws6['!cols']=[{wch:16},{wch:14},{wch:12},{wch:18}];
+  XLSX.utils.book_append_sheet(wb,ws6,'פילוח הוצאות');
 
   // ── Download ──
   const fname='דוח_עסקי_'+now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'.xlsx';
@@ -2538,7 +2975,8 @@ function tabsHTML(upcoming,history){
   let debtCount=0;
   Object.entries(S.A||{}).forEach(([date,slots])=>{Object.entries(slots||{}).forEach(([time,d])=>{if(d&&d.name&&d.price&&Number(d.price)>0&&!d.paid&&new Date(date+'T'+time)<=n2)debtCount++;});});
   const pkgCount=Object.keys(S.PKGS||{}).length;
-  return`<button class="hist-tab${S.histTab==='upcoming'?' on':''}" onclick="S.histTab='upcoming';hRender()">📅 תורים ${upcoming.length?`<span class="hist-badge" style="background:#059669">${upcoming.length}</span>`:''}</button><button class="hist-tab${S.histTab==='clients'?' on':''}" onclick="S.histTab='clients';hRender()">👥 לקוחות</button><button class="hist-tab${S.histTab==='debts'?' on':''}" onclick="S.histTab='debts';hRender()">💳 חובות ${debtCount?`<span class="hist-badge" style="background:#dc2626">${debtCount}</span>`:''}</button><button class="hist-tab${S.histTab==='history'?' on':''}" onclick="S.histTab='history';hRender()">🗂 היסטוריית עסקאות ${history.length?`<span class="hist-badge" style="background:#7c3aed">${history.length}</span>`:''}</button><button class="hist-tab${S.histTab==='cancellations'?' on':''}" onclick="S.histTab='cancellations';hRender()">❌ ביטולים ${cancCount?`<span class="hist-badge" style="background:#dc2626">${cancCount}</span>`:''}</button><button class="hist-tab${S.histTab==='payments'?' on':''}" onclick="S.histTab='payments';hRender()">💰 תשלומים</button><button class="hist-tab${S.histTab==='bgoals'?' on':''}" onclick="S.histTab='bgoals';hRender()">🎯 יעדים</button><button class="hist-tab${S.histTab==='packages'?' on':''}" onclick="S.histTab='packages';hRender()">📦 חבילות ${pkgCount?`<span class="hist-badge" style="background:#0891b2">${pkgCount}</span>`:''}</button>`;
+  const expCount=Object.keys(S.EXP||{}).length;
+  return`<button class="hist-tab${S.histTab==='upcoming'?' on':''}" onclick="S.histTab='upcoming';hRender()">📅 תורים ${upcoming.length?`<span class="hist-badge" style="background:#059669">${upcoming.length}</span>`:''}</button><button class="hist-tab${S.histTab==='clients'?' on':''}" onclick="S.histTab='clients';hRender()">👥 לקוחות</button><button class="hist-tab${S.histTab==='debts'?' on':''}" onclick="S.histTab='debts';hRender()">💳 חובות ${debtCount?`<span class="hist-badge" style="background:#dc2626">${debtCount}</span>`:''}</button><button class="hist-tab${S.histTab==='history'?' on':''}" onclick="S.histTab='history';hRender()">🗂 היסטוריית עסקאות ${history.length?`<span class="hist-badge" style="background:#7c3aed">${history.length}</span>`:''}</button><button class="hist-tab${S.histTab==='cancellations'?' on':''}" onclick="S.histTab='cancellations';hRender()">❌ ביטולים ${cancCount?`<span class="hist-badge" style="background:#dc2626">${cancCount}</span>`:''}</button><button class="hist-tab${S.histTab==='payments'?' on':''}" onclick="S.histTab='payments';hRender()">💰 תשלומים</button><button class="hist-tab${S.histTab==='expenses'?' on':''}" onclick="S.histTab='expenses';hRender()">💸 הוצאות ${expCount?`<span class="hist-badge" style="background:#ea580c">${expCount}</span>`:''}</button><button class="hist-tab${S.histTab==='bgoals'?' on':''}" onclick="S.histTab='bgoals';hRender()">🎯 יעדים</button><button class="hist-tab${S.histTab==='packages'?' on':''}" onclick="S.histTab='packages';hRender()">📦 חבילות ${pkgCount?`<span class="hist-badge" style="background:#0891b2">${pkgCount}</span>`:''}</button>`;
 }
 function hRender(){
   const sheet=document.querySelector('.hist-sheet');
@@ -2550,6 +2988,7 @@ function hRender(){
   if(S.histTab==='upcoming'){content.innerHTML=buildUpcoming(upcoming);setTimeout(()=>{if(document.getElementById('cd-d'))startTimer();},60);}
   else if(S.histTab==='history')content.innerHTML=buildHistory(history);
   else if(S.histTab==='payments')content.innerHTML=renderPayments(all2);
+  else if(S.histTab==='expenses')content.innerHTML=renderExpenses(all2);
   else if(S.histTab==='bgoals')content.innerHTML=renderBGoals(all2);
   else if(S.histTab==='packages')content.innerHTML=renderPackages();
   else if(S.histTab==='debts')content.innerHTML=renderDebts();
@@ -2562,6 +3001,7 @@ function renderHistory(){
   if(S.histTab==='upcoming')tabContent=buildUpcoming(upcoming);
   else if(S.histTab==='history')tabContent=buildHistory(history);
   else if(S.histTab==='payments')tabContent=renderPayments(all2);
+  else if(S.histTab==='expenses')tabContent=renderExpenses(all2);
   else if(S.histTab==='bgoals')tabContent=renderBGoals(all2);
   else if(S.histTab==='packages')tabContent=renderPackages();
   else if(S.histTab==='debts')tabContent=renderDebts();
@@ -3447,7 +3887,7 @@ function installPWA(){
 }
 // ── Init ──────────────────────────────────────────────
 (async()=>{
-  const [a,t,g,bg,cl,canc,pkgs]=await Promise.all([store.get('appts'),store.get('tasks'),store.get('goals'),store.get('bgoals'),store.get('clients'),store.get('cancellations'),store.get('packages')]);
+  const [a,t,g,bg,cl,canc,pkgs,exp]=await Promise.all([store.get('appts'),store.get('tasks'),store.get('goals'),store.get('bgoals'),store.get('clients'),store.get('cancellations'),store.get('packages'),store.get('expenses')]);
   const dt=localStore.get('dt'),rt=localStore.get('rt');
   if(a&&typeof a==='object')S.A=a;
   if(t&&typeof t==='object')S.T=t;
@@ -3456,6 +3896,7 @@ function installPWA(){
   if(cl&&typeof cl==='object')S.CL=cl;
   if(canc&&typeof canc==='object')S.CANC=canc;
   if(pkgs&&typeof pkgs==='object')S.PKGS=pkgs;
+  if(exp&&typeof exp==='object')S.EXP=exp;
   if(dt&&typeof dt==='object')S.DT=dt;
   if(rt&&typeof rt==='object')S.RT=rt;
   render();

@@ -562,6 +562,50 @@ textarea.task-modal-area{width:100%;border:1.5px solid #e5e7eb;border-radius:12p
 .promo-card-price.paid{background:#fee2e2;color:#991b1b}
 .promo-disclaimer{text-align:center;font-size:10.5px;color:#6b7280;margin-top:20px;padding:12px 16px;background:#f9fafb;border-radius:10px;line-height:1.5;font-weight:500}
 
+/* ── Website Tab — Editor ── */
+.web-status{background:linear-gradient(135deg,#1e40af,#1e3a8a);border-radius:16px;padding:16px;display:flex;align-items:center;gap:12px;margin-bottom:10px;box-shadow:0 6px 20px rgba(30,64,175,.25);color:white;position:relative;overflow:hidden}
+.web-status::before{content:'';position:absolute;top:-30px;left:-30px;width:120px;height:120px;background:rgba(255,255,255,.08);border-radius:50%}
+.web-status-ico{font-size:32px;flex-shrink:0;position:relative;z-index:1}
+.web-status-body{flex:1;min-width:0;position:relative;z-index:1;text-align:right}
+.web-status-label{font-size:11.5px;font-weight:700;opacity:.85;letter-spacing:.4px}
+.web-status-url{font-size:13px;font-weight:800;margin-top:2px;word-break:break-all}
+.web-status-dot{width:10px;height:10px;border-radius:50%;background:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.3);animation:pulse 2s infinite;position:relative;z-index:1;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.web-actions{display:flex;gap:8px;margin-bottom:12px}
+.web-action-btn{flex:1;padding:11px 8px;border-radius:12px;border:1.5px solid #e5e7eb;background:white;font-size:12.5px;font-weight:800;color:#1e1b4b;cursor:pointer;text-decoration:none;text-align:center;font-family:inherit;transition:transform .12s}
+.web-action-btn:active{transform:scale(.97)}
+.web-action-btn.primary{background:linear-gradient(135deg,#1e40af,#1e3a8a);color:white;border-color:transparent}
+.web-iframe-card{background:white;border-radius:16px;padding:0;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);overflow:hidden}
+.web-toolbar{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f9fafb;border-bottom:1px solid #e5e7eb;gap:8px;flex-wrap:wrap}
+.web-toolbar.edit{background:linear-gradient(135deg,#ede9fe,#ddd6fe);border-bottom-color:#c4b5fd}
+.web-toolbar-status{font-size:11.5px;font-weight:800;color:#4c1d95;display:flex;align-items:center;gap:8px}
+.web-changes-badge{background:#7c3aed;color:white;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:800}
+.web-toolbar-btns{display:flex;gap:6px}
+.web-tb-btn{padding:7px 12px;border-radius:9px;border:none;background:white;color:#4c1d95;font-size:11.5px;font-weight:800;cursor:pointer;font-family:inherit;border:1px solid #c4b5fd}
+.web-tb-btn.primary{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;border-color:transparent}
+.web-tb-btn:active{transform:scale(.95)}
+.web-iframe-wrap{width:100%;height:500px;background:#f3f4f6;position:relative;overflow:hidden}
+.web-iframe-wrap.editing{height:580px;box-shadow:inset 0 0 0 3px #7c3aed}
+.web-iframe-wrap iframe{width:100%;height:100%;border:0}
+.web-loading,.web-error{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:30px;text-align:center;color:#6b7280;font-size:13px;font-weight:600}
+.web-error-ico{font-size:40px;margin-bottom:10px}
+.web-error-title{font-size:14px;font-weight:800;color:#1e1b4b;margin-bottom:4px}
+.web-error-sub{font-size:11.5px;color:#4b5563;line-height:1.7;max-width:300px;text-align:right}
+.web-error-sub b{color:#1e1b4b;font-weight:800}
+.web-error-detail{font-size:10px;color:#9ca3af;margin-top:10px;max-width:280px;font-family:monospace;word-break:break-all;text-align:center}
+.web-btn{padding:10px 16px;border-radius:10px;border:none;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit}
+.web-btn.save{background:linear-gradient(135deg,#10b981,#059669);color:white}
+.web-btn:active{transform:scale(.97)}
+.web-hint{background:linear-gradient(135deg,#fef9c3,#fde68a);padding:10px 14px;display:flex;align-items:flex-start;gap:8px;border-bottom:1px solid #fcd34d}
+.web-hint-ico{font-size:18px;flex-shrink:0}
+.web-hint-txt{font-size:11.5px;color:#78350f;line-height:1.5;text-align:right;font-weight:600}
+.web-hint-txt b{font-weight:800}
+.web-tips{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border-radius:14px;padding:14px;margin-bottom:12px;border:1px solid #fcd34d}
+.web-tips-hdr{font-size:12.5px;font-weight:800;color:#78350f;margin-bottom:8px;text-align:right}
+.web-tip{font-size:11.5px;color:#78350f;line-height:1.55;margin-bottom:6px;padding:5px 10px 5px 0;border-right:2px solid #f59e0b;font-weight:600;text-align:right}
+.web-tip:last-child{margin-bottom:0}
+.web-footer{text-align:center;font-size:10.5px;color:#9ca3af;margin-top:16px;padding:10px 12px;line-height:1.5;font-weight:500}
+
 /* ── Monthly Chart — Professional ── */
 .chart-screen{position:fixed;inset:0;z-index:500;background:#f8f7fc;display:flex;flex-direction:column;animation:slideUp .32s cubic-bezier(.22,.68,0,1.2)}
 .chart-hero{background:linear-gradient(160deg,#4c1d95 0%,#7c3aed 50%,#6d28d9 100%);padding:20px 20px 28px;flex-shrink:0;position:relative;overflow:hidden}
@@ -853,7 +897,7 @@ const S={
   tY:now.getFullYear(),tM:now.getMonth()+1,tSel:TD,
   gY:now.getFullYear(),gM:now.getMonth()+1,
   // data
-  DT:{},RT:{},A:{},T:{},G:{},BG:{},CL:{},CANC:{},PKGS:{},EXP:{},showHistory:false,histTab:"upcoming",payFilter:"all",expFilter:"all",expCat:"all",showAddGoal:false,newGoal:{title:"",target:"",period:"month",type:"revenue"},openClient:null,editClient:false,crmSearch:"",crmFilter:"all",showMonthPicker:false,showYearPicker:false,editPayKey:null,showAddPkg:false,editPkgKey:null,showAddExp:false,newExp:{amount:"",category:"supplies",description:"",vendor:"",date:"",recurring:false},editExpKey:null
+  DT:{},RT:{},A:{},T:{},G:{},BG:{},CL:{},CANC:{},PKGS:{},EXP:{},WEB:{},showHistory:false,histTab:"upcoming",payFilter:"all",expFilter:"all",expCat:"all",showAddGoal:false,newGoal:{title:"",target:"",period:"month",type:"revenue"},openClient:null,editClient:false,crmSearch:"",crmFilter:"all",showMonthPicker:false,showYearPicker:false,editPayKey:null,showAddPkg:false,editPkgKey:null,showAddExp:false,newExp:{amount:"",category:"supplies",description:"",vendor:"",date:"",recurring:false},editExpKey:null,editWeb:false,showAddPromoItem:false,newPromoItem:{title:"",desc:""}
 };
 
 // ── Calendar HTML ─────────────────────────────────────
@@ -1832,6 +1876,50 @@ function getLaserAnim(){
 .promo-card-price.paid{background:#fee2e2;color:#991b1b}
 .promo-disclaimer{text-align:center;font-size:10.5px;color:#6b7280;margin-top:20px;padding:12px 16px;background:#f9fafb;border-radius:10px;line-height:1.5;font-weight:500}
 
+/* ── Website Tab — Editor ── */
+.web-status{background:linear-gradient(135deg,#1e40af,#1e3a8a);border-radius:16px;padding:16px;display:flex;align-items:center;gap:12px;margin-bottom:10px;box-shadow:0 6px 20px rgba(30,64,175,.25);color:white;position:relative;overflow:hidden}
+.web-status::before{content:'';position:absolute;top:-30px;left:-30px;width:120px;height:120px;background:rgba(255,255,255,.08);border-radius:50%}
+.web-status-ico{font-size:32px;flex-shrink:0;position:relative;z-index:1}
+.web-status-body{flex:1;min-width:0;position:relative;z-index:1;text-align:right}
+.web-status-label{font-size:11.5px;font-weight:700;opacity:.85;letter-spacing:.4px}
+.web-status-url{font-size:13px;font-weight:800;margin-top:2px;word-break:break-all}
+.web-status-dot{width:10px;height:10px;border-radius:50%;background:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.3);animation:pulse 2s infinite;position:relative;z-index:1;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.web-actions{display:flex;gap:8px;margin-bottom:12px}
+.web-action-btn{flex:1;padding:11px 8px;border-radius:12px;border:1.5px solid #e5e7eb;background:white;font-size:12.5px;font-weight:800;color:#1e1b4b;cursor:pointer;text-decoration:none;text-align:center;font-family:inherit;transition:transform .12s}
+.web-action-btn:active{transform:scale(.97)}
+.web-action-btn.primary{background:linear-gradient(135deg,#1e40af,#1e3a8a);color:white;border-color:transparent}
+.web-iframe-card{background:white;border-radius:16px;padding:0;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);overflow:hidden}
+.web-toolbar{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f9fafb;border-bottom:1px solid #e5e7eb;gap:8px;flex-wrap:wrap}
+.web-toolbar.edit{background:linear-gradient(135deg,#ede9fe,#ddd6fe);border-bottom-color:#c4b5fd}
+.web-toolbar-status{font-size:11.5px;font-weight:800;color:#4c1d95;display:flex;align-items:center;gap:8px}
+.web-changes-badge{background:#7c3aed;color:white;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:800}
+.web-toolbar-btns{display:flex;gap:6px}
+.web-tb-btn{padding:7px 12px;border-radius:9px;border:none;background:white;color:#4c1d95;font-size:11.5px;font-weight:800;cursor:pointer;font-family:inherit;border:1px solid #c4b5fd}
+.web-tb-btn.primary{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;border-color:transparent}
+.web-tb-btn:active{transform:scale(.95)}
+.web-iframe-wrap{width:100%;height:500px;background:#f3f4f6;position:relative;overflow:hidden}
+.web-iframe-wrap.editing{height:580px;box-shadow:inset 0 0 0 3px #7c3aed}
+.web-iframe-wrap iframe{width:100%;height:100%;border:0}
+.web-loading,.web-error{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:30px;text-align:center;color:#6b7280;font-size:13px;font-weight:600}
+.web-error-ico{font-size:40px;margin-bottom:10px}
+.web-error-title{font-size:14px;font-weight:800;color:#1e1b4b;margin-bottom:4px}
+.web-error-sub{font-size:11.5px;color:#4b5563;line-height:1.7;max-width:300px;text-align:right}
+.web-error-sub b{color:#1e1b4b;font-weight:800}
+.web-error-detail{font-size:10px;color:#9ca3af;margin-top:10px;max-width:280px;font-family:monospace;word-break:break-all;text-align:center}
+.web-btn{padding:10px 16px;border-radius:10px;border:none;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit}
+.web-btn.save{background:linear-gradient(135deg,#10b981,#059669);color:white}
+.web-btn:active{transform:scale(.97)}
+.web-hint{background:linear-gradient(135deg,#fef9c3,#fde68a);padding:10px 14px;display:flex;align-items:flex-start;gap:8px;border-bottom:1px solid #fcd34d}
+.web-hint-ico{font-size:18px;flex-shrink:0}
+.web-hint-txt{font-size:11.5px;color:#78350f;line-height:1.5;text-align:right;font-weight:600}
+.web-hint-txt b{font-weight:800}
+.web-tips{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border-radius:14px;padding:14px;margin-bottom:12px;border:1px solid #fcd34d}
+.web-tips-hdr{font-size:12.5px;font-weight:800;color:#78350f;margin-bottom:8px;text-align:right}
+.web-tip{font-size:11.5px;color:#78350f;line-height:1.55;margin-bottom:6px;padding:5px 10px 5px 0;border-right:2px solid #f59e0b;font-weight:600;text-align:right}
+.web-tip:last-child{margin-bottom:0}
+.web-footer{text-align:center;font-size:10.5px;color:#9ca3af;margin-top:16px;padding:10px 12px;line-height:1.5;font-weight:500}
+
 /* ── Monthly Chart — Professional ── */
 .chart-screen{position:fixed;inset:0;z-index:500;background:#f8f7fc;display:flex;flex-direction:column;animation:slideUp .32s cubic-bezier(.22,.68,0,1.2)}
 .chart-hero{background:linear-gradient(160deg,#4c1d95 0%,#7c3aed 50%,#6d28d9 100%);padding:20px 20px 28px;flex-shrink:0;position:relative;overflow:hidden}
@@ -2465,7 +2553,7 @@ function updateGoalModal(idx,val){
 // ── Auto sync every 15s ──────────────────────────────
 async function syncData(){
   try{
-    const [a,t,g,bg,cl,canc,pkgs,exp]=await Promise.all([store.get('appts'),store.get('tasks'),store.get('goals'),store.get('bgoals'),store.get('clients'),store.get('cancellations'),store.get('packages'),store.get('expenses')]);
+    const [a,t,g,bg,cl,canc,pkgs,exp,web]=await Promise.all([store.get('appts'),store.get('tasks'),store.get('goals'),store.get('bgoals'),store.get('clients'),store.get('cancellations'),store.get('packages'),store.get('expenses'),store.get('website')]);
     // Only update if data actually changed
     let changed=false;
     if(a&&typeof a==='object'){const prev=JSON.stringify(S.A);S.A=a;if(JSON.stringify(S.A)!==prev)changed=true;}
@@ -2476,6 +2564,7 @@ async function syncData(){
     if(canc&&typeof canc==='object'){const prev=JSON.stringify(S.CANC);S.CANC=canc;if(JSON.stringify(S.CANC)!==prev)changed=true;}
     if(pkgs&&typeof pkgs==='object'){const prev=JSON.stringify(S.PKGS);S.PKGS=pkgs;if(JSON.stringify(S.PKGS)!==prev)changed=true;}
     if(exp&&typeof exp==='object'){const prev=JSON.stringify(S.EXP);S.EXP=exp;if(JSON.stringify(S.EXP)!==prev)changed=true;}
+    if(web&&typeof web==='object'){const prev=JSON.stringify(S.WEB);S.WEB=web;if(JSON.stringify(S.WEB)!==prev)changed=true;}
     // Data updated silently - UI updates only on user interaction
   }catch(e){}
 }
@@ -3180,7 +3269,7 @@ function tabsHTML(upcoming,history){
   Object.entries(S.A||{}).forEach(([date,slots])=>{Object.entries(slots||{}).forEach(([time,d])=>{if(d&&d.name&&d.price&&Number(d.price)>0&&!d.paid&&new Date(date+'T'+time)<=n2)debtCount++;});});
   const pkgCount=Object.keys(S.PKGS||{}).length;
   const expCount=Object.keys(S.EXP||{}).length;
-  return`<button class="hist-tab${S.histTab==='upcoming'?' on':''}" onclick="S.histTab='upcoming';hRender()">📅 תורים ${upcoming.length?`<span class="hist-badge" style="background:#059669">${upcoming.length}</span>`:''}</button><button class="hist-tab${S.histTab==='clients'?' on':''}" onclick="S.histTab='clients';hRender()">👥 לקוחות</button><button class="hist-tab${S.histTab==='debts'?' on':''}" onclick="S.histTab='debts';hRender()">💳 חובות ${debtCount?`<span class="hist-badge" style="background:#dc2626">${debtCount}</span>`:''}</button><button class="hist-tab${S.histTab==='history'?' on':''}" onclick="S.histTab='history';hRender()">🗂 היסטוריית עסקאות ${history.length?`<span class="hist-badge" style="background:#7c3aed">${history.length}</span>`:''}</button><button class="hist-tab${S.histTab==='cancellations'?' on':''}" onclick="S.histTab='cancellations';hRender()">❌ ביטולים ${cancCount?`<span class="hist-badge" style="background:#dc2626">${cancCount}</span>`:''}</button><button class="hist-tab${S.histTab==='payments'?' on':''}" onclick="S.histTab='payments';hRender()">💰 תשלומים</button><button class="hist-tab${S.histTab==='expenses'?' on':''}" onclick="S.histTab='expenses';hRender()">💸 הוצאות ${expCount?`<span class="hist-badge" style="background:#ea580c">${expCount}</span>`:''}</button><button class="hist-tab${S.histTab==='bgoals'?' on':''}" onclick="S.histTab='bgoals';hRender()">🎯 יעדים</button><button class="hist-tab${S.histTab==='packages'?' on':''}" onclick="S.histTab='packages';hRender()">📦 חבילות ${pkgCount?`<span class="hist-badge" style="background:#0891b2">${pkgCount}</span>`:''}</button><button class="hist-tab${S.histTab==='promo'?' on':''}" onclick="S.histTab='promo';hRender()">📢 איפה לפרסם <span class="hist-badge" style="background:#0891b2">מתעדכן</span></button>`;
+  return`<button class="hist-tab${S.histTab==='upcoming'?' on':''}" onclick="S.histTab='upcoming';hRender()">📅 תורים ${upcoming.length?`<span class="hist-badge" style="background:#059669">${upcoming.length}</span>`:''}</button><button class="hist-tab${S.histTab==='clients'?' on':''}" onclick="S.histTab='clients';hRender()">👥 לקוחות</button><button class="hist-tab${S.histTab==='debts'?' on':''}" onclick="S.histTab='debts';hRender()">💳 חובות ${debtCount?`<span class="hist-badge" style="background:#dc2626">${debtCount}</span>`:''}</button><button class="hist-tab${S.histTab==='history'?' on':''}" onclick="S.histTab='history';hRender()">🗂 היסטוריית עסקאות ${history.length?`<span class="hist-badge" style="background:#7c3aed">${history.length}</span>`:''}</button><button class="hist-tab${S.histTab==='cancellations'?' on':''}" onclick="S.histTab='cancellations';hRender()">❌ ביטולים ${cancCount?`<span class="hist-badge" style="background:#dc2626">${cancCount}</span>`:''}</button><button class="hist-tab${S.histTab==='payments'?' on':''}" onclick="S.histTab='payments';hRender()">💰 תשלומים</button><button class="hist-tab${S.histTab==='expenses'?' on':''}" onclick="S.histTab='expenses';hRender()">💸 הוצאות ${expCount?`<span class="hist-badge" style="background:#ea580c">${expCount}</span>`:''}</button><button class="hist-tab${S.histTab==='bgoals'?' on':''}" onclick="S.histTab='bgoals';hRender()">🎯 יעדים</button><button class="hist-tab${S.histTab==='packages'?' on':''}" onclick="S.histTab='packages';hRender()">📦 חבילות ${pkgCount?`<span class="hist-badge" style="background:#0891b2">${pkgCount}</span>`:''}</button><button class="hist-tab${S.histTab==='promo'?' on':''}" onclick="S.histTab='promo';hRender()">📢 איפה לפרסם <span class="hist-badge" style="background:#0891b2">מתעדכן</span></button><button class="hist-tab${S.histTab==='website'?' on':''}" onclick="S.histTab='website';hRender()">🌐 האתר</button>`;
 }
 function hRender(){
   const sheet=document.querySelector('.hist-sheet');
@@ -3196,6 +3285,7 @@ function hRender(){
   else if(S.histTab==='bgoals')content.innerHTML=renderBGoals(all2);
   else if(S.histTab==='packages')content.innerHTML=renderPackages();
   else if(S.histTab==='promo')content.innerHTML=renderPromoTab();
+  else if(S.histTab==='website')content.innerHTML=renderWebsiteTab();
   else if(S.histTab==='debts')content.innerHTML=renderDebts();
   else if(S.histTab==='cancellations')content.innerHTML=renderCancellations();
   else if(S.histTab==='clients')content.innerHTML=renderCRM();
@@ -3210,6 +3300,7 @@ function renderHistory(){
   else if(S.histTab==='bgoals')tabContent=renderBGoals(all2);
   else if(S.histTab==='packages')tabContent=renderPackages();
   else if(S.histTab==='promo')tabContent=renderPromoTab();
+  else if(S.histTab==='website')tabContent=renderWebsiteTab();
   else if(S.histTab==='debts')tabContent=renderDebts();
   else if(S.histTab==='cancellations')tabContent=renderCancellations();
   else tabContent=renderCRM();
@@ -4306,6 +4397,328 @@ function renderPromoTab(){
     <div class="promo-disclaimer">💡 המחירים הם הערכה ממוצעת בלבד — משתנים לפי גודל מודעה, תדירות ותקופה. תמיד שווה להתמקח ולהשוות.</div>`;
 }
 
+// ── Website Management Tab — עורך HTML אמיתי ──
+const WEB_SRC_URL='https://pinto1212121212-create.github.io/deploy-panel/rinat-2.html';
+const WEB_SRC_FALLBACK='https://storied-chaja-55260f.netlify.app/';
+// Cache of fetched website HTML (for current session only)
+let _webCache=null;
+let _webFetchState='idle'; // idle | loading | ready | error
+let _webFetchSource=''; // 'primary' | 'fallback'
+let _webFetchError='';
+let _webEditMode=false; // false=preview, true=edit
+
+async function loadWebsiteHtml(){
+  if(_webCache)return _webCache;
+  _webFetchState='loading';
+  
+  // Try primary (deploy-panel repo)
+  try{
+    const res=await fetch(WEB_SRC_URL,{cache:'no-cache'});
+    if(res.ok){
+      const html=await res.text();
+      _webCache=html;
+      _webFetchState='ready';
+      _webFetchSource='primary';
+      return html;
+    }
+    _webFetchError='ריפו deploy-panel: '+res.status;
+  }catch(e){
+    _webFetchError='ריפו deploy-panel: '+e.message;
+  }
+  
+  // Try fallback (Netlify direct)
+  try{
+    const res=await fetch(WEB_SRC_FALLBACK,{cache:'no-cache',mode:'cors'});
+    if(res.ok){
+      const html=await res.text();
+      _webCache=html;
+      _webFetchState='ready';
+      _webFetchSource='fallback';
+      return html;
+    }
+    _webFetchError+=' · Netlify: '+res.status;
+  }catch(e){
+    _webFetchError+=' · Netlify: '+e.message;
+  }
+  
+  _webFetchState='error';
+  return null;
+}
+
+function toggleWebEdit(){
+  _webEditMode=!_webEditMode;
+  renderWebsiteIframe();
+}
+
+function reloadWebsite(){
+  _webCache=null;
+  _webFetchState='idle';
+  _webEditMode=false;
+  hRender();
+}
+
+// Inject editable attributes into the iframe HTML
+function injectEditableAttrs(html){
+  // Make all text-containing elements editable
+  // Parse approach: we inject a <base> tag + a style + contenteditable scripts
+  const editorScript=`
+<style>
+  body.rb-edit-mode{padding-bottom:80px!important}
+  body.rb-edit-mode [data-rb-edit="1"]{outline:2px dashed rgba(124,58,237,.3);outline-offset:2px;cursor:text;transition:outline .15s;position:relative}
+  body.rb-edit-mode [data-rb-edit="1"]:hover{outline:2px dashed #7c3aed;background:rgba(237,233,254,.3)}
+  body.rb-edit-mode [data-rb-edit="1"]:focus{outline:2px solid #7c3aed;background:rgba(237,233,254,.5);box-shadow:0 0 0 4px rgba(124,58,237,.15)}
+  #rb-edit-banner{position:fixed;top:0;left:0;right:0;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;padding:10px 14px;z-index:999999;font-family:system-ui,-apple-system,sans-serif;font-size:13px;font-weight:700;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 12px rgba(0,0,0,.2);direction:rtl}
+  #rb-edit-banner.hidden{display:none}
+  #rb-edit-banner .rb-changes{background:rgba(255,255,255,.2);padding:3px 9px;border-radius:10px;font-size:11px;font-weight:800}
+</style>
+<div id="rb-edit-banner" class="hidden">
+  <span>✏️ מצב עריכה · לחצי על כל טקסט כדי לערוך</span>
+  <span class="rb-changes" id="rb-changes">0 שינויים</span>
+</div>
+<scr`+`ipt>
+(function(){
+  let changes=0;
+  const banner=document.getElementById('rb-edit-banner');
+  const changesEl=document.getElementById('rb-changes');
+  
+  // Mark all text-bearing leaf elements as editable
+  function markEditable(){
+    const selectors='h1,h2,h3,h4,h5,h6,p,span,a,li,button,td,th,label,div';
+    document.querySelectorAll(selectors).forEach(el=>{
+      if(el.id==='rb-edit-banner'||el.closest('#rb-edit-banner'))return;
+      // Only if has direct text content (not just child elements)
+      const hasDirectText=Array.from(el.childNodes).some(n=>n.nodeType===3&&n.textContent.trim().length>2);
+      if(hasDirectText){
+        el.setAttribute('data-rb-edit','1');
+      }
+    });
+  }
+  markEditable();
+  
+  // Listen for edit mode toggle from parent
+  window.addEventListener('message',function(e){
+    if(!e.data||typeof e.data!=='object')return;
+    if(e.data.type==='rb-set-edit'){
+      if(e.data.edit){
+        document.body.classList.add('rb-edit-mode');
+        banner.classList.remove('hidden');
+        document.querySelectorAll('[data-rb-edit="1"]').forEach(el=>{
+          el.setAttribute('contenteditable','true');
+          el.setAttribute('spellcheck','false');
+        });
+      }else{
+        document.body.classList.remove('rb-edit-mode');
+        banner.classList.add('hidden');
+        document.querySelectorAll('[data-rb-edit="1"]').forEach(el=>{
+          el.removeAttribute('contenteditable');
+        });
+      }
+    }
+    if(e.data.type==='rb-get-html'){
+      // Clean up before sending
+      const clone=document.documentElement.cloneNode(true);
+      // Remove editor artifacts
+      const banner=clone.querySelector('#rb-edit-banner');if(banner)banner.remove();
+      const styleBlocks=clone.querySelectorAll('style');
+      styleBlocks.forEach(s=>{if(s.textContent.includes('rb-edit-mode'))s.remove();});
+      const scripts=clone.querySelectorAll('script');
+      scripts.forEach(s=>{if(s.textContent.includes('rb-edit-mode')||s.textContent.includes('rb-get-html'))s.remove();});
+      clone.querySelectorAll('[data-rb-edit]').forEach(el=>{
+        el.removeAttribute('data-rb-edit');
+        el.removeAttribute('contenteditable');
+        el.removeAttribute('spellcheck');
+      });
+      const fullHtml='<!DOCTYPE html>\n'+clone.outerHTML;
+      window.parent.postMessage({type:'rb-html-result',html:fullHtml,changes:changes},'*');
+    }
+  });
+  
+  // Track changes
+  document.addEventListener('input',function(e){
+    if(e.target.hasAttribute&&e.target.hasAttribute('data-rb-edit')){
+      changes++;
+      if(changesEl)changesEl.textContent=changes+' שינויים';
+      window.parent.postMessage({type:'rb-change-count',count:changes},'*');
+    }
+  });
+  
+  // Prevent navigation in edit mode
+  document.addEventListener('click',function(e){
+    if(document.body.classList.contains('rb-edit-mode')){
+      const a=e.target.closest('a');
+      if(a){e.preventDefault();}
+    }
+  });
+  
+  // Signal ready
+  window.parent.postMessage({type:'rb-ready'},'*');
+})();
+</scr`+`ipt>
+`;
+  // Inject just before </body>
+  if(html.includes('</body>')){
+    return html.replace('</body>',editorScript+'\n</body>');
+  }
+  return html+editorScript;
+}
+
+async function renderWebsiteIframe(){
+  const wrap=document.getElementById('web-iframe-wrap');
+  if(!wrap)return;
+  
+  if(_webFetchState==='idle'){
+    wrap.innerHTML='<div class="web-loading">⏳ טוען את האתר...</div>';
+    const html=await loadWebsiteHtml();
+    if(!html){
+      wrap.innerHTML=`<div class="web-error">
+        <div class="web-error-ico">⚠️</div>
+        <div class="web-error-title">לא הצלחתי לטעון את האתר</div>
+        <div class="web-error-sub">
+          <b>מה לעשות:</b><br>
+          1️⃣ פתחי את הריפו deploy-panel בגיטהאב<br>
+          2️⃣ העלי את הקובץ <b>rinat-2.html</b> (שאוריאל שלח)<br>
+          3️⃣ ודאי ש-Settings → Pages פועל<br>
+          4️⃣ חכי 1-2 דקות וחזרי לכאן
+        </div>
+        <div class="web-error-detail">${x(_webFetchError||'')}</div>
+        <button class="web-btn save" onclick="reloadWebsite()" style="margin-top:12px">🔄 נסי שוב</button>
+      </div>`;
+      return;
+    }
+  }
+  
+  if(_webFetchState==='ready'&&_webCache){
+    const injected=injectEditableAttrs(_webCache);
+    // Create blob URL so iframe can load the HTML without CSP issues
+    const blob=new Blob([injected],{type:'text/html;charset=utf-8'});
+    const blobUrl=URL.createObjectURL(blob);
+    wrap.innerHTML=`<iframe id="web-iframe" src="${blobUrl}" style="width:100%;height:100%;border:0;background:white" onload="onWebIframeLoad()"></iframe>`;
+  }
+}
+
+function onWebIframeLoad(){
+  // Send edit state to iframe after load
+  setTimeout(()=>{
+    const iframe=document.getElementById('web-iframe');
+    if(!iframe||!iframe.contentWindow)return;
+    iframe.contentWindow.postMessage({type:'rb-set-edit',edit:_webEditMode},'*');
+  },150);
+}
+
+// Listen for messages from iframe
+if(!window._rbMsgListenerAdded){
+  window._rbMsgListenerAdded=true;
+  let _pendingSaveFn=null;
+  window.addEventListener('message',function(e){
+    if(!e.data||typeof e.data!=='object')return;
+    if(e.data.type==='rb-change-count'){
+      const badge=document.getElementById('web-changes-badge');
+      if(badge){badge.textContent=e.data.count+' שינויים';badge.style.display=e.data.count>0?'inline-block':'none';}
+    }
+    if(e.data.type==='rb-html-result'&&_pendingSaveFn){
+      _pendingSaveFn(e.data.html,e.data.changes);
+      _pendingSaveFn=null;
+    }
+  });
+  window._rbSetSaveFn=function(fn){_pendingSaveFn=fn;};
+}
+
+function setWebEditMode(on){
+  _webEditMode=on;
+  const iframe=document.getElementById('web-iframe');
+  if(iframe&&iframe.contentWindow){
+    iframe.contentWindow.postMessage({type:'rb-set-edit',edit:on},'*');
+  }
+  hRender();
+}
+
+function downloadEditedSite(){
+  const iframe=document.getElementById('web-iframe');
+  if(!iframe||!iframe.contentWindow){alert('האתר לא נטען עדיין');return;}
+  window._rbSetSaveFn(function(html,changes){
+    if(changes===0){
+      if(!confirm('לא זוהו שינויים. להוריד את הקובץ בכל זאת?'))return;
+    }
+    const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download='rinat-2-updated.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    setTimeout(()=>alert('✅ הקובץ הורד! העלי אותו לנטלפי דרך deploy-panel כדי לפרסם'),300);
+  });
+  iframe.contentWindow.postMessage({type:'rb-get-html'},'*');
+}
+
+const WEB_DEFAULTS={
+  url:'https://storied-chaja-55260f.netlify.app',
+  phone:'058-5702218',
+  address:'צונדק 10, רמות, ירושלים'
+};
+
+function renderWebsiteTab(){
+  const url=WEB_DEFAULTS.url;
+  const statusCard=`<div class="web-status">
+    <div class="web-status-ico">🌐</div>
+    <div class="web-status-body">
+      <div class="web-status-label">האתר הפעיל שלך</div>
+      <div class="web-status-url">${x(url.replace('https://',''))}</div>
+    </div>
+    <div class="web-status-dot"></div>
+  </div>
+  <div class="web-actions">
+    <a class="web-action-btn primary" href="${url}" target="_blank" rel="noopener">👁 פתח בדפדפן</a>
+    <button class="web-action-btn" onclick="reloadWebsite()">🔄 רענן תצוגה</button>
+  </div>`;
+  
+  // Edit toolbar
+  const editToolbar=_webEditMode?`<div class="web-toolbar edit">
+    <div class="web-toolbar-status">
+      ✏️ מצב עריכה פעיל
+      <span id="web-changes-badge" class="web-changes-badge" style="display:none">0 שינויים</span>
+    </div>
+    <div class="web-toolbar-btns">
+      <button class="web-tb-btn primary" onclick="downloadEditedSite()">💾 הורדה לפרסום</button>
+      <button class="web-tb-btn" onclick="setWebEditMode(false)">✕ יציאה</button>
+    </div>
+  </div>`:`<div class="web-toolbar">
+    <div class="web-toolbar-status">👁 מצב תצוגה${_webFetchSource==='fallback'?' · 🟡 נטען מ-Netlify':''} · ככה הלקוחות רואות</div>
+    <button class="web-tb-btn primary" onclick="setWebEditMode(true)">✏️ עריכה מלאה</button>
+  </div>`;
+  
+  // Instructions when in edit mode
+  const instructions=_webEditMode?`<div class="web-hint">
+    <div class="web-hint-ico">💡</div>
+    <div class="web-hint-txt"><b>איך לערוך:</b> לחצי על כל טקסט באתר (מחירים, כותרות, תיאורים) וכתבי את השינוי. בסוף לחצי "הורדה לפרסום" כדי לקבל קובץ מעודכן.</div>
+  </div>`:'';
+  
+  // The iframe wrapper  
+  const iframeSection=`<div class="web-iframe-card">
+    ${editToolbar}
+    ${instructions}
+    <div id="web-iframe-wrap" class="web-iframe-wrap ${_webEditMode?'editing':''}"></div>
+  </div>`;
+  
+  // Tips
+  const tipsCard=`<div class="web-tips">
+    <div class="web-tips-hdr">📝 מה כדאי לעדכן באתר?</div>
+    <div class="web-tip">💰 מחירים — אם העלית או הורדת טיפול</div>
+    <div class="web-tip">🎁 מבצעים — הכניסי מבצע עדכני לחודש הקרוב</div>
+    <div class="web-tip">📸 תמונות — תמונת לפני/אחרי חדשה (לחצי על התמונה ושני src)</div>
+    <div class="web-tip">🕐 שעות פעילות — אם שינית שעות או ימי עבודה</div>
+    <div class="web-tip">⭐ ביקורות — הוסיפי ציטוט של לקוחה מרוצה</div>
+  </div>
+  <div class="web-footer">💾 הקובץ שמועלה לפרסום — rinat-2-updated.html · העלי לנטלפי דרך deploy-panel</div>`;
+  
+  // Trigger iframe load after render
+  setTimeout(()=>renderWebsiteIframe(),50);
+  
+  return`${statusCard}${iframeSection}${tipsCard}`;
+}
+
 // Navigate from home feature tiles to the right spot
 function goFeat(feat){
   S.screen='diary';S.lModal=null;
@@ -4345,7 +4758,7 @@ function installPWA(){
 }
 // ── Init ──────────────────────────────────────────────
 (async()=>{
-  const [a,t,g,bg,cl,canc,pkgs,exp]=await Promise.all([store.get('appts'),store.get('tasks'),store.get('goals'),store.get('bgoals'),store.get('clients'),store.get('cancellations'),store.get('packages'),store.get('expenses')]);
+  const [a,t,g,bg,cl,canc,pkgs,exp,web]=await Promise.all([store.get('appts'),store.get('tasks'),store.get('goals'),store.get('bgoals'),store.get('clients'),store.get('cancellations'),store.get('packages'),store.get('expenses'),store.get('website')]);
   const dt=localStore.get('dt'),rt=localStore.get('rt');
   if(a&&typeof a==='object')S.A=a;
   if(t&&typeof t==='object')S.T=t;
@@ -4355,6 +4768,7 @@ function installPWA(){
   if(canc&&typeof canc==='object')S.CANC=canc;
   if(pkgs&&typeof pkgs==='object')S.PKGS=pkgs;
   if(exp&&typeof exp==='object')S.EXP=exp;
+  if(web&&typeof web==='object')S.WEB=web;
   if(dt&&typeof dt==='object')S.DT=dt;
   if(rt&&typeof rt==='object')S.RT=rt;
   render();

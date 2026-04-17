@@ -4500,8 +4500,10 @@ async function webUpload(input){
   const pb=document.getElementById('web-progbar');
   const step=document.getElementById('web-step');
   btn.disabled=true;btn.textContent='⏳ מעלה...';
-  prog.style.display='block';pb.style.width='15%';
+  prog.style.display='block';pb.style.width='10%';
   step.textContent='📄 קורא קובץ...';step.className='web-step';
+  const hdr={'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'};
+  const hdrJson={...hdr,'Content-Type':'application/json'};
   try{
     const content=await new Promise((res,rej)=>{
       const r=new FileReader();
@@ -4510,24 +4512,58 @@ async function webUpload(input){
       r.readAsText(file);
     });
     const encoded=btoa(unescape(encodeURIComponent(content)));
-    pb.style.width='45%';step.textContent='⬆️ מעלה לגיטהאב...';
+    pb.style.width='25%';step.textContent='🔍 בודק אם הריפו קיים...';
+    // ── Step 1: Check if repo+file exist ──
     const apiUrl=`https://api.github.com/repos/${WEB_OWNER}/${WEB_REPO}/contents/index.html`;
-    const chkRes=await fetch(apiUrl+'?t='+Date.now(),{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}});
+    let sha=null,needCreateRepo=false;
+    const chkRes=await fetch(apiUrl+'?t='+Date.now(),{headers:hdr});
     if(chkRes.status===401){localStorage.removeItem('gh_deploy_token');throw new Error('הטוקן לא תקף — נסי שוב');}
-    if(chkRes.status===404){throw new Error('הריפו rb-prolaser לא נמצא — צריך ליצור אותו דרך הצינור');}
-    const chk=await chkRes.json();
+    if(chkRes.status===404){
+      // Either repo doesn't exist, or file doesn't. Check the repo itself.
+      const repoCheck=await fetch(`https://api.github.com/repos/${WEB_OWNER}/${WEB_REPO}`,{headers:hdr});
+      if(repoCheck.status===404)needCreateRepo=true;
+      else if(repoCheck.status===401){localStorage.removeItem('gh_deploy_token');throw new Error('הטוקן לא תקף');}
+      // If repoCheck.ok — repo exists but file doesn't. sha stays null, that's fine.
+    }else if(chkRes.ok){
+      const chk=await chkRes.json();
+      if(chk.sha)sha=chk.sha;
+    }
+    // ── Step 2: Create repo if needed ──
+    if(needCreateRepo){
+      pb.style.width='40%';step.textContent='🏗️ יוצר את הריפו '+WEB_REPO+'...';
+      const cr=await fetch('https://api.github.com/user/repos',{method:'POST',headers:hdrJson,
+        body:JSON.stringify({name:WEB_REPO,private:false,auto_init:false,description:'RB Pro Laser website'})});
+      const crd=await cr.json();
+      if(cr.status===401){localStorage.removeItem('gh_deploy_token');throw new Error('הטוקן לא תקף');}
+      if(!cr.ok){
+        const exists=(crd.message||'').toLowerCase().includes('already exist');
+        if(!exists)throw new Error('יצירת ריפו נכשלה: '+(crd.message||'לא ידוע'));
+      }
+      // Let GitHub propagate the new repo
+      await new Promise(r=>setTimeout(r,1500));
+    }
+    // ── Step 3: Upload file ──
+    pb.style.width='70%';step.textContent='⬆️ מעלה קובץ...';
     const body={message:'Update via diary · '+new Date().toLocaleString('he-IL'),content:encoded};
-    if(chk.sha)body.sha=chk.sha;
-    pb.style.width='75%';
-    const res=await fetch(apiUrl,{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(sha)body.sha=sha;
+    const res=await fetch(apiUrl,{method:'PUT',headers:hdrJson,body:JSON.stringify(body)});
     const d=await res.json();
-    if(res.status===401){localStorage.removeItem('gh_deploy_token');throw new Error('הטוקן לא תקף — לחץ שוב');}
+    if(res.status===401){localStorage.removeItem('gh_deploy_token');throw new Error('הטוקן לא תקף');}
     if(!d.content)throw new Error(d.message||'שגיאה בהעלאה');
+    // ── Step 4: Enable Pages (only if new repo) ──
+    if(needCreateRepo){
+      pb.style.width='90%';step.textContent='🌐 מפעיל Pages...';
+      try{
+        await fetch(`https://api.github.com/repos/${WEB_OWNER}/${WEB_REPO}/pages`,{method:'POST',headers:hdrJson,
+          body:JSON.stringify({source:{branch:'main',path:'/'}})});
+      }catch(e){}
+    }
     pb.style.width='100%';
     btn.textContent='✅ עלה!';btn.style.background='linear-gradient(135deg,#10b981,#059669)';
+    const msg=needCreateRepo?'🎉 הריפו נוצר ופורסם! יהיה זמין תוך דקה':'✅ האתר התעדכן בהצלחה!';
     step.innerHTML=`✅ <a href="${WEB_LIVE_URL}?v=${Date.now()}" target="_blank">פתח אתר חי ←</a>`;
     step.className='web-step ok';
-    webToast('✅ האתר התעדכן בהצלחה!');
+    webToast(msg);
     setTimeout(()=>{
       btn.disabled=false;
       btn.innerHTML='🚀 בחר קובץ ופרסם';
@@ -4573,8 +4609,9 @@ async function webOpenEditor(){
   try{
     const r=await fetch(`https://api.github.com/repos/${WEB_OWNER}/${WEB_REPO}/contents/index.html?t=`+Date.now(),
       {headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}});
-    const d=await r.json();
     if(r.status===401){localStorage.removeItem('gh_deploy_token');throw new Error('הטוקן לא תקף');}
+    if(r.status===404)throw new Error('אין עדיין קובץ באתר — העלי קובץ ראשון דרך "בחר קובץ ופרסם"');
+    const d=await r.json();
     if(!d.content)throw new Error(d.message||'קובץ לא נמצא');
     _webEdit.sha=d.sha;
     _webEdit.loaded=true;

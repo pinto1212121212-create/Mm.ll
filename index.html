@@ -32,10 +32,49 @@ button,input{font-family:inherit}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 #app{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:#f3f0ff}
+
+/* ── Desktop & Tablet (768px+) ── */
 @media(min-width:768px){
-  body{background:#e9e4f8;display:flex;align-items:flex-start;justify-content:center;padding:32px 16px;min-height:100vh}
-  #app{border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.15);min-height:calc(100vh - 64px);max-height:calc(100vh - 64px);overflow:hidden;position:sticky;top:32px}
+  body{background:linear-gradient(135deg,#ede9fe 0%,#e0e7ff 50%,#fae8ff 100%);display:flex;align-items:flex-start;justify-content:center;padding:24px 16px;min-height:100vh}
+  #app{max-width:520px;border-radius:28px;box-shadow:0 20px 60px rgba(76,29,149,.18);min-height:calc(100vh - 48px);max-height:calc(100vh - 48px);overflow:hidden;position:sticky;top:24px;background:white}
   .content{overflow-y:auto;max-height:calc(100vh - 200px)}
+  /* Bigger home title */
+  .home-title h1{font-size:36px}
+  .home-title p{font-size:15px}
+  /* Slightly bigger cards on desktop */
+  .card .card-emoji{font-size:52px}
+  .card .card-name{font-size:24px}
+  /* Diary card scale up */
+  .dc-title{font-size:38px}
+  .dc-tag{font-size:14px}
+  .dc-feat-ico{font-size:22px}
+  .dc-feat-lbl{font-size:11px}
+  .dc-ico{font-size:58px}
+  .dc-cta{font-size:15px;padding:14px}
+  /* Hist sheet - stay centered, not fullscreen */
+  .hist-sheet{position:fixed;max-width:520px;width:100%;right:50%;transform:translateX(50%);height:calc(100vh - 48px);top:24px;bottom:24px;inset:auto;border-radius:28px;box-shadow:0 20px 60px rgba(76,29,149,.25);overflow:hidden}
+  /* Personal sheet (Daniel/Rinat) */
+  .profile-sheet{max-width:520px;width:100%;right:50%;transform:translateX(50%);height:calc(100vh - 48px);top:24px;bottom:24px;inset:auto;border-radius:28px;box-shadow:0 20px 60px rgba(76,29,149,.25);overflow:hidden}
+  /* Chart full screen adaptation */
+  .chart-screen{max-width:520px;width:100%;right:50%;transform:translateX(50%);height:calc(100vh - 48px);top:24px;bottom:24px;inset:auto;border-radius:28px;box-shadow:0 20px 60px rgba(76,29,149,.25);overflow:hidden}
+  /* Laser beam overlay should cover the app only */
+  .laser-beam-overlay{max-width:520px;right:50%;transform:translateX(50%);inset:auto}
+  /* Tap targets a bit bigger */
+  .tab{padding:14px 0;font-size:14px}
+  .hist-tab{padding:12px 16px;font-size:12px}
+  /* PWA button hidden on desktop */
+  .pwa-btn{display:none!important}
+  /* Scrollbar styling for desktop */
+  .content::-webkit-scrollbar,.hist-content::-webkit-scrollbar{display:block!important;width:8px}
+  .content::-webkit-scrollbar-thumb,.hist-content::-webkit-scrollbar-thumb{background:#c4b5fd;border-radius:4px}
+  .content::-webkit-scrollbar-track,.hist-content::-webkit-scrollbar-track{background:#f3f0ff}
+}
+
+/* ── Large Desktop (1200px+) - add side decorations ── */
+@media(min-width:1200px){
+  body{position:relative}
+  body::before{content:'📖';position:fixed;top:50%;right:calc(50% + 340px);transform:translateY(-50%);font-size:120px;opacity:.04;pointer-events:none;animation:float 5s ease-in-out infinite}
+  body::after{content:'💆‍♀️';position:fixed;top:50%;left:calc(50% + 340px);transform:translateY(-50%);font-size:120px;opacity:.04;pointer-events:none;animation:float 5s ease-in-out infinite;animation-delay:-2.5s}
 }
 
 /* ── HOME ── */
@@ -72,6 +111,9 @@ button,input{font-family:inherit}
 .dc-feats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;position:relative;z-index:1;margin-top:4px}
 .dc-feat{background:rgba(255,255,255,.14);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:10px 6px;text-align:center;transition:transform .15s,background .15s}
 .dc-feat:active{transform:scale(.93);background:rgba(255,255,255,.25)}
+.dc-feat-wide{grid-column:span 3;background:rgba(255,255,255,.22);border:1.5px solid rgba(255,255,255,.35);padding:11px 6px;display:flex;align-items:center;justify-content:center;gap:10px}
+.dc-feat-wide .dc-feat-ico{margin-bottom:0}
+.dc-feat-wide .dc-feat-lbl{font-size:12px;letter-spacing:.5px}
 .dc-feat-ico{font-size:18px;line-height:1;margin-bottom:4px}
 .dc-feat-lbl{font-size:10px;font-weight:700;letter-spacing:.3px}
 .dc-cta{position:relative;z-index:1;background:rgba(255,255,255,.22);backdrop-filter:blur(10px);border:1.5px solid rgba(255,255,255,.3);border-radius:14px;padding:12px;text-align:center;font-size:13.5px;font-weight:800;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.3px;color:white}
@@ -460,6 +502,65 @@ textarea.task-modal-area{width:100%;border:1.5px solid #e5e7eb;border-radius:12p
 .exp-empty-t{font-size:14px;font-weight:800;color:#4c1d95;margin-bottom:4px}
 .exp-empty-s{font-size:11.5px;color:#9ca3af;line-height:1.5}
 .exp-month-hdr{font-size:10px;font-weight:800;color:#ea580c;letter-spacing:1px;text-transform:uppercase;margin:14px 0 7px;display:flex;justify-content:space-between}
+
+/* ── Promo Panel (אתרי פרסום) ── */
+.promo-sheet{position:fixed;inset:0;z-index:350;background:#f8f7fc;display:flex;flex-direction:column;animation:slideUp .28s ease;overflow:hidden}
+.promo-hdr{background:linear-gradient(135deg,#0891b2 0%,#0e7490 100%);padding:18px 16px 14px;flex-shrink:0;display:flex;align-items:center;gap:12px;box-shadow:0 4px 20px rgba(8,145,178,.3);position:relative;overflow:hidden}
+.promo-hdr::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.08)}
+.promo-hdr-close{background:rgba(255,255,255,.2);border:none;border-radius:50%;width:34px;height:34px;color:white;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1}
+.promo-hdr-info{flex:1;position:relative;z-index:1}
+.promo-hdr-title{font-size:17px;font-weight:900;color:white;letter-spacing:.3px}
+.promo-hdr-sub{font-size:11.5px;color:rgba(255,255,255,.8);margin-top:2px}
+.promo-body{flex:1;overflow-y:auto;padding:16px 14px 24px}
+.promo-intro{background:linear-gradient(135deg,#e0f2fe 0%,#cffafe 100%);border:1.5px solid #7dd3fc;border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:#0c4a6e;line-height:1.55;font-weight:600;text-align:right}
+.promo-intro-t{font-size:13px;font-weight:800;color:#0e7490;margin-bottom:4px}
+.promo-cat{margin-bottom:18px}
+.promo-cat-hdr{font-size:11px;font-weight:800;color:#0891b2;letter-spacing:1px;text-transform:uppercase;margin:0 2px 8px;text-align:right;display:flex;align-items:center;gap:6px;justify-content:flex-end}
+.promo-cat-badge{background:#cffafe;color:#0e7490;padding:2px 8px;border-radius:10px;font-size:9.5px;font-weight:800;letter-spacing:.3px}
+.promo-card{background:white;border-radius:14px;padding:13px 14px;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,.05);display:flex;align-items:center;gap:12px;cursor:pointer;transition:transform .12s,box-shadow .12s;text-decoration:none;color:inherit;border:1.5px solid transparent}
+.promo-card:active{transform:scale(.98)}
+.promo-card-ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.promo-card-body{flex:1;text-align:right;min-width:0}
+.promo-card-title{font-size:14px;font-weight:800;color:#1e1b4b;line-height:1.2;margin-bottom:3px;display:flex;align-items:center;gap:6px;justify-content:flex-end}
+.promo-card-pill{font-size:9px;font-weight:800;padding:2px 7px;border-radius:8px;letter-spacing:.3px;text-transform:uppercase;white-space:nowrap}
+.promo-card-pill.free{background:#d1fae5;color:#065f46}
+.promo-card-pill.paid{background:#fef3c7;color:#92400e}
+.promo-card-pill.top{background:#ede9fe;color:#6d28d9}
+.promo-card-desc{font-size:11px;color:#6b7280;line-height:1.4}
+.promo-card-arrow{font-size:18px;color:#9ca3af;flex-shrink:0}
+.promo-tip{background:#fffbeb;border-right:3px solid #f59e0b;border-radius:8px;padding:10px 12px;margin-top:10px;font-size:11px;color:#92400e;line-height:1.5;font-weight:600;text-align:right}
+.promo-daily{background:linear-gradient(135deg,#0891b2 0%,#0e7490 50%,#155e75 100%);border-radius:18px;padding:16px 18px 14px;margin-bottom:12px;color:white;box-shadow:0 8px 24px rgba(8,145,178,.3);position:relative;overflow:hidden}
+.promo-daily::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.08)}
+.promo-daily::after{content:'';position:absolute;bottom:-30px;left:-30px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.06)}
+.promo-daily-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;position:relative;z-index:1}
+.promo-daily-date{font-size:11px;font-weight:700;opacity:.9;letter-spacing:.3px}
+.promo-daily-badge{background:rgba(255,255,255,.22);backdrop-filter:blur(8px);padding:4px 10px;border-radius:12px;font-size:10px;font-weight:800;letter-spacing:.5px}
+.promo-daily-title{font-size:22px;font-weight:900;letter-spacing:.3px;line-height:1.1;margin-bottom:3px;position:relative;z-index:1}
+.promo-daily-sub{font-size:11.5px;opacity:.85;font-weight:600;position:relative;z-index:1}
+.promo-daily-list{margin-bottom:12px}
+.promo-card.daily{border:1.5px solid #a5f3fc;background:linear-gradient(to left,white 70%,#ecfeff)}
+.promo-daily-tip{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border:1.5px solid #fcd34d;border-radius:14px;padding:12px 14px;margin-bottom:18px;display:flex;align-items:flex-start;gap:10px}
+.promo-daily-tip-ico{font-size:24px;line-height:1;flex-shrink:0}
+.promo-daily-tip-txt{font-size:12px;color:#78350f;line-height:1.5;font-weight:600;text-align:right}
+.promo-all-hdr{font-size:12px;font-weight:800;color:#0891b2;letter-spacing:1px;text-transform:uppercase;margin:14px 2px 10px;text-align:right;padding-top:8px;border-top:1px solid #cffafe}
+.promo-top-list{margin-bottom:14px;display:flex;flex-direction:column;gap:10px}
+.promo-top-card{background:white;border-radius:16px;padding:14px;box-shadow:0 4px 14px rgba(8,145,178,.1);display:flex;align-items:flex-start;gap:12px;text-decoration:none;color:inherit;border:1.5px solid #cffafe;transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden}
+.promo-top-card:active{transform:scale(.98)}
+.promo-top-rank{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;flex-shrink:0;box-shadow:0 3px 10px rgba(245,158,11,.35);position:relative;z-index:1}
+.promo-top-body{flex:1;min-width:0;text-align:right}
+.promo-top-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.promo-top-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.promo-top-title-wrap{flex:1;min-width:0;text-align:right}
+.promo-top-title{font-size:14px;font-weight:900;color:#1e1b4b;line-height:1.2;display:flex;align-items:center;gap:6px;justify-content:flex-end;flex-wrap:wrap}
+.promo-top-price{font-size:11px;font-weight:800;color:#059669;margin-top:3px;letter-spacing:.3px}
+.promo-top-why{font-size:11.5px;color:#374151;line-height:1.5;margin-bottom:8px;background:#f0fdff;border-right:3px solid #0891b2;border-radius:6px;padding:7px 10px;text-align:right}
+.promo-top-why b{color:#0e7490;font-weight:800}
+.promo-top-action{font-size:11px;color:#78350f;background:#fef3c7;border-radius:6px;padding:6px 10px;font-weight:600;text-align:right;line-height:1.4}
+.promo-card-price{font-size:10.5px;font-weight:800;margin-top:4px;letter-spacing:.3px;display:inline-block;padding:2px 8px;border-radius:8px}
+.promo-card-price.free{background:#d1fae5;color:#065f46}
+.promo-card-price.mixed{background:#fef3c7;color:#92400e}
+.promo-card-price.paid{background:#fee2e2;color:#991b1b}
+.promo-disclaimer{text-align:center;font-size:10.5px;color:#6b7280;margin-top:20px;padding:12px 16px;background:#f9fafb;border-radius:10px;line-height:1.5;font-weight:500}
 
 /* ── Monthly Chart — Professional ── */
 .chart-screen{position:fixed;inset:0;z-index:500;background:#f8f7fc;display:flex;flex-direction:column;animation:slideUp .32s cubic-bezier(.22,.68,0,1.2)}
@@ -1085,7 +1186,7 @@ function render(){
           <div class="dc-feat" onclick="event.stopPropagation();goFeat('payments')" style="cursor:pointer"><div class="dc-feat-ico">💰</div><div class="dc-feat-lbl">תשלומים</div></div>
           <div class="dc-feat" onclick="event.stopPropagation();goFeat('expenses')" style="cursor:pointer"><div class="dc-feat-ico">💸</div><div class="dc-feat-lbl">הוצאות</div></div>
           <div class="dc-feat" onclick="event.stopPropagation();goFeat('clients')" style="cursor:pointer"><div class="dc-feat-ico">👥</div><div class="dc-feat-lbl">לקוחות</div></div>
-          <div class="dc-feat" onclick="event.stopPropagation();goFeat('bgoals')" style="cursor:pointer"><div class="dc-feat-ico">🎯</div><div class="dc-feat-lbl">יעדים</div></div>
+          <div class="dc-feat" onclick="event.stopPropagation();goFeat('promo')" style="cursor:pointer"><div class="dc-feat-ico">📢</div><div class="dc-feat-lbl">פרסום</div></div>
         </div>
         <div class="dc-cta">פתח את היומן <span class="dc-arrow">←</span></div>
       </button>
@@ -1671,6 +1772,65 @@ function getLaserAnim(){
 .exp-empty-t{font-size:14px;font-weight:800;color:#4c1d95;margin-bottom:4px}
 .exp-empty-s{font-size:11.5px;color:#9ca3af;line-height:1.5}
 .exp-month-hdr{font-size:10px;font-weight:800;color:#ea580c;letter-spacing:1px;text-transform:uppercase;margin:14px 0 7px;display:flex;justify-content:space-between}
+
+/* ── Promo Panel (אתרי פרסום) ── */
+.promo-sheet{position:fixed;inset:0;z-index:350;background:#f8f7fc;display:flex;flex-direction:column;animation:slideUp .28s ease;overflow:hidden}
+.promo-hdr{background:linear-gradient(135deg,#0891b2 0%,#0e7490 100%);padding:18px 16px 14px;flex-shrink:0;display:flex;align-items:center;gap:12px;box-shadow:0 4px 20px rgba(8,145,178,.3);position:relative;overflow:hidden}
+.promo-hdr::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.08)}
+.promo-hdr-close{background:rgba(255,255,255,.2);border:none;border-radius:50%;width:34px;height:34px;color:white;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1}
+.promo-hdr-info{flex:1;position:relative;z-index:1}
+.promo-hdr-title{font-size:17px;font-weight:900;color:white;letter-spacing:.3px}
+.promo-hdr-sub{font-size:11.5px;color:rgba(255,255,255,.8);margin-top:2px}
+.promo-body{flex:1;overflow-y:auto;padding:16px 14px 24px}
+.promo-intro{background:linear-gradient(135deg,#e0f2fe 0%,#cffafe 100%);border:1.5px solid #7dd3fc;border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:#0c4a6e;line-height:1.55;font-weight:600;text-align:right}
+.promo-intro-t{font-size:13px;font-weight:800;color:#0e7490;margin-bottom:4px}
+.promo-cat{margin-bottom:18px}
+.promo-cat-hdr{font-size:11px;font-weight:800;color:#0891b2;letter-spacing:1px;text-transform:uppercase;margin:0 2px 8px;text-align:right;display:flex;align-items:center;gap:6px;justify-content:flex-end}
+.promo-cat-badge{background:#cffafe;color:#0e7490;padding:2px 8px;border-radius:10px;font-size:9.5px;font-weight:800;letter-spacing:.3px}
+.promo-card{background:white;border-radius:14px;padding:13px 14px;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,.05);display:flex;align-items:center;gap:12px;cursor:pointer;transition:transform .12s,box-shadow .12s;text-decoration:none;color:inherit;border:1.5px solid transparent}
+.promo-card:active{transform:scale(.98)}
+.promo-card-ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.promo-card-body{flex:1;text-align:right;min-width:0}
+.promo-card-title{font-size:14px;font-weight:800;color:#1e1b4b;line-height:1.2;margin-bottom:3px;display:flex;align-items:center;gap:6px;justify-content:flex-end}
+.promo-card-pill{font-size:9px;font-weight:800;padding:2px 7px;border-radius:8px;letter-spacing:.3px;text-transform:uppercase;white-space:nowrap}
+.promo-card-pill.free{background:#d1fae5;color:#065f46}
+.promo-card-pill.paid{background:#fef3c7;color:#92400e}
+.promo-card-pill.top{background:#ede9fe;color:#6d28d9}
+.promo-card-desc{font-size:11px;color:#6b7280;line-height:1.4}
+.promo-card-arrow{font-size:18px;color:#9ca3af;flex-shrink:0}
+.promo-tip{background:#fffbeb;border-right:3px solid #f59e0b;border-radius:8px;padding:10px 12px;margin-top:10px;font-size:11px;color:#92400e;line-height:1.5;font-weight:600;text-align:right}
+.promo-daily{background:linear-gradient(135deg,#0891b2 0%,#0e7490 50%,#155e75 100%);border-radius:18px;padding:16px 18px 14px;margin-bottom:12px;color:white;box-shadow:0 8px 24px rgba(8,145,178,.3);position:relative;overflow:hidden}
+.promo-daily::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.08)}
+.promo-daily::after{content:'';position:absolute;bottom:-30px;left:-30px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.06)}
+.promo-daily-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;position:relative;z-index:1}
+.promo-daily-date{font-size:11px;font-weight:700;opacity:.9;letter-spacing:.3px}
+.promo-daily-badge{background:rgba(255,255,255,.22);backdrop-filter:blur(8px);padding:4px 10px;border-radius:12px;font-size:10px;font-weight:800;letter-spacing:.5px}
+.promo-daily-title{font-size:22px;font-weight:900;letter-spacing:.3px;line-height:1.1;margin-bottom:3px;position:relative;z-index:1}
+.promo-daily-sub{font-size:11.5px;opacity:.85;font-weight:600;position:relative;z-index:1}
+.promo-daily-list{margin-bottom:12px}
+.promo-card.daily{border:1.5px solid #a5f3fc;background:linear-gradient(to left,white 70%,#ecfeff)}
+.promo-daily-tip{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border:1.5px solid #fcd34d;border-radius:14px;padding:12px 14px;margin-bottom:18px;display:flex;align-items:flex-start;gap:10px}
+.promo-daily-tip-ico{font-size:24px;line-height:1;flex-shrink:0}
+.promo-daily-tip-txt{font-size:12px;color:#78350f;line-height:1.5;font-weight:600;text-align:right}
+.promo-all-hdr{font-size:12px;font-weight:800;color:#0891b2;letter-spacing:1px;text-transform:uppercase;margin:14px 2px 10px;text-align:right;padding-top:8px;border-top:1px solid #cffafe}
+.promo-top-list{margin-bottom:14px;display:flex;flex-direction:column;gap:10px}
+.promo-top-card{background:white;border-radius:16px;padding:14px;box-shadow:0 4px 14px rgba(8,145,178,.1);display:flex;align-items:flex-start;gap:12px;text-decoration:none;color:inherit;border:1.5px solid #cffafe;transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden}
+.promo-top-card:active{transform:scale(.98)}
+.promo-top-rank{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;flex-shrink:0;box-shadow:0 3px 10px rgba(245,158,11,.35);position:relative;z-index:1}
+.promo-top-body{flex:1;min-width:0;text-align:right}
+.promo-top-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.promo-top-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.promo-top-title-wrap{flex:1;min-width:0;text-align:right}
+.promo-top-title{font-size:14px;font-weight:900;color:#1e1b4b;line-height:1.2;display:flex;align-items:center;gap:6px;justify-content:flex-end;flex-wrap:wrap}
+.promo-top-price{font-size:11px;font-weight:800;color:#059669;margin-top:3px;letter-spacing:.3px}
+.promo-top-why{font-size:11.5px;color:#374151;line-height:1.5;margin-bottom:8px;background:#f0fdff;border-right:3px solid #0891b2;border-radius:6px;padding:7px 10px;text-align:right}
+.promo-top-why b{color:#0e7490;font-weight:800}
+.promo-top-action{font-size:11px;color:#78350f;background:#fef3c7;border-radius:6px;padding:6px 10px;font-weight:600;text-align:right;line-height:1.4}
+.promo-card-price{font-size:10.5px;font-weight:800;margin-top:4px;letter-spacing:.3px;display:inline-block;padding:2px 8px;border-radius:8px}
+.promo-card-price.free{background:#d1fae5;color:#065f46}
+.promo-card-price.mixed{background:#fef3c7;color:#92400e}
+.promo-card-price.paid{background:#fee2e2;color:#991b1b}
+.promo-disclaimer{text-align:center;font-size:10.5px;color:#6b7280;margin-top:20px;padding:12px 16px;background:#f9fafb;border-radius:10px;line-height:1.5;font-weight:500}
 
 /* ── Monthly Chart — Professional ── */
 .chart-screen{position:fixed;inset:0;z-index:500;background:#f8f7fc;display:flex;flex-direction:column;animation:slideUp .32s cubic-bezier(.22,.68,0,1.2)}
@@ -3020,7 +3180,7 @@ function tabsHTML(upcoming,history){
   Object.entries(S.A||{}).forEach(([date,slots])=>{Object.entries(slots||{}).forEach(([time,d])=>{if(d&&d.name&&d.price&&Number(d.price)>0&&!d.paid&&new Date(date+'T'+time)<=n2)debtCount++;});});
   const pkgCount=Object.keys(S.PKGS||{}).length;
   const expCount=Object.keys(S.EXP||{}).length;
-  return`<button class="hist-tab${S.histTab==='upcoming'?' on':''}" onclick="S.histTab='upcoming';hRender()">📅 תורים ${upcoming.length?`<span class="hist-badge" style="background:#059669">${upcoming.length}</span>`:''}</button><button class="hist-tab${S.histTab==='clients'?' on':''}" onclick="S.histTab='clients';hRender()">👥 לקוחות</button><button class="hist-tab${S.histTab==='debts'?' on':''}" onclick="S.histTab='debts';hRender()">💳 חובות ${debtCount?`<span class="hist-badge" style="background:#dc2626">${debtCount}</span>`:''}</button><button class="hist-tab${S.histTab==='history'?' on':''}" onclick="S.histTab='history';hRender()">🗂 היסטוריית עסקאות ${history.length?`<span class="hist-badge" style="background:#7c3aed">${history.length}</span>`:''}</button><button class="hist-tab${S.histTab==='cancellations'?' on':''}" onclick="S.histTab='cancellations';hRender()">❌ ביטולים ${cancCount?`<span class="hist-badge" style="background:#dc2626">${cancCount}</span>`:''}</button><button class="hist-tab${S.histTab==='payments'?' on':''}" onclick="S.histTab='payments';hRender()">💰 תשלומים</button><button class="hist-tab${S.histTab==='expenses'?' on':''}" onclick="S.histTab='expenses';hRender()">💸 הוצאות ${expCount?`<span class="hist-badge" style="background:#ea580c">${expCount}</span>`:''}</button><button class="hist-tab${S.histTab==='bgoals'?' on':''}" onclick="S.histTab='bgoals';hRender()">🎯 יעדים</button><button class="hist-tab${S.histTab==='packages'?' on':''}" onclick="S.histTab='packages';hRender()">📦 חבילות ${pkgCount?`<span class="hist-badge" style="background:#0891b2">${pkgCount}</span>`:''}</button>`;
+  return`<button class="hist-tab${S.histTab==='upcoming'?' on':''}" onclick="S.histTab='upcoming';hRender()">📅 תורים ${upcoming.length?`<span class="hist-badge" style="background:#059669">${upcoming.length}</span>`:''}</button><button class="hist-tab${S.histTab==='clients'?' on':''}" onclick="S.histTab='clients';hRender()">👥 לקוחות</button><button class="hist-tab${S.histTab==='debts'?' on':''}" onclick="S.histTab='debts';hRender()">💳 חובות ${debtCount?`<span class="hist-badge" style="background:#dc2626">${debtCount}</span>`:''}</button><button class="hist-tab${S.histTab==='history'?' on':''}" onclick="S.histTab='history';hRender()">🗂 היסטוריית עסקאות ${history.length?`<span class="hist-badge" style="background:#7c3aed">${history.length}</span>`:''}</button><button class="hist-tab${S.histTab==='cancellations'?' on':''}" onclick="S.histTab='cancellations';hRender()">❌ ביטולים ${cancCount?`<span class="hist-badge" style="background:#dc2626">${cancCount}</span>`:''}</button><button class="hist-tab${S.histTab==='payments'?' on':''}" onclick="S.histTab='payments';hRender()">💰 תשלומים</button><button class="hist-tab${S.histTab==='expenses'?' on':''}" onclick="S.histTab='expenses';hRender()">💸 הוצאות ${expCount?`<span class="hist-badge" style="background:#ea580c">${expCount}</span>`:''}</button><button class="hist-tab${S.histTab==='bgoals'?' on':''}" onclick="S.histTab='bgoals';hRender()">🎯 יעדים</button><button class="hist-tab${S.histTab==='packages'?' on':''}" onclick="S.histTab='packages';hRender()">📦 חבילות ${pkgCount?`<span class="hist-badge" style="background:#0891b2">${pkgCount}</span>`:''}</button><button class="hist-tab${S.histTab==='promo'?' on':''}" onclick="S.histTab='promo';hRender()">📢 איפה לפרסם <span class="hist-badge" style="background:#0891b2">מתעדכן</span></button>`;
 }
 function hRender(){
   const sheet=document.querySelector('.hist-sheet');
@@ -3035,6 +3195,7 @@ function hRender(){
   else if(S.histTab==='expenses')content.innerHTML=renderExpenses(all2);
   else if(S.histTab==='bgoals')content.innerHTML=renderBGoals(all2);
   else if(S.histTab==='packages')content.innerHTML=renderPackages();
+  else if(S.histTab==='promo')content.innerHTML=renderPromoTab();
   else if(S.histTab==='debts')content.innerHTML=renderDebts();
   else if(S.histTab==='cancellations')content.innerHTML=renderCancellations();
   else if(S.histTab==='clients')content.innerHTML=renderCRM();
@@ -3048,6 +3209,7 @@ function renderHistory(){
   else if(S.histTab==='expenses')tabContent=renderExpenses(all2);
   else if(S.histTab==='bgoals')tabContent=renderBGoals(all2);
   else if(S.histTab==='packages')tabContent=renderPackages();
+  else if(S.histTab==='promo')tabContent=renderPromoTab();
   else if(S.histTab==='debts')tabContent=renderDebts();
   else if(S.histTab==='cancellations')tabContent=renderCancellations();
   else tabContent=renderCRM();
@@ -3903,6 +4065,247 @@ function openHistPanel(tab){
   // Start timer if on upcoming tab
   setTimeout(()=>{if(document.getElementById('cd-d'))startTimer();},80);
 }
+
+// ── אתרי פרסום — רשימה אסטרטגית לקליניקת לייזר בירושלים/רמות ──
+const PROMO_SITES={
+  haredi:{
+    title:'הציבור החרדי — רמות והסביבה',
+    badge:'קהל אב',
+    tip:'🎯 רוב תושבי רמות חרדים — זה הקהל העיקרי שלך. עיתונים מקומיים מודפסים עדיין הכי חזקים במגזר (74% נתח פרסום). מודעה קטנה בלוח קיר או מידע שווה הרבה יותר מפרסום בפייסבוק לקהל הזה. חשוב: המודעה תעמוד בכללי צניעות (בלי תמונות נשים).',
+    sites:[
+      {ico:'📜',bg:'linear-gradient(135deg,#0e7490,#155e75)',title:'לוח קיר — רמות',price:'₪200-500 למודעה',pill:{l:'מקומי!',c:'top'},desc:'עיתון מקומי רמות א׳ · רח׳ יעקב אלעזר 8 · 02-5869454 · פקס 077-3180573 · מופץ לכל תיבות הדואר בשכונה',url:'tel:025869454'},
+      {ico:'📰',bg:'linear-gradient(135deg,#78350f,#451a03)',title:'עיתון תכלס',price:'₪800-2,500 למודעה',pill:{l:'ירושלים',c:'top'},desc:'תפוצה 60,000 בכל השכונות החרדיות בירושלים כולל רמות — עיתון ותיק ונקרא כמעט בכל בית',url:'https://www.itontachles.co.il/'},
+      {ico:'📖',bg:'linear-gradient(135deg,#7c2d12,#431407)',title:'מגזין מידע',price:'₪1,200-3,500 למודעה',pill:{l:'יוקרתי',c:'paid'},desc:'מגזין בדיוור ישיר לציבור החרדי בירושלים ובני ברק — 25 שנות ותק, מיועד גם ל״בעלי יכולת״',url:'https://www.magazine-meda.co.il/'},
+      {ico:'📄',bg:'linear-gradient(135deg,#991b1b,#7f1d1d)',title:'חזק — פרסום חרדי',price:'₪1,500-4,000 לגיליון',pill:{l:'פריסה ארצית',c:'paid'},desc:'41,400 בתים בירושלים כולל רמות · פרסום אחד במקום 59 מקומונים · מודפס + דיגיטלי',url:'https://pirsumchazak.co.il/'},
+      {ico:'🏢',bg:'linear-gradient(135deg,#1e40af,#1e3a8a)',title:'סטודיו הר נוף',price:'₪500-1,500 למודעה',pill:{l:'ירושלים',c:'paid'},desc:'מפיקים עיתון שבועי לכל השכונות החרדיות · 02-6505222 · גם עוזרים בעיצוב המודעה',url:'tel:026505222'},
+      {ico:'☕',bg:'linear-gradient(135deg,#166534,#14532d)',title:'קפה קהילתי / חלוקת פליירים',price:'₪300-800 להדפסה+הפצה',pill:{l:'חינם',c:'free'},desc:'בגני ילדים, מקוואות, חנויות נשים ברמות · פליירים עם אישור רב מקומי פועלים מעולה',url:'tel:025869454'},
+      {ico:'📱',bg:'linear-gradient(135deg,#6d28d9,#4c1d95)',title:'קבוצות וואטסאפ רמות',price:'חינם',pill:{l:'חינם',c:'free'},desc:'קבוצות שכונה חרדיות לנשים בלבד — חפשי ״רמות קהילה״, ״יד שנייה רמות״ · הכי ממיר לקהל הזה',url:'https://chat.whatsapp.com/'},
+      {ico:'💬',bg:'linear-gradient(135deg,#0369a1,#0c4a6e)',title:'פרוג — פורטל חרדי',price:'₪100-500 לפוסט',pill:{l:'חינם',c:'free'},desc:'הפורטל החרדי הגדול — פרסום במודעות + פורומים מקצועיים · קהל איכותי של נשים חרדיות',url:'https://www.prog.co.il/'}
+    ]
+  },
+  local:{
+    title:'ירושלים ורמות — המקומיים',
+    badge:'הכי חשוב',
+    tip:'💡 הקהל שלך גר בסביבה — תתמקדי בקבוצות מקומיות. פרסום ממוקד שווה פי 10 מפרסום רחב.',
+    sites:[
+      {ico:'👩‍👩‍👧',bg:'linear-gradient(135deg,#ec4899,#db2777)',title:'נשים ירושלים — המלצות',price:'חינם',pill:{l:'חינם',c:'free'},desc:'קבוצת פייסבוק הכי גדולה לנשים בירושלים — פרסמי פוסט המלצה אמיתי מלקוחה',url:'https://www.facebook.com/search/groups/?q=%D7%A0%D7%A9%D7%99%D7%9D%20%D7%99%D7%A8%D7%95%D7%A9%D7%9C%D7%99%D7%9D'},
+      {ico:'🏘️',bg:'linear-gradient(135deg,#f472b6,#be185d)',title:'שכונת רמות — קהילה',price:'חינם',pill:{l:'חינם',c:'free'},desc:'קבוצות השכונה שלך — המלצות שכנות, הזדמנויות טובות, שיתופי פעולה',url:'https://www.facebook.com/search/groups/?q=%D7%A8%D7%9E%D7%95%D7%AA%20%D7%99%D7%A8%D7%95%D7%A9%D7%9C%D7%99%D7%9D'},
+      {ico:'💍',bg:'linear-gradient(135deg,#a855f7,#7c3aed)',title:'כלות ירושלים',price:'חינם',pill:{l:'חינם',c:'free'},desc:'קהל איכותי לפני חתונה — הסרת שיער זה שירות פופולרי לפני חתונה',url:'https://www.facebook.com/search/groups/?q=%D7%9B%D7%9C%D7%95%D7%AA%20%D7%99%D7%A8%D7%95%D7%A9%D7%9C%D7%99%D7%9D'},
+      {ico:'👩',bg:'linear-gradient(135deg,#f59e0b,#d97706)',title:'אמהות ירושלים',price:'חינם',pill:{l:'חינם',c:'free'},desc:'קהל ענק, פעיל, עם כוח קנייה — כולן מחפשות טיפולים איכותיים',url:'https://www.facebook.com/search/groups/?q=%D7%90%D7%9E%D7%94%D7%95%D7%AA%20%D7%99%D7%A8%D7%95%D7%A9%D7%9C%D7%99%D7%9D'},
+      {ico:'🎉',bg:'linear-gradient(135deg,#06b6d4,#0891b2)',title:'יד 2 / המלצות ירושלים',price:'חינם',pill:{l:'חינם',c:'free'},desc:'קבוצות המלצה כלליות של ירושלים — חיפוש לפי "הסרת שיער"',url:'https://www.facebook.com/search/groups/?q=%D7%94%D7%9E%D7%9C%D7%A6%D7%95%D7%AA%20%D7%99%D7%A8%D7%95%D7%A9%D7%9C%D7%99%D7%9D'}
+    ]
+  },
+  maps:{
+    title:'מיקום — המקום הכי קריטי',
+    badge:'חובה',
+    tip:'⭐ Google Maps זה הדבר הכי חשוב לעסק מקומי. כל לקוחה שמחפשת "הסרת שיער ירושלים" רואה קודם את המפה. בקשי ממטופלות מרוצות לכתוב חוות דעת.',
+    sites:[
+      {ico:'📍',bg:'linear-gradient(135deg,#4285f4,#1a73e8)',title:'Google Business',price:'חינם',pill:{l:'חיוני',c:'top'},desc:'פרופיל עסק בגוגל + ביקורות — זה הדבר מספר 1 לעסק מקומי',url:'https://www.google.com/business/'},
+      {ico:'🗺️',bg:'linear-gradient(135deg,#34a853,#188038)',title:'Waze / Google Maps',price:'חינם',pill:{l:'חינם',c:'free'},desc:'וודאי שהקליניקה מופיעה במפות עם כתובת מדויקת: צונדק 10 רמות',url:'https://www.waze.com/business'},
+      {ico:'📞',bg:'linear-gradient(135deg,#0891b2,#0e7490)',title:'B144 / דפי זהב',price:'חינם/₪50-200 לחודש',pill:{l:'חינם',c:'free'},desc:'מאגר העסקים הגדול בישראל — חיפוש לפי תחום ואזור',url:'https://www.b144.co.il/'},
+      {ico:'🏢',bg:'linear-gradient(135deg,#f59e0b,#d97706)',title:'Easy / D&B',price:'חינם/₪100-300 לחודש',pill:{l:'חינם',c:'free'},desc:'ספרייה עסקית עם דירוגים — מקום טוב להיות רשומה בו',url:'https://www.easy.co.il/'}
+    ]
+  },
+  social:{
+    title:'רשתות חברתיות — חיוני',
+    badge:'שדה הקרב',
+    tip:'🎥 פרסמי 3-5 פעמים בשבוע — לפני/אחרי, סרטוני טיפול קצרים, המלצות. הקהל של טיפולי יופי חי באינסטגרם וטיקטוק.',
+    sites:[
+      {ico:'📸',bg:'linear-gradient(135deg,#e1306c,#c13584)',title:'Instagram',price:'חינם (אורגני)',pill:{l:'חיוני',c:'top'},desc:'הפלטפורמה מספר 1 לטיפולי יופי — תמונות לפני/אחרי, סטוריז מהטיפולים',url:'https://www.instagram.com/'},
+      {ico:'🎵',bg:'linear-gradient(135deg,#000000,#25f4ee)',title:'TikTok',price:'חינם (אורגני)',pill:{l:'ויראלי',c:'top'},desc:'סרטונים קצרים של הסרת שיער עוברים ויראלי — הגעה ענקית בחינם',url:'https://www.tiktok.com/'},
+      {ico:'📘',bg:'linear-gradient(135deg,#1877f2,#0866ff)',title:'Facebook',price:'חינם (אורגני)',pill:{l:'חינם',c:'free'},desc:'דף עסק + פרסום בקבוצות — עדיין חזק בקהל 30+',url:'https://www.facebook.com/'},
+      {ico:'💬',bg:'linear-gradient(135deg,#25d366,#128c7e)',title:'WhatsApp Business',price:'חינם',pill:{l:'חיוני',c:'top'},desc:'סטטוס עסק + רשימת תפוצה ללקוחות — ההמרה הכי גבוהה',url:'https://business.whatsapp.com/'},
+      {ico:'📌',bg:'linear-gradient(135deg,#bd081c,#8b0000)',title:'Pinterest',price:'חינם',pill:{l:'חינם',c:'free'},desc:'טוב לתוכן חזותי — לפני/אחרי, טיפים לטיפוח',url:'https://www.pinterest.com/business/'}
+    ]
+  },
+  reviews:{
+    title:'אתרי ביקורות — בניית אמון',
+    badge:'מוניטין',
+    tip:'⭐ 90% מהלקוחות בודקות ביקורות לפני שמגיעות. תבקשי ממטופלת מרוצה לכתוב ביקורת — זה יותר שווה מאלף פרסומות.',
+    sites:[
+      {ico:'⭐',bg:'linear-gradient(135deg,#fbbf24,#f59e0b)',title:'mit4mit',price:'חינם/₪100-300 לחודש',pill:{l:'חיוני',c:'top'},desc:'אתר הביקורות הכי חשוב בישראל לטיפולי יופי — פתחי דף עסק',url:'https://www.mit4mit.co.il/'},
+      {ico:'💆',bg:'linear-gradient(135deg,#ec4899,#be185d)',title:'Zap יופי',price:'₪150-500 לחודש',pill:{l:'חינם/בתשלום',c:'paid'},desc:'מאגר טיפולים עם דירוג — חיפוש לפי אזור ותחום',url:'https://www.zap.co.il/models.aspx?sog=c-beauty'},
+      {ico:'📱',bg:'linear-gradient(135deg,#0891b2,#0e7490)',title:'Treatwell',price:'10-15% עמלה לתור',pill:{l:'בתשלום',c:'paid'},desc:'אפליקציית הזמנת טיפולי יופי — אינטגרציה עם יומן',url:'https://www.treatwell.co.il/'},
+      {ico:'🏆',bg:'linear-gradient(135deg,#7c3aed,#5b21b6)',title:'Google Reviews',price:'חינם',pill:{l:'חיוני',c:'top'},desc:'הביקורות בגוגל — החשובות ביותר לעסק מקומי',url:'https://www.google.com/maps'}
+    ]
+  },
+  ads:{
+    title:'פרסום ממומן — כשמוכנה להשקיע',
+    badge:'בתשלום',
+    tip:'💰 התחילי קטן — ₪50-100 ליום. פלחי לפי: נשים, ירושלים, גיל 18-45, מתעניינות ביופי. מדדי תוצאות אחרי שבועיים.',
+    sites:[
+      {ico:'🎯',bg:'linear-gradient(135deg,#1877f2,#0866ff)',title:'Meta Ads (פייסבוק+אינסטגרם)',price:'מ-₪30/יום (₪900+/חודש)',pill:{l:'בתשלום',c:'paid'},desc:'הכי מדויק לקליניקה — פרסום לפי מיקום (רדיוס 5ק״מ) + תחומי עניין',url:'https://business.facebook.com/adsmanager'},
+      {ico:'🔍',bg:'linear-gradient(135deg,#4285f4,#1a73e8)',title:'Google Ads',price:'מ-₪40/יום (₪1,200+/חודש)',pill:{l:'בתשלום',c:'paid'},desc:'פרסום לחיפושים "הסרת שיער ירושלים" — קהל עם כוונה קנייה חזקה',url:'https://ads.google.com/'},
+      {ico:'🎥',bg:'linear-gradient(135deg,#000000,#ff0050)',title:'TikTok Ads',price:'מ-₪25/יום (₪750+/חודש)',pill:{l:'בתשלום',c:'paid'},desc:'זול יותר ממטא, קהל צעיר — אידיאלי לסרטוני לפני/אחרי',url:'https://ads.tiktok.com/'}
+    ]
+  },
+  local_press:{
+    title:'עיתונות מקומית ירושלמית',
+    badge:'מיועד',
+    tip:'📰 מאמר או ראיון באתר מקומי מעלה את המוניטין ומביא לקוחות איכותיים. אפשר לכתוב בעצמך ולשלוח כ"סיפור השראה".',
+    sites:[
+      {ico:'📰',bg:'linear-gradient(135deg,#1e40af,#1e3a8a)',title:'כל העיר ירושלים',price:'₪600-2,000 למודעה',pill:{l:'חינם',c:'free'},desc:'אתר חדשות מקומי מוביל בירושלים — מדור עסקים וטיפולים',url:'https://www.kolhair.co.il/'},
+      {ico:'🗞️',bg:'linear-gradient(135deg,#991b1b,#7f1d1d)',title:'ynet ירושלים',price:'₪1,000-5,000 למודעה',pill:{l:'חינם',c:'free'},desc:'מדור מקומי של ynet — פוטנציאל גדול אם מוצאים זווית סיפור טובה',url:'https://www.ynet.co.il/home/0,7340,L-4269,00.html'},
+      {ico:'📻',bg:'linear-gradient(135deg,#7c3aed,#5b21b6)',title:'רדיו ירושלים / קול חי',price:'₪400-1,500 לתשדיר',pill:{l:'בתשלום',c:'paid'},desc:'פרסום ברדיו המקומי — חשיפה גדולה לקהל המקומי',url:'https://www.radio-jerusalem.com/'}
+    ]
+  }
+};
+
+function openPromoPanel(){
+  // Legacy wrapper - now opens promo tab in hist panel
+  S.screen='diary';S.lModal=null;S.tab=1;render();diaryTap();
+  setTimeout(()=>openHistPanel('promo'),30);
+}
+
+// ── הבחירה הטובה ביותר לקליניקה של רינת ברמות ──
+// חמשת הערוצים הכי אפקטיביים — קבועים, עם הסבר ולמה
+function getTopPicks(){
+  return[
+    {
+      rank:1,
+      ico:'📜',
+      bg:'linear-gradient(135deg,#0e7490,#155e75)',
+      title:'לוח קיר — רמות א׳',
+      pill:{l:'זהב',c:'top'},
+      price:'₪200-500 למודעה',
+      why:'עיתון שכונתי של רמות א׳ בדיוק — הקליניקה בצונדק 10, לקוחות פוטנציאליות גרות 2 דקות הליכה. מגיע לכל תיבת דואר בשכונה.',
+      action:'התקשרי: 02-5869454 · בקשי מחיר למודעה קטנה שבועית',
+      url:'tel:025869454'
+    },
+    {
+      rank:2,
+      ico:'📍',
+      bg:'linear-gradient(135deg,#4285f4,#1a73e8)',
+      title:'Google Business Profile',
+      pill:{l:'חובה',c:'top'},
+      price:'חינם',
+      why:'כל לקוחה שמחפשת "הסרת שיער רמות" בגוגל — רואה קודם את המפה. בלי פרופיל אתה לא קיים. ביקורות בגוגל = הנכס הכי יקר לטווח ארוך.',
+      action:'פתחי פרופיל, העלי תמונות, בקשי מ-10 לקוחות מרוצות לכתוב ביקורת',
+      url:'https://www.google.com/business/'
+    },
+    {
+      rank:3,
+      ico:'💬',
+      bg:'linear-gradient(135deg,#25d366,#128c7e)',
+      title:'WhatsApp סטטוס + קבוצות רמות',
+      pill:{l:'ויראלי',c:'top'},
+      price:'חינם',
+      why:'98% מהאנשים פותחים סטטוס וואטסאפ. הקהל החרדי ברמות משתמש בוואטסאפ יותר מפייסבוק. סטטוס יומי של לפני/אחרי + מבצע = תורים מיידיים.',
+      action:'צרי 3-5 סטטוסים בשבוע + הצטרפי לקבוצות "רמות קהילה"',
+      url:'https://business.whatsapp.com/'
+    },
+    {
+      rank:4,
+      ico:'📸',
+      bg:'linear-gradient(135deg,#e1306c,#c13584)',
+      title:'Instagram — לפני/אחרי + סטוריז',
+      pill:{l:'מובילה',c:'top'},
+      price:'חינם (אורגני)',
+      why:'פלטפורמה מספר 1 לטיפולי יופי. הקהל הלא-חרדי של רינת (חילוני/מסורתי בירושלים) חי באינסטגרם. ריל מוצלח = 10,000+ חשיפות חינם.',
+      action:'3 פוסטים + 5 סטוריז בשבוע · תמיד תמונות לפני/אחרי',
+      url:'https://www.instagram.com/'
+    },
+    {
+      rank:5,
+      ico:'⭐',
+      bg:'linear-gradient(135deg,#fbbf24,#f59e0b)',
+      title:'mit4mit — ביקורות',
+      pill:{l:'אמון',c:'top'},
+      price:'חינם/₪100-300 לחודש',
+      why:'90% מהלקוחות בודקות ביקורות לפני שמגיעות. mit4mit האתר הכי חשוב בישראל לטיפולי יופי. 20 ביקורות חיוביות = תורים בלי סוף.',
+      action:'פתחי דף עסק · בקשי מ-5 לקוחות השבוע לכתוב ביקורת',
+      url:'https://www.mit4mit.co.il/'
+    }
+  ];
+}
+
+// טיפים יומיים שמתחלפים — עדיין מתעדכנים יומית
+const DAILY_TIPS=[
+  {i:'📸',t:'פרסמי היום תמונת לפני/אחרי באינסטגרם — זה התוכן שהכי מומר ללקוחות חדשים'},
+  {i:'⭐',t:'בקשי מלקוחה מרוצה לכתוב ביקורת בגוגל — שווה יותר מאלף פרסומות'},
+  {i:'💬',t:'שלחי סטטוס וואטסאפ עם מבצע של השבוע — 98% מהאנשים פותחים סטטוס'},
+  {i:'🎥',t:'צלמי סרטון קצר של הטיפול עצמו (בלי הלקוחה) — TikTok אוהב את זה'},
+  {i:'🎁',t:'הציעי הנחת "חברה מביאה חברה" — 10% לכל אחת. המרה אדירה'},
+  {i:'📍',t:'עדכני היום את פרופיל Google Business — תמונות חדשות, שעות, מבצעים'},
+  {i:'🏘️',t:'פרסמי פוסט בקבוצת "נשים ירושלים" — הקהל הכי ממוקד שלך'},
+  {i:'💆‍♀️',t:'הוסיפי לפוסט תמונה של המכשיר + הסבר קצר על הטכנולוגיה — בונה אמון'},
+  {i:'🗓️',t:'פרסמי זמינות השבוע באינסטגרם סטוריז — "נשארו 3 תורים ליום חמישי"'},
+  {i:'💌',t:'שלחי הודעה אישית ללקוחות ישנות שלא חזרו 3+ חודשים — 30% חוזרות'},
+  {i:'🌟',t:'ענטגי כלות עומדות לחתונה — פלח שמכניס הכי הרבה בפחות מאמץ'},
+  {i:'📊',t:'בדקי היום את ההוצאות של החודש — מה עבד ומה לא?'},
+  {i:'🤝',t:'שיתוף פעולה עם מכון יופי/מספרה בסביבה — הפניות הדדיות'},
+  {i:'🎉',t:'הצעי מבצע לחג הקרוב — אנשים מחפשים להיראות טוב לפני אירועים'},
+  {i:'📜',t:'שקלי מודעה בלוח קיר רמות — 02-5869454. מגיע לכל תיבת דואר בשכונה'},
+  {i:'👗',t:'שתפי פעולה עם חנויות כלה ברמות — הפניות הדדיות משתלמות לשני הצדדים'}
+];
+function getDailyTip(){
+  const d=new Date();
+  const idx=Math.floor(d.getTime()/86400000)%DAILY_TIPS.length;
+  return DAILY_TIPS[idx];
+}
+function getDateLabel(){
+  const d=new Date();
+  const days=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+  const months=['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+  return'יום '+days[d.getDay()]+', '+d.getDate()+' ב'+months[d.getMonth()];
+}
+
+function renderPromoTab(){
+  const picks=getTopPicks();
+  const tip=getDailyTip();
+  const dateLbl=getDateLabel();
+  
+  // Top 5 section with rank badges and reasoning
+  const topSection=`<div class="promo-daily">
+    <div class="promo-daily-top">
+      <div class="promo-daily-date">⚡ ${x(dateLbl)}</div>
+      <div class="promo-daily-badge">Top 5 מומלץ</div>
+    </div>
+    <div class="promo-daily-title">הכי טוב לרינת 🎯</div>
+    <div class="promo-daily-sub">5 הערוצים הכי אפקטיביים לקליניקה ברמות</div>
+  </div>
+  <div class="promo-top-list">${picks.map(s=>`<a class="promo-top-card" href="${s.url}" target="_blank" rel="noopener noreferrer">
+    <div class="promo-top-rank">${s.rank}</div>
+    <div class="promo-top-body">
+      <div class="promo-top-head">
+        <div class="promo-top-ico" style="background:${s.bg};color:white">${s.ico}</div>
+        <div class="promo-top-title-wrap">
+          <div class="promo-top-title">${x(s.title)}${s.pill?`<span class="promo-card-pill ${s.pill.c}">${s.pill.l}</span>`:''}</div>
+          ${s.price?`<div class="promo-top-price">💰 ${x(s.price)}</div>`:''}
+        </div>
+      </div>
+      <div class="promo-top-why"><b>למה:</b> ${x(s.why)}</div>
+      <div class="promo-top-action">💡 ${x(s.action)}</div>
+    </div>
+  </a>`).join('')}</div>
+  <div class="promo-daily-tip"><div class="promo-daily-tip-ico">${tip.i}</div><div class="promo-daily-tip-txt"><b>טיפ היום:</b> ${x(tip.t)}</div></div>`;
+  
+  // All categories with price tags
+  const cats=Object.entries(PROMO_SITES).map(([k,cat])=>{
+    const cards=cat.sites.map(s=>{
+      const priceCls=s.price==='חינם'||s.price==='חינם (אורגני)'?'free':s.price&&s.price.startsWith('חינם')?'mixed':'paid';
+      return`<a class="promo-card" href="${s.url}" target="_blank" rel="noopener noreferrer">
+      <div class="promo-card-ico" style="background:${s.bg};color:white">${s.ico}</div>
+      <div class="promo-card-body">
+        <div class="promo-card-title">${x(s.title)}${s.pill?`<span class="promo-card-pill ${s.pill.c}">${s.pill.l}</span>`:''}</div>
+        <div class="promo-card-desc">${x(s.desc)}</div>
+        ${s.price?`<div class="promo-card-price ${priceCls}">💰 ${x(s.price)}</div>`:''}
+      </div>
+      <div class="promo-card-arrow">←</div>
+    </a>`;}).join('');
+    return`<div class="promo-cat">
+      <div class="promo-cat-hdr"><span class="promo-cat-badge">${cat.badge}</span>${x(cat.title)}</div>
+      ${cards}
+      ${cat.tip?`<div class="promo-tip">${x(cat.tip)}</div>`:''}
+    </div>`;
+  }).join('');
+  
+  return`${topSection}
+    <div class="promo-all-hdr">📚 כל האתרים לפי קטגוריה</div>
+    ${cats}
+    <div class="promo-disclaimer">💡 המחירים הם הערכה ממוצעת בלבד — משתנים לפי גודל מודעה, תדירות ותקופה. תמיד שווה להתמקח ולהשוות.</div>`;
+}
+
 // Navigate from home feature tiles to the right spot
 function goFeat(feat){
   S.screen='diary';S.lModal=null;

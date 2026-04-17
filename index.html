@@ -4409,11 +4409,11 @@ function renderPromoTab(){
 
 // ── Website Management Tab — עורך HTML אמיתי ──
 const WEB_SRC_URL='https://pinto1212121212-create.github.io/deploy-panel/rinat-2.html';
-const WEB_SRC_FALLBACK='https://storied-chaja-55260f.netlify.app/';
+const WEB_LIVE_URL='https://storied-chaja-55260f.netlify.app/';
 // Cache of fetched website HTML (for current session only)
 let _webCache=null;
-let _webFetchState='idle'; // idle | loading | ready | error | direct_iframe
-let _webFetchSource=''; // 'primary' | 'fallback' | 'upload' | 'direct'
+let _webFetchState='idle'; // idle | loading | ready | error
+let _webFetchSource=''; // 'primary' | 'upload'
 let _webFetchError='';
 let _webEditMode=false; // false=preview, true=edit
 
@@ -4422,9 +4422,11 @@ async function loadWebsiteHtml(){
   _webFetchState='loading';
   _webFetchError='';
   
-  // Try primary (deploy-panel repo)
+  // Only GitHub Pages works due to CORS
   try{
-    const res=await fetch(WEB_SRC_URL,{cache:'no-cache'});
+    // Cache-busting with timestamp - mobile browsers sometimes cache 404s
+    const bustUrl=WEB_SRC_URL+'?v='+Date.now();
+    const res=await fetch(bustUrl,{cache:'no-store'});
     if(res.ok){
       const html=await res.text();
       _webCache=html;
@@ -4432,24 +4434,9 @@ async function loadWebsiteHtml(){
       _webFetchSource='primary';
       return html;
     }
-    _webFetchError='ריפו deploy-panel: '+res.status;
+    _webFetchError='הקובץ לא נמצא בריפו deploy-panel (שגיאה '+res.status+')';
   }catch(e){
-    _webFetchError='ריפו deploy-panel: '+e.message;
-  }
-  
-  // Try fallback (Netlify direct) - will likely fail due to CORS
-  try{
-    const res=await fetch(WEB_SRC_FALLBACK,{cache:'no-cache',mode:'cors'});
-    if(res.ok){
-      const html=await res.text();
-      _webCache=html;
-      _webFetchState='ready';
-      _webFetchSource='fallback';
-      return html;
-    }
-    _webFetchError+=' · Netlify: '+res.status;
-  }catch(e){
-    _webFetchError+=' · Netlify: '+e.message;
+    _webFetchError='שגיאת רשת: '+e.message;
   }
   
   _webFetchState='error';
@@ -4478,13 +4465,6 @@ function loadWebsiteFromFile(event){
   reader.readAsText(file,'UTF-8');
 }
 
-// Show direct iframe to Netlify (view only, no editing possible)
-function useDirectIframe(){
-  _webFetchState='direct_iframe';
-  _webFetchSource='direct';
-  hRender();
-}
-
 function toggleWebEdit(){
   _webEditMode=!_webEditMode;
   renderWebsiteIframe();
@@ -4493,8 +4473,12 @@ function toggleWebEdit(){
 function reloadWebsite(){
   _webCache=null;
   _webFetchState='idle';
+  _webFetchError='';
   _webEditMode=false;
-  hRender();
+  // Show loading immediately, then trigger fetch
+  const wrap=document.getElementById('web-iframe-wrap');
+  if(wrap)wrap.innerHTML='<div class="web-loading">⏳ טוען את האתר מחדש...</div>';
+  setTimeout(()=>renderWebsiteIframe(),100);
 }
 
 // Inject editable attributes into the iframe HTML
@@ -4606,46 +4590,51 @@ async function renderWebsiteIframe(){
   const wrap=document.getElementById('web-iframe-wrap');
   if(!wrap)return;
   
-  // Direct iframe mode - show Netlify site in iframe (view only)
-  if(_webFetchState==='direct_iframe'){
-    wrap.innerHTML=`<iframe src="${WEB_SRC_FALLBACK}" style="width:100%;height:100%;border:0;background:white"></iframe>`;
+  // If we have cached data and state is ready, show it immediately
+  if(_webFetchState==='ready'&&_webCache){
+    const injected=injectEditableAttrs(_webCache);
+    const blob=new Blob([injected],{type:'text/html;charset=utf-8'});
+    const blobUrl=URL.createObjectURL(blob);
+    wrap.innerHTML=`<iframe id="web-iframe" src="${blobUrl}" style="width:100%;height:100%;border:0;background:white" onload="onWebIframeLoad()"></iframe>`;
     return;
+  }
+  
+  // If state is error, try again (treat as idle)
+  if(_webFetchState==='error'){
+    _webFetchState='idle';
   }
   
   if(_webFetchState==='idle'){
     wrap.innerHTML='<div class="web-loading">⏳ טוען את האתר...</div>';
     const html=await loadWebsiteHtml();
-    if(!html){
-      wrap.innerHTML=`<div class="web-error">
-        <div class="web-error-ico">⚠️</div>
-        <div class="web-error-title">לא הצלחתי לטעון את האתר לעריכה</div>
-        <div class="web-error-sub">
-          <b>אפשרות 1 — העלאה לגיטהאב (מומלץ):</b><br>
-          העלי את <b>rinat-2.html</b> לריפו deploy-panel דרך GitHub<br>
-          ודאי ש-Settings → Pages פועל<br>
-          חכי 2 דקות ולחצי "נסי שוב"
-        </div>
-        <div class="web-error-or">— או —</div>
-        <div class="web-error-actions">
-          <label class="web-btn upload-btn">
-            📁 בחרי קובץ HTML מהמכשיר
-            <input type="file" accept=".html,.htm" onchange="loadWebsiteFromFile(event)" style="display:none">
-          </label>
-          <button class="web-btn view-btn" onclick="useDirectIframe()">👁 צפייה בלבד באתר החי</button>
-        </div>
-        <div class="web-error-detail">${x(_webFetchError||'')}</div>
-        <button class="web-btn save" onclick="reloadWebsite()" style="margin-top:10px">🔄 נסי שוב</button>
-      </div>`;
+    if(html){
+      // Success - render iframe
+      const injected=injectEditableAttrs(html);
+      const blob=new Blob([injected],{type:'text/html;charset=utf-8'});
+      const blobUrl=URL.createObjectURL(blob);
+      wrap.innerHTML=`<iframe id="web-iframe" src="${blobUrl}" style="width:100%;height:100%;border:0;background:white" onload="onWebIframeLoad()"></iframe>`;
       return;
     }
-  }
-  
-  if(_webFetchState==='ready'&&_webCache){
-    const injected=injectEditableAttrs(_webCache);
-    // Create blob URL so iframe can load the HTML without CSP issues
-    const blob=new Blob([injected],{type:'text/html;charset=utf-8'});
-    const blobUrl=URL.createObjectURL(blob);
-    wrap.innerHTML=`<iframe id="web-iframe" src="${blobUrl}" style="width:100%;height:100%;border:0;background:white" onload="onWebIframeLoad()"></iframe>`;
+    // Failed - show error UI
+    wrap.innerHTML=`<div class="web-error">
+      <div class="web-error-ico">⚠️</div>
+      <div class="web-error-title">האתר עדיין לא זמין לעריכה</div>
+      <div class="web-error-sub">
+        <b>דרך 1 — העלאה לגיטהאב (הכי טוב):</b><br>
+        העלי את <b>rinat-2.html</b> לריפו <b>deploy-panel</b><br>
+        → Settings → Pages → תפעילי Pages<br>
+        → חכי 2 דקות ולחצי "נסי שוב"
+      </div>
+      <div class="web-error-or">— או —</div>
+      <div class="web-error-actions">
+        <label class="web-btn upload-btn">
+          📁 בחרי קובץ rinat-2.html מהמכשיר
+          <input type="file" accept=".html,.htm" onchange="loadWebsiteFromFile(event)" style="display:none">
+        </label>
+      </div>
+      <div class="web-error-detail">${x(_webFetchError||'')}</div>
+      <button class="web-btn save" onclick="reloadWebsite()" style="margin-top:10px">🔄 נסי שוב</button>
+    </div>`;
   }
 }
 
@@ -4738,8 +4727,8 @@ function renderWebsiteTab(){
       <button class="web-tb-btn" onclick="setWebEditMode(false)">✕ יציאה</button>
     </div>
   </div>`:`<div class="web-toolbar">
-    <div class="web-toolbar-status">👁 מצב תצוגה${_webFetchSource==='fallback'?' · 🟡 נטען מ-Netlify':_webFetchSource==='upload'?' · 📁 קובץ מקומי':_webFetchSource==='direct'?' · 🔒 צפייה בלבד':''} · ככה הלקוחות רואות</div>
-    ${_webFetchSource==='direct'?'<span class="web-tb-note">עריכה לא זמינה במצב זה</span>':'<button class="web-tb-btn primary" onclick="setWebEditMode(true)">✏️ עריכה מלאה</button>'}
+    <div class="web-toolbar-status">👁 מצב תצוגה${_webFetchSource==='upload'?' · 📁 קובץ מקומי':''} · ככה הלקוחות רואות</div>
+    <button class="web-tb-btn primary" onclick="setWebEditMode(true)">✏️ עריכה מלאה</button>
   </div>`;
   
   // Instructions when in edit mode

@@ -4512,7 +4512,10 @@ async function webUpload(input){
     const encoded=btoa(unescape(encodeURIComponent(content)));
     pb.style.width='45%';step.textContent='⬆️ מעלה לגיטהאב...';
     const apiUrl=`https://api.github.com/repos/${WEB_OWNER}/${WEB_REPO}/contents/index.html`;
-    const chk=await(await fetch(apiUrl+'?t='+Date.now(),{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Cache-Control':'no-cache'}})).json();
+    const chkRes=await fetch(apiUrl+'?t='+Date.now(),{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}});
+    if(chkRes.status===401){localStorage.removeItem('gh_deploy_token');throw new Error('הטוקן לא תקף — נסי שוב');}
+    if(chkRes.status===404){throw new Error('הריפו rb-prolaser לא נמצא — צריך ליצור אותו דרך הצינור');}
+    const chk=await chkRes.json();
     const body={message:'Update via diary · '+new Date().toLocaleString('he-IL'),content:encoded};
     if(chk.sha)body.sha=chk.sha;
     pb.style.width='75%';
@@ -4569,7 +4572,7 @@ async function webOpenEditor(){
   st.className='web-editor-status';
   try{
     const r=await fetch(`https://api.github.com/repos/${WEB_OWNER}/${WEB_REPO}/contents/index.html?t=`+Date.now(),
-      {headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Cache-Control':'no-cache'}});
+      {headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}});
     const d=await r.json();
     if(r.status===401){localStorage.removeItem('gh_deploy_token');throw new Error('הטוקן לא תקף');}
     if(!d.content)throw new Error(d.message||'קובץ לא נמצא');

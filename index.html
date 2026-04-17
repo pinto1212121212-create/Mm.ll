@@ -597,22 +597,33 @@ textarea.task-modal-area{width:100%;border:1.5px solid #e5e7eb;border-radius:12p
 .web-info-item b{color:#92400e;font-weight:900;margin-left:6px}
 .web-info-sub{font-size:11.5px;color:#92400e;margin-top:10px;padding-top:8px;border-top:1px dashed #fcd34d;text-align:right;font-weight:700}
 
-/* Editor overlay — textarea fullscreen */
-.web-editor-overlay{position:fixed;inset:0;background:#0f172a;z-index:9998;display:none;flex-direction:column;padding:14px;direction:rtl;font-family:inherit}
-.web-editor-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.web-editor-title{flex:1;font-size:16px;font-weight:800;color:#5eead4}
-.web-editor-textarea{flex:1;background:#1e293b;border:1px solid #334155;border-radius:12px;color:#e2e8f0;font-size:12px;font-family:ui-monospace,Menlo,Consolas,monospace;padding:12px;resize:none;outline:none;direction:ltr;text-align:left;line-height:1.6;min-height:0}
-.web-editor-textarea:focus{border-color:#7c3aed}
-.web-editor-status{font-size:12px;color:#5eead4;text-align:center;min-height:18px;margin-top:8px;font-weight:700}
-.web-editor-status.err{color:#f87171}
-.web-editor-status.ok{color:#4ade80}
-.web-editor-status a{color:inherit;text-decoration:underline;font-weight:800}
-.web-editor-btns{display:flex;gap:8px;margin-top:10px}
-.web-editor-btn{border:none;border-radius:10px;padding:13px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit;color:white}
-.web-editor-btn.save{flex:2;background:linear-gradient(135deg,#7c3aed,#5b21b6)}
-.web-editor-btn.cancel{flex:1;background:#334155}
-.web-editor-btn.download{flex:1;background:#1e3a5f;color:#7dd3fc;border:1px solid #334155}
-.web-editor-btn:disabled{opacity:.6;cursor:wait}
+/* Editor screen — fullscreen light panel, matches the diary style */
+.web-edit-screen{position:fixed;inset:0;z-index:400;display:none;flex-direction:column;background:#f8f7fc;direction:rtl;font-family:inherit}
+.web-edit-screen.on{display:flex}
+.web-edit-hdr{background:linear-gradient(135deg,#7c3aed,#5b21b6);padding:16px 14px;flex-shrink:0;display:flex;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(124,58,237,.3)}
+.web-edit-back{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);border-radius:50%;width:38px;height:38px;color:white;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:inherit;font-weight:700}
+.web-edit-hdr-info{flex:1;min-width:0}
+.web-edit-hdr-title{font-size:16px;font-weight:900;color:white;text-align:right}
+.web-edit-hdr-sub{font-size:11px;color:rgba(255,255,255,.75);margin-top:2px;text-align:right;word-break:break-all}
+.web-edit-status-bar{padding:10px 14px;font-size:12px;font-weight:700;text-align:center;background:#ede9fe;color:#4c1d95;flex-shrink:0;transition:all .2s}
+.web-edit-status-bar.ok{background:#d1fae5;color:#065f46}
+.web-edit-status-bar.err{background:#fee2e2;color:#991b1b}
+.web-edit-status-bar a{color:inherit;text-decoration:underline;font-weight:900;margin-right:6px}
+.web-edit-body{flex:1;padding:10px;min-height:0;display:flex}
+.web-edit-textarea{flex:1;background:#1e293b;border:1px solid #334155;border-radius:14px;color:#e2e8f0;font-size:12px;font-family:ui-monospace,Menlo,Consolas,monospace;padding:12px;resize:none;outline:none;direction:ltr;text-align:left;line-height:1.6;width:100%}
+.web-edit-textarea:focus{border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.2)}
+.web-edit-btns{display:flex;gap:8px;padding:10px 12px 14px;background:white;border-top:1px solid #ede9fe;flex-shrink:0}
+.web-edit-btn{border:none;border-radius:12px;padding:13px 10px;font-weight:800;font-size:13px;cursor:pointer;font-family:inherit;color:white;transition:transform .1s}
+.web-edit-btn:active{transform:scale(.97)}
+.web-edit-btn:disabled{opacity:.6;cursor:wait}
+.web-edit-btn.save{flex:2;background:linear-gradient(135deg,#7c3aed,#5b21b6);box-shadow:0 4px 14px rgba(124,58,237,.35)}
+.web-edit-btn.cancel{flex:1;background:#f3f4f6;color:#4b5563}
+.web-edit-btn.download{flex:1;background:#ede9fe;color:#5b21b6;border:1px solid #c4b5fd}
+
+@media(min-width:768px){
+  .web-edit-screen{max-width:520px;width:100%;right:50%;transform:translateX(50%);height:calc(100vh - 48px);top:24px;bottom:24px;inset:auto;border-radius:28px;box-shadow:0 20px 60px rgba(76,29,149,.25);overflow:hidden}
+}
+
 
 /* Toast */
 .web-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;padding:12px 24px;border-radius:14px;font-size:14px;font-weight:800;z-index:99999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;box-shadow:0 10px 30px rgba(0,0,0,.25);direction:rtl;font-family:inherit}
@@ -4592,20 +4603,37 @@ async function webOpenEditor(){
     localStorage.setItem('gh_deploy_token',token.trim());
     token=token.trim();
   }
-  let ov=document.getElementById('web-editor-overlay');
-  if(!ov){
-    ov=document.createElement('div');
-    ov.id='web-editor-overlay';
-    ov.className='web-editor-overlay';
-    ov.innerHTML=`<div class="web-editor-top"><div class="web-editor-title">✏️ עריכת האתר</div><button class="web-editor-btn cancel" onclick="webCloseEditor()" style="flex:0 0 auto;padding:9px 16px">✕ סגור</button></div><textarea class="web-editor-textarea" id="web-editor-textarea" spellcheck="false" dir="ltr"></textarea><div class="web-editor-status" id="web-editor-status">⏳ טוען...</div><div class="web-editor-btns"><button class="web-editor-btn cancel" onclick="webCloseEditor()">ביטול</button><button class="web-editor-btn download" onclick="webDownloadEdit()">⬇️ הורד</button><button class="web-editor-btn save" id="web-editor-save" onclick="webSaveEdit()">💾 שמור ופרסם</button></div>`;
-    document.body.appendChild(ov);
+  // Build the screen once
+  let sc=document.getElementById('web-edit-screen');
+  if(!sc){
+    sc=document.createElement('div');
+    sc.id='web-edit-screen';
+    sc.className='web-edit-screen';
+    sc.innerHTML=`
+      <div class="web-edit-hdr">
+        <button class="web-edit-back" onclick="webCloseEditor()">←</button>
+        <div class="web-edit-hdr-info">
+          <div class="web-edit-hdr-title">✏️ עריכת האתר</div>
+          <div class="web-edit-hdr-sub">${WEB_OWNER}/${WEB_REPO}</div>
+        </div>
+      </div>
+      <div class="web-edit-status-bar" id="web-edit-status">⏳ טוען קובץ מגיטהאב...</div>
+      <div class="web-edit-body">
+        <textarea class="web-edit-textarea" id="web-edit-textarea" spellcheck="false" dir="ltr" placeholder="הקובץ יטען כאן..."></textarea>
+      </div>
+      <div class="web-edit-btns">
+        <button class="web-edit-btn cancel" onclick="webCloseEditor()">ביטול</button>
+        <button class="web-edit-btn download" onclick="webDownloadEdit()">⬇️ הורד</button>
+        <button class="web-edit-btn save" id="web-edit-save" onclick="webSaveEdit()">💾 שמור ופרסם</button>
+      </div>`;
+    document.body.appendChild(sc);
   }
-  ov.style.display='flex';
-  const ta=document.getElementById('web-editor-textarea');
-  const st=document.getElementById('web-editor-status');
+  sc.classList.add('on');
+  const ta=document.getElementById('web-edit-textarea');
+  const st=document.getElementById('web-edit-status');
   ta.value='';
   st.textContent='⏳ טוען קובץ מגיטהאב...';
-  st.className='web-editor-status';
+  st.className='web-edit-status-bar';
   try{
     const r=await fetch(`https://api.github.com/repos/${WEB_OWNER}/${WEB_REPO}/contents/index.html?t=`+Date.now(),
       {headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}});
@@ -4616,25 +4644,25 @@ async function webOpenEditor(){
     _webEdit.sha=d.sha;
     _webEdit.loaded=true;
     ta.value=decodeURIComponent(escape(atob(d.content.replace(/\n/g,''))));
-    st.textContent=`✅ נטען · ${(ta.value.length/1024).toFixed(1)}KB`;
-    st.className='web-editor-status ok';
+    st.innerHTML=`✅ נטען בהצלחה · ${(ta.value.length/1024).toFixed(1)}KB · לחצי על הטקסט וערכי`;
+    st.className='web-edit-status-bar ok';
   }catch(e){
     st.textContent='❌ '+e.message;
-    st.className='web-editor-status err';
+    st.className='web-edit-status-bar err';
     _webEdit.loaded=false;
   }
 }
 
 function webCloseEditor(){
-  const ov=document.getElementById('web-editor-overlay');
-  if(ov)ov.style.display='none';
-  const btn=document.getElementById('web-editor-save');
+  const sc=document.getElementById('web-edit-screen');
+  if(sc)sc.classList.remove('on');
+  const btn=document.getElementById('web-edit-save');
   if(btn){btn.textContent='💾 שמור ופרסם';btn.disabled=false;btn.style.background='';}
   _webEdit={sha:'',loaded:false};
 }
 
 function webDownloadEdit(){
-  const content=document.getElementById('web-editor-textarea').value;
+  const content=document.getElementById('web-edit-textarea').value;
   if(!content){webToast('⚠️ אין תוכן',true);return;}
   const blob=new Blob([content],{type:'text/html;charset=utf-8'});
   const url=URL.createObjectURL(blob);
@@ -4652,11 +4680,11 @@ async function webSaveEdit(){
   if(!_webEdit.loaded){webToast('⚠️ הקובץ עוד לא נטען',true);return;}
   const token=localStorage.getItem('gh_deploy_token');
   if(!token){webToast('⚠️ אין טוקן',true);return;}
-  const content=document.getElementById('web-editor-textarea').value;
-  const st=document.getElementById('web-editor-status');
-  const btn=document.getElementById('web-editor-save');
+  const content=document.getElementById('web-edit-textarea').value;
+  const st=document.getElementById('web-edit-status');
+  const btn=document.getElementById('web-edit-save');
   btn.disabled=true;btn.textContent='⏳ שומר...';
-  st.textContent='⬆️ מעלה לגיטהאב...';st.className='web-editor-status';
+  st.textContent='⬆️ מעלה לגיטהאב...';st.className='web-edit-status-bar';
   try{
     const encoded=btoa(unescape(encodeURIComponent(content)));
     const body={message:'Edit via diary · '+new Date().toLocaleString('he-IL'),content:encoded,sha:_webEdit.sha};
@@ -4665,17 +4693,23 @@ async function webSaveEdit(){
     const d=await r.json();
     if(r.status===401){localStorage.removeItem('gh_deploy_token');throw new Error('הטוקן לא תקף');}
     if(!d.content)throw new Error(d.message||'שגיאה');
+    // Update sha for next save without reloading
+    if(d.content.sha)_webEdit.sha=d.content.sha;
     btn.textContent='✅ נשמר!';
     btn.style.background='linear-gradient(135deg,#10b981,#059669)';
-    st.innerHTML=`✅ נשמר! <a href="${WEB_LIVE_URL}?v=${Date.now()}" target="_blank">פתח אתר חי ←</a>`;
-    st.className='web-editor-status ok';
+    st.innerHTML=`✅ נשמר בהצלחה! <a href="${WEB_LIVE_URL}?v=${Date.now()}" target="_blank">פתח אתר חי ←</a>`;
+    st.className='web-edit-status-bar ok';
     webToast('✅ האתר עודכן בהצלחה!');
-    setTimeout(()=>webCloseEditor(),3500);
+    setTimeout(()=>{
+      btn.disabled=false;
+      btn.textContent='💾 שמור ופרסם';
+      btn.style.background='';
+    },3000);
   }catch(e){
     btn.disabled=false;
     btn.textContent='💾 שמור ופרסם';
     st.textContent='❌ '+e.message;
-    st.className='web-editor-status err';
+    st.className='web-edit-status-bar err';
     webToast('❌ '+e.message,true);
   }
 }
@@ -4691,7 +4725,7 @@ function renderWebsiteTab(){
   </div>
   <div class="web-actions">
     <a class="web-action-btn primary" href="${WEB_LIVE_URL}" target="_blank" rel="noopener">👁 פתח אתר חי</a>
-    <button class="web-action-btn" onclick="webOpenEditor()">✏️ ערוך HTML</button>
+    <button class="web-action-btn" onclick="webOpenEditor()">✏️ ערוך אתר</button>
   </div>
   <div class="web-deploy-card">
     <div class="web-deploy-title">🚀 פרסום אתר חדש</div>
@@ -4707,7 +4741,7 @@ function renderWebsiteTab(){
     <div class="web-info-item"><b>2.</b> בחרי את קובץ ה-HTML המעודכן</div>
     <div class="web-info-item"><b>3.</b> הקובץ יעלה אוטומטית לגיטהאב</div>
     <div class="web-info-item"><b>4.</b> האתר יתעדכן תוך דקה</div>
-    <div class="web-info-sub">💡 או לחצי "ערוך HTML" כדי לערוך את האתר ישירות מכאן</div>
+    <div class="web-info-sub">💡 או לחצי "ערוך אתר" כדי לערוך את האתר ישירות מכאן</div>
   </div>`;
 }
 

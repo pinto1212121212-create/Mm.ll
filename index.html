@@ -598,6 +598,59 @@ textarea.task-modal-area{width:100%;border:1.5px solid #e5e7eb;border-radius:12p
 .web-btn.upload-btn{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;cursor:pointer;text-align:center;display:block}
 .web-btn.view-btn{background:#f3f4f6;color:#4b5563;border:1px solid #d1d5db}
 .web-tb-note{font-size:11px;color:#9ca3af;font-weight:700;font-style:italic;padding:0 8px}
+.web-publish-status{padding:10px 14px;font-size:11.5px;font-weight:700;text-align:right;border-bottom:1px solid #e5e7eb;display:none;align-items:center;gap:6px}
+.web-publish-status.loading{background:linear-gradient(to left,#fef3c7,#fde68a);color:#78350f;display:flex}
+.web-publish-status.success{background:linear-gradient(to left,#d1fae5,#a7f3d0);color:#065f46;display:flex}
+.web-publish-status.error{background:linear-gradient(to left,#fee2e2,#fecaca);color:#991b1b;display:flex}
+.web-publish-status.warn{background:linear-gradient(to left,#fef3c7,#fde68a);color:#78350f;display:flex}
+.web-publish-status a{margin-right:4px;color:inherit;text-decoration:underline;font-weight:800}
+.web-publish-status b{font-weight:900}
+.rb-spinner{display:inline-block;width:12px;height:12px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:rb-spin 0.7s linear infinite;flex-shrink:0}
+@keyframes rb-spin{to{transform:rotate(360deg)}}
+.rb-pulse-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:currentColor;animation:rb-pulse 1.5s ease-in-out infinite;flex-shrink:0}
+@keyframes rb-pulse{0%,100%{opacity:.4;transform:scale(.9)}50%{opacity:1;transform:scale(1.1)}}
+
+/* Professional Toast */
+.rb-toast{position:fixed;bottom:80px;right:50%;transform:translateX(50%) translateY(20px);z-index:9999;padding:12px 18px;border-radius:14px;font-size:13px;font-weight:800;color:white;box-shadow:0 10px 30px rgba(0,0,0,.25);opacity:0;transition:all .3s ease;max-width:90vw;text-align:center;direction:rtl;font-family:inherit}
+.rb-toast.show{opacity:1;transform:translateX(50%) translateY(0)}
+.rb-toast-info{background:linear-gradient(135deg,#0891b2,#0e7490)}
+.rb-toast-success{background:linear-gradient(135deg,#10b981,#059669)}
+.rb-toast-warn{background:linear-gradient(135deg,#f59e0b,#d97706)}
+.rb-toast-error{background:linear-gradient(135deg,#ef4444,#dc2626)}
+@media(min-width:768px){.rb-toast{bottom:32px;max-width:400px}}
+
+/* Professional Dialog */
+.rb-dialog-overlay{position:fixed;inset:0;background:rgba(15,23,42,.7);z-index:9998;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .25s ease;backdrop-filter:blur(4px)}
+.rb-dialog-overlay.show{opacity:1}
+.rb-dialog{background:white;border-radius:20px;max-width:440px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 25px 50px -12px rgba(0,0,0,.4);transform:scale(.95);transition:transform .25s ease;direction:rtl;font-family:inherit}
+.rb-dialog-overlay.show .rb-dialog{transform:scale(1)}
+.rb-dialog-title{padding:18px 20px 10px;font-size:17px;font-weight:900;color:#1e1b4b;text-align:right;border-bottom:1px solid #f3f4f6}
+.rb-dialog-body{padding:16px 20px;font-size:13px;color:#374151;line-height:1.6;text-align:right}
+.rb-dialog-btns{padding:12px 20px 18px;display:flex;gap:10px;justify-content:flex-start;flex-direction:row-reverse}
+.rb-dialog-btn{padding:11px 22px;border-radius:12px;border:none;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;transition:transform .1s,box-shadow .15s}
+.rb-dialog-btn:active{transform:scale(.97)}
+.rb-dialog-btn.primary{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;box-shadow:0 4px 14px rgba(124,58,237,.35)}
+.rb-dialog-btn.primary.publish{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 4px 14px rgba(16,185,129,.4)}
+.rb-dialog-btn.cancel{background:#f3f4f6;color:#4b5563}
+.rb-dialog-btn.cancel:hover{background:#e5e7eb}
+.rb-dialog-note{margin-top:14px;padding:10px 12px;background:#f9fafb;border-right:3px solid #9ca3af;border-radius:8px;font-size:11.5px;color:#6b7280;line-height:1.5;font-weight:500}
+
+/* Diff display */
+.rb-diff-summary{font-size:13px;font-weight:800;color:#0e7490;margin-bottom:10px;padding:10px;background:#ecfeff;border-radius:10px;text-align:center}
+.rb-diff-summary b{font-size:18px;color:#0891b2}
+.rb-diff-list{max-height:280px;overflow-y:auto;margin-bottom:6px}
+.rb-diff-block{background:#f9fafb;border-radius:10px;padding:10px 12px;margin-bottom:6px;border:1px solid #e5e7eb}
+.rb-diff-label{font-size:11.5px;font-weight:800;color:#4c1d95;margin-bottom:6px}
+.rb-diff-line{font-size:12px;font-weight:700;padding:4px 8px;border-radius:6px;margin-bottom:2px;font-family:ui-monospace,monospace;direction:ltr;text-align:left}
+.rb-diff-line.removed{background:#fee2e2;color:#991b1b;text-decoration:line-through}
+.rb-diff-line.added{background:#d1fae5;color:#065f46}
+.rb-diff-generic{text-align:center;padding:16px;color:#6b7280;font-size:12px;font-weight:600}
+
+/* Warnings in dialog */
+.rb-warn-list{margin-top:12px}
+.rb-warn-item{padding:8px 12px;border-radius:8px;font-size:11.5px;font-weight:700;margin-bottom:4px;line-height:1.4}
+.rb-warn-item.warn{background:#fef3c7;color:#78350f;border-right:3px solid #f59e0b}
+.rb-warn-item.error{background:#fee2e2;color:#991b1b;border-right:3px solid #dc2626}
 .web-btn{padding:10px 16px;border-radius:10px;border:none;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit}
 .web-btn.save{background:linear-gradient(135deg,#10b981,#059669);color:white}
 .web-btn:active{transform:scale(.97)}
@@ -1917,6 +1970,59 @@ function getLaserAnim(){
 .web-btn.upload-btn{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;cursor:pointer;text-align:center;display:block}
 .web-btn.view-btn{background:#f3f4f6;color:#4b5563;border:1px solid #d1d5db}
 .web-tb-note{font-size:11px;color:#9ca3af;font-weight:700;font-style:italic;padding:0 8px}
+.web-publish-status{padding:10px 14px;font-size:11.5px;font-weight:700;text-align:right;border-bottom:1px solid #e5e7eb;display:none;align-items:center;gap:6px}
+.web-publish-status.loading{background:linear-gradient(to left,#fef3c7,#fde68a);color:#78350f;display:flex}
+.web-publish-status.success{background:linear-gradient(to left,#d1fae5,#a7f3d0);color:#065f46;display:flex}
+.web-publish-status.error{background:linear-gradient(to left,#fee2e2,#fecaca);color:#991b1b;display:flex}
+.web-publish-status.warn{background:linear-gradient(to left,#fef3c7,#fde68a);color:#78350f;display:flex}
+.web-publish-status a{margin-right:4px;color:inherit;text-decoration:underline;font-weight:800}
+.web-publish-status b{font-weight:900}
+.rb-spinner{display:inline-block;width:12px;height:12px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:rb-spin 0.7s linear infinite;flex-shrink:0}
+@keyframes rb-spin{to{transform:rotate(360deg)}}
+.rb-pulse-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:currentColor;animation:rb-pulse 1.5s ease-in-out infinite;flex-shrink:0}
+@keyframes rb-pulse{0%,100%{opacity:.4;transform:scale(.9)}50%{opacity:1;transform:scale(1.1)}}
+
+/* Professional Toast */
+.rb-toast{position:fixed;bottom:80px;right:50%;transform:translateX(50%) translateY(20px);z-index:9999;padding:12px 18px;border-radius:14px;font-size:13px;font-weight:800;color:white;box-shadow:0 10px 30px rgba(0,0,0,.25);opacity:0;transition:all .3s ease;max-width:90vw;text-align:center;direction:rtl;font-family:inherit}
+.rb-toast.show{opacity:1;transform:translateX(50%) translateY(0)}
+.rb-toast-info{background:linear-gradient(135deg,#0891b2,#0e7490)}
+.rb-toast-success{background:linear-gradient(135deg,#10b981,#059669)}
+.rb-toast-warn{background:linear-gradient(135deg,#f59e0b,#d97706)}
+.rb-toast-error{background:linear-gradient(135deg,#ef4444,#dc2626)}
+@media(min-width:768px){.rb-toast{bottom:32px;max-width:400px}}
+
+/* Professional Dialog */
+.rb-dialog-overlay{position:fixed;inset:0;background:rgba(15,23,42,.7);z-index:9998;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .25s ease;backdrop-filter:blur(4px)}
+.rb-dialog-overlay.show{opacity:1}
+.rb-dialog{background:white;border-radius:20px;max-width:440px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 25px 50px -12px rgba(0,0,0,.4);transform:scale(.95);transition:transform .25s ease;direction:rtl;font-family:inherit}
+.rb-dialog-overlay.show .rb-dialog{transform:scale(1)}
+.rb-dialog-title{padding:18px 20px 10px;font-size:17px;font-weight:900;color:#1e1b4b;text-align:right;border-bottom:1px solid #f3f4f6}
+.rb-dialog-body{padding:16px 20px;font-size:13px;color:#374151;line-height:1.6;text-align:right}
+.rb-dialog-btns{padding:12px 20px 18px;display:flex;gap:10px;justify-content:flex-start;flex-direction:row-reverse}
+.rb-dialog-btn{padding:11px 22px;border-radius:12px;border:none;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;transition:transform .1s,box-shadow .15s}
+.rb-dialog-btn:active{transform:scale(.97)}
+.rb-dialog-btn.primary{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;box-shadow:0 4px 14px rgba(124,58,237,.35)}
+.rb-dialog-btn.primary.publish{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 4px 14px rgba(16,185,129,.4)}
+.rb-dialog-btn.cancel{background:#f3f4f6;color:#4b5563}
+.rb-dialog-btn.cancel:hover{background:#e5e7eb}
+.rb-dialog-note{margin-top:14px;padding:10px 12px;background:#f9fafb;border-right:3px solid #9ca3af;border-radius:8px;font-size:11.5px;color:#6b7280;line-height:1.5;font-weight:500}
+
+/* Diff display */
+.rb-diff-summary{font-size:13px;font-weight:800;color:#0e7490;margin-bottom:10px;padding:10px;background:#ecfeff;border-radius:10px;text-align:center}
+.rb-diff-summary b{font-size:18px;color:#0891b2}
+.rb-diff-list{max-height:280px;overflow-y:auto;margin-bottom:6px}
+.rb-diff-block{background:#f9fafb;border-radius:10px;padding:10px 12px;margin-bottom:6px;border:1px solid #e5e7eb}
+.rb-diff-label{font-size:11.5px;font-weight:800;color:#4c1d95;margin-bottom:6px}
+.rb-diff-line{font-size:12px;font-weight:700;padding:4px 8px;border-radius:6px;margin-bottom:2px;font-family:ui-monospace,monospace;direction:ltr;text-align:left}
+.rb-diff-line.removed{background:#fee2e2;color:#991b1b;text-decoration:line-through}
+.rb-diff-line.added{background:#d1fae5;color:#065f46}
+.rb-diff-generic{text-align:center;padding:16px;color:#6b7280;font-size:12px;font-weight:600}
+
+/* Warnings in dialog */
+.rb-warn-list{margin-top:12px}
+.rb-warn-item{padding:8px 12px;border-radius:8px;font-size:11.5px;font-weight:700;margin-bottom:4px;line-height:1.4}
+.rb-warn-item.warn{background:#fef3c7;color:#78350f;border-right:3px solid #f59e0b}
+.rb-warn-item.error{background:#fee2e2;color:#991b1b;border-right:3px solid #dc2626}
 .web-btn{padding:10px 16px;border-radius:10px;border:none;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit}
 .web-btn.save{background:linear-gradient(135deg,#10b981,#059669);color:white}
 .web-btn:active{transform:scale(.97)}
@@ -4432,6 +4538,7 @@ async function loadWebsiteHtml(){
       _webCache=html;
       _webFetchState='ready';
       _webFetchSource='primary';
+      _webPublishState.originalHtml=html; // שמור לצורך diff
       return html;
     }
     _webFetchError='הקובץ לא נמצא בריפו deploy-panel (שגיאה '+res.status+')';
@@ -4457,6 +4564,7 @@ function loadWebsiteFromFile(event){
     _webFetchState='ready';
     _webFetchSource='upload';
     _webFetchError='';
+    _webPublishState.originalHtml=e.target.result; // שמור לצורך diff
     hRender();
   };
   reader.onerror=function(){
@@ -4695,6 +4803,352 @@ function downloadEditedSite(){
   iframe.contentWindow.postMessage({type:'rb-get-html'},'*');
 }
 
+// ── פרסום מקצועי של האתר לגיטהאב ──
+// מצב פרסום גלובלי
+let _webPublishState={
+  inProgress:false,
+  lastPublishAt:0,
+  originalHtml:null  // נשמר כשנטען לראשונה - לצורך diff
+};
+
+// שליפת טקסטים מה-HTML לצורך diff (רק טקסטים גלויים, לא tags/styles)
+function extractVisibleTexts(html){
+  if(!html||typeof html!=='string')return{};
+  try{
+    const parser=new DOMParser();
+    const doc=parser.parseFromString(html,'text/html');
+    // הסר script, style, meta
+    doc.querySelectorAll('script,style,meta,link,noscript').forEach(el=>el.remove());
+    const texts={};
+    // שדות חשובים: טלפון, כתובת, מחירים, אינסטגרם
+    const patterns=[
+      {key:'phone',regex:/0\d{1,2}[\s-]?\d{3,4}[\s-]?\d{4}/g,label:'📱 טלפון'},
+      {key:'price',regex:/₪\s?[\d,]+/g,label:'💰 מחיר'},
+      {key:'ig',regex:/@[a-zA-Z0-9._]+/g,label:'📸 אינסטגרם'},
+      {key:'hours',regex:/\d{1,2}:\d{2}/g,label:'🕐 שעה'}
+    ];
+    const bodyText=(doc.body&&(doc.body.innerText||doc.body.textContent))||'';
+    patterns.forEach(p=>{
+      const matches=[...bodyText.matchAll(p.regex)].map(m=>m[0]);
+      if(matches.length)texts[p.key]={label:p.label,values:[...new Set(matches)]};
+    });
+    return texts;
+  }catch(e){
+    console.error('extractVisibleTexts error:',e);
+    return{};
+  }
+}
+
+// חישוב diff בין 2 גרסאות
+function computeDiff(oldHtml,newHtml){
+  const oldTexts=extractVisibleTexts(oldHtml);
+  const newTexts=extractVisibleTexts(newHtml);
+  const changes=[];
+  const allKeys=new Set([...Object.keys(oldTexts),...Object.keys(newTexts)]);
+  allKeys.forEach(k=>{
+    const oldVals=oldTexts[k]?.values||[];
+    const newVals=newTexts[k]?.values||[];
+    const label=(newTexts[k]||oldTexts[k]).label;
+    const added=newVals.filter(v=>!oldVals.includes(v));
+    const removed=oldVals.filter(v=>!newVals.includes(v));
+    if(added.length||removed.length){
+      changes.push({label,added,removed});
+    }
+  });
+  // ספירה כללית של שינויי תווים
+  const oldLen=oldHtml.replace(/\s+/g,' ').length;
+  const newLen=newHtml.replace(/\s+/g,' ').length;
+  return{changes,sizeDiff:newLen-oldLen};
+}
+
+// ולידציה לפני פרסום
+function validateWebsite(html){
+  const warnings=[];
+  // HTML תקין?
+  if(!html.includes('<html')||!html.includes('</html>')){
+    warnings.push({level:'error',msg:'מבנה HTML פגום — חסר תג html'});
+  }
+  if(!html.includes('<body')||!html.includes('</body>')){
+    warnings.push({level:'error',msg:'מבנה HTML פגום — חסר תג body'});
+  }
+  // בדיקת טלפון
+  const phones=[...html.matchAll(/0\d{1,2}[\s-]?\d{3,4}[\s-]?\d{4}/g)].map(m=>m[0]);
+  if(phones.length===0){
+    warnings.push({level:'warn',msg:'לא נמצא מספר טלפון באתר'});
+  }
+  // הסרת תגים שבורים נפוצים
+  if(html.match(/contenteditable/i)){
+    warnings.push({level:'warn',msg:'נמצאו שרידי עריכה (contenteditable) — יסונן אוטומטית'});
+  }
+  if(html.match(/data-rb-edit/i)){
+    warnings.push({level:'warn',msg:'נמצאו שרידי עורך — יסוננו אוטומטית'});
+  }
+  return warnings;
+}
+
+// Toast מקצועי
+function showToast(msg,type='info',duration=3500){
+  // מחק toasts קיימים
+  document.querySelectorAll('.rb-toast').forEach(el=>el.remove());
+  const toast=document.createElement('div');
+  toast.className='rb-toast rb-toast-'+type;
+  toast.innerHTML=msg;
+  document.body.appendChild(toast);
+  // אנימציית כניסה
+  setTimeout(()=>toast.classList.add('show'),10);
+  setTimeout(()=>{
+    toast.classList.remove('show');
+    setTimeout(()=>toast.remove(),300);
+  },duration);
+}
+
+// דיאלוג מקצועי
+function showDialog({title,body,confirmText,cancelText,confirmClass,onConfirm,onCancel}){
+  // מחיקת דיאלוגים קודמים
+  document.querySelectorAll('.rb-dialog-overlay').forEach(el=>el.remove());
+  const overlay=document.createElement('div');
+  overlay.className='rb-dialog-overlay';
+  overlay.innerHTML=`<div class="rb-dialog">
+    <div class="rb-dialog-title">${title}</div>
+    <div class="rb-dialog-body">${body}</div>
+    <div class="rb-dialog-btns">
+      <button class="rb-dialog-btn cancel">${cancelText||'ביטול'}</button>
+      <button class="rb-dialog-btn ${confirmClass||'primary'}">${confirmText||'אישור'}</button>
+    </div>
+  </div>`;
+  document.body.appendChild(overlay);
+  setTimeout(()=>overlay.classList.add('show'),10);
+  const close=()=>{
+    overlay.classList.remove('show');
+    setTimeout(()=>overlay.remove(),250);
+  };
+  overlay.querySelector('.rb-dialog-btn.cancel').onclick=()=>{close();if(onCancel)onCancel();};
+  overlay.querySelector('.rb-dialog-btn:not(.cancel)').onclick=()=>{close();if(onConfirm)onConfirm();};
+  overlay.onclick=(e)=>{if(e.target===overlay){close();if(onCancel)onCancel();}};
+}
+
+// אימות שהאתר באמת התעדכן באמת אחרי הפרסום
+async function verifyPublish(expectedSignature,maxAttempts=5){
+  const checkUrl=WEB_SRC_URL+'?verify='+Date.now();
+  for(let i=0;i<maxAttempts;i++){
+    await new Promise(r=>setTimeout(r,i===0?15000:10000)); // 15s, 25s, 35s...
+    try{
+      const res=await fetch(checkUrl+i,{cache:'no-store'});
+      if(res.ok){
+        const text=await res.text();
+        if(text.includes(expectedSignature))return true;
+      }
+    }catch(e){}
+  }
+  return false;
+}
+
+// חילוץ החתימה הייחודית מ-HTML (עוזר לזהות את הגרסה המפורסמת)
+function extractSignature(html){
+  // מחפש את הטלפון + את האינסטגרם — הכי קריטיים
+  const phone=(html.match(/0\d{1,2}[\s-]?\d{3,4}[\s-]?\d{4}/)||[''])[0];
+  const ig=(html.match(/@[a-zA-Z0-9._]{3,}/)||[''])[0];
+  return phone+'|'+ig;
+}
+
+// ניקוי HTML מפני שרידי עורך
+function sanitizeHtml(html){
+  return html
+    .replace(/\s+contenteditable="[^"]*"/g,'')
+    .replace(/\s+data-rb-edit="[^"]*"/g,'')
+    .replace(/\s+spellcheck="[^"]*"/g,'');
+}
+
+// פרסום — הפונקציה הראשית
+async function publishWebsite(){
+  // Debounce - לא לאפשר פרסום מהיר מדי
+  const now=Date.now();
+  if(_webPublishState.inProgress){
+    showToast('⏳ פרסום בתהליך — אנא המתיני','warn');
+    return;
+  }
+  if(now-_webPublishState.lastPublishAt<10000){
+    const wait=Math.ceil((10000-(now-_webPublishState.lastPublishAt))/1000);
+    showToast(`⏳ המתיני עוד ${wait} שניות לפני פרסום נוסף`,'warn');
+    return;
+  }
+  
+  const iframe=document.getElementById('web-iframe');
+  if(!iframe||!iframe.contentWindow){
+    showToast('⚠️ האתר לא נטען עדיין','error');
+    return;
+  }
+  
+  // שליפת ה-HTML מה-iframe
+  window._rbSetSaveFn(async function(rawHtml,changes){
+    const html=sanitizeHtml(rawHtml);
+    const original=_webPublishState.originalHtml||_webCache||'';
+    
+    // ולידציה
+    const warnings=validateWebsite(html);
+    const errors=warnings.filter(w=>w.level==='error');
+    if(errors.length){
+      showDialog({
+        title:'⛔ לא ניתן לפרסם',
+        body:`<div class="rb-warn-list">${errors.map(w=>`<div class="rb-warn-item error">❌ ${x(w.msg)}</div>`).join('')}</div><div class="rb-dialog-note">יש לתקן את השגיאות לפני הפרסום</div>`,
+        confirmText:'הבנתי',
+        cancelText:'',
+        onConfirm:()=>{}
+      });
+      return;
+    }
+    
+    // חישוב diff
+    const diff=computeDiff(original,html);
+    const totalChanges=diff.changes.length;
+    
+    // אם אין שינויים — אזהרה
+    if(totalChanges===0&&changes===0){
+      showDialog({
+        title:'אין שינויים לפרסום',
+        body:`<div class="rb-dialog-note">לא זוהו שינויים משמעותיים באתר. האם לפרסם בכל זאת?</div>`,
+        confirmText:'כן, פרסם',
+        cancelText:'ביטול',
+        onConfirm:()=>doPublish(html)
+      });
+      return;
+    }
+    
+    // בניית תצוגת ה-diff
+    const diffHtml=diff.changes.length?diff.changes.map(c=>{
+      const removedLine=c.removed.length?`<div class="rb-diff-line removed">- ${c.removed.map(x).join(', ')}</div>`:'';
+      const addedLine=c.added.length?`<div class="rb-diff-line added">+ ${c.added.map(x).join(', ')}</div>`:'';
+      return`<div class="rb-diff-block"><div class="rb-diff-label">${c.label}</div>${removedLine}${addedLine}</div>`;
+    }).join(''):`<div class="rb-diff-generic">${changes} שינויים בטקסט</div>`;
+    
+    // אזהרות (warnings)
+    const warnHtml=warnings.filter(w=>w.level==='warn').length?
+      `<div class="rb-warn-list">${warnings.filter(w=>w.level==='warn').map(w=>`<div class="rb-warn-item warn">⚠️ ${x(w.msg)}</div>`).join('')}</div>`:'';
+    
+    // הצגת הדיאלוג
+    showDialog({
+      title:'🚀 פרסום שינויים לאתר',
+      body:`<div class="rb-diff-summary">זוהו <b>${totalChanges||changes}</b> שינויים</div>
+        <div class="rb-diff-list">${diffHtml}</div>
+        ${warnHtml}
+        <div class="rb-dialog-note">השינויים יפורסמו לאתר החי. לקוחות חדשים יראו אותם מיד.</div>`,
+      confirmText:'פרסם עכשיו',
+      confirmClass:'primary publish',
+      cancelText:'ביטול',
+      onConfirm:()=>doPublish(html)
+    });
+  });
+  
+  iframe.contentWindow.postMessage({type:'rb-get-html'},'*');
+}
+
+// הפרסום עצמו — אחרי אישור
+async function doPublish(html){
+  _webPublishState.inProgress=true;
+  _webPublishState.lastPublishAt=Date.now();
+  
+  // קבלת טוקן
+  let token=localStorage.getItem('gh_deploy_token');
+  if(!token){
+    token=prompt('הכנס GitHub Token (נשמר במכשיר):');
+    if(!token){
+      _webPublishState.inProgress=false;
+      return;
+    }
+    localStorage.setItem('gh_deploy_token',token);
+  }
+  
+  const btn=document.getElementById('web-publish-btn');
+  const status=document.getElementById('web-publish-status');
+  if(btn){btn.disabled=true;btn.innerHTML='⏳ מעלה...';}
+  if(status){status.innerHTML='<span class="rb-spinner"></span> מעלה לגיטהאב...';status.className='web-publish-status loading';}
+  
+  try{
+    const owner='pinto1212121212-create';
+    const repo='deploy-panel';
+    const path='rinat-2.html';
+    const apiUrl=`https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+    
+    // שליפת SHA
+    let sha=null;
+    try{
+      const chkRes=await fetch(apiUrl+'?t='+Date.now(),{
+        headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+      });
+      if(chkRes.ok){
+        const chk=await chkRes.json();
+        if(chk.sha)sha=chk.sha;
+      }else if(chkRes.status===401){
+        throw new Error('UNAUTHORIZED');
+      }
+    }catch(e){
+      if(e.message==='UNAUTHORIZED')throw e;
+    }
+    
+    // העלאה
+    const encoded=btoa(unescape(encodeURIComponent(html)));
+    const commitMsg=`Update rinat-2.html via diary · ${new Date().toLocaleString('he-IL')}`;
+    const body={message:commitMsg,content:encoded};
+    if(sha)body.sha=sha;
+    
+    const res=await fetch(apiUrl,{
+      method:'PUT',
+      headers:{
+        'Authorization':'token '+token,
+        'Accept':'application/vnd.github.v3+json',
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify(body)
+    });
+    const data=await res.json();
+    if(res.status===401)throw new Error('UNAUTHORIZED');
+    if(!data.content)throw new Error(data.message||'שגיאה בהעלאה');
+    
+    // הצלחה — מנקים קאש
+    _webCache=null;
+    _webPublishState.originalHtml=html;
+    
+    if(btn){btn.innerHTML='✅ פורסם';btn.style.background='#059669';}
+    if(status){status.innerHTML='<span class="rb-pulse-dot"></span> מאמת שהאתר התעדכן... (עד 60 שניות)';status.className='web-publish-status loading';}
+    showToast('✅ עלה לגיטהאב · מאמת...','success',4000);
+    
+    // אימות אוטומטי שהאתר התעדכן
+    const signature=extractSignature(html);
+    const verified=await verifyPublish(signature,4);
+    
+    if(verified){
+      if(status){
+        status.innerHTML=`✅ <b>האתר פורסם ומאומת</b> · <a href="https://storied-chaja-55260f.netlify.app/?v=${Date.now()}" target="_blank">פתח אתר חי ←</a>`;
+        status.className='web-publish-status success';
+      }
+      showToast('🎉 האתר התעדכן בהצלחה!','success',5000);
+    }else{
+      if(status){
+        status.innerHTML=`⚠️ עלה לגיטהאב אבל לא אומת באתר · ייתכן שה-Cache של Netlify עוד לא התחדש · <a href="https://storied-chaja-55260f.netlify.app/?v=${Date.now()}" target="_blank">בדקי ידנית ←</a>`;
+        status.className='web-publish-status warn';
+      }
+      showToast('⚠️ עלה אבל האימות נכשל — בדקי ידנית','warn',6000);
+    }
+    
+    setTimeout(()=>{
+      if(btn){btn.disabled=false;btn.innerHTML='🚀 פרסם לאתר';btn.style.background='';}
+    },3000);
+  }catch(e){
+    if(btn){btn.disabled=false;btn.innerHTML='🚀 פרסם לאתר';btn.style.background='';}
+    
+    if(e.message==='UNAUTHORIZED'||(e.message&&e.message.includes('Bad credentials'))){
+      localStorage.removeItem('gh_deploy_token');
+      if(status){status.innerHTML='🔒 הטוקן לא תקף — לחצי שוב "פרסם" ותקבלי הזדמנות להזין טוקן חדש';status.className='web-publish-status error';}
+      showToast('🔒 הטוקן פג — נסי שוב','error',5000);
+    }else{
+      if(status){status.innerHTML='❌ '+x(e.message||'שגיאה לא ידועה');status.className='web-publish-status error';}
+      showToast('❌ '+e.message,'error',5000);
+    }
+  }finally{
+    _webPublishState.inProgress=false;
+  }
+}
+
 const WEB_DEFAULTS={
   url:'https://storied-chaja-55260f.netlify.app',
   phone:'058-5702218',
@@ -4723,10 +5177,12 @@ function renderWebsiteTab(){
       <span id="web-changes-badge" class="web-changes-badge" style="display:none">0 שינויים</span>
     </div>
     <div class="web-toolbar-btns">
-      <button class="web-tb-btn primary" onclick="downloadEditedSite()">💾 הורדה לפרסום</button>
-      <button class="web-tb-btn" onclick="setWebEditMode(false)">✕ יציאה</button>
+      <button class="web-tb-btn primary" id="web-publish-btn" onclick="publishWebsite()">🚀 פרסם לאתר</button>
+      <button class="web-tb-btn" onclick="downloadEditedSite()" title="הורד קובץ כגיבוי">💾</button>
+      <button class="web-tb-btn" onclick="setWebEditMode(false)">✕</button>
     </div>
-  </div>`:`<div class="web-toolbar">
+  </div>
+  <div id="web-publish-status" class="web-publish-status"></div>`:`<div class="web-toolbar">
     <div class="web-toolbar-status">👁 מצב תצוגה${_webFetchSource==='upload'?' · 📁 קובץ מקומי':''} · ככה הלקוחות רואות</div>
     <button class="web-tb-btn primary" onclick="setWebEditMode(true)">✏️ עריכה מלאה</button>
   </div>`;

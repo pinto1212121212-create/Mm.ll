@@ -562,107 +562,62 @@ textarea.task-modal-area{width:100%;border:1.5px solid #e5e7eb;border-radius:12p
 .promo-card-price.paid{background:#fee2e2;color:#991b1b}
 .promo-disclaimer{text-align:center;font-size:10.5px;color:#6b7280;margin-top:20px;padding:12px 16px;background:#f9fafb;border-radius:10px;line-height:1.5;font-weight:500}
 
-/* ── Website Tab — Editor ── */
+/* ── Website Tab — פרסום פשוט כמו הצינור ── */
 .web-status{background:linear-gradient(135deg,#1e40af,#1e3a8a);border-radius:16px;padding:16px;display:flex;align-items:center;gap:12px;margin-bottom:10px;box-shadow:0 6px 20px rgba(30,64,175,.25);color:white;position:relative;overflow:hidden}
 .web-status::before{content:'';position:absolute;top:-30px;left:-30px;width:120px;height:120px;background:rgba(255,255,255,.08);border-radius:50%}
 .web-status-ico{font-size:32px;flex-shrink:0;position:relative;z-index:1}
 .web-status-body{flex:1;min-width:0;position:relative;z-index:1;text-align:right}
 .web-status-label{font-size:11.5px;font-weight:700;opacity:.85;letter-spacing:.4px}
-.web-status-url{font-size:13px;font-weight:800;margin-top:2px;word-break:break-all}
-.web-status-dot{width:10px;height:10px;border-radius:50%;background:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.3);animation:pulse 2s infinite;position:relative;z-index:1;flex-shrink:0}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.web-actions{display:flex;gap:8px;margin-bottom:12px}
-.web-action-btn{flex:1;padding:11px 8px;border-radius:12px;border:1.5px solid #e5e7eb;background:white;font-size:12.5px;font-weight:800;color:#1e1b4b;cursor:pointer;text-decoration:none;text-align:center;font-family:inherit;transition:transform .12s}
+.web-status-url{font-size:13px;font-weight:800;margin-top:2px;word-break:break-all;direction:ltr;text-align:right}
+.web-status-dot{width:10px;height:10px;border-radius:50%;background:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.3);animation:webpulse 2s infinite;position:relative;z-index:1;flex-shrink:0}
+@keyframes webpulse{0%,100%{opacity:1}50%{opacity:.5}}
+.web-actions{display:flex;gap:8px;margin-bottom:14px}
+.web-action-btn{flex:1;padding:12px 8px;border-radius:12px;border:1.5px solid #e5e7eb;background:white;font-size:13px;font-weight:800;color:#1e1b4b;cursor:pointer;text-decoration:none;text-align:center;font-family:inherit;transition:transform .12s}
 .web-action-btn:active{transform:scale(.97)}
 .web-action-btn.primary{background:linear-gradient(135deg,#1e40af,#1e3a8a);color:white;border-color:transparent}
-.web-iframe-card{background:white;border-radius:16px;padding:0;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);overflow:hidden}
-.web-toolbar{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f9fafb;border-bottom:1px solid #e5e7eb;gap:8px;flex-wrap:wrap}
-.web-toolbar.edit{background:linear-gradient(135deg,#ede9fe,#ddd6fe);border-bottom-color:#c4b5fd}
-.web-toolbar-status{font-size:11.5px;font-weight:800;color:#4c1d95;display:flex;align-items:center;gap:8px}
-.web-changes-badge{background:#7c3aed;color:white;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:800}
-.web-toolbar-btns{display:flex;gap:6px}
-.web-tb-btn{padding:7px 12px;border-radius:9px;border:none;background:white;color:#4c1d95;font-size:11.5px;font-weight:800;cursor:pointer;font-family:inherit;border:1px solid #c4b5fd}
-.web-tb-btn.primary{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;border-color:transparent}
-.web-tb-btn:active{transform:scale(.95)}
-.web-iframe-wrap{width:100%;height:500px;background:#f3f4f6;position:relative;overflow:hidden}
-.web-iframe-wrap.editing{height:580px;box-shadow:inset 0 0 0 3px #7c3aed}
-.web-iframe-wrap iframe{width:100%;height:100%;border:0}
-.web-loading,.web-error{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:30px;text-align:center;color:#6b7280;font-size:13px;font-weight:600}
-.web-error-ico{font-size:40px;margin-bottom:10px}
-.web-error-title{font-size:14px;font-weight:800;color:#1e1b4b;margin-bottom:4px}
-.web-error-sub{font-size:11.5px;color:#4b5563;line-height:1.7;max-width:300px;text-align:right}
-.web-error-sub b{color:#1e1b4b;font-weight:800}
-.web-error-detail{font-size:10px;color:#9ca3af;margin-top:10px;max-width:280px;font-family:monospace;word-break:break-all;text-align:center}
-.web-error-or{font-size:10px;font-weight:800;color:#9ca3af;letter-spacing:2px;margin:14px 0 8px;text-transform:uppercase}
-.web-error-actions{display:flex;flex-direction:column;gap:8px;width:100%;max-width:300px}
-.web-btn.upload-btn{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;cursor:pointer;text-align:center;display:block}
-.web-btn.view-btn{background:#f3f4f6;color:#4b5563;border:1px solid #d1d5db}
-.web-tb-note{font-size:11px;color:#9ca3af;font-weight:700;font-style:italic;padding:0 8px}
-.web-publish-status{padding:10px 14px;font-size:11.5px;font-weight:700;text-align:right;border-bottom:1px solid #e5e7eb;display:none;align-items:center;gap:6px}
-.web-publish-status.loading{background:linear-gradient(to left,#fef3c7,#fde68a);color:#78350f;display:flex}
-.web-publish-status.success{background:linear-gradient(to left,#d1fae5,#a7f3d0);color:#065f46;display:flex}
-.web-publish-status.error{background:linear-gradient(to left,#fee2e2,#fecaca);color:#991b1b;display:flex}
-.web-publish-status.warn{background:linear-gradient(to left,#fef3c7,#fde68a);color:#78350f;display:flex}
-.web-publish-status a{margin-right:4px;color:inherit;text-decoration:underline;font-weight:800}
-.web-publish-status b{font-weight:900}
-.rb-spinner{display:inline-block;width:12px;height:12px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:rb-spin 0.7s linear infinite;flex-shrink:0}
-@keyframes rb-spin{to{transform:rotate(360deg)}}
-.rb-pulse-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:currentColor;animation:rb-pulse 1.5s ease-in-out infinite;flex-shrink:0}
-@keyframes rb-pulse{0%,100%{opacity:.4;transform:scale(.9)}50%{opacity:1;transform:scale(1.1)}}
 
-/* Professional Toast */
-.rb-toast{position:fixed;bottom:80px;right:50%;transform:translateX(50%) translateY(20px);z-index:9999;padding:12px 18px;border-radius:14px;font-size:13px;font-weight:800;color:white;box-shadow:0 10px 30px rgba(0,0,0,.25);opacity:0;transition:all .3s ease;max-width:90vw;text-align:center;direction:rtl;font-family:inherit}
-.rb-toast.show{opacity:1;transform:translateX(50%) translateY(0)}
-.rb-toast-info{background:linear-gradient(135deg,#0891b2,#0e7490)}
-.rb-toast-success{background:linear-gradient(135deg,#10b981,#059669)}
-.rb-toast-warn{background:linear-gradient(135deg,#f59e0b,#d97706)}
-.rb-toast-error{background:linear-gradient(135deg,#ef4444,#dc2626)}
-@media(min-width:768px){.rb-toast{bottom:32px;max-width:400px}}
+/* Deploy card — כמו הצינור */
+.web-deploy-card{background:white;border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 4px 16px rgba(124,58,237,.12);border:1px solid #ede9fe}
+.web-deploy-title{font-size:15px;font-weight:900;color:#4c1d95;margin-bottom:4px;text-align:right}
+.web-deploy-sub{font-size:12px;color:#6b7280;margin-bottom:14px;text-align:right;line-height:1.5}
+.web-upload-btn{background:linear-gradient(135deg,#7c3aed,#5b21b6);border:none;border-radius:14px;padding:16px;color:white;font-weight:800;cursor:pointer;font-size:15px;font-family:inherit;width:100%;box-shadow:0 6px 20px rgba(124,58,237,.35);transition:all .15s}
+.web-upload-btn:active{transform:scale(.98)}
+.web-upload-btn:disabled{opacity:.7;cursor:wait}
+.web-prog{background:#f3f0ff;border-radius:8px;overflow:hidden;margin-top:10px;height:6px;display:none}
+.web-progbar{height:100%;background:linear-gradient(90deg,#7c3aed,#a855f7);border-radius:8px;transition:width .4s}
+.web-step{font-size:12px;color:#7c3aed;margin-top:8px;text-align:center;font-weight:700;min-height:18px}
+.web-step.ok{color:#059669}
+.web-step.err{color:#dc2626}
+.web-step a{color:inherit;text-decoration:underline;font-weight:800}
 
-/* Professional Dialog */
-.rb-dialog-overlay{position:fixed;inset:0;background:rgba(15,23,42,.7);z-index:9998;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .25s ease;backdrop-filter:blur(4px)}
-.rb-dialog-overlay.show{opacity:1}
-.rb-dialog{background:white;border-radius:20px;max-width:440px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 25px 50px -12px rgba(0,0,0,.4);transform:scale(.95);transition:transform .25s ease;direction:rtl;font-family:inherit}
-.rb-dialog-overlay.show .rb-dialog{transform:scale(1)}
-.rb-dialog-title{padding:18px 20px 10px;font-size:17px;font-weight:900;color:#1e1b4b;text-align:right;border-bottom:1px solid #f3f4f6}
-.rb-dialog-body{padding:16px 20px;font-size:13px;color:#374151;line-height:1.6;text-align:right}
-.rb-dialog-btns{padding:12px 20px 18px;display:flex;gap:10px;justify-content:flex-start;flex-direction:row-reverse}
-.rb-dialog-btn{padding:11px 22px;border-radius:12px;border:none;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;transition:transform .1s,box-shadow .15s}
-.rb-dialog-btn:active{transform:scale(.97)}
-.rb-dialog-btn.primary{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;box-shadow:0 4px 14px rgba(124,58,237,.35)}
-.rb-dialog-btn.primary.publish{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 4px 14px rgba(16,185,129,.4)}
-.rb-dialog-btn.cancel{background:#f3f4f6;color:#4b5563}
-.rb-dialog-btn.cancel:hover{background:#e5e7eb}
-.rb-dialog-note{margin-top:14px;padding:10px 12px;background:#f9fafb;border-right:3px solid #9ca3af;border-radius:8px;font-size:11.5px;color:#6b7280;line-height:1.5;font-weight:500}
+/* Info card */
+.web-info-card{background:linear-gradient(135deg,#fef9c3,#fde68a);border-radius:14px;padding:14px;margin-bottom:12px;border:1px solid #fcd34d}
+.web-info-title{font-size:12.5px;font-weight:900;color:#78350f;margin-bottom:10px;text-align:right}
+.web-info-item{font-size:12px;color:#78350f;line-height:1.7;padding:3px 0;text-align:right;font-weight:600}
+.web-info-item b{color:#92400e;font-weight:900;margin-left:6px}
+.web-info-sub{font-size:11.5px;color:#92400e;margin-top:10px;padding-top:8px;border-top:1px dashed #fcd34d;text-align:right;font-weight:700}
 
-/* Diff display */
-.rb-diff-summary{font-size:13px;font-weight:800;color:#0e7490;margin-bottom:10px;padding:10px;background:#ecfeff;border-radius:10px;text-align:center}
-.rb-diff-summary b{font-size:18px;color:#0891b2}
-.rb-diff-list{max-height:280px;overflow-y:auto;margin-bottom:6px}
-.rb-diff-block{background:#f9fafb;border-radius:10px;padding:10px 12px;margin-bottom:6px;border:1px solid #e5e7eb}
-.rb-diff-label{font-size:11.5px;font-weight:800;color:#4c1d95;margin-bottom:6px}
-.rb-diff-line{font-size:12px;font-weight:700;padding:4px 8px;border-radius:6px;margin-bottom:2px;font-family:ui-monospace,monospace;direction:ltr;text-align:left}
-.rb-diff-line.removed{background:#fee2e2;color:#991b1b;text-decoration:line-through}
-.rb-diff-line.added{background:#d1fae5;color:#065f46}
-.rb-diff-generic{text-align:center;padding:16px;color:#6b7280;font-size:12px;font-weight:600}
+/* Editor overlay — textarea fullscreen */
+.web-editor-overlay{position:fixed;inset:0;background:#0f172a;z-index:9998;display:none;flex-direction:column;padding:14px;direction:rtl;font-family:inherit}
+.web-editor-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.web-editor-title{flex:1;font-size:16px;font-weight:800;color:#5eead4}
+.web-editor-textarea{flex:1;background:#1e293b;border:1px solid #334155;border-radius:12px;color:#e2e8f0;font-size:12px;font-family:ui-monospace,Menlo,Consolas,monospace;padding:12px;resize:none;outline:none;direction:ltr;text-align:left;line-height:1.6;min-height:0}
+.web-editor-textarea:focus{border-color:#7c3aed}
+.web-editor-status{font-size:12px;color:#5eead4;text-align:center;min-height:18px;margin-top:8px;font-weight:700}
+.web-editor-status.err{color:#f87171}
+.web-editor-status.ok{color:#4ade80}
+.web-editor-status a{color:inherit;text-decoration:underline;font-weight:800}
+.web-editor-btns{display:flex;gap:8px;margin-top:10px}
+.web-editor-btn{border:none;border-radius:10px;padding:13px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit;color:white}
+.web-editor-btn.save{flex:2;background:linear-gradient(135deg,#7c3aed,#5b21b6)}
+.web-editor-btn.cancel{flex:1;background:#334155}
+.web-editor-btn.download{flex:1;background:#1e3a5f;color:#7dd3fc;border:1px solid #334155}
+.web-editor-btn:disabled{opacity:.6;cursor:wait}
 
-/* Warnings in dialog */
-.rb-warn-list{margin-top:12px}
-.rb-warn-item{padding:8px 12px;border-radius:8px;font-size:11.5px;font-weight:700;margin-bottom:4px;line-height:1.4}
-.rb-warn-item.warn{background:#fef3c7;color:#78350f;border-right:3px solid #f59e0b}
-.rb-warn-item.error{background:#fee2e2;color:#991b1b;border-right:3px solid #dc2626}
-.web-btn{padding:10px 16px;border-radius:10px;border:none;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit}
-.web-btn.save{background:linear-gradient(135deg,#10b981,#059669);color:white}
-.web-btn:active{transform:scale(.97)}
-.web-hint{background:linear-gradient(135deg,#fef9c3,#fde68a);padding:10px 14px;display:flex;align-items:flex-start;gap:8px;border-bottom:1px solid #fcd34d}
-.web-hint-ico{font-size:18px;flex-shrink:0}
-.web-hint-txt{font-size:11.5px;color:#78350f;line-height:1.5;text-align:right;font-weight:600}
-.web-hint-txt b{font-weight:800}
-.web-tips{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border-radius:14px;padding:14px;margin-bottom:12px;border:1px solid #fcd34d}
-.web-tips-hdr{font-size:12.5px;font-weight:800;color:#78350f;margin-bottom:8px;text-align:right}
-.web-tip{font-size:11.5px;color:#78350f;line-height:1.55;margin-bottom:6px;padding:5px 10px 5px 0;border-right:2px solid #f59e0b;font-weight:600;text-align:right}
-.web-tip:last-child{margin-bottom:0}
-.web-footer{text-align:center;font-size:10.5px;color:#9ca3af;margin-top:16px;padding:10px 12px;line-height:1.5;font-weight:500}
+/* Toast */
+.web-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;padding:12px 24px;border-radius:14px;font-size:14px;font-weight:800;z-index:99999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;box-shadow:0 10px 30px rgba(0,0,0,.25);direction:rtl;font-family:inherit}
+.web-toast.err{background:linear-gradient(135deg,#ef4444,#dc2626)}
+.web-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* ── Monthly Chart — Professional ── */
 .chart-screen{position:fixed;inset:0;z-index:500;background:#f8f7fc;display:flex;flex-direction:column;animation:slideUp .32s cubic-bezier(.22,.68,0,1.2)}
@@ -4513,708 +4468,207 @@ function renderPromoTab(){
     <div class="promo-disclaimer">💡 המחירים הם הערכה ממוצעת בלבד — משתנים לפי גודל מודעה, תדירות ותקופה. תמיד שווה להתמקח ולהשוות.</div>`;
 }
 
-// ── Website Management Tab — עורך HTML אמיתי ──
-const WEB_SRC_URL='https://pinto1212121212-create.github.io/deploy-panel/rinat-2.html';
-const WEB_LIVE_URL='https://storied-chaja-55260f.netlify.app/';
-// Cache of fetched website HTML (for current session only)
-let _webCache=null;
-let _webFetchState='idle'; // idle | loading | ready | error
-let _webFetchSource=''; // 'primary' | 'upload'
-let _webFetchError='';
-let _webEditMode=false; // false=preview, true=edit
+// ── Website Tab — פרסום פשוט כמו הצינור ──
+const WEB_REPO='rb-prolaser';
+const WEB_OWNER='pinto1212121212-create';
+const WEB_LIVE_URL='https://pinto1212121212-create.github.io/rb-prolaser/';
 
-async function loadWebsiteHtml(){
-  if(_webCache)return _webCache;
-  _webFetchState='loading';
-  _webFetchError='';
-  
-  // Only GitHub Pages works due to CORS
-  try{
-    // Cache-busting with timestamp - mobile browsers sometimes cache 404s
-    const bustUrl=WEB_SRC_URL+'?v='+Date.now();
-    const res=await fetch(bustUrl,{cache:'no-store'});
-    if(res.ok){
-      const html=await res.text();
-      _webCache=html;
-      _webFetchState='ready';
-      _webFetchSource='primary';
-      _webPublishState.originalHtml=html; // שמור לצורך diff
-      return html;
-    }
-    _webFetchError='הקובץ לא נמצא בריפו deploy-panel (שגיאה '+res.status+')';
-  }catch(e){
-    _webFetchError='שגיאת רשת: '+e.message;
-  }
-  
-  _webFetchState='error';
-  return null;
+let _webEdit={sha:'',loaded:false};
+
+function webToast(msg,isErr){
+  document.querySelectorAll('.web-toast').forEach(e=>e.remove());
+  const t=document.createElement('div');
+  t.className='web-toast'+(isErr?' err':'');
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.classList.add('show'),10);
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},3500);
 }
 
-// Load HTML from a user-uploaded file
-function loadWebsiteFromFile(event){
-  const file=event.target.files&&event.target.files[0];
+async function webUpload(input){
+  const file=input.files[0];
   if(!file)return;
-  if(!file.name.match(/\.html?$/i)){
-    alert('בבקשה בחרי קובץ HTML בלבד');
-    return;
-  }
-  const reader=new FileReader();
-  reader.onload=function(e){
-    _webCache=e.target.result;
-    _webFetchState='ready';
-    _webFetchSource='upload';
-    _webFetchError='';
-    _webPublishState.originalHtml=e.target.result; // שמור לצורך diff
-    hRender();
-  };
-  reader.onerror=function(){
-    alert('לא הצלחתי לקרוא את הקובץ');
-  };
-  reader.readAsText(file,'UTF-8');
-}
-
-function toggleWebEdit(){
-  _webEditMode=!_webEditMode;
-  renderWebsiteIframe();
-}
-
-function reloadWebsite(){
-  _webCache=null;
-  _webFetchState='idle';
-  _webFetchError='';
-  _webEditMode=false;
-  // Show loading immediately, then trigger fetch
-  const wrap=document.getElementById('web-iframe-wrap');
-  if(wrap)wrap.innerHTML='<div class="web-loading">⏳ טוען את האתר מחדש...</div>';
-  setTimeout(()=>renderWebsiteIframe(),100);
-}
-
-// Inject editable attributes into the iframe HTML
-function injectEditableAttrs(html){
-  // Make all text-containing elements editable
-  // Parse approach: we inject a <base> tag + a style + contenteditable scripts
-  const editorScript=`
-<style>
-  body.rb-edit-mode{padding-bottom:80px!important}
-  body.rb-edit-mode [data-rb-edit="1"]{outline:2px dashed rgba(124,58,237,.3);outline-offset:2px;cursor:text;transition:outline .15s;position:relative}
-  body.rb-edit-mode [data-rb-edit="1"]:hover{outline:2px dashed #7c3aed;background:rgba(237,233,254,.3)}
-  body.rb-edit-mode [data-rb-edit="1"]:focus{outline:2px solid #7c3aed;background:rgba(237,233,254,.5);box-shadow:0 0 0 4px rgba(124,58,237,.15)}
-  #rb-edit-banner{position:fixed;top:0;left:0;right:0;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;padding:10px 14px;z-index:999999;font-family:system-ui,-apple-system,sans-serif;font-size:13px;font-weight:700;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 12px rgba(0,0,0,.2);direction:rtl}
-  #rb-edit-banner.hidden{display:none}
-  #rb-edit-banner .rb-changes{background:rgba(255,255,255,.2);padding:3px 9px;border-radius:10px;font-size:11px;font-weight:800}
-</style>
-<div id="rb-edit-banner" class="hidden">
-  <span>✏️ מצב עריכה · לחצי על כל טקסט כדי לערוך</span>
-  <span class="rb-changes" id="rb-changes">0 שינויים</span>
-</div>
-<scr`+`ipt>
-(function(){
-  let changes=0;
-  const banner=document.getElementById('rb-edit-banner');
-  const changesEl=document.getElementById('rb-changes');
-  
-  // Mark all text-bearing leaf elements as editable
-  function markEditable(){
-    const selectors='h1,h2,h3,h4,h5,h6,p,span,a,li,button,td,th,label,div';
-    document.querySelectorAll(selectors).forEach(el=>{
-      if(el.id==='rb-edit-banner'||el.closest('#rb-edit-banner'))return;
-      // Only if has direct text content (not just child elements)
-      const hasDirectText=Array.from(el.childNodes).some(n=>n.nodeType===3&&n.textContent.trim().length>2);
-      if(hasDirectText){
-        el.setAttribute('data-rb-edit','1');
-      }
-    });
-  }
-  markEditable();
-  
-  // Listen for edit mode toggle from parent
-  window.addEventListener('message',function(e){
-    if(!e.data||typeof e.data!=='object')return;
-    if(e.data.type==='rb-set-edit'){
-      if(e.data.edit){
-        document.body.classList.add('rb-edit-mode');
-        banner.classList.remove('hidden');
-        document.querySelectorAll('[data-rb-edit="1"]').forEach(el=>{
-          el.setAttribute('contenteditable','true');
-          el.setAttribute('spellcheck','false');
-        });
-      }else{
-        document.body.classList.remove('rb-edit-mode');
-        banner.classList.add('hidden');
-        document.querySelectorAll('[data-rb-edit="1"]').forEach(el=>{
-          el.removeAttribute('contenteditable');
-        });
-      }
-    }
-    if(e.data.type==='rb-get-html'){
-      // Clean up before sending
-      const clone=document.documentElement.cloneNode(true);
-      // Remove editor artifacts
-      const banner=clone.querySelector('#rb-edit-banner');if(banner)banner.remove();
-      const styleBlocks=clone.querySelectorAll('style');
-      styleBlocks.forEach(s=>{if(s.textContent.includes('rb-edit-mode'))s.remove();});
-      const scripts=clone.querySelectorAll('script');
-      scripts.forEach(s=>{if(s.textContent.includes('rb-edit-mode')||s.textContent.includes('rb-get-html'))s.remove();});
-      clone.querySelectorAll('[data-rb-edit]').forEach(el=>{
-        el.removeAttribute('data-rb-edit');
-        el.removeAttribute('contenteditable');
-        el.removeAttribute('spellcheck');
-      });
-      const fullHtml='<!DOCTYPE html>\n'+clone.outerHTML;
-      window.parent.postMessage({type:'rb-html-result',html:fullHtml,changes:changes},'*');
-    }
-  });
-  
-  // Track changes
-  document.addEventListener('input',function(e){
-    if(e.target.hasAttribute&&e.target.hasAttribute('data-rb-edit')){
-      changes++;
-      if(changesEl)changesEl.textContent=changes+' שינויים';
-      window.parent.postMessage({type:'rb-change-count',count:changes},'*');
-    }
-  });
-  
-  // Prevent navigation in edit mode
-  document.addEventListener('click',function(e){
-    if(document.body.classList.contains('rb-edit-mode')){
-      const a=e.target.closest('a');
-      if(a){e.preventDefault();}
-    }
-  });
-  
-  // Signal ready
-  window.parent.postMessage({type:'rb-ready'},'*');
-})();
-</scr`+`ipt>
-`;
-  // Inject just before </body>
-  if(html.includes('</body>')){
-    return html.replace('</body>',editorScript+'\n</body>');
-  }
-  return html+editorScript;
-}
-
-async function renderWebsiteIframe(){
-  const wrap=document.getElementById('web-iframe-wrap');
-  if(!wrap)return;
-  
-  // If we have cached data and state is ready, show it immediately
-  if(_webFetchState==='ready'&&_webCache){
-    const injected=injectEditableAttrs(_webCache);
-    const blob=new Blob([injected],{type:'text/html;charset=utf-8'});
-    const blobUrl=URL.createObjectURL(blob);
-    wrap.innerHTML=`<iframe id="web-iframe" src="${blobUrl}" style="width:100%;height:100%;border:0;background:white" onload="onWebIframeLoad()"></iframe>`;
-    return;
-  }
-  
-  // If state is error, try again (treat as idle)
-  if(_webFetchState==='error'){
-    _webFetchState='idle';
-  }
-  
-  if(_webFetchState==='idle'){
-    wrap.innerHTML='<div class="web-loading">⏳ טוען את האתר...</div>';
-    const html=await loadWebsiteHtml();
-    if(html){
-      // Success - render iframe
-      const injected=injectEditableAttrs(html);
-      const blob=new Blob([injected],{type:'text/html;charset=utf-8'});
-      const blobUrl=URL.createObjectURL(blob);
-      wrap.innerHTML=`<iframe id="web-iframe" src="${blobUrl}" style="width:100%;height:100%;border:0;background:white" onload="onWebIframeLoad()"></iframe>`;
-      return;
-    }
-    // Failed - show error UI
-    wrap.innerHTML=`<div class="web-error">
-      <div class="web-error-ico">⚠️</div>
-      <div class="web-error-title">האתר עדיין לא זמין לעריכה</div>
-      <div class="web-error-sub">
-        <b>דרך 1 — העלאה לגיטהאב (הכי טוב):</b><br>
-        העלי את <b>rinat-2.html</b> לריפו <b>deploy-panel</b><br>
-        → Settings → Pages → תפעילי Pages<br>
-        → חכי 2 דקות ולחצי "נסי שוב"
-      </div>
-      <div class="web-error-or">— או —</div>
-      <div class="web-error-actions">
-        <label class="web-btn upload-btn">
-          📁 בחרי קובץ rinat-2.html מהמכשיר
-          <input type="file" accept=".html,.htm" onchange="loadWebsiteFromFile(event)" style="display:none">
-        </label>
-      </div>
-      <div class="web-error-detail">${x(_webFetchError||'')}</div>
-      <button class="web-btn save" onclick="reloadWebsite()" style="margin-top:10px">🔄 נסי שוב</button>
-    </div>`;
-  }
-}
-
-function onWebIframeLoad(){
-  // Send edit state to iframe after load
-  setTimeout(()=>{
-    const iframe=document.getElementById('web-iframe');
-    if(!iframe||!iframe.contentWindow)return;
-    iframe.contentWindow.postMessage({type:'rb-set-edit',edit:_webEditMode},'*');
-  },150);
-}
-
-// Listen for messages from iframe
-if(!window._rbMsgListenerAdded){
-  window._rbMsgListenerAdded=true;
-  let _pendingSaveFn=null;
-  window.addEventListener('message',function(e){
-    if(!e.data||typeof e.data!=='object')return;
-    if(e.data.type==='rb-change-count'){
-      const badge=document.getElementById('web-changes-badge');
-      if(badge){badge.textContent=e.data.count+' שינויים';badge.style.display=e.data.count>0?'inline-block':'none';}
-    }
-    if(e.data.type==='rb-html-result'&&_pendingSaveFn){
-      _pendingSaveFn(e.data.html,e.data.changes);
-      _pendingSaveFn=null;
-    }
-  });
-  window._rbSetSaveFn=function(fn){_pendingSaveFn=fn;};
-}
-
-function setWebEditMode(on){
-  _webEditMode=on;
-  const iframe=document.getElementById('web-iframe');
-  if(iframe&&iframe.contentWindow){
-    iframe.contentWindow.postMessage({type:'rb-set-edit',edit:on},'*');
-  }
-  hRender();
-}
-
-function downloadEditedSite(){
-  const iframe=document.getElementById('web-iframe');
-  if(!iframe||!iframe.contentWindow){alert('האתר לא נטען עדיין');return;}
-  window._rbSetSaveFn(function(html,changes){
-    if(changes===0){
-      if(!confirm('לא זוהו שינויים. להוריד את הקובץ בכל זאת?'))return;
-    }
-    const blob=new Blob([html],{type:'text/html;charset=utf-8'});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=url;
-    a.download='rinat-2-updated.html';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(()=>URL.revokeObjectURL(url),1000);
-    setTimeout(()=>alert('✅ הקובץ הורד! העלי אותו לנטלפי דרך deploy-panel כדי לפרסם'),300);
-  });
-  iframe.contentWindow.postMessage({type:'rb-get-html'},'*');
-}
-
-// ── פרסום מקצועי של האתר לגיטהאב ──
-// מצב פרסום גלובלי
-let _webPublishState={
-  inProgress:false,
-  lastPublishAt:0,
-  originalHtml:null  // נשמר כשנטען לראשונה - לצורך diff
-};
-
-// שליפת טקסטים מה-HTML לצורך diff (רק טקסטים גלויים, לא tags/styles)
-function extractVisibleTexts(html){
-  if(!html||typeof html!=='string')return{};
-  try{
-    const parser=new DOMParser();
-    const doc=parser.parseFromString(html,'text/html');
-    // הסר script, style, meta
-    doc.querySelectorAll('script,style,meta,link,noscript').forEach(el=>el.remove());
-    const texts={};
-    // שדות חשובים: טלפון, כתובת, מחירים, אינסטגרם
-    const patterns=[
-      {key:'phone',regex:/0\d{1,2}[\s-]?\d{3,4}[\s-]?\d{4}/g,label:'📱 טלפון'},
-      {key:'price',regex:/₪\s?[\d,]+/g,label:'💰 מחיר'},
-      {key:'ig',regex:/@[a-zA-Z0-9._]+/g,label:'📸 אינסטגרם'},
-      {key:'hours',regex:/\d{1,2}:\d{2}/g,label:'🕐 שעה'}
-    ];
-    const bodyText=(doc.body&&(doc.body.innerText||doc.body.textContent))||'';
-    patterns.forEach(p=>{
-      const matches=[...bodyText.matchAll(p.regex)].map(m=>m[0]);
-      if(matches.length)texts[p.key]={label:p.label,values:[...new Set(matches)]};
-    });
-    return texts;
-  }catch(e){
-    console.error('extractVisibleTexts error:',e);
-    return{};
-  }
-}
-
-// חישוב diff בין 2 גרסאות
-function computeDiff(oldHtml,newHtml){
-  const oldTexts=extractVisibleTexts(oldHtml);
-  const newTexts=extractVisibleTexts(newHtml);
-  const changes=[];
-  const allKeys=new Set([...Object.keys(oldTexts),...Object.keys(newTexts)]);
-  allKeys.forEach(k=>{
-    const oldVals=oldTexts[k]?.values||[];
-    const newVals=newTexts[k]?.values||[];
-    const label=(newTexts[k]||oldTexts[k]).label;
-    const added=newVals.filter(v=>!oldVals.includes(v));
-    const removed=oldVals.filter(v=>!newVals.includes(v));
-    if(added.length||removed.length){
-      changes.push({label,added,removed});
-    }
-  });
-  // ספירה כללית של שינויי תווים
-  const oldLen=oldHtml.replace(/\s+/g,' ').length;
-  const newLen=newHtml.replace(/\s+/g,' ').length;
-  return{changes,sizeDiff:newLen-oldLen};
-}
-
-// ולידציה לפני פרסום
-function validateWebsite(html){
-  const warnings=[];
-  // HTML תקין?
-  if(!html.includes('<html')||!html.includes('</html>')){
-    warnings.push({level:'error',msg:'מבנה HTML פגום — חסר תג html'});
-  }
-  if(!html.includes('<body')||!html.includes('</body>')){
-    warnings.push({level:'error',msg:'מבנה HTML פגום — חסר תג body'});
-  }
-  // בדיקת טלפון
-  const phones=[...html.matchAll(/0\d{1,2}[\s-]?\d{3,4}[\s-]?\d{4}/g)].map(m=>m[0]);
-  if(phones.length===0){
-    warnings.push({level:'warn',msg:'לא נמצא מספר טלפון באתר'});
-  }
-  // הסרת תגים שבורים נפוצים
-  if(html.match(/contenteditable/i)){
-    warnings.push({level:'warn',msg:'נמצאו שרידי עריכה (contenteditable) — יסונן אוטומטית'});
-  }
-  if(html.match(/data-rb-edit/i)){
-    warnings.push({level:'warn',msg:'נמצאו שרידי עורך — יסוננו אוטומטית'});
-  }
-  return warnings;
-}
-
-// Toast מקצועי
-function showToast(msg,type='info',duration=3500){
-  // מחק toasts קיימים
-  document.querySelectorAll('.rb-toast').forEach(el=>el.remove());
-  const toast=document.createElement('div');
-  toast.className='rb-toast rb-toast-'+type;
-  toast.innerHTML=msg;
-  document.body.appendChild(toast);
-  // אנימציית כניסה
-  setTimeout(()=>toast.classList.add('show'),10);
-  setTimeout(()=>{
-    toast.classList.remove('show');
-    setTimeout(()=>toast.remove(),300);
-  },duration);
-}
-
-// דיאלוג מקצועי
-function showDialog({title,body,confirmText,cancelText,confirmClass,onConfirm,onCancel}){
-  // מחיקת דיאלוגים קודמים
-  document.querySelectorAll('.rb-dialog-overlay').forEach(el=>el.remove());
-  const overlay=document.createElement('div');
-  overlay.className='rb-dialog-overlay';
-  overlay.innerHTML=`<div class="rb-dialog">
-    <div class="rb-dialog-title">${title}</div>
-    <div class="rb-dialog-body">${body}</div>
-    <div class="rb-dialog-btns">
-      <button class="rb-dialog-btn cancel">${cancelText||'ביטול'}</button>
-      <button class="rb-dialog-btn ${confirmClass||'primary'}">${confirmText||'אישור'}</button>
-    </div>
-  </div>`;
-  document.body.appendChild(overlay);
-  setTimeout(()=>overlay.classList.add('show'),10);
-  const close=()=>{
-    overlay.classList.remove('show');
-    setTimeout(()=>overlay.remove(),250);
-  };
-  overlay.querySelector('.rb-dialog-btn.cancel').onclick=()=>{close();if(onCancel)onCancel();};
-  overlay.querySelector('.rb-dialog-btn:not(.cancel)').onclick=()=>{close();if(onConfirm)onConfirm();};
-  overlay.onclick=(e)=>{if(e.target===overlay){close();if(onCancel)onCancel();}};
-}
-
-// אימות שהאתר באמת התעדכן באמת אחרי הפרסום
-async function verifyPublish(expectedSignature,maxAttempts=5){
-  const checkUrl=WEB_SRC_URL+'?verify='+Date.now();
-  for(let i=0;i<maxAttempts;i++){
-    await new Promise(r=>setTimeout(r,i===0?15000:10000)); // 15s, 25s, 35s...
-    try{
-      const res=await fetch(checkUrl+i,{cache:'no-store'});
-      if(res.ok){
-        const text=await res.text();
-        if(text.includes(expectedSignature))return true;
-      }
-    }catch(e){}
-  }
-  return false;
-}
-
-// חילוץ החתימה הייחודית מ-HTML (עוזר לזהות את הגרסה המפורסמת)
-function extractSignature(html){
-  // מחפש את הטלפון + את האינסטגרם — הכי קריטיים
-  const phone=(html.match(/0\d{1,2}[\s-]?\d{3,4}[\s-]?\d{4}/)||[''])[0];
-  const ig=(html.match(/@[a-zA-Z0-9._]{3,}/)||[''])[0];
-  return phone+'|'+ig;
-}
-
-// ניקוי HTML מפני שרידי עורך
-function sanitizeHtml(html){
-  return html
-    .replace(/\s+contenteditable="[^"]*"/g,'')
-    .replace(/\s+data-rb-edit="[^"]*"/g,'')
-    .replace(/\s+spellcheck="[^"]*"/g,'');
-}
-
-// פרסום — הפונקציה הראשית
-async function publishWebsite(){
-  // Debounce - לא לאפשר פרסום מהיר מדי
-  const now=Date.now();
-  if(_webPublishState.inProgress){
-    showToast('⏳ פרסום בתהליך — אנא המתיני','warn');
-    return;
-  }
-  if(now-_webPublishState.lastPublishAt<10000){
-    const wait=Math.ceil((10000-(now-_webPublishState.lastPublishAt))/1000);
-    showToast(`⏳ המתיני עוד ${wait} שניות לפני פרסום נוסף`,'warn');
-    return;
-  }
-  
-  const iframe=document.getElementById('web-iframe');
-  if(!iframe||!iframe.contentWindow){
-    showToast('⚠️ האתר לא נטען עדיין','error');
-    return;
-  }
-  
-  // שליפת ה-HTML מה-iframe
-  window._rbSetSaveFn(async function(rawHtml,changes){
-    const html=sanitizeHtml(rawHtml);
-    const original=_webPublishState.originalHtml||_webCache||'';
-    
-    // ולידציה
-    const warnings=validateWebsite(html);
-    const errors=warnings.filter(w=>w.level==='error');
-    if(errors.length){
-      showDialog({
-        title:'⛔ לא ניתן לפרסם',
-        body:`<div class="rb-warn-list">${errors.map(w=>`<div class="rb-warn-item error">❌ ${x(w.msg)}</div>`).join('')}</div><div class="rb-dialog-note">יש לתקן את השגיאות לפני הפרסום</div>`,
-        confirmText:'הבנתי',
-        cancelText:'',
-        onConfirm:()=>{}
-      });
-      return;
-    }
-    
-    // חישוב diff
-    const diff=computeDiff(original,html);
-    const totalChanges=diff.changes.length;
-    
-    // אם אין שינויים — אזהרה
-    if(totalChanges===0&&changes===0){
-      showDialog({
-        title:'אין שינויים לפרסום',
-        body:`<div class="rb-dialog-note">לא זוהו שינויים משמעותיים באתר. האם לפרסם בכל זאת?</div>`,
-        confirmText:'כן, פרסם',
-        cancelText:'ביטול',
-        onConfirm:()=>doPublish(html)
-      });
-      return;
-    }
-    
-    // בניית תצוגת ה-diff
-    const diffHtml=diff.changes.length?diff.changes.map(c=>{
-      const removedLine=c.removed.length?`<div class="rb-diff-line removed">- ${c.removed.map(x).join(', ')}</div>`:'';
-      const addedLine=c.added.length?`<div class="rb-diff-line added">+ ${c.added.map(x).join(', ')}</div>`:'';
-      return`<div class="rb-diff-block"><div class="rb-diff-label">${c.label}</div>${removedLine}${addedLine}</div>`;
-    }).join(''):`<div class="rb-diff-generic">${changes} שינויים בטקסט</div>`;
-    
-    // אזהרות (warnings)
-    const warnHtml=warnings.filter(w=>w.level==='warn').length?
-      `<div class="rb-warn-list">${warnings.filter(w=>w.level==='warn').map(w=>`<div class="rb-warn-item warn">⚠️ ${x(w.msg)}</div>`).join('')}</div>`:'';
-    
-    // הצגת הדיאלוג
-    showDialog({
-      title:'🚀 פרסום שינויים לאתר',
-      body:`<div class="rb-diff-summary">זוהו <b>${totalChanges||changes}</b> שינויים</div>
-        <div class="rb-diff-list">${diffHtml}</div>
-        ${warnHtml}
-        <div class="rb-dialog-note">השינויים יפורסמו לאתר החי. לקוחות חדשים יראו אותם מיד.</div>`,
-      confirmText:'פרסם עכשיו',
-      confirmClass:'primary publish',
-      cancelText:'ביטול',
-      onConfirm:()=>doPublish(html)
-    });
-  });
-  
-  iframe.contentWindow.postMessage({type:'rb-get-html'},'*');
-}
-
-// הפרסום עצמו — אחרי אישור
-async function doPublish(html){
-  _webPublishState.inProgress=true;
-  _webPublishState.lastPublishAt=Date.now();
-  
-  // קבלת טוקן
   let token=localStorage.getItem('gh_deploy_token');
   if(!token){
     token=prompt('הכנס GitHub Token (נשמר במכשיר):');
-    if(!token){
-      _webPublishState.inProgress=false;
-      return;
-    }
-    localStorage.setItem('gh_deploy_token',token);
+    if(!token){input.value='';return;}
+    localStorage.setItem('gh_deploy_token',token.trim());
+    token=token.trim();
   }
-  
-  const btn=document.getElementById('web-publish-btn');
-  const status=document.getElementById('web-publish-status');
-  if(btn){btn.disabled=true;btn.innerHTML='⏳ מעלה...';}
-  if(status){status.innerHTML='<span class="rb-spinner"></span> מעלה לגיטהאב...';status.className='web-publish-status loading';}
-  
+  const btn=document.getElementById('web-upload-btn');
+  const prog=document.getElementById('web-prog');
+  const pb=document.getElementById('web-progbar');
+  const step=document.getElementById('web-step');
+  btn.disabled=true;btn.textContent='⏳ מעלה...';
+  prog.style.display='block';pb.style.width='15%';
+  step.textContent='📄 קורא קובץ...';step.className='web-step';
   try{
-    const owner='pinto1212121212-create';
-    const repo='deploy-panel';
-    const path='rinat-2.html';
-    const apiUrl=`https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-    
-    // שליפת SHA
-    let sha=null;
-    try{
-      const chkRes=await fetch(apiUrl+'?t='+Date.now(),{
-        headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
-      });
-      if(chkRes.ok){
-        const chk=await chkRes.json();
-        if(chk.sha)sha=chk.sha;
-      }else if(chkRes.status===401){
-        throw new Error('UNAUTHORIZED');
-      }
-    }catch(e){
-      if(e.message==='UNAUTHORIZED')throw e;
-    }
-    
-    // העלאה
-    const encoded=btoa(unescape(encodeURIComponent(html)));
-    const commitMsg=`Update rinat-2.html via diary · ${new Date().toLocaleString('he-IL')}`;
-    const body={message:commitMsg,content:encoded};
-    if(sha)body.sha=sha;
-    
-    const res=await fetch(apiUrl,{
-      method:'PUT',
-      headers:{
-        'Authorization':'token '+token,
-        'Accept':'application/vnd.github.v3+json',
-        'Content-Type':'application/json'
-      },
-      body:JSON.stringify(body)
+    const content=await new Promise((res,rej)=>{
+      const r=new FileReader();
+      r.onload=e=>res(e.target.result);
+      r.onerror=rej;
+      r.readAsText(file);
     });
-    const data=await res.json();
-    if(res.status===401)throw new Error('UNAUTHORIZED');
-    if(!data.content)throw new Error(data.message||'שגיאה בהעלאה');
-    
-    // הצלחה — מנקים קאש
-    _webCache=null;
-    _webPublishState.originalHtml=html;
-    
-    if(btn){btn.innerHTML='✅ פורסם';btn.style.background='#059669';}
-    if(status){status.innerHTML='<span class="rb-pulse-dot"></span> מאמת שהאתר התעדכן... (עד 60 שניות)';status.className='web-publish-status loading';}
-    showToast('✅ עלה לגיטהאב · מאמת...','success',4000);
-    
-    // אימות אוטומטי שהאתר התעדכן
-    const signature=extractSignature(html);
-    const verified=await verifyPublish(signature,4);
-    
-    if(verified){
-      if(status){
-        status.innerHTML=`✅ <b>האתר פורסם ומאומת</b> · <a href="https://storied-chaja-55260f.netlify.app/?v=${Date.now()}" target="_blank">פתח אתר חי ←</a>`;
-        status.className='web-publish-status success';
-      }
-      showToast('🎉 האתר התעדכן בהצלחה!','success',5000);
-    }else{
-      if(status){
-        status.innerHTML=`⚠️ עלה לגיטהאב אבל לא אומת באתר · ייתכן שה-Cache של Netlify עוד לא התחדש · <a href="https://storied-chaja-55260f.netlify.app/?v=${Date.now()}" target="_blank">בדקי ידנית ←</a>`;
-        status.className='web-publish-status warn';
-      }
-      showToast('⚠️ עלה אבל האימות נכשל — בדקי ידנית','warn',6000);
-    }
-    
+    const encoded=btoa(unescape(encodeURIComponent(content)));
+    pb.style.width='45%';step.textContent='⬆️ מעלה לגיטהאב...';
+    const apiUrl=`https://api.github.com/repos/${WEB_OWNER}/${WEB_REPO}/contents/index.html`;
+    const chk=await(await fetch(apiUrl+'?t='+Date.now(),{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Cache-Control':'no-cache'}})).json();
+    const body={message:'Update via diary · '+new Date().toLocaleString('he-IL'),content:encoded};
+    if(chk.sha)body.sha=chk.sha;
+    pb.style.width='75%';
+    const res=await fetch(apiUrl,{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+    const d=await res.json();
+    if(res.status===401){localStorage.removeItem('gh_deploy_token');throw new Error('הטוקן לא תקף — לחץ שוב');}
+    if(!d.content)throw new Error(d.message||'שגיאה בהעלאה');
+    pb.style.width='100%';
+    btn.textContent='✅ עלה!';btn.style.background='linear-gradient(135deg,#10b981,#059669)';
+    step.innerHTML=`✅ <a href="${WEB_LIVE_URL}?v=${Date.now()}" target="_blank">פתח אתר חי ←</a>`;
+    step.className='web-step ok';
+    webToast('✅ האתר התעדכן בהצלחה!');
     setTimeout(()=>{
-      if(btn){btn.disabled=false;btn.innerHTML='🚀 פרסם לאתר';btn.style.background='';}
-    },3000);
+      btn.disabled=false;
+      btn.innerHTML='🚀 בחר קובץ ופרסם';
+      btn.style.background='';
+      step.textContent='';
+      step.className='web-step';
+      prog.style.display='none';
+      pb.style.width='0%';
+      input.value='';
+    },10000);
   }catch(e){
-    if(btn){btn.disabled=false;btn.innerHTML='🚀 פרסם לאתר';btn.style.background='';}
-    
-    if(e.message==='UNAUTHORIZED'||(e.message&&e.message.includes('Bad credentials'))){
-      localStorage.removeItem('gh_deploy_token');
-      if(status){status.innerHTML='🔒 הטוקן לא תקף — לחצי שוב "פרסם" ותקבלי הזדמנות להזין טוקן חדש';status.className='web-publish-status error';}
-      showToast('🔒 הטוקן פג — נסי שוב','error',5000);
-    }else{
-      if(status){status.innerHTML='❌ '+x(e.message||'שגיאה לא ידועה');status.className='web-publish-status error';}
-      showToast('❌ '+e.message,'error',5000);
-    }
-  }finally{
-    _webPublishState.inProgress=false;
+    btn.disabled=false;
+    btn.innerHTML='🚀 בחר קובץ ופרסם';
+    btn.style.background='';
+    step.textContent='❌ '+e.message;step.className='web-step err';
+    webToast('❌ '+e.message,true);
+    setTimeout(()=>{step.textContent='';step.className='web-step';prog.style.display='none';pb.style.width='0%';input.value='';},4500);
   }
 }
 
-const WEB_DEFAULTS={
-  url:'https://storied-chaja-55260f.netlify.app',
-  phone:'058-5702218',
-  address:'צונדק 10, רמות, ירושלים'
-};
+async function webOpenEditor(){
+  let token=localStorage.getItem('gh_deploy_token');
+  if(!token){
+    token=prompt('הכנס GitHub Token (נשמר במכשיר):');
+    if(!token)return;
+    localStorage.setItem('gh_deploy_token',token.trim());
+    token=token.trim();
+  }
+  let ov=document.getElementById('web-editor-overlay');
+  if(!ov){
+    ov=document.createElement('div');
+    ov.id='web-editor-overlay';
+    ov.className='web-editor-overlay';
+    ov.innerHTML=`<div class="web-editor-top"><div class="web-editor-title">✏️ עריכת האתר</div><button class="web-editor-btn cancel" onclick="webCloseEditor()" style="flex:0 0 auto;padding:9px 16px">✕ סגור</button></div><textarea class="web-editor-textarea" id="web-editor-textarea" spellcheck="false" dir="ltr"></textarea><div class="web-editor-status" id="web-editor-status">⏳ טוען...</div><div class="web-editor-btns"><button class="web-editor-btn cancel" onclick="webCloseEditor()">ביטול</button><button class="web-editor-btn download" onclick="webDownloadEdit()">⬇️ הורד</button><button class="web-editor-btn save" id="web-editor-save" onclick="webSaveEdit()">💾 שמור ופרסם</button></div>`;
+    document.body.appendChild(ov);
+  }
+  ov.style.display='flex';
+  const ta=document.getElementById('web-editor-textarea');
+  const st=document.getElementById('web-editor-status');
+  ta.value='';
+  st.textContent='⏳ טוען קובץ מגיטהאב...';
+  st.className='web-editor-status';
+  try{
+    const r=await fetch(`https://api.github.com/repos/${WEB_OWNER}/${WEB_REPO}/contents/index.html?t=`+Date.now(),
+      {headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Cache-Control':'no-cache'}});
+    const d=await r.json();
+    if(r.status===401){localStorage.removeItem('gh_deploy_token');throw new Error('הטוקן לא תקף');}
+    if(!d.content)throw new Error(d.message||'קובץ לא נמצא');
+    _webEdit.sha=d.sha;
+    _webEdit.loaded=true;
+    ta.value=decodeURIComponent(escape(atob(d.content.replace(/\n/g,''))));
+    st.textContent=`✅ נטען · ${(ta.value.length/1024).toFixed(1)}KB`;
+    st.className='web-editor-status ok';
+  }catch(e){
+    st.textContent='❌ '+e.message;
+    st.className='web-editor-status err';
+    _webEdit.loaded=false;
+  }
+}
+
+function webCloseEditor(){
+  const ov=document.getElementById('web-editor-overlay');
+  if(ov)ov.style.display='none';
+  const btn=document.getElementById('web-editor-save');
+  if(btn){btn.textContent='💾 שמור ופרסם';btn.disabled=false;btn.style.background='';}
+  _webEdit={sha:'',loaded:false};
+}
+
+function webDownloadEdit(){
+  const content=document.getElementById('web-editor-textarea').value;
+  if(!content){webToast('⚠️ אין תוכן',true);return;}
+  const blob=new Blob([content],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='rb-prolaser-index.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  webToast('📥 הקובץ ירד');
+}
+
+async function webSaveEdit(){
+  if(!_webEdit.loaded){webToast('⚠️ הקובץ עוד לא נטען',true);return;}
+  const token=localStorage.getItem('gh_deploy_token');
+  if(!token){webToast('⚠️ אין טוקן',true);return;}
+  const content=document.getElementById('web-editor-textarea').value;
+  const st=document.getElementById('web-editor-status');
+  const btn=document.getElementById('web-editor-save');
+  btn.disabled=true;btn.textContent='⏳ שומר...';
+  st.textContent='⬆️ מעלה לגיטהאב...';st.className='web-editor-status';
+  try{
+    const encoded=btoa(unescape(encodeURIComponent(content)));
+    const body={message:'Edit via diary · '+new Date().toLocaleString('he-IL'),content:encoded,sha:_webEdit.sha};
+    const r=await fetch(`https://api.github.com/repos/${WEB_OWNER}/${WEB_REPO}/contents/index.html`,
+      {method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+    const d=await r.json();
+    if(r.status===401){localStorage.removeItem('gh_deploy_token');throw new Error('הטוקן לא תקף');}
+    if(!d.content)throw new Error(d.message||'שגיאה');
+    btn.textContent='✅ נשמר!';
+    btn.style.background='linear-gradient(135deg,#10b981,#059669)';
+    st.innerHTML=`✅ נשמר! <a href="${WEB_LIVE_URL}?v=${Date.now()}" target="_blank">פתח אתר חי ←</a>`;
+    st.className='web-editor-status ok';
+    webToast('✅ האתר עודכן בהצלחה!');
+    setTimeout(()=>webCloseEditor(),3500);
+  }catch(e){
+    btn.disabled=false;
+    btn.textContent='💾 שמור ופרסם';
+    st.textContent='❌ '+e.message;
+    st.className='web-editor-status err';
+    webToast('❌ '+e.message,true);
+  }
+}
 
 function renderWebsiteTab(){
-  const url=WEB_DEFAULTS.url;
-  const statusCard=`<div class="web-status">
+  return `<div class="web-status">
     <div class="web-status-ico">🌐</div>
     <div class="web-status-body">
-      <div class="web-status-label">האתר הפעיל שלך</div>
-      <div class="web-status-url">${x(url.replace('https://',''))}</div>
+      <div class="web-status-label">האתר של רינת</div>
+      <div class="web-status-url">${WEB_OWNER}/${WEB_REPO}</div>
     </div>
     <div class="web-status-dot"></div>
   </div>
   <div class="web-actions">
-    <a class="web-action-btn primary" href="${url}" target="_blank" rel="noopener">👁 פתח בדפדפן</a>
-    <button class="web-action-btn" onclick="reloadWebsite()">🔄 רענן תצוגה</button>
-  </div>`;
-  
-  // Edit toolbar
-  const editToolbar=_webEditMode?`<div class="web-toolbar edit">
-    <div class="web-toolbar-status">
-      ✏️ מצב עריכה פעיל
-      <span id="web-changes-badge" class="web-changes-badge" style="display:none">0 שינויים</span>
-    </div>
-    <div class="web-toolbar-btns">
-      <button class="web-tb-btn primary" id="web-publish-btn" onclick="publishWebsite()">🚀 פרסם לאתר</button>
-      <button class="web-tb-btn" onclick="downloadEditedSite()" title="הורד קובץ כגיבוי">💾</button>
-      <button class="web-tb-btn" onclick="setWebEditMode(false)">✕</button>
-    </div>
+    <a class="web-action-btn primary" href="${WEB_LIVE_URL}" target="_blank" rel="noopener">👁 פתח אתר חי</a>
+    <button class="web-action-btn" onclick="webOpenEditor()">✏️ ערוך HTML</button>
   </div>
-  <div id="web-publish-status" class="web-publish-status"></div>`:`<div class="web-toolbar">
-    <div class="web-toolbar-status">👁 מצב תצוגה${_webFetchSource==='upload'?' · 📁 קובץ מקומי':''} · ככה הלקוחות רואות</div>
-    <button class="web-tb-btn primary" onclick="setWebEditMode(true)">✏️ עריכה מלאה</button>
-  </div>`;
-  
-  // Instructions when in edit mode
-  const instructions=_webEditMode?`<div class="web-hint">
-    <div class="web-hint-ico">💡</div>
-    <div class="web-hint-txt"><b>איך לערוך:</b> לחצי על כל טקסט באתר (מחירים, כותרות, תיאורים) וכתבי את השינוי. בסוף לחצי "הורדה לפרסום" כדי לקבל קובץ מעודכן.</div>
-  </div>`:'';
-  
-  // The iframe wrapper  
-  const iframeSection=`<div class="web-iframe-card">
-    ${editToolbar}
-    ${instructions}
-    <div id="web-iframe-wrap" class="web-iframe-wrap ${_webEditMode?'editing':''}"></div>
-  </div>`;
-  
-  // Tips
-  const tipsCard=`<div class="web-tips">
-    <div class="web-tips-hdr">📝 מה כדאי לעדכן באתר?</div>
-    <div class="web-tip">💰 מחירים — אם העלית או הורדת טיפול</div>
-    <div class="web-tip">🎁 מבצעים — הכניסי מבצע עדכני לחודש הקרוב</div>
-    <div class="web-tip">📸 תמונות — תמונת לפני/אחרי חדשה (לחצי על התמונה ושני src)</div>
-    <div class="web-tip">🕐 שעות פעילות — אם שינית שעות או ימי עבודה</div>
-    <div class="web-tip">⭐ ביקורות — הוסיפי ציטוט של לקוחה מרוצה</div>
+  <div class="web-deploy-card">
+    <div class="web-deploy-title">🚀 פרסום אתר חדש</div>
+    <div class="web-deploy-sub">בחרי קובץ HTML מהמכשיר — יעלה אוטומטית לגיטהאב וישתקף באתר החי תוך דקה</div>
+    <input type="file" accept=".html,.htm" id="web-file-input" style="display:none" onchange="webUpload(this)">
+    <button class="web-upload-btn" id="web-upload-btn" onclick="document.getElementById('web-file-input').click()">🚀 בחר קובץ ופרסם</button>
+    <div class="web-prog" id="web-prog"><div class="web-progbar" id="web-progbar" style="width:0%"></div></div>
+    <div class="web-step" id="web-step"></div>
   </div>
-  <div class="web-footer">💾 הקובץ שמועלה לפרסום — rinat-2-updated.html · העלי לנטלפי דרך deploy-panel</div>`;
-  
-  // Trigger iframe load after render
-  setTimeout(()=>renderWebsiteIframe(),50);
-  
-  return`${statusCard}${iframeSection}${tipsCard}`;
+  <div class="web-info-card">
+    <div class="web-info-title">📋 איך זה עובד?</div>
+    <div class="web-info-item"><b>1.</b> לחצי "בחר קובץ ופרסם"</div>
+    <div class="web-info-item"><b>2.</b> בחרי את קובץ ה-HTML המעודכן</div>
+    <div class="web-info-item"><b>3.</b> הקובץ יעלה אוטומטית לגיטהאב</div>
+    <div class="web-info-item"><b>4.</b> האתר יתעדכן תוך דקה</div>
+    <div class="web-info-sub">💡 או לחצי "ערוך HTML" כדי לערוך את האתר ישירות מכאן</div>
+  </div>`;
 }
 
 // Navigate from home feature tiles to the right spot

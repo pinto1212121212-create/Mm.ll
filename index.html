@@ -593,6 +593,11 @@ textarea.task-modal-area{width:100%;border:1.5px solid #e5e7eb;border-radius:12p
 .web-error-sub{font-size:11.5px;color:#4b5563;line-height:1.7;max-width:300px;text-align:right}
 .web-error-sub b{color:#1e1b4b;font-weight:800}
 .web-error-detail{font-size:10px;color:#9ca3af;margin-top:10px;max-width:280px;font-family:monospace;word-break:break-all;text-align:center}
+.web-error-or{font-size:10px;font-weight:800;color:#9ca3af;letter-spacing:2px;margin:14px 0 8px;text-transform:uppercase}
+.web-error-actions{display:flex;flex-direction:column;gap:8px;width:100%;max-width:300px}
+.web-btn.upload-btn{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;cursor:pointer;text-align:center;display:block}
+.web-btn.view-btn{background:#f3f4f6;color:#4b5563;border:1px solid #d1d5db}
+.web-tb-note{font-size:11px;color:#9ca3af;font-weight:700;font-style:italic;padding:0 8px}
 .web-btn{padding:10px 16px;border-radius:10px;border:none;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit}
 .web-btn.save{background:linear-gradient(135deg,#10b981,#059669);color:white}
 .web-btn:active{transform:scale(.97)}
@@ -1907,6 +1912,11 @@ function getLaserAnim(){
 .web-error-sub{font-size:11.5px;color:#4b5563;line-height:1.7;max-width:300px;text-align:right}
 .web-error-sub b{color:#1e1b4b;font-weight:800}
 .web-error-detail{font-size:10px;color:#9ca3af;margin-top:10px;max-width:280px;font-family:monospace;word-break:break-all;text-align:center}
+.web-error-or{font-size:10px;font-weight:800;color:#9ca3af;letter-spacing:2px;margin:14px 0 8px;text-transform:uppercase}
+.web-error-actions{display:flex;flex-direction:column;gap:8px;width:100%;max-width:300px}
+.web-btn.upload-btn{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;cursor:pointer;text-align:center;display:block}
+.web-btn.view-btn{background:#f3f4f6;color:#4b5563;border:1px solid #d1d5db}
+.web-tb-note{font-size:11px;color:#9ca3af;font-weight:700;font-style:italic;padding:0 8px}
 .web-btn{padding:10px 16px;border-radius:10px;border:none;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit}
 .web-btn.save{background:linear-gradient(135deg,#10b981,#059669);color:white}
 .web-btn:active{transform:scale(.97)}
@@ -4402,14 +4412,15 @@ const WEB_SRC_URL='https://pinto1212121212-create.github.io/deploy-panel/rinat-2
 const WEB_SRC_FALLBACK='https://storied-chaja-55260f.netlify.app/';
 // Cache of fetched website HTML (for current session only)
 let _webCache=null;
-let _webFetchState='idle'; // idle | loading | ready | error
-let _webFetchSource=''; // 'primary' | 'fallback'
+let _webFetchState='idle'; // idle | loading | ready | error | direct_iframe
+let _webFetchSource=''; // 'primary' | 'fallback' | 'upload' | 'direct'
 let _webFetchError='';
 let _webEditMode=false; // false=preview, true=edit
 
 async function loadWebsiteHtml(){
   if(_webCache)return _webCache;
   _webFetchState='loading';
+  _webFetchError='';
   
   // Try primary (deploy-panel repo)
   try{
@@ -4426,7 +4437,7 @@ async function loadWebsiteHtml(){
     _webFetchError='ריפו deploy-panel: '+e.message;
   }
   
-  // Try fallback (Netlify direct)
+  // Try fallback (Netlify direct) - will likely fail due to CORS
   try{
     const res=await fetch(WEB_SRC_FALLBACK,{cache:'no-cache',mode:'cors'});
     if(res.ok){
@@ -4443,6 +4454,35 @@ async function loadWebsiteHtml(){
   
   _webFetchState='error';
   return null;
+}
+
+// Load HTML from a user-uploaded file
+function loadWebsiteFromFile(event){
+  const file=event.target.files&&event.target.files[0];
+  if(!file)return;
+  if(!file.name.match(/\.html?$/i)){
+    alert('בבקשה בחרי קובץ HTML בלבד');
+    return;
+  }
+  const reader=new FileReader();
+  reader.onload=function(e){
+    _webCache=e.target.result;
+    _webFetchState='ready';
+    _webFetchSource='upload';
+    _webFetchError='';
+    hRender();
+  };
+  reader.onerror=function(){
+    alert('לא הצלחתי לקרוא את הקובץ');
+  };
+  reader.readAsText(file,'UTF-8');
+}
+
+// Show direct iframe to Netlify (view only, no editing possible)
+function useDirectIframe(){
+  _webFetchState='direct_iframe';
+  _webFetchSource='direct';
+  hRender();
 }
 
 function toggleWebEdit(){
@@ -4566,22 +4606,35 @@ async function renderWebsiteIframe(){
   const wrap=document.getElementById('web-iframe-wrap');
   if(!wrap)return;
   
+  // Direct iframe mode - show Netlify site in iframe (view only)
+  if(_webFetchState==='direct_iframe'){
+    wrap.innerHTML=`<iframe src="${WEB_SRC_FALLBACK}" style="width:100%;height:100%;border:0;background:white"></iframe>`;
+    return;
+  }
+  
   if(_webFetchState==='idle'){
     wrap.innerHTML='<div class="web-loading">⏳ טוען את האתר...</div>';
     const html=await loadWebsiteHtml();
     if(!html){
       wrap.innerHTML=`<div class="web-error">
         <div class="web-error-ico">⚠️</div>
-        <div class="web-error-title">לא הצלחתי לטעון את האתר</div>
+        <div class="web-error-title">לא הצלחתי לטעון את האתר לעריכה</div>
         <div class="web-error-sub">
-          <b>מה לעשות:</b><br>
-          1️⃣ פתחי את הריפו deploy-panel בגיטהאב<br>
-          2️⃣ העלי את הקובץ <b>rinat-2.html</b> (שאוריאל שלח)<br>
-          3️⃣ ודאי ש-Settings → Pages פועל<br>
-          4️⃣ חכי 1-2 דקות וחזרי לכאן
+          <b>אפשרות 1 — העלאה לגיטהאב (מומלץ):</b><br>
+          העלי את <b>rinat-2.html</b> לריפו deploy-panel דרך GitHub<br>
+          ודאי ש-Settings → Pages פועל<br>
+          חכי 2 דקות ולחצי "נסי שוב"
+        </div>
+        <div class="web-error-or">— או —</div>
+        <div class="web-error-actions">
+          <label class="web-btn upload-btn">
+            📁 בחרי קובץ HTML מהמכשיר
+            <input type="file" accept=".html,.htm" onchange="loadWebsiteFromFile(event)" style="display:none">
+          </label>
+          <button class="web-btn view-btn" onclick="useDirectIframe()">👁 צפייה בלבד באתר החי</button>
         </div>
         <div class="web-error-detail">${x(_webFetchError||'')}</div>
-        <button class="web-btn save" onclick="reloadWebsite()" style="margin-top:12px">🔄 נסי שוב</button>
+        <button class="web-btn save" onclick="reloadWebsite()" style="margin-top:10px">🔄 נסי שוב</button>
       </div>`;
       return;
     }
@@ -4685,8 +4738,8 @@ function renderWebsiteTab(){
       <button class="web-tb-btn" onclick="setWebEditMode(false)">✕ יציאה</button>
     </div>
   </div>`:`<div class="web-toolbar">
-    <div class="web-toolbar-status">👁 מצב תצוגה${_webFetchSource==='fallback'?' · 🟡 נטען מ-Netlify':''} · ככה הלקוחות רואות</div>
-    <button class="web-tb-btn primary" onclick="setWebEditMode(true)">✏️ עריכה מלאה</button>
+    <div class="web-toolbar-status">👁 מצב תצוגה${_webFetchSource==='fallback'?' · 🟡 נטען מ-Netlify':_webFetchSource==='upload'?' · 📁 קובץ מקומי':_webFetchSource==='direct'?' · 🔒 צפייה בלבד':''} · ככה הלקוחות רואות</div>
+    ${_webFetchSource==='direct'?'<span class="web-tb-note">עריכה לא זמינה במצב זה</span>':'<button class="web-tb-btn primary" onclick="setWebEditMode(true)">✏️ עריכה מלאה</button>'}
   </div>`;
   
   // Instructions when in edit mode

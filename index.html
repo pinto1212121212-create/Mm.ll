@@ -4776,11 +4776,11 @@ async function webOpenEditor(){
           <button class="wt-btn" onclick="wtInsertSpacer()"><span class="wt-btn-ico">⬜</span><span class="wt-btn-txt">רווח</span></button>
           <div class="wt-sep"></div>
           <div class="wt-history">
-            <button class="wt-btn icon-only" onclick="wtExec('undo')" title="בטל"><span class="wt-btn-ico">↶</span></button>
-            <button class="wt-btn icon-only" onclick="wtExec('redo')" title="חזור"><span class="wt-btn-ico">↷</span></button>
+            <button class="wt-btn icon-only" onclick="wtSend('undo')" title="בטל"><span class="wt-btn-ico">↶</span></button>
+            <button class="wt-btn icon-only" onclick="wtSend('redo')" title="חזור"><span class="wt-btn-ico">↷</span></button>
           </div>
         </div>
-        <div class="wt-row contextual" id="wt-contextual" style="display:none"></div>
+        <div class="wt-row contextual" id="wt-contextual"></div>
       </div>
       <div class="web-edit-status-bar" id="web-edit-status">⏳ טוען קובץ מגיטהאב...</div>
       <div class="web-edit-body" id="web-edit-body">
@@ -4878,23 +4878,39 @@ function webSwitchView(mode){
 // Inject contenteditable attributes + messaging script into iframe HTML
 function webInjectEditor(html){
   const editorCode=`
-<style>
+<style data-webedit-tag="1">
   /* Hide any inherited loader from the site itself */
   .loader,#app>.loader,.spinner{display:none!important;visibility:hidden!important}
-  body.__webedit{padding-bottom:40px!important}
-  body.__webedit [data-webedit="1"]{outline:2px dashed rgba(124,58,237,.3);outline-offset:2px;cursor:text;transition:outline .15s;border-radius:3px}
-  body.__webedit [data-webedit="1"]:hover{outline:2px dashed #7c3aed;background:rgba(237,233,254,.35)}
-  body.__webedit [data-webedit="1"]:focus{outline:2px solid #7c3aed;background:rgba(237,233,254,.55);box-shadow:0 0 0 4px rgba(124,58,237,.18)}
-  body.__webedit img,body.__webedit video,body.__webedit iframe[src*="youtube"],body.__webedit iframe[src*="vimeo"]{cursor:pointer;transition:outline .15s}
+  
+  /* Edit mode body */
+  body.__webedit{padding-bottom:60px!important;cursor:default}
+  
+  /* Editable elements — purple outline on hover, solid outline on focus */
+  body.__webedit [data-wedit]{outline:1.5px dashed rgba(124,58,237,.25);outline-offset:2px;cursor:text;transition:outline .15s,background .15s;border-radius:3px;min-height:1em}
+  body.__webedit [data-wedit]:hover{outline:2px dashed #7c3aed;background:rgba(237,233,254,.25)}
+  body.__webedit [data-wedit]:focus{outline:2.5px solid #7c3aed;background:rgba(237,233,254,.4);box-shadow:0 0 0 4px rgba(124,58,237,.15);border-radius:4px}
+  body.__webedit [data-wedit]:empty::before{content:'(ריק)';opacity:.4;font-style:italic;color:#7c3aed}
+  
+  /* Media — clickable with hover */
+  body.__webedit img,body.__webedit video,body.__webedit picture,body.__webedit iframe[src*="youtube"],body.__webedit iframe[src*="vimeo"]{cursor:pointer;transition:outline .15s,transform .15s}
   body.__webedit img:hover,body.__webedit video:hover,body.__webedit iframe[src*="youtube"]:hover,body.__webedit iframe[src*="vimeo"]:hover{outline:3px dashed #7c3aed;outline-offset:3px}
-  body.__webedit [data-wt-selected="1"]{outline:3px solid #7c3aed!important;outline-offset:3px!important;box-shadow:0 0 0 6px rgba(124,58,237,.25)!important}
-  body.__webedit .wt-inserted{animation:wtPop .3s cubic-bezier(.34,1.56,.64,1)}
-  @keyframes wtPop{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
+  
+  /* Selected media — strong highlight */
+  body.__webedit [data-wsel="1"]{outline:3px solid #7c3aed!important;outline-offset:4px!important;box-shadow:0 0 0 8px rgba(124,58,237,.22)!important;transform:scale(1.01)}
+  
+  /* Inserted elements — pop animation */
+  body.__webedit .w-inserted{animation:wPop .35s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes wPop{0%{transform:scale(.92);opacity:0}100%{transform:scale(1);opacity:1}}
+  
+  /* Text highlight while selecting */
+  body.__webedit ::selection{background:rgba(124,58,237,.35);color:#1e1b4b}
 </style>
-<scr`+`ipt>
+<scr`+`ipt data-webedit-tag="1">
 (function(){
+  'use strict';
   try{window.parent.postMessage({type:'__webedit-ready'},'*');}catch(e){}
   
+  // ── Remove the diary template shell if present ──
   function killLoaders(){
     document.querySelectorAll('.loader,.spinner').forEach(el=>{try{el.remove();}catch(e){}});
     const app=document.getElementById('app');
@@ -4903,28 +4919,84 @@ function webInjectEditor(html){
     }
   }
   
-  function markEditable(){
-    const selectors='h1,h2,h3,h4,h5,h6,p,span,a,li,button,td,th,label,strong,em,b,i,figcaption,blockquote,div';
-    document.querySelectorAll(selectors).forEach(el=>{
-      const hasDirectText=Array.from(el.childNodes).some(n=>n.nodeType===3&&n.textContent.trim().length>1);
-      if(hasDirectText)el.setAttribute('data-webedit','1');
-    });
+  // ── TEXT-BEARING element detector (improved) ──
+  const INLINE_TAGS=new Set(['SPAN','STRONG','EM','B','I','U','S','SMALL','MARK','SUB','SUP','CODE','FONT','BIG','CITE','Q','ABBR','BR','WBR','TIME']);
+  const BLOCK_TAGS=new Set(['H1','H2','H3','H4','H5','H6','P','LI','TD','TH','LABEL','BUTTON','FIGCAPTION','BLOCKQUOTE','DT','DD','SUMMARY','CAPTION','A']);
+  const CONTAINER_TAGS=new Set(['DIV','SECTION','ARTICLE','ASIDE','NAV','HEADER','FOOTER','MAIN']);
+  const SKIP_TAGS=new Set(['SCRIPT','STYLE','NOSCRIPT','IFRAME','IMG','VIDEO','AUDIO','SOURCE','TRACK','CANVAS','SVG','INPUT','TEXTAREA','SELECT','OPTION','PICTURE','OBJECT','EMBED','BR','HR','META','LINK']);
+  
+  function hasOnlyInlineChildren(el){
+    for(let i=0;i<el.children.length;i++){
+      const child=el.children[i];
+      if(!INLINE_TAGS.has(child.tagName)&&child.tagName!=='A')return false;
+    }
+    return true;
   }
   
-  let _selectedElement=null;
+  function hasDirectText(el){
+    // True if el has at least one text node child with non-whitespace content
+    for(let i=0;i<el.childNodes.length;i++){
+      const n=el.childNodes[i];
+      if(n.nodeType===3&&n.textContent.trim().length>0)return true;
+    }
+    return false;
+  }
   
-  function clearSelection(){
+  function getTextLen(el){
+    return (el.textContent||'').trim().length;
+  }
+  
+  function shouldMakeEditable(el){
+    if(SKIP_TAGS.has(el.tagName))return false;
+    if(el.closest('[data-wedit]'))return false; // already inside an editable
+    if(getTextLen(el)===0)return false;
+    
+    // Block element with text content and only inline children → editable leaf
+    if(BLOCK_TAGS.has(el.tagName)){
+      if(hasOnlyInlineChildren(el))return true;
+      // If block has mixed content but also direct text, still editable
+      if(hasDirectText(el))return true;
+    }
+    
+    // Container (div/section/etc): only if it has direct text and no block children
+    if(CONTAINER_TAGS.has(el.tagName)){
+      if(hasDirectText(el)&&hasOnlyInlineChildren(el))return true;
+    }
+    
+    return false;
+  }
+  
+  function markEditable(){
+    // Walk through ALL elements in document order
+    const all=document.querySelectorAll('body *');
+    for(let i=0;i<all.length;i++){
+      const el=all[i];
+      // Skip if already marked — don't re-mark, preserves state
+      if(el.hasAttribute('data-wedit'))continue;
+      if(shouldMakeEditable(el)){
+        el.setAttribute('data-wedit','1');
+        el.setAttribute('contenteditable','true');
+        el.setAttribute('spellcheck','false');
+      }
+    }
+  }
+  
+  // ── Selection state ──
+  let _selectedElement=null;
+  let _savedRange=null;
+  let _lastFocusedEditable=null;
+  
+  function clearMediaSelection(){
     if(_selectedElement){
-      _selectedElement.removeAttribute('data-wt-selected');
+      _selectedElement.removeAttribute('data-wsel');
       _selectedElement=null;
     }
-    window.parent.postMessage({type:'__wt-selection',mode:'none'},'*');
   }
   
-  function selectElement(el,kind){
-    clearSelection();
+  function selectMedia(el,kind){
+    clearMediaSelection();
     _selectedElement=el;
-    el.setAttribute('data-wt-selected','1');
+    el.setAttribute('data-wsel','1');
     const info={
       tag:el.tagName.toLowerCase(),
       src:el.src||el.getAttribute('src')||'',
@@ -4940,44 +5012,369 @@ function webInjectEditor(html){
     const img=e.target.closest('img');
     const vid=e.target.closest('video');
     const ifr=e.target.closest('iframe[src*="youtube"], iframe[src*="vimeo"]');
-    if(img){e.preventDefault();e.stopPropagation();selectElement(img,'image');return;}
-    if(vid){e.preventDefault();e.stopPropagation();selectElement(vid,'video');return;}
-    if(ifr){e.preventDefault();e.stopPropagation();selectElement(ifr,'embed');return;}
-    // Click elsewhere = deselect
-    if(_selectedElement&&!e.target.closest('[data-wt-selected="1"]')){
-      clearSelection();
+    if(img){e.preventDefault();e.stopPropagation();selectMedia(img,'image');return;}
+    if(vid){e.preventDefault();e.stopPropagation();selectMedia(vid,'video');return;}
+    if(ifr){e.preventDefault();e.stopPropagation();selectMedia(ifr,'embed');return;}
+    if(_selectedElement&&!e.target.closest('[data-wsel="1"]')){
+      clearMediaSelection();
+      window.parent.postMessage({type:'__wt-selection',mode:'none'},'*');
     }
   }
   
-  function handleTextSelection(){
+  // ── Range / selection tracking ──
+  function saveRange(){
     const sel=window.getSelection();
-    if(!sel||sel.isCollapsed||sel.rangeCount===0){
-      // Only clear if no element selected
-      if(!_selectedElement)window.parent.postMessage({type:'__wt-selection',mode:'none'},'*');
+    if(sel.rangeCount===0)return;
+    const r=sel.getRangeAt(0);
+    if(!r.commonAncestorContainer||!document.body.contains(r.commonAncestorContainer))return;
+    // Only save if inside an editable area
+    let node=r.commonAncestorContainer;
+    if(node.nodeType===3)node=node.parentElement;
+    if(!node||!node.closest('[data-wedit]'))return;
+    _savedRange=r.cloneRange();
+  }
+  
+  function restoreRange(){
+    if(!_savedRange)return false;
+    try{
+      // Verify range is still valid
+      if(!_savedRange.startContainer||!document.body.contains(_savedRange.startContainer)){
+        _savedRange=null;
+        return false;
+      }
+      const sel=window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(_savedRange);
+      return true;
+    }catch(e){_savedRange=null;return false;}
+  }
+  
+  function handleSelectionChange(){
+    const sel=window.getSelection();
+    if(!sel||sel.rangeCount===0){
+      if(!_selectedElement){
+        window.parent.postMessage({type:'__wt-selection',mode:'none'},'*');
+      }
+      return;
+    }
+    // Track last focused editable (for commands when no selection)
+    const focused=document.activeElement;
+    if(focused&&focused.hasAttribute&&focused.hasAttribute('data-wedit')){
+      _lastFocusedEditable=focused;
+    }
+    // Save range for later restore
+    saveRange();
+    if(sel.isCollapsed){
+      // Just a cursor, no selection — tell parent we're in an editable
+      if(focused&&focused.hasAttribute&&focused.hasAttribute('data-wedit')){
+        window.parent.postMessage({type:'__wt-selection',mode:'cursor'},'*');
+      }
       return;
     }
     const text=sel.toString().trim();
     if(!text)return;
-    // Check if selection is inside editable element
     const node=sel.anchorNode;
     const elem=node.nodeType===3?node.parentElement:node;
-    if(!elem.closest('[data-webedit="1"]'))return;
+    if(!elem||!elem.closest('[data-wedit]'))return;
     window.parent.postMessage({type:'__wt-selection',mode:'text',text:text.substring(0,40)},'*');
   }
   
+  // ── Formatting commands (NEW — inline styles, works in RTL) ──
+  
+  // Get current selection, or fall back to last focused editable
+  function getWorkingRange(){
+    restoreRange();
+    const sel=window.getSelection();
+    if(sel.rangeCount>0&&!sel.isCollapsed)return sel.getRangeAt(0);
+    // No selection — pick whole content of last focused editable
+    if(_lastFocusedEditable){
+      const r=document.createRange();
+      r.selectNodeContents(_lastFocusedEditable);
+      return r;
+    }
+    return null;
+  }
+  
+  // ── Formatting system ──
+  // All style properties MUST be in CSS dash-case (font-weight, not fontWeight)
+  
+  // Convert camelCase → dash-case (safety net)
+  function toDashCase(prop){
+    return prop.replace(/([A-Z])/g,'-$1').toLowerCase();
+  }
+  
+  // Find a span ancestor that has this exact style property
+  function findStyledAncestor(node,prop){
+    if(node.nodeType===3)node=node.parentElement;
+    while(node&&node!==document.body){
+      if(node.tagName==='SPAN'&&node.style&&node.style.getPropertyValue(prop)){
+        return node;
+      }
+      node=node.parentElement;
+    }
+    return null;
+  }
+  
+  // Wrap current selection in a span with inline style
+  function wrapSelectionWithStyle(prop,value){
+    const sel=window.getSelection();
+    if(sel.rangeCount===0)return false;
+    const r=sel.getRangeAt(0);
+    if(r.collapsed)return false;
+    try{
+      const span=document.createElement('span');
+      span.style.setProperty(prop,value);
+      const contents=r.extractContents();
+      span.appendChild(contents);
+      r.insertNode(span);
+      // Re-select the span contents so further commands work
+      const newRange=document.createRange();
+      newRange.selectNodeContents(span);
+      sel.removeAllRanges();
+      sel.addRange(newRange);
+      saveRange();
+      return true;
+    }catch(e){console.warn('wrap failed',e);return false;}
+  }
+  
+  // Apply a CSS property+value to current selection (or whole element if no selection)
+  function applyStyle(prop,value){
+    prop=toDashCase(prop);
+    restoreRange();
+    const sel=window.getSelection();
+    if(sel.rangeCount>0&&!sel.isCollapsed){
+      wrapSelectionWithStyle(prop,value);
+      return;
+    }
+    // No selection — apply to whole last-focused element
+    if(_lastFocusedEditable){
+      _lastFocusedEditable.style.setProperty(prop,value);
+    }
+  }
+  
+  // Toggle a style on/off (bold, italic, underline)
+  function toggleStyle(prop,value){
+    prop=toDashCase(prop);
+    restoreRange();
+    const sel=window.getSelection();
+    if(sel.rangeCount===0){
+      // No selection — toggle on whole element
+      if(_lastFocusedEditable){
+        const current=_lastFocusedEditable.style.getPropertyValue(prop);
+        if(current===value){_lastFocusedEditable.style.removeProperty(prop);}
+        else{_lastFocusedEditable.style.setProperty(prop,value);}
+      }
+      return;
+    }
+    const r=sel.getRangeAt(0);
+    // Check if selection is already inside a span with this style
+    let startNode=r.startContainer;
+    const existingSpan=findStyledAncestor(startNode,prop);
+    if(existingSpan&&existingSpan.style.getPropertyValue(prop)===value){
+      // Already has this style — REMOVE it
+      // Unwrap the span: replace with its contents
+      const parent=existingSpan.parentNode;
+      while(existingSpan.firstChild){
+        parent.insertBefore(existingSpan.firstChild,existingSpan);
+      }
+      parent.removeChild(existingSpan);
+      return;
+    }
+    if(r.collapsed){
+      // Cursor but no selection — toggle on whole element
+      if(_lastFocusedEditable){
+        const current=_lastFocusedEditable.style.getPropertyValue(prop);
+        if(current===value){_lastFocusedEditable.style.removeProperty(prop);}
+        else{_lastFocusedEditable.style.setProperty(prop,value);}
+      }
+      return;
+    }
+    // Apply fresh to selection
+    wrapSelectionWithStyle(prop,value);
+  }
+  
+  // Find the target editable element for block-level operations
+  function getBlockTarget(){
+    restoreRange();
+    const sel=window.getSelection();
+    if(sel.rangeCount>0){
+      let node=sel.getRangeAt(0).commonAncestorContainer;
+      if(node.nodeType===3)node=node.parentElement;
+      const target=node.closest('[data-wedit]');
+      if(target)return target;
+    }
+    const focused=document.activeElement;
+    if(focused&&focused.hasAttribute&&focused.hasAttribute('data-wedit'))return focused;
+    if(_lastFocusedEditable)return _lastFocusedEditable;
+    return null;
+  }
+  
+  function setAlign(align){
+    const target=getBlockTarget();
+    if(target)target.style.textAlign=align;
+  }
+  
+  function setBlockTag(tagName){
+    const target=getBlockTarget();
+    if(!target)return;
+    const newEl=document.createElement(tagName);
+    newEl.innerHTML=target.innerHTML;
+    // Preserve inline styles
+    if(target.getAttribute('style'))newEl.setAttribute('style',target.getAttribute('style'));
+    newEl.setAttribute('data-wedit','1');
+    newEl.setAttribute('contenteditable','true');
+    newEl.setAttribute('spellcheck','false');
+    target.parentNode.replaceChild(newEl,target);
+    // Focus & update tracking
+    setTimeout(function(){
+      newEl.focus();
+      _lastFocusedEditable=newEl;
+    },10);
+  }
+  
+  function insertHTMLSmart(html){
+    restoreRange();
+    const sel=window.getSelection();
+    // Insert at cursor if we have a valid range
+    if(sel.rangeCount>0){
+      const r=sel.getRangeAt(0);
+      r.deleteContents();
+      const tmp=document.createElement('template');
+      tmp.innerHTML=html;
+      const firstChild=tmp.content.firstChild;
+      const lastChild=tmp.content.lastChild;
+      r.insertNode(tmp.content);
+      // Move cursor after the inserted content
+      if(lastChild){
+        const after=document.createRange();
+        after.setStartAfter(lastChild);
+        after.collapse(true);
+        sel.removeAllRanges();
+        sel.addRange(after);
+        saveRange();
+      }
+      setTimeout(markEditable,100);
+      return;
+    }
+    // Fallback: append at end of last focused editable, or to body
+    const container=_lastFocusedEditable||document.body;
+    const tmp=document.createElement('template');
+    tmp.innerHTML=html;
+    while(tmp.content.firstChild){
+      container.appendChild(tmp.content.firstChild);
+    }
+    setTimeout(markEditable,100);
+  }
+  
+  // Remove all inline styles from selected text / block
+  function clearFormatting(){
+    const target=getBlockTarget();
+    if(!target)return;
+    // Unwrap all styled spans
+    const spans=target.querySelectorAll('span[style]');
+    spans.forEach(function(s){
+      const parent=s.parentNode;
+      while(s.firstChild)parent.insertBefore(s.firstChild,s);
+      parent.removeChild(s);
+    });
+    // Remove inline styles from the target itself (but keep layout)
+    target.removeAttribute('style');
+  }
+  
+  function replaceElement(el,newHtml){
+    const tmp=document.createElement('template');
+    tmp.innerHTML=newHtml;
+    const newNode=tmp.content.firstChild;
+    if(newNode&&el.parentNode){
+      el.parentNode.replaceChild(newNode,el);
+      return newNode;
+    }
+    return null;
+  }
+  
+  function updateAttr(el,attr,value){
+    if(value===null||value==='')el.removeAttribute(attr);
+    else el.setAttribute(attr,value);
+  }
+  
+  function deleteElement(el){
+    if(el&&el.parentNode)el.parentNode.removeChild(el);
+  }
+  
+  // ── Undo/Redo (using history stack) ──
+  // Approach: take snapshots AFTER each change. undo() replaces innerHTML with previous snapshot.
+  const _history={stack:[],cursor:-1};
+  
+  function snapshot(){
+    try{
+      const html=document.body.innerHTML;
+      // Don't record duplicates
+      if(_history.stack[_history.cursor]===html)return;
+      // Truncate any future states (if user did undo then made changes)
+      _history.stack=_history.stack.slice(0,_history.cursor+1);
+      _history.stack.push(html);
+      // Limit stack size
+      if(_history.stack.length>30){
+        _history.stack.shift();
+      }else{
+        _history.cursor++;
+      }
+    }catch(e){}
+  }
+  
+  function undo(){
+    if(_history.cursor<=0)return;
+    _history.cursor--;
+    document.body.innerHTML=_history.stack[_history.cursor];
+    _savedRange=null; // old range points to stale nodes
+    _lastFocusedEditable=null;
+    clearMediaSelection();
+    setTimeout(markEditable,10);
+  }
+  
+  function redo(){
+    if(_history.cursor>=_history.stack.length-1)return;
+    _history.cursor++;
+    document.body.innerHTML=_history.stack[_history.cursor];
+    _savedRange=null;
+    _lastFocusedEditable=null;
+    clearMediaSelection();
+    setTimeout(markEditable,10);
+  }
+  
+  // Take a snapshot after any user edit (debounced)
+  let _snapTimer=null;
+  function snapDebounced(){
+    clearTimeout(_snapTimer);
+    _snapTimer=setTimeout(snapshot,600);
+  }
+  
+  // ── Activate editor (only once) ──
+  let _activated=false;
   function activate(){
+    if(_activated)return;
+    _activated=true;
     killLoaders();
     markEditable();
     document.body.classList.add('__webedit');
-    document.querySelectorAll('[data-webedit="1"]').forEach(el=>{
-      el.setAttribute('contenteditable','true');
-      el.setAttribute('spellcheck','false');
-    });
-    // Listen for selections
+    snapshot(); // initial snapshot (cursor=0)
+    
     document.addEventListener('click',handleMediaClick,true);
-    document.addEventListener('selectionchange',handleTextSelection);
-    document.addEventListener('mouseup',handleTextSelection);
-    document.addEventListener('keyup',handleTextSelection);
+    document.addEventListener('selectionchange',handleSelectionChange);
+    document.addEventListener('mouseup',handleSelectionChange);
+    document.addEventListener('keyup',handleSelectionChange);
+    document.addEventListener('input',snapDebounced);
+    document.addEventListener('focusin',function(e){
+      if(e.target&&e.target.hasAttribute&&e.target.hasAttribute('data-wedit')){
+        _lastFocusedEditable=e.target;
+      }
+    });
+    // Block link navigation in edit mode
+    document.addEventListener('click',function(e){
+      const a=e.target.closest('a');
+      if(a)e.preventDefault();
+    });
+    
     try{window.parent.postMessage({type:'__webedit-active'},'*');}catch(e){}
   }
   
@@ -4986,110 +5383,31 @@ function webInjectEditor(html){
   }else{
     activate();
   }
-  window.addEventListener('load',function(){setTimeout(activate,100);});
-  
-  // Block link navigation in edit mode
-  document.addEventListener('click',function(e){
-    const a=e.target.closest('a');
-    if(a){e.preventDefault();}
+  // After full load (images, etc.) — re-mark to catch any late-rendered content
+  window.addEventListener('load',function(){
+    setTimeout(function(){
+      if(_activated)markEditable();
+    },150);
   });
   
-  // ── Execute commands from parent toolbar ──
-  function saveSelection(){
-    const sel=window.getSelection();
-    if(sel.rangeCount>0)return sel.getRangeAt(0).cloneRange();
-    return null;
-  }
-  function restoreSelection(range){
-    if(!range)return;
-    const sel=window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-  }
-  let _savedRange=null;
-  document.addEventListener('mouseup',()=>{_savedRange=saveSelection();});
-  document.addEventListener('keyup',()=>{_savedRange=saveSelection();});
-  document.addEventListener('selectionchange',()=>{
-    const sel=window.getSelection();
-    if(sel.rangeCount>0&&!sel.isCollapsed){_savedRange=sel.getRangeAt(0).cloneRange();}
-  });
-  
-  function execCommand(cmd,value){
-    try{
-      if(_savedRange)restoreSelection(_savedRange);
-      document.execCommand(cmd,false,value||null);
-    }catch(e){console.warn('execCommand failed:',e);}
-  }
-  
-  function insertHTML(html){
-    if(_savedRange){restoreSelection(_savedRange);}
-    try{
-      document.execCommand('insertHTML',false,html);
-    }catch(e){
-      // Fallback - append to body
-      const tmp=document.createElement('div');
-      tmp.innerHTML=html;
-      const node=tmp.firstChild;
-      if(node)document.body.appendChild(node);
-    }
-  }
-  
-  function wrapSelection(tagName,attrs){
-    if(!_savedRange)return;
-    restoreSelection(_savedRange);
-    const sel=window.getSelection();
-    if(sel.rangeCount===0||sel.isCollapsed)return;
-    const text=sel.toString();
-    const el=document.createElement(tagName);
-    if(attrs){Object.keys(attrs).forEach(k=>el.setAttribute(k,attrs[k]));}
-    el.textContent=text;
-    const range=sel.getRangeAt(0);
-    range.deleteContents();
-    range.insertNode(el);
-    sel.removeAllRanges();
-  }
-  
-  function replaceSelectedElement(newHtml){
-    if(!_selectedElement)return;
-    const tmp=document.createElement('div');
-    tmp.innerHTML=newHtml;
-    const newNode=tmp.firstChild;
-    if(newNode){
-      _selectedElement.parentNode.replaceChild(newNode,_selectedElement);
-      _selectedElement=null;
-    }
-  }
-  
-  function updateSelectedAttr(attr,value){
-    if(!_selectedElement)return;
-    if(value===null||value===''){_selectedElement.removeAttribute(attr);}
-    else{_selectedElement.setAttribute(attr,value);}
-  }
-  
-  function deleteSelected(){
-    if(!_selectedElement)return;
-    _selectedElement.remove();
-    _selectedElement=null;
-    window.parent.postMessage({type:'__wt-selection',mode:'none'},'*');
-  }
-  
+  // ── Listen for commands from parent toolbar ──
   window.addEventListener('message',function(e){
     if(!e.data||typeof e.data!=='object')return;
     const d=e.data;
     
-    // Extract current HTML for saving
+    // Extract clean HTML for saving
     if(d.type==='__webedit-extract'){
-      clearSelection();
+      clearMediaSelection();
       const clone=document.documentElement.cloneNode(true);
-      clone.querySelectorAll('style').forEach(s=>{if(s.textContent.includes('__webedit')||s.textContent.includes('wt-inserted'))s.remove();});
-      clone.querySelectorAll('script').forEach(s=>{if(s.textContent.includes('__webedit-extract')||s.textContent.includes('data-webedit')||s.textContent.includes('__wt-'))s.remove();});
-      clone.querySelectorAll('[data-webedit]').forEach(el=>{
-        el.removeAttribute('data-webedit');
+      // Remove editor artifacts — using data-webedit-tag for safe identification
+      clone.querySelectorAll('[data-webedit-tag]').forEach(el=>el.remove());
+      clone.querySelectorAll('[data-wedit]').forEach(el=>{
+        el.removeAttribute('data-wedit');
         el.removeAttribute('contenteditable');
         el.removeAttribute('spellcheck');
       });
-      clone.querySelectorAll('[data-wt-selected]').forEach(el=>el.removeAttribute('data-wt-selected'));
-      clone.querySelectorAll('.wt-inserted').forEach(el=>el.classList.remove('wt-inserted'));
+      clone.querySelectorAll('[data-wsel]').forEach(el=>el.removeAttribute('data-wsel'));
+      clone.querySelectorAll('.w-inserted').forEach(el=>el.classList.remove('w-inserted'));
       if(clone.querySelector('body'))clone.querySelector('body').classList.remove('__webedit');
       const fullHtml='<!DOCTYPE html>\\n'+clone.outerHTML;
       window.parent.postMessage({type:'__webedit-result',html:fullHtml,reqId:d.reqId},'*');
@@ -5099,15 +5417,28 @@ function webInjectEditor(html){
     // Toolbar commands
     if(d.type==='__wt-cmd'){
       switch(d.cmd){
-        case 'exec':execCommand(d.exec,d.value);break;
-        case 'insertHTML':insertHTML(d.html);break;
-        case 'wrap':wrapSelection(d.tag,d.attrs);break;
-        case 'replaceSelected':replaceSelectedElement(d.html);break;
-        case 'updateSelectedAttr':updateSelectedAttr(d.attr,d.value);break;
-        case 'deleteSelected':deleteSelected();break;
-        case 'clearSelection':clearSelection();break;
-        case 'focusBody':document.body.focus();break;
+        case 'bold':toggleStyle('font-weight','bold');break;
+        case 'italic':toggleStyle('font-style','italic');break;
+        case 'underline':toggleStyle('text-decoration','underline');break;
+        case 'strike':toggleStyle('text-decoration','line-through');break;
+        case 'color':applyStyle('color',d.value);break;
+        case 'bgcolor':applyStyle('background-color',d.value==='transparent'?'transparent':d.value);break;
+        case 'fontsize':applyStyle('font-size',d.value);break;
+        case 'fontfamily':applyStyle('font-family',d.value);break;
+        case 'align':setAlign(d.value);break;
+        case 'block':setBlockTag(d.value);break;
+        case 'clearFormat':clearFormatting();break;
+        case 'insertHTML':insertHTMLSmart(d.html);break;
+        case 'replaceSelected':if(_selectedElement){const n=replaceElement(_selectedElement,d.html);if(n){_selectedElement=null;setTimeout(markEditable,50);}}break;
+        case 'updateSelectedAttr':if(_selectedElement)updateAttr(_selectedElement,d.attr,d.value);break;
+        case 'deleteSelected':if(_selectedElement){deleteElement(_selectedElement);_selectedElement=null;window.parent.postMessage({type:'__wt-selection',mode:'none'},'*');}break;
+        case 'clearSelection':clearMediaSelection();break;
+        case 'undo':undo();return; // skip snapshot after undo/redo
+        case 'redo':redo();return;
+        case 'remark':markEditable();return;
       }
+      // Take snapshot AFTER the change (for undo)
+      setTimeout(snapshot,50);
     }
   });
 })();
@@ -5267,10 +5598,12 @@ function wtSend(cmd,extras){
   ifr.contentWindow.postMessage(Object.assign({type:'__wt-cmd',cmd:cmd},extras||{}),'*');
 }
 
-// Shortcut: run document.execCommand inside iframe
-function wtExec(cmd,value){
-  wtSend('exec',{exec:cmd,value:value||null});
-}
+// Prevent toolbar buttons from stealing focus from the iframe
+// This keeps the selection intact when clicking toolbar buttons
+document.addEventListener('mousedown',function(e){
+  const btn=e.target.closest('.wt-btn, .wt-size-btn, .wt-color, .wt-emoji');
+  if(btn)e.preventDefault();
+},true);
 
 // Contextual toolbar state — updated when iframe selection changes
 let _wtSelection={mode:'none',info:null};
@@ -5279,30 +5612,32 @@ function wtUpdateContextual(){
   const bar=document.getElementById('wt-contextual');
   if(!bar)return;
   if(_wtSelection.mode==='none'){
-    bar.style.display='none';
-    bar.innerHTML='';
+    // Show a hint instead of hiding — much more helpful
+    bar.style.display='flex';
+    bar.innerHTML=`<span class="wt-group-lbl" style="color:#9ca3af;font-weight:700">💡 לחצי על טקסט או תמונה באתר כדי לראות כלים נוספים</span>`;
     return;
   }
   bar.style.display='flex';
-  if(_wtSelection.mode==='text'){
-    const preview=(_wtSelection.text||'').substring(0,20);
+  if(_wtSelection.mode==='text'||_wtSelection.mode==='cursor'){
+    const isText=_wtSelection.mode==='text';
+    const label=isText?`✏️ טקסט נבחר "${(_wtSelection.text||'').substring(0,18)}${(_wtSelection.text||'').length>=18?'...':''}"`:'💬 בתוך טקסט — לחצי בחירה';
     bar.innerHTML=`
-      <span class="wt-group-lbl">✏️ טקסט "${preview}${preview.length>=20?'...':''}"</span>
-      <button class="wt-btn" onclick="wtExec('bold')" title="מודגש"><b style="font-size:14px">B</b></button>
-      <button class="wt-btn" onclick="wtExec('italic')" title="נטוי"><i style="font-size:14px">I</i></button>
-      <button class="wt-btn" onclick="wtExec('underline')" title="קו תחתון"><u>U</u></button>
-      <button class="wt-btn" onclick="wtExec('strikeThrough')" title="קו חוצה"><s>S</s></button>
+      <span class="wt-group-lbl">${label}</span>
+      <button class="wt-btn" onclick="wtSend('bold')" title="מודגש"><b style="font-size:14px">B</b></button>
+      <button class="wt-btn" onclick="wtSend('italic')" title="נטוי"><i style="font-size:14px">I</i></button>
+      <button class="wt-btn" onclick="wtSend('underline')" title="קו תחתון"><u>U</u></button>
+      <button class="wt-btn" onclick="wtSend('strike')" title="קו חוצה"><s>S</s></button>
       <div class="wt-sep"></div>
       <button class="wt-btn" onclick="wtOpenPop('color')" title="צבע טקסט"><span class="wt-btn-ico">🎨</span><span class="wt-btn-txt">צבע</span></button>
       <button class="wt-btn" onclick="wtOpenPop('bgcolor')" title="הדגשה"><span class="wt-btn-ico">🖍</span><span class="wt-btn-txt">הדגשה</span></button>
       <button class="wt-btn" onclick="wtOpenPop('fontsize')"><span class="wt-btn-ico">🔤</span><span class="wt-btn-txt">גודל</span></button>
+      <button class="wt-btn" onclick="wtOpenPop('heading')" title="כותרת"><span class="wt-btn-ico">📰</span><span class="wt-btn-txt">כותרת</span></button>
       <div class="wt-sep"></div>
-      <button class="wt-btn" onclick="wtExec('justifyRight')" title="ימין">⇥</button>
-      <button class="wt-btn" onclick="wtExec('justifyCenter')" title="מרכז">≡</button>
-      <button class="wt-btn" onclick="wtExec('justifyLeft')" title="שמאל">⇤</button>
+      <button class="wt-btn" onclick="wtSend('align',{value:'right'})" title="ימין">⇥</button>
+      <button class="wt-btn" onclick="wtSend('align',{value:'center'})" title="מרכז">≡</button>
+      <button class="wt-btn" onclick="wtSend('align',{value:'left'})" title="שמאל">⇤</button>
       <div class="wt-sep"></div>
-      <button class="wt-btn" onclick="wtExec('insertUnorderedList')" title="רשימה">•≡</button>
-      <button class="wt-btn" onclick="wtExec('removeFormat')" title="נקה עיצוב"><span class="wt-btn-ico">✖</span><span class="wt-btn-txt">נקה</span></button>
+      <button class="wt-btn" onclick="wtSend('clearFormat')" title="נקה עיצוב"><span class="wt-btn-ico">✖</span><span class="wt-btn-txt">נקה</span></button>
     `;
   }else if(_wtSelection.mode==='element'){
     const kind=_wtSelection.kind;
@@ -5314,7 +5649,7 @@ function wtUpdateContextual(){
       ${kind==='embed'?`<button class="wt-btn" onclick="wtOpenPop('video')"><span class="wt-btn-ico">🔄</span><span class="wt-btn-txt">החלף</span></button>`:''}
       <button class="wt-btn" onclick="wtOpenPop('size')"><span class="wt-btn-ico">📐</span><span class="wt-btn-txt">גודל</span></button>
       <button class="wt-btn danger" onclick="wtConfirmDelete()"><span class="wt-btn-ico">🗑</span><span class="wt-btn-txt">מחק</span></button>
-      <button class="wt-btn" onclick="wtSend('clearSelection');wtSelection={mode:'none'};wtUpdateContextual()"><span class="wt-btn-ico">✖</span><span class="wt-btn-txt">ביטול</span></button>
+      <button class="wt-btn" onclick="wtSend('clearSelection');_wtSelection={mode:'none'};wtUpdateContextual()"><span class="wt-btn-ico">✖</span><span class="wt-btn-txt">ביטול</span></button>
     `;
   }
 }
@@ -5386,20 +5721,36 @@ const wtPopConfigs={
   // Font size
   fontsize:{
     title:'🔤 גודל טקסט',
-    html:()=>`<div class="wt-size-grid">
-      <button class="wt-size-btn" onclick="wtExec('fontSize','1');wtClosePop()"><span style="font-size:11px">Aa</span><span class="wt-size-btn-name">קטן</span></button>
-      <button class="wt-size-btn" onclick="wtExec('fontSize','3');wtClosePop()"><span style="font-size:14px">Aa</span><span class="wt-size-btn-name">רגיל</span></button>
-      <button class="wt-size-btn" onclick="wtExec('fontSize','5');wtClosePop()"><span style="font-size:18px">Aa</span><span class="wt-size-btn-name">גדול</span></button>
-      <button class="wt-size-btn" onclick="wtExec('fontSize','7');wtClosePop()"><span style="font-size:24px">Aa</span><span class="wt-size-btn-name">ענק</span></button>
+    html:()=>`
+    <div class="wt-form-lbl" style="margin-bottom:8px">בחרי גודל לטקסט שנבחר</div>
+    <div class="wt-size-grid">
+      <button class="wt-size-btn" onclick="wtSend('fontsize',{value:'12px'});wtClosePop()"><span style="font-size:12px;font-weight:700">12px</span><span class="wt-size-btn-name">קטן</span></button>
+      <button class="wt-size-btn" onclick="wtSend('fontsize',{value:'16px'});wtClosePop()"><span style="font-size:16px;font-weight:700">16px</span><span class="wt-size-btn-name">רגיל</span></button>
+      <button class="wt-size-btn" onclick="wtSend('fontsize',{value:'20px'});wtClosePop()"><span style="font-size:20px;font-weight:700">20px</span><span class="wt-size-btn-name">בינוני</span></button>
+      <button class="wt-size-btn" onclick="wtSend('fontsize',{value:'24px'});wtClosePop()"><span style="font-size:22px;font-weight:700">24px</span><span class="wt-size-btn-name">גדול</span></button>
+      <button class="wt-size-btn" onclick="wtSend('fontsize',{value:'32px'});wtClosePop()"><span style="font-size:22px;font-weight:700">32px</span><span class="wt-size-btn-name">ענק</span></button>
+      <button class="wt-size-btn" onclick="wtSend('fontsize',{value:'40px'});wtClosePop()"><span style="font-size:22px;font-weight:700">40px</span><span class="wt-size-btn-name">עצום</span></button>
+      <button class="wt-size-btn" onclick="wtSend('fontsize',{value:'48px'});wtClosePop()"><span style="font-size:22px;font-weight:700">48px</span><span class="wt-size-btn-name">ראשי</span></button>
+      <button class="wt-size-btn" onclick="wtSend('fontsize',{value:'64px'});wtClosePop()"><span style="font-size:22px;font-weight:700">64px</span><span class="wt-size-btn-name">באנר</span></button>
     </div>
-    <div class="wt-form-row" style="margin-top:10px">
-      <div class="wt-form-lbl">סגנון כותרת</div>
-      <div class="wt-size-grid">
-        <button class="wt-size-btn" onclick="wtExec('formatBlock','<h1>');wtClosePop()"><span style="font-size:20px;font-weight:900">H1</span><span class="wt-size-btn-name">ראשי</span></button>
-        <button class="wt-size-btn" onclick="wtExec('formatBlock','<h2>');wtClosePop()"><span style="font-size:18px;font-weight:900">H2</span><span class="wt-size-btn-name">משנה</span></button>
-        <button class="wt-size-btn" onclick="wtExec('formatBlock','<h3>');wtClosePop()"><span style="font-size:16px;font-weight:900">H3</span><span class="wt-size-btn-name">קטנה</span></button>
-        <button class="wt-size-btn" onclick="wtExec('formatBlock','<p>');wtClosePop()"><span style="font-size:14px">¶</span><span class="wt-size-btn-name">פסקה</span></button>
+    <div class="wt-form-row" style="margin-top:14px">
+      <label class="wt-form-lbl">📏 גודל מותאם אישית</label>
+      <div style="display:flex;gap:8px">
+        <input class="wt-form-inp ltr" id="wt-fs-custom" type="number" placeholder="18" value="18" min="8" max="200" style="flex:1">
+        <button class="wt-btn primary" onclick="wtSend('fontsize',{value:(document.getElementById('wt-fs-custom').value||16)+'px'});wtClosePop()" style="padding:12px 20px">px</button>
       </div>
+    </div>`
+  },
+  // Heading (separated from fontsize)
+  heading:{
+    title:'📰 סוג כותרת',
+    html:()=>`
+    <div class="wt-form-lbl" style="margin-bottom:10px">שיני את הפסקה לכותרת או חזרי לטקסט רגיל</div>
+    <div class="wt-size-grid">
+      <button class="wt-size-btn" onclick="wtSend('block',{value:'h1'});wtClosePop()"><span style="font-size:22px;font-weight:900">H1</span><span class="wt-size-btn-name">ראשית</span></button>
+      <button class="wt-size-btn" onclick="wtSend('block',{value:'h2'});wtClosePop()"><span style="font-size:19px;font-weight:900">H2</span><span class="wt-size-btn-name">משנה</span></button>
+      <button class="wt-size-btn" onclick="wtSend('block',{value:'h3'});wtClosePop()"><span style="font-size:17px;font-weight:900">H3</span><span class="wt-size-btn-name">קטנה</span></button>
+      <button class="wt-size-btn" onclick="wtSend('block',{value:'p'});wtClosePop()"><span style="font-size:15px">¶</span><span class="wt-size-btn-name">פסקה</span></button>
     </div>`
   },
   // Link
@@ -5621,9 +5972,8 @@ const wtPopConfigs={
 
 // ── Toolbar actions ──
 function wtApplyColor(color,kind){
-  // 'fore' = text color, 'back' = highlight
-  if(kind==='fore')wtExec('foreColor',color);
-  else wtExec('hiliteColor',color);
+  if(kind==='fore')wtSend('color',{value:color});
+  else wtSend('bgcolor',{value:color});
 }
 
 function wtInsertLink(){
@@ -5633,7 +5983,7 @@ function wtInsertLink(){
   if(!url||url==='https://'){webToast('⚠️ חסרה כתובת',true);return;}
   const target=blank?' target="_blank" rel="noopener"':'';
   const displayText=text||url;
-  wtSend('insertHTML',{html:`<a href="${url}"${target} class="wt-inserted" style="color:#7c3aed;text-decoration:underline">${displayText}</a>`});
+  wtSend('insertHTML',{html:`<a href="${url}"${target} class="w-inserted" style="color:#7c3aed;text-decoration:underline">${displayText}</a>`});
   wtClosePop();
   webToast('✅ קישור נוסף');
 }
@@ -5650,7 +6000,7 @@ function wtImageFile(e){
     if(bar)bar.style.width='100%';
     const dataUrl=ev.target.result;
     const alt=(document.getElementById('wt-image-alt')||{}).value||'';
-    wtSend('insertHTML',{html:`<img src="${dataUrl}" alt="${alt}" class="wt-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block">`});
+    wtSend('insertHTML',{html:`<img src="${dataUrl}" alt="${alt}" class="w-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block">`});
     wtClosePop();
     webToast('✅ תמונה נוספה');
   };
@@ -5676,7 +6026,7 @@ function wtInsertImage(){
     if(file&&file[0]){wtImageFile({target:{files:file}});return;}
     webToast('⚠️ חסר קובץ או קישור',true);return;
   }
-  wtSend('insertHTML',{html:`<img src="${url}" alt="${alt}" class="wt-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block">`});
+  wtSend('insertHTML',{html:`<img src="${url}" alt="${alt}" class="w-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block">`});
   wtClosePop();
   webToast('✅ תמונה נוספה');
 }
@@ -5692,7 +6042,7 @@ function wtVideoFile(e){
   reader.onload=(ev)=>{
     if(bar)bar.style.width='100%';
     const dataUrl=ev.target.result;
-    wtSend('insertHTML',{html:`<video src="${dataUrl}" controls class="wt-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block"></video>`});
+    wtSend('insertHTML',{html:`<video src="${dataUrl}" controls class="w-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block"></video>`});
     wtClosePop();
     webToast('✅ סרטון נוסף');
   };
@@ -5712,14 +6062,14 @@ function wtInsertVideoUrl(){
   }else if(vimeoMatch){
     embedUrl=`https://player.vimeo.com/video/${vimeoMatch[1]}`;
   }else if(url.match(/\.(mp4|webm|ogg|mov)$/i)){
-    wtSend('insertHTML',{html:`<video src="${url}" controls class="wt-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block"></video>`});
+    wtSend('insertHTML',{html:`<video src="${url}" controls class="w-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block"></video>`});
     wtClosePop();
     webToast('✅ סרטון נוסף');
     return;
   }else{
     webToast('⚠️ רק YouTube, Vimeo או MP4',true);return;
   }
-  wtSend('insertHTML',{html:`<div class="wt-inserted" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin:10px 0"><iframe src="${embedUrl}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:12px" allowfullscreen></iframe></div>`});
+  wtSend('insertHTML',{html:`<div class="w-inserted" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin:10px 0"><iframe src="${embedUrl}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:12px" allowfullscreen></iframe></div>`});
   wtClosePop();
   webToast('✅ סרטון נוסף');
 }
@@ -5742,7 +6092,7 @@ function wtInsertButton(){
     3:'background:linear-gradient(135deg,#f472b6,#db2777);box-shadow:0 4px 14px rgba(219,39,119,.35)'
   };
   const style=styles[_wtBtnStyle]||styles[1];
-  wtSend('insertHTML',{html:`<div class="wt-inserted" style="text-align:center;margin:16px 0"><a href="${url}" target="_blank" rel="noopener" style="display:inline-block;${style};color:white;padding:14px 32px;border-radius:14px;text-decoration:none;font-weight:800;font-size:16px">${text}</a></div>`});
+  wtSend('insertHTML',{html:`<div class="w-inserted" style="text-align:center;margin:16px 0"><a href="${url}" target="_blank" rel="noopener" style="display:inline-block;${style};color:white;padding:14px 32px;border-radius:14px;text-decoration:none;font-weight:800;font-size:16px">${text}</a></div>`});
   wtClosePop();
   webToast('✅ כפתור נוסף');
 }
@@ -5753,12 +6103,12 @@ function wtInsertEmoji(emoji){
 }
 
 function wtInsertDivider(){
-  wtSend('insertHTML',{html:`<hr class="wt-inserted" style="border:0;border-top:1.5px solid #e5e7eb;margin:20px 0">`});
+  wtSend('insertHTML',{html:`<hr class="w-inserted" style="border:0;border-top:1.5px solid #e5e7eb;margin:20px 0">`});
   webToast('✅ מפריד נוסף');
 }
 
 function wtInsertSpacer(){
-  wtSend('insertHTML',{html:`<div class="wt-inserted" style="height:30px"></div>`});
+  wtSend('insertHTML',{html:`<div class="w-inserted" style="height:30px"></div>`});
   webToast('✅ רווח נוסף');
 }
 
@@ -5792,14 +6142,11 @@ function wtReplaceImageUrl(){
 
 function wtSetSize(width){
   if(!_wtSelection.info)return;
-  // Set inline style width
-  const ifr=document.getElementById('web-edit-iframe');
-  if(!ifr||!ifr.contentWindow)return;
-  ifr.contentWindow.postMessage({type:'__wt-cmd',cmd:'exec',exec:'noop'},'*');
-  // Use updateSelectedAttr with style
-  const sel=_wtSelection;
-  // Directly ask iframe to update the style attribute
-  wtSend('updateSelectedAttr',{attr:'style',value:`max-width:${width};height:auto;border-radius:12px;margin:10px 0;display:block`});
+  // We use updateSelectedAttr with a new complete style, which overrides
+  // Better: send a custom command that preserves existing style but changes width
+  const existing=_wtSelection.info.styleFull||'';
+  // Just set the width via style attribute — iframe will merge
+  wtSend('updateSelectedAttr',{attr:'style',value:`max-width:${width};width:${width};height:auto;border-radius:12px;margin:10px auto;display:block`});
   wtClosePop();
   webToast('✅ גודל עודכן');
 }

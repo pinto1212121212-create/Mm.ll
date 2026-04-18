@@ -257,6 +257,83 @@ textarea.task-modal-area{width:100%;border:1.5px solid #e5e7eb;border-radius:12p
 .adv-tip-btn:hover{transform:translateY(-2px);box-shadow:0 7px 20px rgba(245,158,11,.55),inset 0 1px 0 rgba(255,255,255,.35)}
 .adv-tip-btn:active{transform:scale(.97)}
 .adv-tip-counter{background:rgba(255,255,255,.12);color:white;padding:9px 12px;border-radius:10px;font-size:11px;font-weight:900;letter-spacing:.5px;border:1px solid rgba(255,255,255,.15)}
+
+/* ═══ Claude API Setup Popup ═══ */
+.claude-setup-overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:800;display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .25s ease}
+.claude-setup-overlay.on{opacity:1}
+.claude-setup-sheet{background:#fafaf9;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;border-radius:28px 28px 0 0;transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.56,.64,1);font-family:inherit;direction:rtl;padding-bottom:env(safe-area-inset-bottom,0)}
+.claude-setup-overlay.on .claude-setup-sheet{transform:translateY(0)}
+@media(min-width:768px){.claude-setup-overlay{align-items:center}.claude-setup-sheet{border-radius:28px;margin:16px;max-height:85vh}}
+.claude-setup-hdr{background:linear-gradient(135deg,#1e1b4b,#312e81);color:white;padding:20px;position:relative;overflow:hidden;display:flex;align-items:center;gap:12px}
+.claude-setup-hdr::before{content:'';position:absolute;top:-60px;left:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(251,191,36,.2),transparent 65%)}
+.claude-setup-hdr-ico{font-size:32px;position:relative;z-index:1}
+.claude-setup-hdr-txt{flex:1;min-width:0;position:relative;z-index:1}
+.claude-setup-hdr-title{font-size:17px;font-weight:900;line-height:1.2}
+.claude-setup-hdr-sub{font-size:12px;font-weight:600;opacity:.85;margin-top:3px}
+.claude-setup-close{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);border:none;color:white;font-size:18px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;transition:background .15s;flex-shrink:0}
+.claude-setup-close:hover{background:rgba(255,255,255,.3)}
+.claude-setup-body{padding:18px;display:flex;flex-direction:column;gap:14px}
+.claude-setup-info{background:white;border:1.5px solid #e5e7eb;border-radius:14px;padding:14px}
+.claude-setup-info-title{font-size:13px;font-weight:900;color:#1e1b4b;margin-bottom:10px}
+.claude-setup-info-steps{display:flex;flex-direction:column;gap:10px}
+.claude-setup-step{display:flex;gap:10px;align-items:flex-start}
+.claude-setup-step-num{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#78350f;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center}
+.claude-setup-step div{font-size:12.5px;color:#374151;line-height:1.55;font-weight:600;flex:1}
+.claude-setup-step b{color:#1e1b4b;font-weight:900}
+.claude-setup-pricing{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1.5px solid #fcd34d;border-radius:14px;padding:14px;display:flex;gap:12px}
+.claude-setup-pricing-ico{font-size:26px;flex-shrink:0}
+.claude-setup-pricing-title{font-size:13px;font-weight:900;color:#78350f;margin-bottom:3px}
+.claude-setup-pricing-desc{font-size:11.5px;color:#92400e;line-height:1.55;font-weight:600}
+.claude-setup-howto{background:#f0f9ff;border:1.5px solid #bae6fd;border-radius:14px;padding:14px}
+.claude-setup-howto-title{font-size:13px;font-weight:900;color:#0c4a6e;margin-bottom:10px}
+.claude-setup-howto-list{margin:0;padding:0 16px 0 0;font-size:12.5px;color:#0c4a6e;line-height:1.75;font-weight:600}
+.claude-setup-howto-list li{margin-bottom:4px}
+.claude-setup-howto-list a{color:#0284c7;text-decoration:underline}
+.claude-setup-howto-list code{background:#1e1b4b;color:#fbbf24;padding:1px 6px;border-radius:4px;font-size:11px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.claude-setup-active{background:linear-gradient(135deg,#f0fdf4,#d1fae5);border:1.5px solid #86efac;border-radius:14px;padding:14px;display:flex;gap:12px;align-items:center}
+.claude-setup-active-ico{font-size:28px;flex-shrink:0}
+.claude-setup-active-title{font-size:13px;font-weight:900;color:#065f46}
+.claude-setup-active-key{font-size:12px;color:#047857;font-weight:600;margin-top:2px;font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:right}
+.claude-setup-form{display:flex;flex-direction:column;gap:8px}
+.claude-setup-label{font-size:12px;font-weight:800;color:#1e1b4b;padding-right:2px}
+.claude-setup-input{padding:12px 14px;border-radius:12px;border:1.5px solid #e5e7eb;font-size:13px;font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;outline:none;transition:border-color .15s;background:white}
+.claude-setup-input:focus{border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.claude-setup-hint{font-size:11px;color:#6b7280;font-weight:600;line-height:1.55;margin-top:2px}
+.claude-setup-actions{display:flex;gap:8px}
+.claude-setup-btn{flex:1;padding:12px;border-radius:12px;border:none;font-size:13.5px;font-weight:900;cursor:pointer;font-family:inherit;transition:all .15s;letter-spacing:.2px}
+.claude-setup-btn.primary{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;box-shadow:0 4px 12px rgba(124,58,237,.3)}
+.claude-setup-btn.primary:hover{box-shadow:0 6px 16px rgba(124,58,237,.4);transform:translateY(-1px)}
+.claude-setup-btn.danger{background:white;color:#b91c1c;border:1.5px solid #fecaca}
+.claude-setup-btn.danger:hover{background:#fef2f2}
+.claude-setup-btn:active{transform:scale(.98)}
+.claude-setup-test{background:#fafaf9;border-radius:12px;padding:12px;text-align:center;border:1px dashed #d1d5db}
+.claude-setup-test-btn{padding:10px 18px;border-radius:10px;border:1.5px solid #c4b5fd;background:white;color:#7c3aed;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s}
+.claude-setup-test-btn:hover{background:#faf5ff}
+.claude-setup-test-hint{font-size:10.5px;color:#6b7280;margin-top:6px;line-height:1.5;font-weight:600}
+
+/* Claude button in advisor tab header */
+.claude-btn-row{display:flex;gap:8px;margin-top:10px;position:relative;z-index:1}
+.claude-btn{flex:1;background:rgba(255,255,255,.9);border:1.5px solid rgba(0,0,0,.06);color:#78350f;font-size:11.5px;font-weight:900;padding:8px 10px;border-radius:10px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s;backdrop-filter:blur(4px)}
+.claude-btn:hover{background:white;transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.claude-btn.connected{background:linear-gradient(135deg,#d1fae5,#a7f3d0);border-color:#86efac;color:#065f46}
+
+/* Claude tip card in advisor */
+.claude-tip-card{background:linear-gradient(135deg,#0c0a1e 0%,#1e1b4b 50%,#0c0a1e 100%);border-radius:20px;padding:16px;margin-bottom:14px;position:relative;overflow:hidden;border:1.5px solid rgba(251,191,36,.3);box-shadow:0 10px 32px rgba(12,10,30,.5)}
+.claude-tip-card::before{content:'';position:absolute;top:-50px;right:-30px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(251,191,36,.25),transparent 65%);pointer-events:none;animation:advOrbFloat 10s ease-in-out infinite}
+.claude-tip-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;position:relative;z-index:1}
+.claude-tip-badge{font-size:9px;font-weight:900;color:#78350f;background:linear-gradient(135deg,#fbbf24,#f59e0b);padding:3px 9px;border-radius:8px;letter-spacing:.5px;box-shadow:0 2px 6px rgba(245,158,11,.4)}
+.claude-tip-label{font-size:12px;font-weight:900;color:#fbbf24;letter-spacing:.3px}
+.claude-tip-date{font-size:10px;color:rgba(255,255,255,.5);font-weight:700;margin-right:auto}
+.claude-tip-body{position:relative;z-index:1;font-size:14.5px;color:white;line-height:1.65;font-weight:600;letter-spacing:.1px;margin-bottom:12px}
+.claude-tip-emoji{font-size:22px;margin-left:8px;display:inline-block;vertical-align:middle}
+.claude-tip-action{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);border-radius:12px;padding:10px 12px;position:relative;z-index:1}
+.claude-tip-action-label{font-size:10px;font-weight:900;color:#fbbf24;letter-spacing:.8px;margin-bottom:4px}
+.claude-tip-action-body{font-size:12.5px;color:#fde68a;font-weight:700;line-height:1.55}
+.claude-tip-meta{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08);position:relative;z-index:1}
+.claude-tip-type{font-size:10px;font-weight:800;color:rgba(255,255,255,.6);background:rgba(255,255,255,.06);padding:3px 8px;border-radius:6px;letter-spacing:.3px}
+.claude-tip-refresh{margin-right:auto;background:none;border:none;color:rgba(255,255,255,.7);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;padding:4px 8px;border-radius:6px;transition:all .15s}
+.claude-tip-refresh:hover{background:rgba(255,255,255,.08);color:white}
+.claude-tip-refresh:disabled{opacity:.4;cursor:not-allowed}
 .adv-hdr{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1.5px solid #f59e0b;border-radius:18px;padding:16px;margin-bottom:14px}
 .adv-hdr-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
 .adv-hdr-icon{font-size:36px;flex-shrink:0}
@@ -644,6 +721,45 @@ textarea.task-modal-area{width:100%;border:1.5px solid #e5e7eb;border-radius:12p
 .promo-top-why{font-size:11.5px;color:#374151;line-height:1.5;margin-bottom:8px;background:#f0fdff;border-right:3px solid #0891b2;border-radius:6px;padding:7px 10px;text-align:right}
 .promo-top-why b{color:#0e7490;font-weight:800}
 .promo-top-action{font-size:11px;color:#78350f;background:#fef3c7;border-radius:6px;padding:6px 10px;font-weight:600;text-align:right;line-height:1.4}
+/* Top 5 buttons row */
+.promo-top-actions{display:flex;gap:8px;margin-top:10px}
+.promo-top-btn{flex:1;padding:10px;border-radius:10px;font-size:12px;font-weight:900;cursor:pointer;font-family:inherit;border:none;display:flex;align-items:center;justify-content:center;gap:5px;text-decoration:none;transition:all .15s}
+.promo-top-btn.guide{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;box-shadow:0 3px 10px rgba(124,58,237,.3)}
+.promo-top-btn.guide:hover{box-shadow:0 5px 14px rgba(124,58,237,.45);transform:translateY(-1px)}
+.promo-top-btn.open{background:white;color:#1e1b4b;border:1.5px solid #e5e7eb}
+.promo-top-btn.open:hover{background:#faf5ff;border-color:#c4b5fd}
+.promo-top-btn:active{transform:scale(.96)}
+
+/* ═══ Promo Guide Popup ═══ */
+.guide-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:800;display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .25s ease}
+.guide-overlay.on{opacity:1}
+.guide-sheet{background:#fafaf9;width:100%;max-width:640px;max-height:92vh;overflow-y:auto;border-radius:28px 28px 0 0;transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.56,.64,1);font-family:inherit;direction:rtl;padding-bottom:env(safe-area-inset-bottom,0)}
+.guide-overlay.on .guide-sheet{transform:translateY(0)}
+@media(min-width:768px){.guide-overlay{align-items:center}.guide-sheet{border-radius:28px;margin:16px;max-height:88vh}}
+.guide-hdr{background:linear-gradient(135deg,#1e1b4b,#4c1d95);color:white;padding:20px;position:relative;overflow:hidden}
+.guide-hdr::before{content:'';position:absolute;top:-80px;left:-40px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(251,191,36,.18),transparent 65%)}
+.guide-hdr::after{content:'';position:absolute;bottom:-90px;right:-30px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(236,72,153,.15),transparent 65%)}
+.guide-hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;position:relative;z-index:1}
+.guide-hdr-badge{font-size:10px;font-weight:900;background:rgba(251,191,36,.2);color:#fbbf24;padding:4px 10px;border-radius:8px;letter-spacing:.5px;border:1px solid rgba(251,191,36,.3)}
+.guide-close{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.18);border:none;color:white;font-size:18px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.guide-close:hover{background:rgba(255,255,255,.28)}
+.guide-hdr-title{font-size:20px;font-weight:900;color:white;margin-bottom:6px;position:relative;z-index:1;line-height:1.2}
+.guide-hdr-sub{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;line-height:1.5;position:relative;z-index:1;margin-bottom:10px}
+.guide-hdr-time{display:inline-block;font-size:11.5px;font-weight:800;background:rgba(255,255,255,.12);color:white;padding:5px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.2);position:relative;z-index:1;backdrop-filter:blur(4px)}
+.guide-body{padding:20px 18px}
+.guide-section{background:white;border-radius:16px;padding:16px;margin-bottom:14px;border:1px solid #ede9fe;box-shadow:0 2px 8px rgba(0,0,0,.03)}
+.guide-section-hdr{font-size:14px;font-weight:900;color:#4c1d95;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid #ede9fe;line-height:1.3}
+.guide-section-items{display:flex;flex-direction:column;gap:10px}
+.guide-item{display:flex;gap:10px;align-items:flex-start}
+.guide-item-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.guide-item-body{flex:1;min-width:0;font-size:13px;color:#374151;line-height:1.65;font-weight:600}
+.guide-item-body b{color:#4c1d95;font-weight:900}
+.guide-item-body a{color:#7c3aed;text-decoration:underline;font-weight:800}
+.guide-item-body code{background:#1e1b4b;color:#fbbf24;padding:1px 5px;border-radius:4px;font-size:11.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.guide-footer{background:linear-gradient(135deg,#faf5ff,#ede9fe);border:1.5px solid #ddd6fe;border-radius:14px;padding:13px;display:flex;gap:11px;align-items:flex-start;margin-top:6px}
+.guide-footer-ico{font-size:22px;flex-shrink:0}
+.guide-footer-txt{font-size:12px;color:#4c1d95;line-height:1.6;font-weight:600}
+
 .promo-card-price{font-size:10.5px;font-weight:800;margin-top:4px;letter-spacing:.3px;display:inline-block;padding:2px 8px;border-radius:8px}
 .promo-card-price.free{background:#d1fae5;color:#065f46}
 .promo-card-price.mixed{background:#fef3c7;color:#92400e}
@@ -660,6 +776,66 @@ textarea.task-modal-area{width:100%;border:1.5px solid #e5e7eb;border-radius:12p
 .web-status-dot{width:10px;height:10px;border-radius:50%;background:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.3);animation:webpulse 2s infinite;position:relative;z-index:1;flex-shrink:0}
 @keyframes webpulse{0%,100%{opacity:1}50%{opacity:.5}}
 .web-actions{display:flex;gap:8px;margin-bottom:14px}
+/* ═══ Share Link Card ═══ */
+.web-share-card{background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border:1.5px solid #a7f3d0;border-radius:18px;padding:16px;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:0 4px 16px rgba(16,185,129,.08)}
+.web-share-card::before{content:'';position:absolute;top:-50px;left:-30px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.12),transparent 65%);pointer-events:none}
+.web-share-hdr{display:flex;align-items:center;gap:12px;margin-bottom:14px;position:relative;z-index:1}
+.web-share-ico{font-size:28px;width:48px;height:48px;background:linear-gradient(135deg,#10b981,#059669);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(16,185,129,.3);flex-shrink:0}
+.web-share-hdr-txt{flex:1;min-width:0}
+.web-share-title{font-size:15px;font-weight:900;color:#065f46;line-height:1.2}
+.web-share-sub{font-size:11.5px;color:#047857;font-weight:600;margin-top:3px;line-height:1.45}
+.web-share-url{background:white;border:1.5px dashed #86efac;border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:12px;transition:all .15s;position:relative;z-index:1}
+.web-share-url:hover{border-color:#10b981;background:#f0fdf4}
+.web-share-url:active{transform:scale(.99)}
+.web-share-url-txt{flex:1;min-width:0;font-size:12px;color:#065f46;font-weight:700;direction:ltr;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:ui-monospace,Menlo,Consolas,monospace}
+.web-share-url-copy{font-size:11px;font-weight:900;color:#059669;background:#d1fae5;padding:4px 9px;border-radius:8px;flex-shrink:0;white-space:nowrap}
+.web-share-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:12px;position:relative;z-index:1}
+.web-share-btn{padding:11px 8px;border-radius:11px;border:none;font-family:inherit;font-size:11.5px;font-weight:900;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all .15s;color:white}
+.web-share-btn span:first-child{font-size:18px;line-height:1}
+.web-share-btn.copy{background:linear-gradient(135deg,#059669,#047857);box-shadow:0 3px 10px rgba(5,150,105,.3)}
+.web-share-btn.copy:hover{box-shadow:0 5px 14px rgba(5,150,105,.45);transform:translateY(-1px)}
+.web-share-btn.whatsapp{background:linear-gradient(135deg,#25d366,#128c7e);box-shadow:0 3px 10px rgba(37,211,102,.3)}
+.web-share-btn.whatsapp:hover{box-shadow:0 5px 14px rgba(37,211,102,.45);transform:translateY(-1px)}
+.web-share-btn.qr{background:linear-gradient(135deg,#6366f1,#4f46e5);box-shadow:0 3px 10px rgba(99,102,241,.3)}
+.web-share-btn.qr:hover{box-shadow:0 5px 14px rgba(99,102,241,.45);transform:translateY(-1px)}
+.web-share-btn:active{transform:scale(.96)}
+.web-share-hint{background:rgba(255,255,255,.7);border-radius:10px;padding:9px 11px;font-size:11px;color:#065f46;line-height:1.55;font-weight:600;display:flex;gap:8px;align-items:flex-start;position:relative;z-index:1;margin-bottom:10px}
+.web-share-hint-ico{font-size:14px;flex-shrink:0}
+.web-share-hint b{color:#059669;font-weight:900}
+.web-share-hint code{background:#065f46;color:#86efac;padding:1px 5px;border-radius:4px;font-size:10px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.web-share-last-pub{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;color:#047857;padding:8px 11px;background:rgba(255,255,255,.55);border-radius:10px;border:1px solid rgba(16,185,129,.2);position:relative;z-index:1}
+.web-share-last-pub:empty{display:none}
+.web-share-last-pub-ico{font-size:13px}
+.web-share-last-pub b{font-weight:900;color:#065f46}
+
+/* ═══ QR Code Popup ═══ */
+.web-qr-overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:800;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .25s ease;padding:16px}
+.web-qr-overlay.on{opacity:1}
+.web-qr-sheet{background:white;width:100%;max-width:420px;border-radius:24px;overflow:hidden;transform:scale(.9);transition:transform .3s cubic-bezier(.34,1.56,.64,1);font-family:inherit;direction:rtl;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.web-qr-overlay.on .web-qr-sheet{transform:scale(1)}
+.web-qr-hdr{background:linear-gradient(135deg,#6366f1,#4338ca);color:white;padding:18px;display:flex;align-items:center;gap:12px;position:relative;overflow:hidden}
+.web-qr-hdr::before{content:'';position:absolute;top:-40px;left:-30px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.15),transparent 65%)}
+.web-qr-hdr-ico{font-size:28px;position:relative;z-index:1}
+.web-qr-hdr-txt{flex:1;min-width:0;position:relative;z-index:1}
+.web-qr-hdr-title{font-size:16px;font-weight:900;line-height:1.2}
+.web-qr-hdr-sub{font-size:11.5px;font-weight:600;opacity:.9;margin-top:2px}
+.web-qr-close{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.2);border:none;color:white;font-size:16px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;transition:background .15s}
+.web-qr-close:hover{background:rgba(255,255,255,.3)}
+.web-qr-body{padding:20px}
+.web-qr-img-wrap{background:white;border-radius:16px;padding:16px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;border:1.5px solid #e5e7eb;box-shadow:0 4px 12px rgba(0,0,0,.04)}
+.web-qr-img-wrap img{width:100%;max-width:260px;height:auto;display:block}
+.web-qr-link{background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:9px 11px;font-size:11px;color:#4b5563;font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;word-break:break-all;line-height:1.4;font-weight:600;margin-bottom:12px}
+.web-qr-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.web-qr-btn{padding:11px;border-radius:11px;border:none;font-family:inherit;font-size:12.5px;font-weight:900;cursor:pointer;transition:all .15s}
+.web-qr-btn.copy{background:linear-gradient(135deg,#10b981,#059669);color:white;box-shadow:0 3px 10px rgba(16,185,129,.3)}
+.web-qr-btn.copy:hover{box-shadow:0 5px 14px rgba(16,185,129,.45);transform:translateY(-1px)}
+.web-qr-btn.download{background:white;color:#4338ca;border:1.5px solid #c7d2fe}
+.web-qr-btn.download:hover{background:#eef2ff;border-color:#a5b4fc}
+.web-qr-btn:active{transform:scale(.97)}
+.web-qr-hint{background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:10px 12px;font-size:11.5px;color:#0c4a6e;line-height:1.55;font-weight:600;display:flex;gap:8px;align-items:flex-start}
+.web-qr-hint span:first-child{font-size:14px;flex-shrink:0}
+.web-qr-hint b{color:#0369a1;font-weight:900}
+
 .web-action-btn{flex:1;padding:12px 8px;border-radius:12px;border:1.5px solid #e5e7eb;background:white;font-size:13px;font-weight:800;color:#1e1b4b;cursor:pointer;text-decoration:none;text-align:center;font-family:inherit;transition:transform .12s}
 .web-action-btn:active{transform:scale(.97)}
 .web-action-btn.primary{background:linear-gradient(135deg,#1e40af,#1e3a8a);color:white;border-color:transparent}
@@ -1966,6 +2142,83 @@ function getLaserAnim(){
 .adv-tip-btn:hover{transform:translateY(-2px);box-shadow:0 7px 20px rgba(245,158,11,.55),inset 0 1px 0 rgba(255,255,255,.35)}
 .adv-tip-btn:active{transform:scale(.97)}
 .adv-tip-counter{background:rgba(255,255,255,.12);color:white;padding:9px 12px;border-radius:10px;font-size:11px;font-weight:900;letter-spacing:.5px;border:1px solid rgba(255,255,255,.15)}
+
+/* ═══ Claude API Setup Popup ═══ */
+.claude-setup-overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:800;display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .25s ease}
+.claude-setup-overlay.on{opacity:1}
+.claude-setup-sheet{background:#fafaf9;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;border-radius:28px 28px 0 0;transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.56,.64,1);font-family:inherit;direction:rtl;padding-bottom:env(safe-area-inset-bottom,0)}
+.claude-setup-overlay.on .claude-setup-sheet{transform:translateY(0)}
+@media(min-width:768px){.claude-setup-overlay{align-items:center}.claude-setup-sheet{border-radius:28px;margin:16px;max-height:85vh}}
+.claude-setup-hdr{background:linear-gradient(135deg,#1e1b4b,#312e81);color:white;padding:20px;position:relative;overflow:hidden;display:flex;align-items:center;gap:12px}
+.claude-setup-hdr::before{content:'';position:absolute;top:-60px;left:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(251,191,36,.2),transparent 65%)}
+.claude-setup-hdr-ico{font-size:32px;position:relative;z-index:1}
+.claude-setup-hdr-txt{flex:1;min-width:0;position:relative;z-index:1}
+.claude-setup-hdr-title{font-size:17px;font-weight:900;line-height:1.2}
+.claude-setup-hdr-sub{font-size:12px;font-weight:600;opacity:.85;margin-top:3px}
+.claude-setup-close{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);border:none;color:white;font-size:18px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;transition:background .15s;flex-shrink:0}
+.claude-setup-close:hover{background:rgba(255,255,255,.3)}
+.claude-setup-body{padding:18px;display:flex;flex-direction:column;gap:14px}
+.claude-setup-info{background:white;border:1.5px solid #e5e7eb;border-radius:14px;padding:14px}
+.claude-setup-info-title{font-size:13px;font-weight:900;color:#1e1b4b;margin-bottom:10px}
+.claude-setup-info-steps{display:flex;flex-direction:column;gap:10px}
+.claude-setup-step{display:flex;gap:10px;align-items:flex-start}
+.claude-setup-step-num{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#78350f;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center}
+.claude-setup-step div{font-size:12.5px;color:#374151;line-height:1.55;font-weight:600;flex:1}
+.claude-setup-step b{color:#1e1b4b;font-weight:900}
+.claude-setup-pricing{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1.5px solid #fcd34d;border-radius:14px;padding:14px;display:flex;gap:12px}
+.claude-setup-pricing-ico{font-size:26px;flex-shrink:0}
+.claude-setup-pricing-title{font-size:13px;font-weight:900;color:#78350f;margin-bottom:3px}
+.claude-setup-pricing-desc{font-size:11.5px;color:#92400e;line-height:1.55;font-weight:600}
+.claude-setup-howto{background:#f0f9ff;border:1.5px solid #bae6fd;border-radius:14px;padding:14px}
+.claude-setup-howto-title{font-size:13px;font-weight:900;color:#0c4a6e;margin-bottom:10px}
+.claude-setup-howto-list{margin:0;padding:0 16px 0 0;font-size:12.5px;color:#0c4a6e;line-height:1.75;font-weight:600}
+.claude-setup-howto-list li{margin-bottom:4px}
+.claude-setup-howto-list a{color:#0284c7;text-decoration:underline}
+.claude-setup-howto-list code{background:#1e1b4b;color:#fbbf24;padding:1px 6px;border-radius:4px;font-size:11px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.claude-setup-active{background:linear-gradient(135deg,#f0fdf4,#d1fae5);border:1.5px solid #86efac;border-radius:14px;padding:14px;display:flex;gap:12px;align-items:center}
+.claude-setup-active-ico{font-size:28px;flex-shrink:0}
+.claude-setup-active-title{font-size:13px;font-weight:900;color:#065f46}
+.claude-setup-active-key{font-size:12px;color:#047857;font-weight:600;margin-top:2px;font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:right}
+.claude-setup-form{display:flex;flex-direction:column;gap:8px}
+.claude-setup-label{font-size:12px;font-weight:800;color:#1e1b4b;padding-right:2px}
+.claude-setup-input{padding:12px 14px;border-radius:12px;border:1.5px solid #e5e7eb;font-size:13px;font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;outline:none;transition:border-color .15s;background:white}
+.claude-setup-input:focus{border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.claude-setup-hint{font-size:11px;color:#6b7280;font-weight:600;line-height:1.55;margin-top:2px}
+.claude-setup-actions{display:flex;gap:8px}
+.claude-setup-btn{flex:1;padding:12px;border-radius:12px;border:none;font-size:13.5px;font-weight:900;cursor:pointer;font-family:inherit;transition:all .15s;letter-spacing:.2px}
+.claude-setup-btn.primary{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;box-shadow:0 4px 12px rgba(124,58,237,.3)}
+.claude-setup-btn.primary:hover{box-shadow:0 6px 16px rgba(124,58,237,.4);transform:translateY(-1px)}
+.claude-setup-btn.danger{background:white;color:#b91c1c;border:1.5px solid #fecaca}
+.claude-setup-btn.danger:hover{background:#fef2f2}
+.claude-setup-btn:active{transform:scale(.98)}
+.claude-setup-test{background:#fafaf9;border-radius:12px;padding:12px;text-align:center;border:1px dashed #d1d5db}
+.claude-setup-test-btn{padding:10px 18px;border-radius:10px;border:1.5px solid #c4b5fd;background:white;color:#7c3aed;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s}
+.claude-setup-test-btn:hover{background:#faf5ff}
+.claude-setup-test-hint{font-size:10.5px;color:#6b7280;margin-top:6px;line-height:1.5;font-weight:600}
+
+/* Claude button in advisor tab header */
+.claude-btn-row{display:flex;gap:8px;margin-top:10px;position:relative;z-index:1}
+.claude-btn{flex:1;background:rgba(255,255,255,.9);border:1.5px solid rgba(0,0,0,.06);color:#78350f;font-size:11.5px;font-weight:900;padding:8px 10px;border-radius:10px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s;backdrop-filter:blur(4px)}
+.claude-btn:hover{background:white;transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.claude-btn.connected{background:linear-gradient(135deg,#d1fae5,#a7f3d0);border-color:#86efac;color:#065f46}
+
+/* Claude tip card in advisor */
+.claude-tip-card{background:linear-gradient(135deg,#0c0a1e 0%,#1e1b4b 50%,#0c0a1e 100%);border-radius:20px;padding:16px;margin-bottom:14px;position:relative;overflow:hidden;border:1.5px solid rgba(251,191,36,.3);box-shadow:0 10px 32px rgba(12,10,30,.5)}
+.claude-tip-card::before{content:'';position:absolute;top:-50px;right:-30px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(251,191,36,.25),transparent 65%);pointer-events:none;animation:advOrbFloat 10s ease-in-out infinite}
+.claude-tip-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;position:relative;z-index:1}
+.claude-tip-badge{font-size:9px;font-weight:900;color:#78350f;background:linear-gradient(135deg,#fbbf24,#f59e0b);padding:3px 9px;border-radius:8px;letter-spacing:.5px;box-shadow:0 2px 6px rgba(245,158,11,.4)}
+.claude-tip-label{font-size:12px;font-weight:900;color:#fbbf24;letter-spacing:.3px}
+.claude-tip-date{font-size:10px;color:rgba(255,255,255,.5);font-weight:700;margin-right:auto}
+.claude-tip-body{position:relative;z-index:1;font-size:14.5px;color:white;line-height:1.65;font-weight:600;letter-spacing:.1px;margin-bottom:12px}
+.claude-tip-emoji{font-size:22px;margin-left:8px;display:inline-block;vertical-align:middle}
+.claude-tip-action{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);border-radius:12px;padding:10px 12px;position:relative;z-index:1}
+.claude-tip-action-label{font-size:10px;font-weight:900;color:#fbbf24;letter-spacing:.8px;margin-bottom:4px}
+.claude-tip-action-body{font-size:12.5px;color:#fde68a;font-weight:700;line-height:1.55}
+.claude-tip-meta{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08);position:relative;z-index:1}
+.claude-tip-type{font-size:10px;font-weight:800;color:rgba(255,255,255,.6);background:rgba(255,255,255,.06);padding:3px 8px;border-radius:6px;letter-spacing:.3px}
+.claude-tip-refresh{margin-right:auto;background:none;border:none;color:rgba(255,255,255,.7);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;padding:4px 8px;border-radius:6px;transition:all .15s}
+.claude-tip-refresh:hover{background:rgba(255,255,255,.08);color:white}
+.claude-tip-refresh:disabled{opacity:.4;cursor:not-allowed}
 .adv-hdr{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1.5px solid #f59e0b;border-radius:18px;padding:16px;margin-bottom:14px}
 .adv-hdr-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
 .adv-hdr-icon{font-size:36px;flex-shrink:0}
@@ -2351,6 +2604,45 @@ function getLaserAnim(){
 .promo-top-why{font-size:11.5px;color:#374151;line-height:1.5;margin-bottom:8px;background:#f0fdff;border-right:3px solid #0891b2;border-radius:6px;padding:7px 10px;text-align:right}
 .promo-top-why b{color:#0e7490;font-weight:800}
 .promo-top-action{font-size:11px;color:#78350f;background:#fef3c7;border-radius:6px;padding:6px 10px;font-weight:600;text-align:right;line-height:1.4}
+/* Top 5 buttons row */
+.promo-top-actions{display:flex;gap:8px;margin-top:10px}
+.promo-top-btn{flex:1;padding:10px;border-radius:10px;font-size:12px;font-weight:900;cursor:pointer;font-family:inherit;border:none;display:flex;align-items:center;justify-content:center;gap:5px;text-decoration:none;transition:all .15s}
+.promo-top-btn.guide{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;box-shadow:0 3px 10px rgba(124,58,237,.3)}
+.promo-top-btn.guide:hover{box-shadow:0 5px 14px rgba(124,58,237,.45);transform:translateY(-1px)}
+.promo-top-btn.open{background:white;color:#1e1b4b;border:1.5px solid #e5e7eb}
+.promo-top-btn.open:hover{background:#faf5ff;border-color:#c4b5fd}
+.promo-top-btn:active{transform:scale(.96)}
+
+/* ═══ Promo Guide Popup ═══ */
+.guide-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:800;display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .25s ease}
+.guide-overlay.on{opacity:1}
+.guide-sheet{background:#fafaf9;width:100%;max-width:640px;max-height:92vh;overflow-y:auto;border-radius:28px 28px 0 0;transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.56,.64,1);font-family:inherit;direction:rtl;padding-bottom:env(safe-area-inset-bottom,0)}
+.guide-overlay.on .guide-sheet{transform:translateY(0)}
+@media(min-width:768px){.guide-overlay{align-items:center}.guide-sheet{border-radius:28px;margin:16px;max-height:88vh}}
+.guide-hdr{background:linear-gradient(135deg,#1e1b4b,#4c1d95);color:white;padding:20px;position:relative;overflow:hidden}
+.guide-hdr::before{content:'';position:absolute;top:-80px;left:-40px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(251,191,36,.18),transparent 65%)}
+.guide-hdr::after{content:'';position:absolute;bottom:-90px;right:-30px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(236,72,153,.15),transparent 65%)}
+.guide-hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;position:relative;z-index:1}
+.guide-hdr-badge{font-size:10px;font-weight:900;background:rgba(251,191,36,.2);color:#fbbf24;padding:4px 10px;border-radius:8px;letter-spacing:.5px;border:1px solid rgba(251,191,36,.3)}
+.guide-close{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.18);border:none;color:white;font-size:18px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.guide-close:hover{background:rgba(255,255,255,.28)}
+.guide-hdr-title{font-size:20px;font-weight:900;color:white;margin-bottom:6px;position:relative;z-index:1;line-height:1.2}
+.guide-hdr-sub{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;line-height:1.5;position:relative;z-index:1;margin-bottom:10px}
+.guide-hdr-time{display:inline-block;font-size:11.5px;font-weight:800;background:rgba(255,255,255,.12);color:white;padding:5px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.2);position:relative;z-index:1;backdrop-filter:blur(4px)}
+.guide-body{padding:20px 18px}
+.guide-section{background:white;border-radius:16px;padding:16px;margin-bottom:14px;border:1px solid #ede9fe;box-shadow:0 2px 8px rgba(0,0,0,.03)}
+.guide-section-hdr{font-size:14px;font-weight:900;color:#4c1d95;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid #ede9fe;line-height:1.3}
+.guide-section-items{display:flex;flex-direction:column;gap:10px}
+.guide-item{display:flex;gap:10px;align-items:flex-start}
+.guide-item-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.guide-item-body{flex:1;min-width:0;font-size:13px;color:#374151;line-height:1.65;font-weight:600}
+.guide-item-body b{color:#4c1d95;font-weight:900}
+.guide-item-body a{color:#7c3aed;text-decoration:underline;font-weight:800}
+.guide-item-body code{background:#1e1b4b;color:#fbbf24;padding:1px 5px;border-radius:4px;font-size:11.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.guide-footer{background:linear-gradient(135deg,#faf5ff,#ede9fe);border:1.5px solid #ddd6fe;border-radius:14px;padding:13px;display:flex;gap:11px;align-items:flex-start;margin-top:6px}
+.guide-footer-ico{font-size:22px;flex-shrink:0}
+.guide-footer-txt{font-size:12px;color:#4c1d95;line-height:1.6;font-weight:600}
+
 .promo-card-price{font-size:10.5px;font-weight:800;margin-top:4px;letter-spacing:.3px;display:inline-block;padding:2px 8px;border-radius:8px}
 .promo-card-price.free{background:#d1fae5;color:#065f46}
 .promo-card-price.mixed{background:#fef3c7;color:#92400e}
@@ -4197,6 +4489,481 @@ function advisorAnalyze(){
 //   70% data-driven observations about THIS business
 //   30% general clinic-growth tips from the 30-tip pool
 
+// ═══════════════════════════════════════════════════════
+// ═══ 🤖 Real Claude API Integration (daily tip)      ═══
+// ═══════════════════════════════════════════════════════
+// Architecture: Claude called 1× per day from Rinat's diary.
+// Result cached in Firebase /daily_ai_tip/{YYYY-MM-DD}.
+// Public site (rb-prolaser) reads from Firebase — no API key exposed.
+
+const CLAUDE_API_URL='https://api.anthropic.com/v1/messages';
+const CLAUDE_MODEL='claude-opus-4-5'; // Best quality for business insights
+
+// API key stored ONLY in localStorage of Rinat's device. Never leaves it.
+function getClaudeKey(){
+  try{return localStorage.getItem('dr_claude_api_key')||'';}catch(e){return '';}
+}
+function setClaudeKey(k){
+  try{
+    if(k)localStorage.setItem('dr_claude_api_key',k);
+    else localStorage.removeItem('dr_claude_api_key');
+  }catch(e){}
+}
+function hasClaudeKey(){return !!getClaudeKey();}
+
+// Format today's date key (YYYY-MM-DD)
+function todayKey(){
+  const d=new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+
+// Build a compact summary of the business for Claude to analyze
+function buildBusinessContext(){
+  const now=new Date();
+  const all=allAppts();
+  const past=all.filter(a=>a.dt<=now);
+  const future=all.filter(a=>a.dt>now);
+  const paidPast=past.filter(a=>a.paid&&Number(a.d?.price||a.price)>0);
+  
+  // Last 30 days stats
+  const last30=past.filter(a=>(now-a.dt)<30*24*60*60*1000);
+  const rev30=last30.filter(a=>a.paid).reduce((s,a)=>s+(Number(a.d?.price||a.price)||0),0);
+  
+  // Previous 30 days
+  const prev30=past.filter(a=>(now-a.dt)>=30*24*60*60*1000&&(now-a.dt)<60*24*60*60*1000);
+  const prevRev30=prev30.filter(a=>a.paid).reduce((s,a)=>s+(Number(a.d?.price||a.price)||0),0);
+  
+  // Clients
+  const clientVisits={};
+  past.forEach(a=>{
+    const name=a.d?.name||a.name;
+    if(!name)return;
+    if(!clientVisits[name])clientVisits[name]={count:0,lastVisit:null,totalPaid:0};
+    clientVisits[name].count++;
+    if(!clientVisits[name].lastVisit||a.dt>clientVisits[name].lastVisit)clientVisits[name].lastVisit=a.dt;
+    if(a.paid&&Number(a.d?.price||a.price)>0)clientVisits[name].totalPaid+=Number(a.d?.price||a.price);
+  });
+  
+  const activeClients=Object.entries(clientVisits).filter(([,v])=>(now-v.lastVisit)<90*24*60*60*1000).length;
+  const lostClients=Object.entries(clientVisits).filter(([,v])=>{
+    const d=(now-v.lastVisit)/(1000*60*60*24);
+    return d>60&&d<200&&v.count>=2;
+  });
+  const topLoyal=Object.entries(clientVisits).filter(([,v])=>v.count>=5).length;
+  
+  // Debts
+  const debts=Object.entries(S.DEBTS||{}).filter(([,d])=>d.amount>0);
+  const totalDebt=debts.reduce((s,[,d])=>s+d.amount,0);
+  
+  // Cancellations
+  const cancs=Object.entries(S.CANC||{});
+  const recentCancs=cancs.filter(([,c])=>(now-new Date(c.created))<30*24*60*60*1000).length;
+  const cancRate=last30.length>0?Math.round((recentCancs/(last30.length+recentCancs))*100):0;
+  
+  // Day of week analysis (past 3 months)
+  const dayStats=[0,0,0,0,0,0,0];
+  const dayNames=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+  paidPast.filter(a=>(now-a.dt)<90*24*60*60*1000).forEach(a=>dayStats[a.dt.getDay()]++);
+  const strongestDay=dayStats.indexOf(Math.max(...dayStats));
+  const weakestWorkday=[0,1,2,3,4].reduce((w,d)=>dayStats[d]<dayStats[w]?d:w,0);
+  
+  // Average ticket
+  const avgTicket=paidPast.length>0?Math.round(paidPast.reduce((s,a)=>s+Number(a.d?.price||a.price||0),0)/paidPast.length):0;
+  
+  // New clients last 30 days
+  const firstSeen={};
+  past.forEach(a=>{
+    const name=a.d?.name||a.name;
+    if(!name)return;
+    if(!firstSeen[name]||a.dt<firstSeen[name])firstSeen[name]=a.dt;
+  });
+  const newClients30=Object.values(firstSeen).filter(d=>(now-d)<30*24*60*60*1000).length;
+  
+  // Packages
+  const pkgs=Object.entries(S.PKGS||{}).filter(([,p])=>p.remaining>0);
+  const pkgsEndingSoon=pkgs.filter(([,p])=>p.remaining<=2).length;
+  
+  return {
+    date:todayKey(),
+    dayOfWeek:dayNames[now.getDay()],
+    appointments:{
+      upcomingTotal:future.length,
+      today:future.filter(a=>a.date===TD).length,
+      last30days:last30.length,
+      historicalTotal:past.length
+    },
+    revenue:{
+      last30Days:rev30,
+      previous30Days:prevRev30,
+      trendPercent:prevRev30>0?Math.round(((rev30-prevRev30)/prevRev30)*100):null,
+      averageTicket:avgTicket
+    },
+    clients:{
+      totalEver:Object.keys(clientVisits).length,
+      activeLast90Days:activeClients,
+      loyal5PlusVisits:topLoyal,
+      newLast30Days:newClients30,
+      dormantCouldReturn:lostClients.length
+    },
+    debts:{
+      clientsWithDebt:debts.length,
+      totalOwed:totalDebt
+    },
+    cancellations:{
+      last30Days:recentCancs,
+      percentOfAppts:cancRate
+    },
+    schedule:{
+      strongestDay:dayNames[strongestDay],
+      weakestWorkday:dayNames[weakestWorkday]
+    },
+    packages:{
+      active:pkgs.length,
+      endingSoon:pkgsEndingSoon
+    }
+  };
+}
+
+// Call Claude API with business context and get a daily tip back
+async function callClaudeForTip(){
+  const key=getClaudeKey();
+  if(!key)throw new Error('אין מפתח API');
+  
+  const context=buildBusinessContext();
+  
+  const systemPrompt=`אתה יועץ עסקי ותיק של קליניקת לייזר יופי בירושלים, שכונת רמות. הבעלים — רינת. את מדברת/כותבת בעברית בלבד, בטון חברי, אישי, ובגוף נקבה (אל רינת).
+
+משימה: תקבל סיכום נתוני העסק של רינת, ותחזיר טיפ אחד מרכזי להיום — קצר, חד, מעשי, מבוסס על הנתונים.
+
+פורמט התשובה — JSON בלבד (בלי טקסט נוסף):
+{
+  "tip": "תוכן הטיפ בעברית — 2-3 משפטים קצרים, אבל עם ערך אמיתי",
+  "action": "פעולה ספציפית שהיא יכולה לעשות היום בבוקר — משפט אחד",
+  "insight_type": "growth | retention | cashflow | scheduling | pricing | marketing",
+  "emoji": "אימוג'י יחיד שמייצג את הטיפ"
+}
+
+חוקים:
+- תהיי ספציפית ל*הנתונים* שלה — לא בנאליות כלליות
+- אם הנתונים חלשים/חסרים, תני טיפ עונתי/כללי רלוונטי
+- אל תמציאי מספרים — השתמשי רק במה שיש בנתונים
+- מקסימום 250 תווים לכל שדה`;
+  
+  const userMsg=`הנה סיכום העסק שלי להיום:
+\`\`\`json
+${JSON.stringify(context,null,2)}
+\`\`\`
+
+תני לי טיפ אחד להיום.`;
+  
+  const response=await fetch(CLAUDE_API_URL,{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key':key,
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
+    body:JSON.stringify({
+      model:CLAUDE_MODEL,
+      max_tokens:500,
+      system:systemPrompt,
+      messages:[{role:'user',content:userMsg}]
+    })
+  });
+  
+  if(!response.ok){
+    const err=await response.text();
+    throw new Error(`Claude API error ${response.status}: ${err.substring(0,200)}`);
+  }
+  
+  const data=await response.json();
+  const text=data.content?.[0]?.text||'';
+  
+  // Extract JSON from response
+  let parsed;
+  try{
+    const match=text.match(/\{[\s\S]*\}/);
+    if(!match)throw new Error('No JSON in response');
+    parsed=JSON.parse(match[0]);
+  }catch(e){
+    throw new Error('Failed to parse Claude response: '+text.substring(0,100));
+  }
+  
+  return {
+    ...parsed,
+    generated_at:new Date().toISOString(),
+    date:todayKey(),
+    source:'claude_opus_4_5'
+  };
+}
+
+// Get cached tip for today (or null if not generated yet)
+async function getCachedClaudeTip(){
+  const key=todayKey();
+  try{
+    const r=await fetch(FB+'/daily_ai_tip/'+key+'.json',{cache:'no-store'});
+    if(r.ok){
+      const d=await r.json();
+      if(d&&d.tip)return d;
+    }
+  }catch(e){}
+  return null;
+}
+
+// Save today's tip to Firebase (public readable)
+async function saveClaudeTipToFirebase(tip){
+  const key=todayKey();
+  try{
+    await fetch(FB+'/daily_ai_tip/'+key+'.json',{
+      method:'PUT',
+      body:JSON.stringify(tip)
+    });
+    // Also save as "latest" for easy public access
+    await fetch(FB+'/daily_ai_tip_latest.json',{
+      method:'PUT',
+      body:JSON.stringify(tip)
+    });
+    return true;
+  }catch(e){
+    console.warn('Failed to save tip to Firebase:',e);
+    return false;
+  }
+}
+
+// Main function — check if tip exists for today, generate if needed
+async function ensureDailyClaudeTip(forceRefresh){
+  // Check cache first (unless forced)
+  if(!forceRefresh){
+    const cached=await getCachedClaudeTip();
+    if(cached)return {tip:cached,fromCache:true};
+  }
+  
+  if(!hasClaudeKey())throw new Error('אין מפתח API — הגדירי קודם');
+  
+  // Generate new tip
+  const tip=await callClaudeForTip();
+  await saveClaudeTipToFirebase(tip);
+  return {tip,fromCache:false};
+}
+
+// ── UI for API key management ──
+
+function openClaudeSetup(){
+  const existing=getClaudeKey();
+  const maskedKey=existing?existing.substring(0,8)+'...'+existing.substring(existing.length-4):'';
+  
+  const ov=document.createElement('div');
+  ov.className='claude-setup-overlay';
+  ov.id='claude-setup-overlay';
+  ov.onclick=function(e){if(e.target===ov)closeClaudeSetup();};
+  
+  ov.innerHTML=`<div class="claude-setup-sheet">
+    <div class="claude-setup-hdr">
+      <div class="claude-setup-hdr-ico">🔐</div>
+      <div class="claude-setup-hdr-txt">
+        <div class="claude-setup-hdr-title">יועץ AI אמיתי — Claude</div>
+        <div class="claude-setup-hdr-sub">חיבור מאובטח, קריאה אחת ביום בלבד</div>
+      </div>
+      <button class="claude-setup-close" onclick="closeClaudeSetup()">✕</button>
+    </div>
+    
+    <div class="claude-setup-body">
+      ${!existing?`
+      <div class="claude-setup-info">
+        <div class="claude-setup-info-title">💡 איך זה עובד?</div>
+        <div class="claude-setup-info-steps">
+          <div class="claude-setup-step"><span class="claude-setup-step-num">1</span><div><b>פעם אחת ביום</b> — היומן שלך פונה ל-Claude עם סיכום נתוני העסק</div></div>
+          <div class="claude-setup-step"><span class="claude-setup-step-num">2</span><div>Claude מחזיר טיפ מותאם אישית לעסק שלך</div></div>
+          <div class="claude-setup-step"><span class="claude-setup-step-num">3</span><div>הטיפ נשמר ב-Firebase, האתר הציבורי קורא אותו ללא עלות</div></div>
+          <div class="claude-setup-step"><span class="claude-setup-step-num">4</span><div><b>המפתח נשאר רק במכשיר שלך</b> — לעולם לא עובר לאתר הציבורי</div></div>
+        </div>
+      </div>
+      
+      <div class="claude-setup-pricing">
+        <div class="claude-setup-pricing-ico">💰</div>
+        <div>
+          <div class="claude-setup-pricing-title">עלות משוערת</div>
+          <div class="claude-setup-pricing-desc">כ-₪1 לחודש (קריאה אחת ביום × 30 יום × $0.003 לקריאה). Anthropic מחייבת בדולרים דרך כרטיס אשראי.</div>
+        </div>
+      </div>
+      
+      <div class="claude-setup-howto">
+        <div class="claude-setup-howto-title">📋 איך להשיג מפתח?</div>
+        <ol class="claude-setup-howto-list">
+          <li>היכנסי ל-<a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener"><b>console.anthropic.com</b></a></li>
+          <li>התחברי (אם אין חשבון — הרשמי, יש $5 חינם)</li>
+          <li>לחצי <b>Create Key</b></li>
+          <li>העתיקי את המפתח (מתחיל ב-<code>sk-ant-</code>)</li>
+          <li>הדביקי אותו כאן למטה</li>
+        </ol>
+      </div>`:`
+      <div class="claude-setup-active">
+        <div class="claude-setup-active-ico">✅</div>
+        <div class="claude-setup-active-txt">
+          <div class="claude-setup-active-title">מפתח פעיל</div>
+          <div class="claude-setup-active-key">${maskedKey}</div>
+        </div>
+      </div>`}
+      
+      <div class="claude-setup-form">
+        <label class="claude-setup-label">${existing?'החליפי מפתח':'הדביקי את המפתח'}</label>
+        <input type="password" id="claude-key-input" class="claude-setup-input" placeholder="sk-ant-api03-..." ${existing?'':'autofocus'}>
+        <div class="claude-setup-hint">🔒 המפתח נשמר במכשיר שלך בלבד — לא נשלח לשום שרת חוץ מ-Anthropic</div>
+      </div>
+      
+      <div class="claude-setup-actions">
+        ${existing?`<button class="claude-setup-btn danger" onclick="removeClaudeKey()">🗑 מחקי מפתח</button>`:''}
+        <button class="claude-setup-btn primary" onclick="saveClaudeKeyAndTest()">${existing?'💾 עדכני מפתח':'💾 שמרי ובדקי'}</button>
+      </div>
+      
+      ${existing?`<div class="claude-setup-test">
+        <button class="claude-setup-test-btn" onclick="testClaudeNow()">⚡ הפקי טיפ חדש עכשיו (ידני)</button>
+        <div class="claude-setup-test-hint">בדרך כלל הטיפ מתעדכן אוטומטית כשפותחים את היומן פעם ראשונה ביום</div>
+      </div>`:''}
+    </div>
+  </div>`;
+  
+  document.body.appendChild(ov);
+  setTimeout(()=>ov.classList.add('on'),20);
+}
+
+function closeClaudeSetup(){
+  const ov=document.getElementById('claude-setup-overlay');
+  if(ov){ov.classList.remove('on');setTimeout(()=>ov.remove(),250);}
+}
+
+async function saveClaudeKeyAndTest(){
+  const inp=document.getElementById('claude-key-input');
+  if(!inp)return;
+  const k=inp.value.trim();
+  if(!k){webToast('⚠️ הדביקי מפתח',true);return;}
+  if(!k.startsWith('sk-ant-')){webToast('⚠️ המפתח לא תקין — אמור להתחיל ב-sk-ant-',true);return;}
+  
+  setClaudeKey(k);
+  webToast('🔑 המפתח נשמר — בודקת...');
+  
+  try{
+    const result=await ensureDailyClaudeTip(true); // force refresh
+    webToast('✅ Claude מחובר! טיפ חדש יופיע בטאב AI');
+    closeClaudeSetup();
+    if(typeof hRender==='function'&&S.histTab==='advisor')hRender();
+  }catch(e){
+    webToast('❌ '+e.message,true);
+  }
+}
+
+function removeClaudeKey(){
+  if(!confirm('למחוק את המפתח? תוכלי להוסיף שוב בכל עת.'))return;
+  setClaudeKey('');
+  closeClaudeSetup();
+  webToast('🗑 המפתח נמחק');
+  if(typeof hRender==='function'&&S.histTab==='advisor')hRender();
+}
+
+async function testClaudeNow(){
+  webToast('⏳ מתקשרת עם Claude...');
+  try{
+    const result=await ensureDailyClaudeTip(true);
+    webToast('✅ טיפ חדש נוצר! רענני את הטאב');
+    closeClaudeSetup();
+    if(typeof hRender==='function'&&S.histTab==='advisor')hRender();
+  }catch(e){
+    webToast('❌ '+e.message,true);
+  }
+}
+
+// Auto-trigger daily tip generation on load if needed
+async function autoEnsureDailyTip(){
+  if(!hasClaudeKey())return;
+  try{
+    // Check if today's tip exists
+    const cached=await getCachedClaudeTip();
+    if(cached)return; // already have today's tip
+    // Generate it silently
+    await ensureDailyClaudeTip(false);
+    console.log('✅ Daily Claude tip generated');
+    // Refresh advisor tab if visible
+    if(typeof hRender==='function'&&S.histTab==='advisor')hRender();
+  }catch(e){
+    console.warn('Failed to generate daily Claude tip:',e);
+  }
+}
+
+// Run once on page load (delayed so not to block initial render)
+if(typeof window!=='undefined'){
+  window.addEventListener('load',function(){
+    setTimeout(autoEnsureDailyTip,3000);
+  });
+}
+
+// Load Claude tip asynchronously into the slot in advisor tab
+async function loadClaudeTipIntoSlot(){
+  const slot=document.getElementById('claude-tip-slot');
+  if(!slot)return;
+  
+  // Try to get cached tip
+  const cached=await getCachedClaudeTip();
+  
+  if(!cached){
+    // No tip yet
+    if(hasClaudeKey()){
+      slot.innerHTML=`<div class="claude-tip-card" style="background:linear-gradient(135deg,#1e1b4b,#312e81);padding:20px;text-align:center">
+        <div style="font-size:28px;margin-bottom:8px">⏳</div>
+        <div style="color:white;font-weight:800;font-size:13px;margin-bottom:4px">טוען טיפ יומי מ-Claude...</div>
+        <div style="color:rgba(255,255,255,.6);font-size:11px">אם זה לוקח זמן, לחצי "בדיקה ידנית" בהגדרות</div>
+      </div>`;
+    }
+    return; // without key, don't show anything
+  }
+  
+  const tip=cached;
+  const dateStr=tip.date?tip.date.split('-').reverse().join('/'):'';
+  const typeLabels={
+    growth:'📈 צמיחה',
+    retention:'🔄 שימור',
+    cashflow:'💰 תזרים',
+    scheduling:'📅 תכנון',
+    pricing:'💎 תמחור',
+    marketing:'📢 שיווק'
+  };
+  const typeLabel=typeLabels[tip.insight_type]||'💡 תובנה';
+  
+  slot.innerHTML=`<div class="claude-tip-card">
+    <div class="claude-tip-hdr">
+      <span class="claude-tip-badge">CLAUDE</span>
+      <span class="claude-tip-label">טיפ מותאם אישית</span>
+      <span class="claude-tip-date">${dateStr}</span>
+    </div>
+    <div class="claude-tip-body">
+      <span class="claude-tip-emoji">${tip.emoji||'💡'}</span>
+      <span>${x(tip.tip||'')}</span>
+    </div>
+    ${tip.action?`<div class="claude-tip-action">
+      <div class="claude-tip-action-label">✨ מה לעשות עכשיו</div>
+      <div class="claude-tip-action-body">${x(tip.action)}</div>
+    </div>`:''}
+    <div class="claude-tip-meta">
+      <span class="claude-tip-type">${typeLabel}</span>
+      ${hasClaudeKey()?`<button class="claude-tip-refresh" onclick="refreshClaudeTip(this)" title="הפק טיפ חדש עכשיו">🔄 עדכני עכשיו</button>`:''}
+    </div>
+  </div>`;
+}
+
+async function refreshClaudeTip(btn){
+  if(!hasClaudeKey()){webToast('⚠️ הגדירי קודם Claude',true);return;}
+  if(btn)btn.disabled=true;
+  webToast('⏳ מבקשת טיפ חדש מ-Claude...');
+  try{
+    await ensureDailyClaudeTip(true);
+    await loadClaudeTipIntoSlot();
+    webToast('✅ טיפ חדש נוצר');
+  }catch(e){
+    webToast('❌ '+e.message,true);
+  }
+  if(btn)btn.disabled=false;
+}
+
 function generateSmartTip(){
   const now=new Date();
   const all=allAppts();
@@ -4485,7 +5252,17 @@ function renderAdvisor(){
         <div class="adv-stat-lbl">לקוחות פעילות · 90 ימים</div>
       </div>
     </div>
+    <div class="claude-btn-row">
+      <button class="claude-btn${hasClaudeKey()?' connected':''}" onclick="openClaudeSetup()">
+        ${hasClaudeKey()?'✅ Claude מחובר':'🔑 חברי Claude האמיתי'}
+      </button>
+    </div>
   </div>`;
+  
+  // ── Claude Daily Tip Card (if connected) ──
+  html+=`<div id="claude-tip-slot"></div>`;
+  // Load async
+  setTimeout(()=>loadClaudeTipIntoSlot(),50);
   
   // ── Smart Tip Card with "next tip" button ──
   const firstTip=generateSmartTip();
@@ -5745,6 +6522,410 @@ function openPromoPanel(){
 
 // ── הבחירה הטובה ביותר לקליניקה של רינת ברמות ──
 // חמשת הערוצים הכי אפקטיביים — קבועים, עם הסבר ולמה
+// ═══════════════════════════════════════════════════════
+// ═══ 📖 Detailed Guides for each Top-5 channel       ═══
+// ═══════════════════════════════════════════════════════
+// Each guide: setup → templates → measuring → advanced → mistakes
+
+const PROMO_GUIDES={
+  'wall-ramot':{
+    title:'לוח קיר רמות א׳',
+    subtitle:'עיתון שכונתי מודפס — הזהב של הפרסום ברמות',
+    time:'הכנה: 30 דקות · תוצאה: 1-2 שבועות',
+    sections:[
+      {
+        heading:'📞 איך מתחילים — פעם ראשונה',
+        items:[
+          '<b>התקשרי ל-02-5869454</b> (יעקב — העורך). שעות קבלה 9:00-16:00 ימים א\'-ה\'.',
+          '<b>הציגי את עצמך:</b> "שלום, אני רינת, פותחת קליניקת לייזר בצונדק 10. רוצה לפרסם מודעה קטנה."',
+          '<b>שאלי את 3 השאלות הקריטיות:</b> מה מחיר של 1/8 עמוד? כמה הנחה על 4 גיליונות ברצף? האם הם מעצבים או שאני שולחת מוכן?',
+          'בקשי <b>ראשון ראשון</b> (המהדורה של יום ראשון) — אנשים קוראים את זה באופן הכי רציני.',
+          '<b>טייפ:</b> בקשי הצעת מחיר בהתחלה — תמיד יש מרחב למשא ומתן למודעות חוזרות.'
+        ]
+      },
+      {
+        heading:'✏️ מה לכתוב במודעה',
+        items:[
+          '<b>כותרת גדולה (3-5 מילים):</b> "הסרת שיער בלייזר — מקצועית"',
+          '<b>משפט מפתח:</b> "בלייזר מתקדם Alexandrite + Nd:YAG, כל סוגי העור"',
+          '<b>מיקום בולט:</b> "צונדק 10 רמות א׳ · דקות הליכה מהשכונה"',
+          '<b>מבצע לשבועיים:</b> "עד 25/5 — טיפול ראשון 50% הנחה"',
+          '<b>יצירת קשר:</b> טלפון גדול + שעות נוחות (מתי שומעים טלפון)',
+          '<b>חשוב:</b> בלי תמונות נשים · צמוד לכללי צניעות · שפה פשוטה וברורה'
+        ]
+      },
+      {
+        heading:'💡 טיפול פסיכולוגי בקוראות',
+        items:[
+          '<b>השתמשי ב-"המקומית שלכן"</b> — "הקליניקה של השכונה, פה עבורכן"',
+          '<b>הדגישי פרטיות:</b> "דיסקרטיות מלאה · קליניקה פרטית לנשים בלבד"',
+          '<b>הוספי תעודת הכשרה:</b> "מוסמכת בלייזר רפואי · ניסיון 10 שנים" (כשזה נכון)',
+          '<b>המלצה של רב/רבנית:</b> אם יש, זו תהיה כרטיס הכניסה הכי חזק לציבור החרדי'
+        ]
+      },
+      {
+        heading:'📊 איך מודדים אם עבד',
+        items:[
+          '<b>שאלי כל לקוחה חדשה:</b> "איך הגעת אלי?" — ורשמי בעמודת "מקור" ביומן',
+          '<b>קוד הטבה ייחודי:</b> "הזכירי את המודעה — 10% נוספים". ככה את בטוחה שזה משם',
+          'אחרי <b>3 גיליונות</b> תכלי לדעת את העלות פר לקוחה חדשה. יעד: מתחת ל-₪100 להמרה',
+          '<b>אם לא עובד:</b> לא תיכף להסיק שהמודעה רעה — נסי משפט אחר, מיקום אחר, יום אחר'
+        ]
+      },
+      {
+        heading:'⚠️ טעויות שאת לא רוצה לעשות',
+        items:[
+          '<b>מודעה קטנה מדי</b> — פחות מ-1/8 עמוד לא מושכת עיניים. עדיף גדול פחות תדיר',
+          '<b>הרבה טקסט</b> — אנשים דוגמים מודעה ב-3 שניות. כותרת + 3 שורות + טלפון',
+          '<b>ללא מבצע/דדליין</b> — בלי דחף, לא תקבלי קריאות. "רק השבוע", "עד 15/5"',
+          '<b>להפסיק אחרי גיליון אחד</b> — פרסום עובד בחזרתיות. מינימום 4 גיליונות'
+        ]
+      }
+    ]
+  },
+  'google-business':{
+    title:'Google Business Profile',
+    subtitle:'הנכס הדיגיטלי הכי חשוב לעסק מקומי — חובה ושווה זהב',
+    time:'הכנה: 45 דקות · תוצאה: 2-4 שבועות',
+    sections:[
+      {
+        heading:'🚀 הקמה ראשונית — שלב אחר שלב',
+        items:[
+          '<b>היכנסי ל-</b><a href="https://www.google.com/business/" target="_blank">google.com/business</a> <b>עם חשבון Gmail</b> (אם אין — פתחי אחד ייעודי לעסק)',
+          '<b>חפשי את העסק שלך</b> — אולי גוגל כבר יודעים עליו. אם כן, לחצי "Claim this business"',
+          '<b>שם עסק:</b> "RB Pro Laser — רינת" (שם פשוט ומזוהה)',
+          '<b>קטגוריה:</b> "Laser hair removal service" (ראשית) + "Beauty Salon" (משנית)',
+          '<b>כתובת:</b> צונדק 10, רמות א\', ירושלים · סמני "מקבלים לקוחות במיקום שלי"',
+          '<b>שעות פעילות:</b> הגדירי נכון — גוגל לומד מתי אנשים מחפשים',
+          '<b>טלפון ו-WhatsApp:</b> הוסיפי את שתיהם — כפתור WhatsApp יופיע בחיפוש',
+          '<b>אימות:</b> גוגל ישלח גלויה פיזית עם קוד תוך 5-14 יום. עד שלא מאמתים — הפרופיל לא מלא פעיל'
+        ]
+      },
+      {
+        heading:'📸 תמונות — הכי חשוב',
+        items:[
+          '<b>לפחות 10 תמונות</b> בכניסה. פרופילים עם 10+ תמונות מקבלים פי 3 לחיצות',
+          '<b>חלון/כניסה לקליניקה</b> — כדי שלקוחות יזהו מבחוץ',
+          '<b>כיסא הטיפול + המכשיר</b> — בונה אמון וסקרנות',
+          '<b>לפני/אחרי (באישור!)</b> — הכי ממיר. גם הקהל הדתי מסתכל',
+          '<b>תעודות והכשרות</b> — צלמי ותלי בפרופיל',
+          '<b>סרטון 30 שניות</b> — סיור בקליניקה · גוגל מעדיף פרופילים עם סרטונים'
+        ]
+      },
+      {
+        heading:'⭐ ביקורות — הדלק של הפרופיל',
+        items:[
+          '<b>יעד ראשון: 10 ביקורות ב-30 יום</b>. פרופיל מתחת ל-10 ביקורות לא מתחרה',
+          '<b>אחרי כל טיפול מוצלח:</b> "את יכולה לשתף חוויה בגוגל? זה עוזר לי מאוד" + תני לינק ישיר',
+          '<b>הלינק הישיר</b>: במקום להסביר איך, תלחצי "Ask for reviews" בפרופיל וישלח לך לינק קצר',
+          '<b>ענה לכל ביקורת</b> תוך 24 שעות, גם ל-5 כוכבים. גוגל רואה שאתה פעיל',
+          '<b>ביקורת שלילית?</b> אל תתנצלי בגופן נרגש — ענו מקצועית: "תודה על הפידבק, נבדק את זה"',
+          '<b>טיפ זהב:</b> בקשי מלקוחות להזכיר בביקורת את השירות הספציפי ("הסרת שיער") — גוגל מדרג לפי זה'
+        ]
+      },
+      {
+        heading:'📱 פוסטים — עדכון שבועי',
+        items:[
+          'גוגל נותן לך לפרסם <b>פוסטים בפרופיל</b> — כמו מיני-פייסבוק',
+          '<b>פעם בשבוע:</b> "מבצע השבוע", "לקוחה חדשה ממליצה", "זמינות שנותרה"',
+          '<b>כל פוסט נשאר 7 ימים</b> — אם לא מפרסמים, הפרופיל נראה "רדום"',
+          '<b>הוסיפי תמיד כפתור פעולה:</b> "התקשרי", "קבעי תור", "למדי עוד"'
+        ]
+      },
+      {
+        heading:'📊 איך מודדים — Google Insights',
+        items:[
+          '<b>בפרופיל יש לשונית "Performance"</b> — רואים חיפושים, לחיצות, התקשרויות',
+          '<b>יעד חודשי:</b> 100+ צפיות בפרופיל, 10+ לחיצות על "התקשרי", 5+ "הוראות הגעה"',
+          'אם המספרים לא זזים — חסרות תמונות או ביקורות',
+          '<b>"Search queries":</b> אילו מילים מחפשים ומגיעים אליך? התאימי את התיאור לפי זה'
+        ]
+      },
+      {
+        heading:'⚠️ טעויות קריטיות',
+        items:[
+          '<b>שם מזויף</b> או מוסיפים מילות מפתח בשם ("הסרת שיער הכי טוב") — גוגל חוסם',
+          '<b>לקנות ביקורות</b> — הכי מסוכן. גוגל מזהה וסוגר פרופילים',
+          '<b>לענות תוקפני לביקורת שלילית</b> — לקוחות רואות את התגובה יותר מהביקורת עצמה',
+          '<b>לשכוח לעדכן שעות חגים</b> — לקוחה מגיעה לקליניקה סגורה = ביקורת 1 כוכב'
+        ]
+      }
+    ]
+  },
+  'whatsapp':{
+    title:'WhatsApp סטטוס + קבוצות',
+    subtitle:'הערוץ הכי יעיל לציבור החרדי ברמות — 98% פותחים סטטוס',
+    time:'הכנה: 15 דקות · תוצאה: ימים',
+    sections:[
+      {
+        heading:'📲 הקמה — WhatsApp Business',
+        items:[
+          '<b>הורידי WhatsApp Business</b> (חינם, נפרד מהווטסאפ הרגיל). אפשרי שני מספרים בטלפון',
+          '<b>פרופיל עסק מלא:</b> שם, תיאור קצר, כתובת, שעות פעילות, קישור לאינסטגרם',
+          '<b>הודעות אוטומטיות:</b> הפעילי "הודעת ברוכים הבאים" — כל לקוחה חדשה מקבלת תגובה מיידית',
+          '<b>שעות שקטות:</b> "כרגע אני בטיפול, אחזור אליך תוך שעתיים" (אוטומטי, בשעות עבודה)',
+          '<b>קטלוג מוצרים:</b> הכניסי את כל הטיפולים עם תמונה + מחיר. לקוחה יכולה לדפדף כמו חנות'
+        ]
+      },
+      {
+        heading:'📸 סטטוס יומי — הזהב',
+        items:[
+          '<b>פעם ביום — 1-3 סטטוסים.</b> לא יותר ולא פחות',
+          '<b>סטטוס בוקר (08:00-09:00):</b> לפני/אחרי מלקוחה + "תור פנוי היום ב-14:00"',
+          '<b>סטטוס אחה"צ (14:00-15:00):</b> צילום של המכשיר תוך עבודה + טיפ קצר ("למה לייזר עדיף על שעווה")',
+          '<b>סטטוס ערב (20:00-21:00):</b> זמינות מחר + מבצע מוגבל בזמן ("רק ל-3 הבאות: 20% הנחה")',
+          '<b>כלל הזהב:</b> כל סטטוס צריך להזמין לפעולה. "לפרטים - תכתבו"'
+        ]
+      },
+      {
+        heading:'👥 קבוצות רמות — איך מצטרפים נכון',
+        items:[
+          'חיפוש בוואטסאפ: <b>"רמות קהילה"</b>, <b>"יד שנייה רמות"</b>, <b>"אמהות רמות"</b>',
+          'לא מוצאים קישור? <b>שאלי שכנה/חברה בשכונה</b> — הן בטח בכמה קבוצות',
+          '<b>אל תפרסמי מיד!</b> חכי שבוע — תראי מה הטון של הקבוצה, איזה פרסומים מקובלים',
+          '<b>קראי את חוקי הקבוצה</b> — בהרבה מהן יש "ימי פרסום" (למשל רק יום ראשון)',
+          '<b>כתבי פוסט אותנטי</b> לא שיווקי: "שלום לכולן, אני רינת, גרה ברמות, פתחתי קליניקת לייזר..."',
+          '<b>הציעי משהו חינם</b>: "ייעוץ חינם ללא התחייבות" · "סדנה חינמית"'
+        ]
+      },
+      {
+        heading:'💬 תבניות הודעות מוכנות',
+        items:[
+          '<b>תגובה ללקוחה חדשה:</b> "שלום! כיף שפנית. ספרי לי קצת על מה שאת רוצה — איזור, גוון עור, ניסיון קודם — ואשלח לך פרטים מדויקים."',
+          '<b>תזכורת תור:</b> "היי [שם]! רק מזכירה — התור שלך מחר בשעה [שעה]. אנא אשרי שאת מגיעה. 💝"',
+          '<b>אחרי טיפול:</b> "תודה שהיית היום! איך את מרגישה? אם יש שאלות אחרי הטיפול, כתבי. ולסגור תור הבא ב-4-6 שבועות."',
+          '<b>חזרה ללקוחה ישנה:</b> "[שם] היקרה, מזמן לא נפגשנו 💝 יש לך ₪X מתנה לכל טיפול שתקבעי החודש."'
+        ]
+      },
+      {
+        heading:'📊 איך מודדים הצלחה',
+        items:[
+          '<b>צפיות בסטטוס</b> — שואפת ל-80-120 צפיות (50-60% מאנשי הקשר שלך)',
+          '<b>המרות לפנייה:</b> מתוך כל 100 צופות, צפי 3-5 לשלוח הודעה. פחות מזה — הסטטוס לא טוב',
+          '<b>זמן תגובה ממוצע:</b> תוך שעה מפנייה. יותר מזה — איבדת את הלקוחה',
+          '<b>רשום כל לקוחה שפנתה דרך וואטסאפ</b> ביומן — זה הערוץ העיקרי שלך, חבל לא למדוד'
+        ]
+      },
+      {
+        heading:'⚠️ טעויות שהורסות',
+        items:[
+          '<b>יותר מ-3 סטטוסים ביום</b> — אנשים שמים על השתק. פחות זה יותר',
+          '<b>לשלוח ברודקסט פרסומי מדי פעם</b> — זה נחשב ספאם. אנשים יחסמו',
+          '<b>להשאיר מישהי ללא תגובה יותר מ-24 שעות</b> — היא כבר קבעה אצל המתחרה',
+          '<b>להוסיף לקוחות לקבוצת וואטסאפ בלי רשות</b> — מביא לחסימות וזעם',
+          '<b>סטטוס עם טקסט בלבד</b> — תמיד צריך תמונה/סרטון. טקסט נקי לא עובד'
+        ]
+      }
+    ]
+  },
+  'instagram':{
+    title:'Instagram — הפלטפורמה של היופי',
+    subtitle:'מובילה מוחלטת בתחום הקוסמטיקה · ריל אחד יכול להביא 50 תורים',
+    time:'הכנה: 30 דקות · תוצאה: 4-8 שבועות',
+    sections:[
+      {
+        heading:'🏗 הקמת פרופיל מקצועי',
+        items:[
+          '<b>חשבון Business (חינם):</b> Settings > Account > Switch to Professional > Business',
+          '<b>שם עסק:</b> "RB Pro Laser" · שם משתמש: "@rb.pro.laser" או "@rinat_laser_jerusalem"',
+          '<b>קטגוריה:</b> "Beauty, Cosmetic & Personal Care"',
+          '<b>ביו (150 תווים):</b> "💆‍♀️ הסרת שיער בלייזר | ירושלים-רמות\\n💎 טכנולוגיות מתקדמות\\n📞 לתיאום: [טלפון]\\n👇 פרטים ומחירים"',
+          '<b>תמונת פרופיל:</b> לוגו או תמונה מקצועית שלך (לא סלפי)',
+          '<b>Highlights קבועים:</b> "לפני/אחרי", "המקום שלי", "מחירון", "חוות דעת", "שאלות נפוצות"'
+        ]
+      },
+      {
+        heading:'📅 תכנון שבועי — מה מפרסמים',
+        items:[
+          '<b>ראשון - "טיפ השבוע":</b> פוסט חינוכי ("מה ההבדל בין לייזר Alexandrite ל-Nd:YAG?")',
+          '<b>שני - סטוריז יומית:</b> זמינות השבוע, מבצעים',
+          '<b>שלישי - לפני/אחרי:</b> הפוסט הכי ממיר · <b>חייב</b> להיות עם אישור ווידוא פרטיות',
+          '<b>רביעי - ריל:</b> 30 שניות של התהליך (בלי לקוחה נראית) + מוזיקה פופולרית',
+          '<b>חמישי - לקוחה ממליצה:</b> סקרין-שוט של הודעה (בלי שם) + תגובה שלך',
+          '<b>שישי - "שבת שלום + מבצע":</b> זמינות שבוע הבא, משהו מיוחד',
+          '<b>שבת:</b> לא מפרסמים. יום של מנוחה גם באינסטגרם'
+        ]
+      },
+      {
+        heading:'🎬 ריל - נוסחה מנצחת',
+        items:[
+          '<b>3-5 שניות ראשונות = הכל.</b> משהו שמושך את העין: תמונת "לפני" מרשימה או שאלה',
+          '<b>פורמט מוכיח:</b> 0-3s משיכה, 3-10s בעיה/שאלה, 10-25s הפתרון שלך, 25-30s הזמנה לפעולה',
+          '<b>מוזיקה פופולרית של אינסטגרם</b> (לא Spotify) — האלגוריתם מעדיף',
+          '<b>טקסט על המסך תמיד</b> — 85% צופים בלי סאונד',
+          '<b>אורך אידיאלי:</b> 15-30 שניות. יותר = פחות צפיות',
+          '<b>הוסף 5-8 האשטגים רלוונטיים:</b> #הסרתשיער #לייזר #ירושלים #רמות #קליניקהמקצועית'
+        ]
+      },
+      {
+        heading:'✨ סטוריז - איך לא לבזבז',
+        items:[
+          '<b>3-5 סטוריז ביום</b> — לא יותר. אחרת אנשים מדלגים',
+          '<b>השתמשי במדבקות:</b> שאלון ("איזה טיפול הבא שלכן?"), דירוג (1-5 כוכבים), ציטוט',
+          '<b>כפתור "שלחי הודעה"</b> בכל סטורי של מבצע',
+          '<b>תייגי את המיקום</b> — "ירושלים, רמות" — מופיעים בחיפושי מקום',
+          '<b>יצרי "Highlight" חדש כל חודש</b> — כמו קטלוג של מה שהיה'
+        ]
+      },
+      {
+        heading:'👁 הגדלת חשיפה - טקטיקות',
+        items:[
+          '<b>השיבי לכל תגובה</b> תוך שעתיים. מדד מפתח לאלגוריתם',
+          '<b>עקבי אחרי לקוחות פוטנציאליות:</b> חפשי האשטג #כלהבירושלים, עקבי אחר 10 נשים ביום',
+          '<b>שתפי פעולה עם סלון/מספרה ברמות:</b> ריל משותף = גישה לכל העוקבות שלהם',
+          '<b>Reels Collab:</b> הציעי ל-3 קוסמטיקאיות ריל משותף - 3 מומחיות בתחום',
+          '<b>אל תקני עוקבים מזויפים</b> — האלגוריתם מזהה ומאבד חשיפה'
+        ]
+      },
+      {
+        heading:'📊 אינסייטס - מה לעקוב',
+        items:[
+          '<b>Reach (חשיפה):</b> כמה חשבונות ייחודיים ראו. יעד: 1000+ לשבוע',
+          '<b>Engagement rate:</b> (אינטראקציות/חשיפה) × 100. יעד: 3-5%',
+          '<b>Profile visits:</b> כמה לחצו לפרופיל אחרי שראו פוסט. יעד: 5-10% מהחשיפה',
+          '<b>Link clicks/DMs:</b> המדד הכי חשוב — כמה הפכו ללקוחות. יעד: 20+ בחודש'
+        ]
+      },
+      {
+        heading:'⚠️ טעויות שאסור',
+        items:[
+          '<b>לפרסם לפני/אחרי בלי אישור מלא:</b> סיפור משפטי מוחלט',
+          '<b>להשתמש בתמונות של אחרים</b> (פינטרסט, גוגל) — מורידים את הפוסט ועלולים לסגור חשבון',
+          '<b>לקנות עוקבים</b> — תקבלי חשיפה אפסית לפוסטים הבאים',
+          '<b>להעלים פוסטים של "לפני/אחרי" כשהביקוש גובר</b> — לקוחה פוטנציאלית חוזרת ומחפשת',
+          '<b>לדבר על מתחרים בשם</b> — פוגע במקצועיות'
+        ]
+      }
+    ]
+  },
+  'mit4mit':{
+    title:'mit4mit — אתר הביקורות של ישראל',
+    subtitle:'90% מהלקוחות בודקות פה לפני שמתקשרות · חובה להיות עם 15+ ביקורות',
+    time:'הכנה: 30 דקות · תוצאה: 1-2 חודשים',
+    sections:[
+      {
+        heading:'🎬 פתיחת דף עסק',
+        items:[
+          '<b>היכנסי ל-</b><a href="https://www.mit4mit.co.il/business/" target="_blank">mit4mit.co.il/business</a> <b>ולחצי "פתחי דף עסק"</b>',
+          '<b>קטגוריה ראשית:</b> "יופי וטיפוח" → "הסרת שיער בלייזר"',
+          '<b>קטגוריות משניות:</b> "קוסמטיקאית", "טיפולי עור" (אם רלוונטי)',
+          '<b>איזור שירות:</b> ירושלים → רמות + כל האזור (גם אם גרות רחוק יותר)',
+          '<b>טקסט עסק (500 תווים):</b> מה שאת מציעה, ניסיון, מה מיוחד בך, למי זה מתאים',
+          '<b>מחירון:</b> תמיד להראות טווח — "טיפול פנים: ₪150-250" · שקיפות בונה אמון',
+          'הפעלה דורשת אימות טלפון + לפעמים גם מייל'
+        ]
+      },
+      {
+        heading:'⭐ הגעה ל-15 ביקורות ראשונות',
+        items:[
+          '<b>בחודש הראשון - מטרה: 15 ביקורות.</b> פחות מזה — הפרופיל לא יופיע בחיפושים',
+          '<b>לכל לקוחה מרוצה:</b> שלחי הודעה 24 שעות אחרי הטיפול עם <b>לינק ישיר</b> לדף שלך במיט-פורמיט',
+          '<b>בקשה ספציפית:</b> "את יכולה לכתוב 2-3 שורות על החוויה? זה עוזר לי לגדול"',
+          '<b>מהלקוחות הקרובות:</b> בקשי בפנים, באופן אישי. הסבירי כמה זה חשוב',
+          '<b>הטבה לכתיבת ביקורת:</b> "מי שכותבת ביקורת — מקבלת מתנה קטנה בתור הבא" (חוקי ועובד)',
+          '<b>רק ביקורות אמיתיות!</b> אם mit4mit זיהה מזויפים — חוסמים לתמיד'
+        ]
+      },
+      {
+        heading:'📝 איך גורמים ללקוחה לכתוב ביקורת טובה',
+        items:[
+          '<b>לפני שאת מבקשת:</b> וודאי שהחוויה הייתה מושלמת. אם היה משהו חסר — אל תבקשי',
+          '<b>תזמון מושלם:</b> 24-48 שעות אחרי הטיפול, לא מיד, לא שבוע אחרי',
+          '<b>כתיבה מודרכת - תבנית:</b> "ספרי בקצרה: 1) למה הגעת, 2) איך הייתה החוויה, 3) התוצאה"',
+          '<b>אפילו ביקורת של 4 כוכבים</b> עוזרת יותר מחמש של 5 - נראה אותנטי',
+          '<b>תני דוגמה</b> של ביקורת שמישהי כבר כתבה - זה מאיץ כתיבה'
+        ]
+      },
+      {
+        heading:'📸 גלריית תמונות באתר',
+        items:[
+          '<b>מינימום 10 תמונות</b> - פרופיל עם 10+ תמונות מופיע גבוה יותר',
+          '<b>תמונות המקום:</b> כניסה, חדר טיפול, אזור המתנה - לקוחה רוצה להרגיש את המקום מראש',
+          '<b>המכשיר בפעולה</b> + שמות של הטכנולוגיה ("Alexandrite", "Nd:YAG")',
+          '<b>תעודות על הקיר</b> - צלמי ותלי',
+          '<b>לפני/אחרי - רק באישור מלא</b>, תמונה נטולת פנים, תעוף פרטי ברור'
+        ]
+      },
+      {
+        heading:'🏆 קבלת תג "מומלץ/מובחר"',
+        items:[
+          'mit4mit נותנים <b>תג "מובחר"</b> לעסקים עם: 20+ ביקורות, דירוג ממוצע 4.5+, תגובה לכל הביקורות',
+          '<b>תגובה לכל ביקורת</b> - גם 5 כוכבים. "תודה רבה [שם]! היה לי כיף איתך 💝"',
+          'ביקורת שלילית? <b>התנצלי פומבית</b>, תציעי פתרון: "אשמח שתתקשרי ונסדר את זה"',
+          '<b>החלק הדיגיטלי:</b> עונה לביקורות בתוך שבוע מקבל בוסט באלגוריתם'
+        ]
+      },
+      {
+        heading:'💰 תוכניות בתשלום - האם שווה?',
+        items:[
+          '<b>Free tier:</b> פרופיל בסיסי, מופיעה בחיפושים. <b>מספיק ל-6 חודשים ראשונים</b>',
+          '<b>Premium (₪99-300/חודש):</b> תמונות נוספות, תגיות נוספות, סטטיסטיקה. <b>שווה אחרי שיש 20+ ביקורות</b>',
+          '<b>Top רנקינג (₪500+/חודש):</b> מוצג ראשון בעמוד. <b>רק אם העסק מבוסס ויש הכנסות</b>',
+          '<b>עצה:</b> אל תתחייבי מראש לשנה. נסי חודש, בדקי ROI (כמה לקוחות הגיעו מ-mit4mit) - אז תחליטי'
+        ]
+      },
+      {
+        heading:'⚠️ טעויות קריטיות',
+        items:[
+          '<b>ביקורות מזויפות או מבני משפחה</b> - האלגוריתם מזהה ומוריד את הפרופיל',
+          '<b>לענות בכעס לביקורת שלילית</b> - לקוחות עתידיות רואות ומפחדות',
+          '<b>לשכוח לעדכן מחירים/שעות</b> - לקוחה מתקשרת בשעה שאמרת ולא עונים',
+          '<b>להעלות תמונות עם מטא-דאטה של מיקום</b> - פורץ פרטיות לקוחות. תמיד לנקות לפני העלאה'
+        ]
+      }
+    ]
+  }
+};
+
+function openPromoGuide(key){
+  const guide=PROMO_GUIDES[key];
+  if(!guide){webToast&&webToast('מדריך לא נמצא',true);return;}
+  
+  const ov=document.createElement('div');
+  ov.className='guide-overlay';
+  ov.id='promo-guide-overlay';
+  ov.onclick=function(e){if(e.target===ov)closePromoGuide();};
+  
+  const sectionsHtml=guide.sections.map((sec,i)=>`
+    <div class="guide-section">
+      <div class="guide-section-hdr">${x(sec.heading)}</div>
+      <div class="guide-section-items">
+        ${sec.items.map((item,j)=>`<div class="guide-item">
+          <div class="guide-item-num">${j+1}</div>
+          <div class="guide-item-body">${item}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  `).join('');
+  
+  ov.innerHTML=`<div class="guide-sheet">
+    <div class="guide-hdr">
+      <div class="guide-hdr-top">
+        <div class="guide-hdr-badge">📖 מדריך מקצועי</div>
+        <button class="guide-close" onclick="closePromoGuide()">✕</button>
+      </div>
+      <div class="guide-hdr-title">${x(guide.title)}</div>
+      <div class="guide-hdr-sub">${x(guide.subtitle)}</div>
+      <div class="guide-hdr-time">⏱ ${x(guide.time)}</div>
+    </div>
+    <div class="guide-body">
+      ${sectionsHtml}
+      <div class="guide-footer">
+        <div class="guide-footer-ico">💎</div>
+        <div class="guide-footer-txt">המדריך הזה מבוסס על שיטות עבודה שהוכיחו את עצמן בקליניקות יופי בירושלים. התחילי מהסעיף הראשון ועברי בהדרגה - אל תנסי הכל בפעם אחת.</div>
+      </div>
+    </div>
+  </div>`;
+  
+  document.body.appendChild(ov);
+  setTimeout(()=>ov.classList.add('on'),20);
+}
+
+function closePromoGuide(){
+  const ov=document.getElementById('promo-guide-overlay');
+  if(ov){ov.classList.remove('on');setTimeout(()=>ov.remove(),250);}
+}
+
 function getTopPicks(){
   return[
     {
@@ -5756,7 +6937,8 @@ function getTopPicks(){
       price:'₪200-500 למודעה',
       why:'עיתון שכונתי של רמות א׳ בדיוק — הקליניקה בצונדק 10, לקוחות פוטנציאליות גרות 2 דקות הליכה. מגיע לכל תיבת דואר בשכונה.',
       action:'התקשרי: 02-5869454 · בקשי מחיר למודעה קטנה שבועית',
-      url:'tel:025869454'
+      url:'tel:025869454',
+      guide:'wall-ramot'
     },
     {
       rank:2,
@@ -5767,7 +6949,8 @@ function getTopPicks(){
       price:'חינם',
       why:'כל לקוחה שמחפשת "הסרת שיער רמות" בגוגל — רואה קודם את המפה. בלי פרופיל אתה לא קיים. ביקורות בגוגל = הנכס הכי יקר לטווח ארוך.',
       action:'פתחי פרופיל, העלי תמונות, בקשי מ-10 לקוחות מרוצות לכתוב ביקורת',
-      url:'https://www.google.com/business/'
+      url:'https://www.google.com/business/',
+      guide:'google-business'
     },
     {
       rank:3,
@@ -5778,7 +6961,8 @@ function getTopPicks(){
       price:'חינם',
       why:'98% מהאנשים פותחים סטטוס וואטסאפ. הקהל החרדי ברמות משתמש בוואטסאפ יותר מפייסבוק. סטטוס יומי של לפני/אחרי + מבצע = תורים מיידיים.',
       action:'צרי 3-5 סטטוסים בשבוע + הצטרפי לקבוצות "רמות קהילה"',
-      url:'https://business.whatsapp.com/'
+      url:'https://business.whatsapp.com/',
+      guide:'whatsapp'
     },
     {
       rank:4,
@@ -5789,7 +6973,8 @@ function getTopPicks(){
       price:'חינם (אורגני)',
       why:'פלטפורמה מספר 1 לטיפולי יופי. הקהל הלא-חרדי של רינת (חילוני/מסורתי בירושלים) חי באינסטגרם. ריל מוצלח = 10,000+ חשיפות חינם.',
       action:'3 פוסטים + 5 סטוריז בשבוע · תמיד תמונות לפני/אחרי',
-      url:'https://www.instagram.com/'
+      url:'https://www.instagram.com/',
+      guide:'instagram'
     },
     {
       rank:5,
@@ -5800,7 +6985,8 @@ function getTopPicks(){
       price:'חינם/₪100-300 לחודש',
       why:'90% מהלקוחות בודקות ביקורות לפני שמגיעות. mit4mit האתר הכי חשוב בישראל לטיפולי יופי. 20 ביקורות חיוביות = תורים בלי סוף.',
       action:'פתחי דף עסק · בקשי מ-5 לקוחות השבוע לכתוב ביקורת',
-      url:'https://www.mit4mit.co.il/'
+      url:'https://www.mit4mit.co.il/',
+      guide:'mit4mit'
     }
   ];
 }
@@ -5850,7 +7036,7 @@ function renderPromoTab(){
     <div class="promo-daily-title">הכי טוב לרינת 🎯</div>
     <div class="promo-daily-sub">5 הערוצים הכי אפקטיביים לקליניקה ברמות</div>
   </div>
-  <div class="promo-top-list">${picks.map(s=>`<a class="promo-top-card" href="${s.url}" target="_blank" rel="noopener noreferrer">
+  <div class="promo-top-list">${picks.map(s=>`<div class="promo-top-card">
     <div class="promo-top-rank">${s.rank}</div>
     <div class="promo-top-body">
       <div class="promo-top-head">
@@ -5862,8 +7048,12 @@ function renderPromoTab(){
       </div>
       <div class="promo-top-why"><b>למה:</b> ${x(s.why)}</div>
       <div class="promo-top-action">💡 ${x(s.action)}</div>
+      <div class="promo-top-actions">
+        ${s.guide?`<button class="promo-top-btn guide" onclick="event.stopPropagation();openPromoGuide('${s.guide}')">📖 מדריך מלא מקצועי</button>`:''}
+        <a class="promo-top-btn open" href="${s.url}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${s.url.startsWith('tel:')?'📞 התקשרי':'↗️ פתחי'}</a>
+      </div>
     </div>
-  </a>`).join('')}</div>
+  </div>`).join('')}</div>
   <div class="promo-daily-tip"><div class="promo-daily-tip-ico">${tip.i}</div><div class="promo-daily-tip-txt"><b>טיפ היום:</b> ${x(tip.t)}</div></div>`;
   
   // All categories with price tags
@@ -5985,6 +7175,7 @@ async function webUpload(input){
     const msg=needCreateRepo?'🎉 הריפו נוצר ופורסם! יהיה זמין תוך דקה':'✅ האתר התעדכן בהצלחה!';
     step.innerHTML=`✅ <a href="${WEB_LIVE_URL}?v=${Date.now()}" target="_blank">פתח אתר חי ←</a>`;
     step.className='web-step ok';
+    webMarkPublished();
     webToast(msg);
     setTimeout(()=>{
       btn.disabled=false;
@@ -7098,6 +8289,7 @@ async function webSaveEdit(){
       btn.style.background='linear-gradient(135deg,#10b981,#059669)';
       st.innerHTML=`✅ נשמר בהצלחה! <a href="${WEB_LIVE_URL}?v=${Date.now()}" target="_blank">פתח אתר חי ←</a>`;
       st.className='web-edit-status-bar ok';
+      webMarkPublished();
       webToast('✅ האתר עודכן בהצלחה!');
       setTimeout(()=>{
         btn.disabled=false;
@@ -8145,6 +9337,153 @@ function webApplyAllFixes(){
   if(typeof hRender==='function')hRender();
 }
 
+// ═══════════════════════════════════════════════════════
+// ═══ 🔗 Fresh Link Sharing — cache-buster system      ═══
+// ═══════════════════════════════════════════════════════
+
+// Build the freshest possible link (forces browser to re-download)
+function webGetFreshLink(){
+  const now=new Date();
+  // Format: ddmmyyyy-hhmm for readability in URL
+  const pad=(n)=>String(n).padStart(2,'0');
+  const stamp=pad(now.getDate())+pad(now.getMonth()+1)+now.getFullYear()+'-'+pad(now.getHours())+pad(now.getMinutes());
+  return WEB_LIVE_URL+'?v='+stamp;
+}
+
+// Get info about last publish time (stored when we publish)
+function webGetLastPublishInfo(){
+  try{
+    const data=localStorage.getItem('dr_last_web_publish');
+    if(!data)return '';
+    const info=JSON.parse(data);
+    if(!info.time)return '';
+    const then=new Date(info.time);
+    const now=new Date();
+    const diffMs=now-then;
+    const diffMin=Math.floor(diffMs/60000);
+    const diffHour=Math.floor(diffMs/3600000);
+    const diffDay=Math.floor(diffMs/86400000);
+    let timeAgo;
+    if(diffMin<1)timeAgo='לפני רגע';
+    else if(diffMin<60)timeAgo=`לפני ${diffMin} דקות`;
+    else if(diffHour<24)timeAgo=`לפני ${diffHour} שעות`;
+    else if(diffDay<30)timeAgo=`לפני ${diffDay} ימים`;
+    else timeAgo=then.toLocaleDateString('he-IL');
+    return `<span class="web-share-last-pub-ico">📅</span><span>פורסם לאחרונה: <b>${timeAgo}</b></span>`;
+  }catch(e){return '';}
+}
+
+// Mark as published (called after successful upload)
+function webMarkPublished(){
+  try{
+    localStorage.setItem('dr_last_web_publish',JSON.stringify({time:Date.now()}));
+  }catch(e){}
+}
+
+// Copy fresh link to clipboard
+async function webCopyFreshLink(){
+  const link=webGetFreshLink();
+  // Update display
+  const txt=document.getElementById('web-share-url-txt');
+  if(txt)txt.textContent=link;
+  
+  try{
+    await navigator.clipboard.writeText(link);
+    webToast('✅ הקישור הטרי הועתק · הדביקי בוואטסאפ/SMS');
+  }catch(e){
+    // Fallback for older browsers
+    const ta=document.createElement('textarea');
+    ta.value=link;
+    ta.style.position='fixed';
+    ta.style.left='-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try{
+      document.execCommand('copy');
+      webToast('✅ הועתק!');
+    }catch(e2){
+      webToast('❌ לא הצלחתי להעתיק',true);
+    }
+    document.body.removeChild(ta);
+  }
+}
+
+// Share via WhatsApp with pre-filled message
+function webShareWhatsApp(){
+  const link=webGetFreshLink();
+  const msg=`היי! זה הקישור לאתר שלי:\n${link}\n\n✨ תוכלי לראות את כל הטיפולים, המחירים ואיך לקבוע תור.`;
+  const url='https://wa.me/?text='+encodeURIComponent(msg);
+  window.open(url,'_blank','noopener');
+}
+
+// Show QR code modal
+function webShowQR(){
+  const link=webGetFreshLink();
+  
+  // Use Google Charts API for QR (free, no key needed, reliable)
+  const qrSize=300;
+  const qrUrl='https://api.qrserver.com/v1/create-qr-code/?size='+qrSize+'x'+qrSize+'&data='+encodeURIComponent(link)+'&margin=10';
+  
+  const ov=document.createElement('div');
+  ov.className='web-qr-overlay';
+  ov.id='web-qr-overlay';
+  ov.onclick=function(e){if(e.target===ov)closeWebQR();};
+  
+  ov.innerHTML=`<div class="web-qr-sheet">
+    <div class="web-qr-hdr">
+      <div class="web-qr-hdr-ico">📱</div>
+      <div class="web-qr-hdr-txt">
+        <div class="web-qr-hdr-title">QR קוד לאתר</div>
+        <div class="web-qr-hdr-sub">לקוחה יכולה לסרוק עם המצלמה</div>
+      </div>
+      <button class="web-qr-close" onclick="closeWebQR()">✕</button>
+    </div>
+    <div class="web-qr-body">
+      <div class="web-qr-img-wrap">
+        <img id="web-qr-img" src="${qrUrl}" alt="QR Code" width="${qrSize}" height="${qrSize}">
+      </div>
+      <div class="web-qr-link">${x(link)}</div>
+      <div class="web-qr-actions">
+        <button class="web-qr-btn copy" onclick="webCopyFreshLink()">📋 העתיקי קישור</button>
+        <button class="web-qr-btn download" onclick="webDownloadQR()">📥 הורידי תמונה</button>
+      </div>
+      <div class="web-qr-hint">
+        <span>💡</span>
+        <span><b>איך מראים ללקוחה?</b> פתחי את הקוד על המסך · הלקוחה פותחת את המצלמה של הטלפון שלה ומכוונת · היא תקבל קישור לחיצה לאתר.</span>
+      </div>
+    </div>
+  </div>`;
+  
+  document.body.appendChild(ov);
+  setTimeout(()=>ov.classList.add('on'),20);
+}
+
+function closeWebQR(){
+  const ov=document.getElementById('web-qr-overlay');
+  if(ov){ov.classList.remove('on');setTimeout(()=>ov.remove(),250);}
+}
+
+// Download QR as image
+async function webDownloadQR(){
+  const img=document.getElementById('web-qr-img');
+  if(!img)return;
+  try{
+    const res=await fetch(img.src);
+    const blob=await res.blob();
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download='rb-prolaser-qr.png';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    webToast('✅ QR נשמר בגלריה');
+  }catch(e){
+    webToast('❌ שגיאה בהורדה',true);
+  }
+}
+
 function renderWebsiteTab(){
   // If site is loaded, show analysis
   let analysisHTML='';
@@ -8223,6 +9562,38 @@ function renderWebsiteTab(){
     <a class="web-action-btn primary" href="${WEB_LIVE_URL}" target="_blank" rel="noopener">👁 פתח אתר חי</a>
     <button class="web-action-btn" onclick="webOpenEditor()">✏️ ערוך אתר</button>
   </div>
+  
+  <!-- ═══ Share Link Card — for sending to clients ═══ -->
+  <div class="web-share-card">
+    <div class="web-share-hdr">
+      <div class="web-share-ico">🔗</div>
+      <div class="web-share-hdr-txt">
+        <div class="web-share-title">קישור טרי ללקוחות</div>
+        <div class="web-share-sub">מעודכן — הלקוחה תראה את הגרסה האחרונה, לא cache ישן</div>
+      </div>
+    </div>
+    <div class="web-share-url" id="web-share-url-display" onclick="webCopyFreshLink(this)" title="לחצי להעתקה">
+      <span class="web-share-url-txt" id="web-share-url-txt">${WEB_LIVE_URL}?v=${Date.now()}</span>
+      <span class="web-share-url-copy">📋 העתק</span>
+    </div>
+    <div class="web-share-actions">
+      <button class="web-share-btn copy" onclick="webCopyFreshLink()">
+        <span>📋</span><span>העתיקי קישור</span>
+      </button>
+      <button class="web-share-btn whatsapp" onclick="webShareWhatsApp()">
+        <span>💬</span><span>שליחה בוואטסאפ</span>
+      </button>
+      <button class="web-share-btn qr" onclick="webShowQR()">
+        <span>📱</span><span>QR קוד</span>
+      </button>
+    </div>
+    <div class="web-share-hint">
+      <span class="web-share-hint-ico">💡</span>
+      <span><b>למה זה חשוב?</b> לקוחות שקיבלו קישור קודם — הדפדפן שלהן שומר את הגרסה הישנה בcache. הקישור הטרי עם <code>?v=...</code> מאלץ את הדפדפן להוריד את האתר מחדש.</span>
+    </div>
+    <div class="web-share-last-pub" id="web-share-last-pub">${webGetLastPublishInfo()}</div>
+  </div>
+  
   ${analysisHTML}
   <div class="web-deploy-card">
     <div class="web-deploy-title">🚀 פרסום אתר חדש</div>

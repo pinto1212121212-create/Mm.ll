@@ -639,9 +639,108 @@ textarea.task-modal-area{width:100%;border:1.5px solid #e5e7eb;border-radius:12p
 .web-edit-btn.cancel{flex:1;background:#f3f4f6;color:#4b5563}
 .web-edit-btn.download{flex:1;background:#ede9fe;color:#5b21b6;border:1px solid #c4b5fd}
 
+/* ═══ Editor Toolbar — Pro Toolkit ═══ */
+.wt-toolbar{background:white;border-bottom:1px solid #ede9fe;flex-shrink:0;overflow:hidden;box-shadow:0 2px 8px rgba(76,29,149,.06)}
+.wt-row{display:flex;gap:4px;padding:8px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.wt-row::-webkit-scrollbar{display:none}
+.wt-row.contextual{background:linear-gradient(135deg,#faf5ff,#f3e8ff);border-top:1px solid #ede9fe;animation:wtSlide .25s ease}
+@keyframes wtSlide{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.wt-btn{flex-shrink:0;background:white;border:1px solid #e9d5ff;border-radius:10px;padding:8px 10px;color:#4c1d95;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;white-space:nowrap;transition:all .12s}
+.wt-btn:active{transform:scale(.94)}
+.wt-btn:hover{background:#f3e8ff;border-color:#c084fc}
+.wt-btn.on{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;border-color:#5b21b6;box-shadow:0 2px 8px rgba(124,58,237,.35)}
+.wt-btn.primary{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;border-color:transparent}
+.wt-btn.primary:hover{background:linear-gradient(135deg,#6d28d9,#4c1d95)}
+.wt-btn.danger{background:#fef2f2;border-color:#fecaca;color:#b91c1c}
+.wt-btn.danger:hover{background:#fee2e2}
+.wt-btn-ico{font-size:14px;line-height:1}
+.wt-btn-txt{font-size:11px;font-weight:800}
+.wt-btn.icon-only{padding:8px 10px}
+.wt-btn.icon-only .wt-btn-txt{display:none}
+.wt-sep{width:1px;background:#e9d5ff;margin:4px 2px;flex-shrink:0}
+.wt-group-lbl{font-size:10px;font-weight:900;color:#7c3aed;letter-spacing:.8px;text-transform:uppercase;padding:0 10px 0 4px;display:flex;align-items:center;flex-shrink:0}
+
+/* Popups (color picker, font size, link, etc.) */
+.wt-pop-overlay{position:fixed;inset:0;background:rgba(15,23,42,.35);z-index:450;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
+.wt-pop-overlay.on{display:flex;animation:wtFade .2s ease}
+@keyframes wtFade{from{opacity:0}to{opacity:1}}
+.wt-pop{background:white;border-radius:22px 22px 0 0;width:100%;max-width:520px;max-height:85vh;overflow-y:auto;animation:wtSlideUp .3s cubic-bezier(.34,1.56,.64,1);padding-bottom:env(safe-area-inset-bottom,0)}
+@keyframes wtSlideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.wt-pop-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #f3f4f6;position:sticky;top:0;background:white;z-index:2}
+.wt-pop-title{font-size:15px;font-weight:900;color:#1e1b4b}
+.wt-pop-close{background:#f3f4f6;border:none;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;color:#6b7280;display:flex;align-items:center;justify-content:center;font-family:inherit}
+.wt-pop-close:hover{background:#e5e7eb}
+.wt-pop-body{padding:16px 18px}
+@media(min-width:768px){
+  .wt-pop-overlay{align-items:center}
+  .wt-pop{border-radius:22px;max-height:80vh;margin:16px}
+}
+
+/* Color palette */
+.wt-colors{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
+.wt-color{aspect-ratio:1;border-radius:10px;cursor:pointer;border:2px solid transparent;transition:transform .1s;position:relative}
+.wt-color:active{transform:scale(.9)}
+.wt-color.sel{border-color:#1e1b4b;box-shadow:0 0 0 2px white inset}
+.wt-color.transparent{background:repeating-conic-gradient(#e5e7eb 0% 25%, white 0% 50%) 50%/10px 10px}
+.wt-color-custom-wrap{margin-top:14px;padding-top:14px;border-top:1px dashed #e9d5ff}
+.wt-color-custom-row{display:flex;gap:8px;align-items:center}
+.wt-color-custom-row input[type=color]{width:46px;height:46px;border:2px solid #ede9fe;border-radius:10px;cursor:pointer;padding:0;background:white}
+.wt-color-custom-row input[type=text]{flex:1;padding:12px 14px;border:1.5px solid #ede9fe;border-radius:12px;font-family:ui-monospace,monospace;font-size:13px;text-align:center;text-transform:uppercase;direction:ltr;outline:none}
+.wt-color-custom-row input[type=text]:focus{border-color:#7c3aed}
+
+/* Font size / alignment slider groups */
+.wt-size-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.wt-size-btn{padding:14px 8px;border-radius:12px;border:1.5px solid #ede9fe;background:white;color:#4c1d95;font-weight:800;cursor:pointer;font-family:inherit;transition:all .12s;display:flex;flex-direction:column;align-items:center;gap:4px}
+.wt-size-btn:active{transform:scale(.96)}
+.wt-size-btn.on{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;border-color:transparent}
+.wt-size-btn-name{font-size:11px;font-weight:700;opacity:.7}
+
+/* Link form */
+.wt-form-row{margin-bottom:12px}
+.wt-form-lbl{font-size:12px;font-weight:800;color:#4c1d95;margin-bottom:6px;display:block}
+.wt-form-inp{width:100%;padding:12px 14px;border:1.5px solid #ede9fe;border-radius:12px;font-size:14px;font-family:inherit;outline:none;transition:border .15s}
+.wt-form-inp:focus{border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.wt-form-inp.ltr{direction:ltr;text-align:left;font-family:ui-monospace,monospace;font-size:13px}
+.wt-form-hint{font-size:11px;color:#9ca3af;margin-top:4px;font-weight:600}
+.wt-form-actions{display:flex;gap:8px;margin-top:16px}
+.wt-form-btn{flex:1;padding:13px;border-radius:12px;border:none;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
+.wt-form-btn.ok{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white}
+.wt-form-btn.cancel{background:#f3f4f6;color:#4b5563}
+.wt-form-btn.danger{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+
+/* Media upload */
+.wt-upload-drop{border:2.5px dashed #c4b5fd;border-radius:16px;padding:24px 18px;text-align:center;background:linear-gradient(135deg,#faf5ff,#f3e8ff);cursor:pointer;transition:all .2s;margin-bottom:12px}
+.wt-upload-drop:hover{border-color:#7c3aed;background:linear-gradient(135deg,#f3e8ff,#e9d5ff)}
+.wt-upload-drop.drag-over{border-color:#7c3aed;background:#e9d5ff;transform:scale(1.01)}
+.wt-upload-ico{font-size:36px;margin-bottom:8px}
+.wt-upload-title{font-size:14px;font-weight:900;color:#4c1d95;margin-bottom:4px}
+.wt-upload-sub{font-size:11.5px;color:#7c3aed;font-weight:600}
+.wt-upload-divider{display:flex;align-items:center;gap:12px;margin:14px 0;color:#c084fc;font-size:11px;font-weight:800;letter-spacing:1px}
+.wt-upload-divider::before,.wt-upload-divider::after{content:'';flex:1;height:1px;background:#ede9fe}
+.wt-upload-progress{display:none;margin-top:10px;background:#ede9fe;border-radius:8px;overflow:hidden;height:6px}
+.wt-upload-progress-bar{height:100%;background:linear-gradient(90deg,#7c3aed,#a855f7);width:0%;transition:width .3s}
+
+/* Element actions (when image/video is selected) */
+.wt-elem-info{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#faf5ff;border-bottom:1px solid #ede9fe;font-size:12px;font-weight:700;color:#4c1d95}
+.wt-elem-info-ico{font-size:18px}
+.wt-elem-info-close{margin-right:auto;background:none;border:none;color:#7c3aed;font-size:16px;cursor:pointer;font-family:inherit;padding:4px 8px}
+
+/* Quick swatches (inline color buttons on toolbar) */
+.wt-swatch{width:22px;height:22px;border-radius:6px;border:1.5px solid white;box-shadow:0 0 0 1px #c4b5fd;flex-shrink:0}
+
+/* Emoji picker */
+.wt-emoji-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:4px}
+.wt-emoji{aspect-ratio:1;background:none;border:none;font-size:22px;cursor:pointer;border-radius:8px;transition:background .1s;padding:0;font-family:inherit}
+.wt-emoji:hover{background:#f3e8ff}
+.wt-emoji:active{transform:scale(.9);background:#e9d5ff}
+
+/* Undo/Redo */
+.wt-history{display:flex;gap:2px;margin-right:auto}
+
 @media(min-width:768px){
   .web-edit-screen{max-width:520px;width:100%;right:50%;transform:translateX(50%);height:calc(100vh - 48px);top:24px;bottom:24px;inset:auto;border-radius:28px;box-shadow:0 20px 60px rgba(76,29,149,.25);overflow:hidden}
 }
+
 
 
 /* Toast */
@@ -4645,6 +4744,24 @@ async function webOpenEditor(){
           <span class="web-edit-tab-icon">📄</span><span>קוד</span>
         </button>
       </div>
+      <div class="wt-toolbar" id="wt-toolbar">
+        <div class="wt-row">
+          <button class="wt-btn" onclick="wtOpenPop('media')"><span class="wt-btn-ico">🖼</span><span class="wt-btn-txt">תמונה</span></button>
+          <button class="wt-btn" onclick="wtOpenPop('video')"><span class="wt-btn-ico">🎬</span><span class="wt-btn-txt">סרטון</span></button>
+          <button class="wt-btn" onclick="wtOpenPop('link')"><span class="wt-btn-ico">🔗</span><span class="wt-btn-txt">קישור</span></button>
+          <button class="wt-btn" onclick="wtOpenPop('button')"><span class="wt-btn-ico">🔘</span><span class="wt-btn-txt">כפתור</span></button>
+          <button class="wt-btn" onclick="wtOpenPop('emoji')"><span class="wt-btn-ico">😊</span><span class="wt-btn-txt">אימוג'י</span></button>
+          <div class="wt-sep"></div>
+          <button class="wt-btn" onclick="wtInsertDivider()"><span class="wt-btn-ico">➖</span><span class="wt-btn-txt">מפריד</span></button>
+          <button class="wt-btn" onclick="wtInsertSpacer()"><span class="wt-btn-ico">⬜</span><span class="wt-btn-txt">רווח</span></button>
+          <div class="wt-sep"></div>
+          <div class="wt-history">
+            <button class="wt-btn icon-only" onclick="wtExec('undo')" title="בטל"><span class="wt-btn-ico">↶</span></button>
+            <button class="wt-btn icon-only" onclick="wtExec('redo')" title="חזור"><span class="wt-btn-ico">↷</span></button>
+          </div>
+        </div>
+        <div class="wt-row contextual" id="wt-contextual" style="display:none"></div>
+      </div>
       <div class="web-edit-status-bar" id="web-edit-status">⏳ טוען קובץ מגיטהאב...</div>
       <div class="web-edit-body" id="web-edit-body">
         <div class="web-edit-iframe-wrap on" id="web-iframe-wrap">
@@ -4662,6 +4779,15 @@ async function webOpenEditor(){
         <button class="web-edit-btn cancel" onclick="webCloseEditor()">ביטול</button>
         <button class="web-edit-btn download" onclick="webDownloadEdit()">⬇️ הורד</button>
         <button class="web-edit-btn save" id="web-edit-save" onclick="webSaveEdit()">💾 שמור ופרסם</button>
+      </div>
+      <div class="wt-pop-overlay" id="wt-pop-overlay" onclick="if(event.target===this)wtClosePop()">
+        <div class="wt-pop" id="wt-pop">
+          <div class="wt-pop-hdr">
+            <div class="wt-pop-title" id="wt-pop-title">כותרת</div>
+            <button class="wt-pop-close" onclick="wtClosePop()">✕</button>
+          </div>
+          <div class="wt-pop-body" id="wt-pop-body"></div>
+        </div>
       </div>`;
     document.body.appendChild(sc);
   }
@@ -4702,11 +4828,13 @@ function webSwitchView(mode){
   const ifr=document.getElementById('web-iframe-wrap');
   const ta=document.getElementById('web-edit-textarea');
   const body=document.getElementById('web-edit-body');
+  const toolbar=document.getElementById('wt-toolbar');
   if(!tabV||!tabC)return;
   if(mode==='visual'){
     tabV.classList.add('on');tabC.classList.remove('on');
     ifr.classList.add('on');ta.classList.remove('on');
     body.classList.remove('code-mode');
+    if(toolbar)toolbar.style.display='';
     // If textarea was edited, sync changes into iframe
     if(_webEdit.loaded&&ta.value!==_webEdit.rawHtml){
       _webEdit.rawHtml=ta.value;
@@ -4716,6 +4844,7 @@ function webSwitchView(mode){
     tabC.classList.add('on');tabV.classList.remove('on');
     ta.classList.add('on');ifr.classList.remove('on');
     body.classList.add('code-mode');
+    if(toolbar)toolbar.style.display='none';
     // Pull latest edits out of iframe into textarea+rawHtml
     if(_webEdit.loaded){
       webExtractFromIframe((html)=>{
@@ -4733,15 +4862,19 @@ function webInjectEditor(html){
   /* Hide any inherited loader from the site itself */
   .loader,#app>.loader,.spinner{display:none!important;visibility:hidden!important}
   body.__webedit{padding-bottom:40px!important}
-  body.__webedit [data-webedit="1"]{outline:2px dashed rgba(124,58,237,.35);outline-offset:2px;cursor:text;transition:outline .15s;border-radius:3px}
-  body.__webedit [data-webedit="1"]:hover{outline:2px dashed #7c3aed;background:rgba(237,233,254,.4)}
-  body.__webedit [data-webedit="1"]:focus{outline:2px solid #7c3aed;background:rgba(237,233,254,.65);box-shadow:0 0 0 4px rgba(124,58,237,.18)}
+  body.__webedit [data-webedit="1"]{outline:2px dashed rgba(124,58,237,.3);outline-offset:2px;cursor:text;transition:outline .15s;border-radius:3px}
+  body.__webedit [data-webedit="1"]:hover{outline:2px dashed #7c3aed;background:rgba(237,233,254,.35)}
+  body.__webedit [data-webedit="1"]:focus{outline:2px solid #7c3aed;background:rgba(237,233,254,.55);box-shadow:0 0 0 4px rgba(124,58,237,.18)}
+  body.__webedit img,body.__webedit video,body.__webedit iframe[src*="youtube"],body.__webedit iframe[src*="vimeo"]{cursor:pointer;transition:outline .15s}
+  body.__webedit img:hover,body.__webedit video:hover,body.__webedit iframe[src*="youtube"]:hover,body.__webedit iframe[src*="vimeo"]:hover{outline:3px dashed #7c3aed;outline-offset:3px}
+  body.__webedit [data-wt-selected="1"]{outline:3px solid #7c3aed!important;outline-offset:3px!important;box-shadow:0 0 0 6px rgba(124,58,237,.25)!important}
+  body.__webedit .wt-inserted{animation:wtPop .3s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes wtPop{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
 </style>
 <scr`+`ipt>
 (function(){
-  // Signal parent ASAP that iframe loaded — don't wait for everything
   try{window.parent.postMessage({type:'__webedit-ready'},'*');}catch(e){}
-  // Kill any site-level loader shell
+  
   function killLoaders(){
     document.querySelectorAll('.loader,.spinner').forEach(el=>{try{el.remove();}catch(e){}});
     const app=document.getElementById('app');
@@ -4749,6 +4882,7 @@ function webInjectEditor(html){
       app.innerHTML='';
     }
   }
+  
   function markEditable(){
     const selectors='h1,h2,h3,h4,h5,h6,p,span,a,li,button,td,th,label,strong,em,b,i,figcaption,blockquote,div';
     document.querySelectorAll(selectors).forEach(el=>{
@@ -4756,6 +4890,61 @@ function webInjectEditor(html){
       if(hasDirectText)el.setAttribute('data-webedit','1');
     });
   }
+  
+  let _selectedElement=null;
+  
+  function clearSelection(){
+    if(_selectedElement){
+      _selectedElement.removeAttribute('data-wt-selected');
+      _selectedElement=null;
+    }
+    window.parent.postMessage({type:'__wt-selection',mode:'none'},'*');
+  }
+  
+  function selectElement(el,kind){
+    clearSelection();
+    _selectedElement=el;
+    el.setAttribute('data-wt-selected','1');
+    const info={
+      tag:el.tagName.toLowerCase(),
+      src:el.src||el.getAttribute('src')||'',
+      alt:el.alt||'',
+      href:el.href||'',
+      width:el.style.width||el.getAttribute('width')||'',
+      kind:kind
+    };
+    window.parent.postMessage({type:'__wt-selection',mode:'element',kind:kind,info:info},'*');
+  }
+  
+  function handleMediaClick(e){
+    const img=e.target.closest('img');
+    const vid=e.target.closest('video');
+    const ifr=e.target.closest('iframe[src*="youtube"], iframe[src*="vimeo"]');
+    if(img){e.preventDefault();e.stopPropagation();selectElement(img,'image');return;}
+    if(vid){e.preventDefault();e.stopPropagation();selectElement(vid,'video');return;}
+    if(ifr){e.preventDefault();e.stopPropagation();selectElement(ifr,'embed');return;}
+    // Click elsewhere = deselect
+    if(_selectedElement&&!e.target.closest('[data-wt-selected="1"]')){
+      clearSelection();
+    }
+  }
+  
+  function handleTextSelection(){
+    const sel=window.getSelection();
+    if(!sel||sel.isCollapsed||sel.rangeCount===0){
+      // Only clear if no element selected
+      if(!_selectedElement)window.parent.postMessage({type:'__wt-selection',mode:'none'},'*');
+      return;
+    }
+    const text=sel.toString().trim();
+    if(!text)return;
+    // Check if selection is inside editable element
+    const node=sel.anchorNode;
+    const elem=node.nodeType===3?node.parentElement:node;
+    if(!elem.closest('[data-webedit="1"]'))return;
+    window.parent.postMessage({type:'__wt-selection',mode:'text',text:text.substring(0,40)},'*');
+  }
+  
   function activate(){
     killLoaders();
     markEditable();
@@ -4764,39 +4953,146 @@ function webInjectEditor(html){
       el.setAttribute('contenteditable','true');
       el.setAttribute('spellcheck','false');
     });
+    // Listen for selections
+    document.addEventListener('click',handleMediaClick,true);
+    document.addEventListener('selectionchange',handleTextSelection);
+    document.addEventListener('mouseup',handleTextSelection);
+    document.addEventListener('keyup',handleTextSelection);
     try{window.parent.postMessage({type:'__webedit-active'},'*');}catch(e){}
   }
+  
   if(document.readyState==='loading'){
     document.addEventListener('DOMContentLoaded',activate);
   }else{
     activate();
   }
-  // Second pass after full load (catches async-rendered content)
   window.addEventListener('load',function(){setTimeout(activate,100);});
+  
   // Block link navigation in edit mode
   document.addEventListener('click',function(e){
     const a=e.target.closest('a');
     if(a){e.preventDefault();}
   });
-  // Listen for "extract" message from parent
+  
+  // ── Execute commands from parent toolbar ──
+  function saveSelection(){
+    const sel=window.getSelection();
+    if(sel.rangeCount>0)return sel.getRangeAt(0).cloneRange();
+    return null;
+  }
+  function restoreSelection(range){
+    if(!range)return;
+    const sel=window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+  let _savedRange=null;
+  document.addEventListener('mouseup',()=>{_savedRange=saveSelection();});
+  document.addEventListener('keyup',()=>{_savedRange=saveSelection();});
+  document.addEventListener('selectionchange',()=>{
+    const sel=window.getSelection();
+    if(sel.rangeCount>0&&!sel.isCollapsed){_savedRange=sel.getRangeAt(0).cloneRange();}
+  });
+  
+  function execCommand(cmd,value){
+    try{
+      if(_savedRange)restoreSelection(_savedRange);
+      document.execCommand(cmd,false,value||null);
+    }catch(e){console.warn('execCommand failed:',e);}
+  }
+  
+  function insertHTML(html){
+    if(_savedRange){restoreSelection(_savedRange);}
+    try{
+      document.execCommand('insertHTML',false,html);
+    }catch(e){
+      // Fallback - append to body
+      const tmp=document.createElement('div');
+      tmp.innerHTML=html;
+      const node=tmp.firstChild;
+      if(node)document.body.appendChild(node);
+    }
+  }
+  
+  function wrapSelection(tagName,attrs){
+    if(!_savedRange)return;
+    restoreSelection(_savedRange);
+    const sel=window.getSelection();
+    if(sel.rangeCount===0||sel.isCollapsed)return;
+    const text=sel.toString();
+    const el=document.createElement(tagName);
+    if(attrs){Object.keys(attrs).forEach(k=>el.setAttribute(k,attrs[k]));}
+    el.textContent=text;
+    const range=sel.getRangeAt(0);
+    range.deleteContents();
+    range.insertNode(el);
+    sel.removeAllRanges();
+  }
+  
+  function replaceSelectedElement(newHtml){
+    if(!_selectedElement)return;
+    const tmp=document.createElement('div');
+    tmp.innerHTML=newHtml;
+    const newNode=tmp.firstChild;
+    if(newNode){
+      _selectedElement.parentNode.replaceChild(newNode,_selectedElement);
+      _selectedElement=null;
+    }
+  }
+  
+  function updateSelectedAttr(attr,value){
+    if(!_selectedElement)return;
+    if(value===null||value===''){_selectedElement.removeAttribute(attr);}
+    else{_selectedElement.setAttribute(attr,value);}
+  }
+  
+  function deleteSelected(){
+    if(!_selectedElement)return;
+    _selectedElement.remove();
+    _selectedElement=null;
+    window.parent.postMessage({type:'__wt-selection',mode:'none'},'*');
+  }
+  
   window.addEventListener('message',function(e){
-    if(!e.data||e.data.type!=='__webedit-extract')return;
-    const clone=document.documentElement.cloneNode(true);
-    clone.querySelectorAll('style').forEach(s=>{if(s.textContent.includes('__webedit'))s.remove();});
-    clone.querySelectorAll('script').forEach(s=>{if(s.textContent.includes('__webedit-extract')||s.textContent.includes('data-webedit'))s.remove();});
-    clone.querySelectorAll('[data-webedit]').forEach(el=>{
-      el.removeAttribute('data-webedit');
-      el.removeAttribute('contenteditable');
-      el.removeAttribute('spellcheck');
-    });
-    if(clone.querySelector('body'))clone.querySelector('body').classList.remove('__webedit');
-    const fullHtml='<!DOCTYPE html>\\n'+clone.outerHTML;
-    window.parent.postMessage({type:'__webedit-result',html:fullHtml,reqId:e.data.reqId},'*');
+    if(!e.data||typeof e.data!=='object')return;
+    const d=e.data;
+    
+    // Extract current HTML for saving
+    if(d.type==='__webedit-extract'){
+      clearSelection();
+      const clone=document.documentElement.cloneNode(true);
+      clone.querySelectorAll('style').forEach(s=>{if(s.textContent.includes('__webedit')||s.textContent.includes('wt-inserted'))s.remove();});
+      clone.querySelectorAll('script').forEach(s=>{if(s.textContent.includes('__webedit-extract')||s.textContent.includes('data-webedit')||s.textContent.includes('__wt-'))s.remove();});
+      clone.querySelectorAll('[data-webedit]').forEach(el=>{
+        el.removeAttribute('data-webedit');
+        el.removeAttribute('contenteditable');
+        el.removeAttribute('spellcheck');
+      });
+      clone.querySelectorAll('[data-wt-selected]').forEach(el=>el.removeAttribute('data-wt-selected'));
+      clone.querySelectorAll('.wt-inserted').forEach(el=>el.classList.remove('wt-inserted'));
+      if(clone.querySelector('body'))clone.querySelector('body').classList.remove('__webedit');
+      const fullHtml='<!DOCTYPE html>\\n'+clone.outerHTML;
+      window.parent.postMessage({type:'__webedit-result',html:fullHtml,reqId:d.reqId},'*');
+      return;
+    }
+    
+    // Toolbar commands
+    if(d.type==='__wt-cmd'){
+      switch(d.cmd){
+        case 'exec':execCommand(d.exec,d.value);break;
+        case 'insertHTML':insertHTML(d.html);break;
+        case 'wrap':wrapSelection(d.tag,d.attrs);break;
+        case 'replaceSelected':replaceSelectedElement(d.html);break;
+        case 'updateSelectedAttr':updateSelectedAttr(d.attr,d.value);break;
+        case 'deleteSelected':deleteSelected();break;
+        case 'clearSelection':clearSelection();break;
+        case 'focusBody':document.body.focus();break;
+      }
+    }
   });
 })();
 </scr`+`ipt>
 `;
-  // Place our code at the START of <head> so it runs before the site's own scripts
   if(html.includes('<head>')){
     return html.replace('<head>','<head>'+editorCode);
   }
@@ -4938,6 +5234,503 @@ async function webSaveEdit(){
       webToast('❌ '+e.message,true);
     }
   });
+}
+
+// ═══════════════════════════════════════════════════════
+// ═══ TOOLBAR: commands, popups, contextual UI       ═══
+// ═══════════════════════════════════════════════════════
+
+// Send a command to the iframe
+function wtSend(cmd,extras){
+  const ifr=document.getElementById('web-edit-iframe');
+  if(!ifr||!ifr.contentWindow)return;
+  ifr.contentWindow.postMessage(Object.assign({type:'__wt-cmd',cmd:cmd},extras||{}),'*');
+}
+
+// Shortcut: run document.execCommand inside iframe
+function wtExec(cmd,value){
+  wtSend('exec',{exec:cmd,value:value||null});
+}
+
+// Contextual toolbar state — updated when iframe selection changes
+let _wtSelection={mode:'none',info:null};
+
+function wtUpdateContextual(){
+  const bar=document.getElementById('wt-contextual');
+  if(!bar)return;
+  if(_wtSelection.mode==='none'){
+    bar.style.display='none';
+    bar.innerHTML='';
+    return;
+  }
+  bar.style.display='flex';
+  if(_wtSelection.mode==='text'){
+    const preview=(_wtSelection.text||'').substring(0,20);
+    bar.innerHTML=`
+      <span class="wt-group-lbl">✏️ טקסט "${preview}${preview.length>=20?'...':''}"</span>
+      <button class="wt-btn" onclick="wtExec('bold')" title="מודגש"><b style="font-size:14px">B</b></button>
+      <button class="wt-btn" onclick="wtExec('italic')" title="נטוי"><i style="font-size:14px">I</i></button>
+      <button class="wt-btn" onclick="wtExec('underline')" title="קו תחתון"><u>U</u></button>
+      <button class="wt-btn" onclick="wtExec('strikeThrough')" title="קו חוצה"><s>S</s></button>
+      <div class="wt-sep"></div>
+      <button class="wt-btn" onclick="wtOpenPop('color')" title="צבע טקסט"><span class="wt-btn-ico">🎨</span><span class="wt-btn-txt">צבע</span></button>
+      <button class="wt-btn" onclick="wtOpenPop('bgcolor')" title="הדגשה"><span class="wt-btn-ico">🖍</span><span class="wt-btn-txt">הדגשה</span></button>
+      <button class="wt-btn" onclick="wtOpenPop('fontsize')"><span class="wt-btn-ico">🔤</span><span class="wt-btn-txt">גודל</span></button>
+      <div class="wt-sep"></div>
+      <button class="wt-btn" onclick="wtExec('justifyRight')" title="ימין">⇥</button>
+      <button class="wt-btn" onclick="wtExec('justifyCenter')" title="מרכז">≡</button>
+      <button class="wt-btn" onclick="wtExec('justifyLeft')" title="שמאל">⇤</button>
+      <div class="wt-sep"></div>
+      <button class="wt-btn" onclick="wtExec('insertUnorderedList')" title="רשימה">•≡</button>
+      <button class="wt-btn" onclick="wtExec('removeFormat')" title="נקה עיצוב"><span class="wt-btn-ico">✖</span><span class="wt-btn-txt">נקה</span></button>
+    `;
+  }else if(_wtSelection.mode==='element'){
+    const kind=_wtSelection.kind;
+    const labels={image:'🖼 תמונה נבחרה',video:'🎬 סרטון נבחר',embed:'▶️ סרטון נבחר'};
+    bar.innerHTML=`
+      <span class="wt-group-lbl">${labels[kind]||'אלמנט נבחר'}</span>
+      ${kind==='image'?`<button class="wt-btn" onclick="wtOpenPop('replace-image')"><span class="wt-btn-ico">🔄</span><span class="wt-btn-txt">החלף</span></button>`:''}
+      ${kind==='image'?`<button class="wt-btn" onclick="wtOpenPop('alt-text')"><span class="wt-btn-ico">📝</span><span class="wt-btn-txt">תיאור</span></button>`:''}
+      ${kind==='embed'?`<button class="wt-btn" onclick="wtOpenPop('video')"><span class="wt-btn-ico">🔄</span><span class="wt-btn-txt">החלף</span></button>`:''}
+      <button class="wt-btn" onclick="wtOpenPop('size')"><span class="wt-btn-ico">📐</span><span class="wt-btn-txt">גודל</span></button>
+      <button class="wt-btn danger" onclick="wtConfirmDelete()"><span class="wt-btn-ico">🗑</span><span class="wt-btn-txt">מחק</span></button>
+      <button class="wt-btn" onclick="wtSend('clearSelection');wtSelection={mode:'none'};wtUpdateContextual()"><span class="wt-btn-ico">✖</span><span class="wt-btn-txt">ביטול</span></button>
+    `;
+  }
+}
+
+// Handle messages from iframe about selection changes
+if(!window._wtSelHandler){
+  window._wtSelHandler=true;
+  window.addEventListener('message',function(e){
+    if(!e.data||e.data.type!=='__wt-selection')return;
+    _wtSelection={mode:e.data.mode,text:e.data.text,kind:e.data.kind,info:e.data.info};
+    wtUpdateContextual();
+  });
+}
+
+// ── Popups ──
+function wtOpenPop(kind){
+  const ov=document.getElementById('wt-pop-overlay');
+  const title=document.getElementById('wt-pop-title');
+  const body=document.getElementById('wt-pop-body');
+  if(!ov||!title||!body)return;
+  
+  const cfg=wtPopConfigs[kind];
+  if(!cfg){console.warn('Unknown popup:',kind);return;}
+  title.textContent=cfg.title;
+  body.innerHTML=cfg.html();
+  ov.classList.add('on');
+  if(cfg.onOpen)setTimeout(cfg.onOpen,50);
+}
+
+function wtClosePop(){
+  const ov=document.getElementById('wt-pop-overlay');
+  if(ov)ov.classList.remove('on');
+}
+
+// ── Color palette ──
+const WT_COLORS=['#000000','#4b5563','#9ca3af','#ffffff','#dc2626','#ea580c','#eab308','#16a34a','#0891b2','#2563eb','#7c3aed','#db2777','#fce7f3','#ddd6fe','#dbeafe','#d1fae5','#fef3c7','#fed7aa','#fecaca','#e9d5ff'];
+
+const wtPopConfigs={
+  // Text color
+  color:{
+    title:'🎨 צבע טקסט',
+    html:()=>`<div class="wt-colors">
+      ${WT_COLORS.map(c=>`<button class="wt-color" style="background:${c}" onclick="wtApplyColor('${c}','fore');wtClosePop()"></button>`).join('')}
+    </div>
+    <div class="wt-color-custom-wrap">
+      <div class="wt-form-lbl">צבע מותאם אישית</div>
+      <div class="wt-color-custom-row">
+        <input type="color" id="wt-color-custom" value="#7c3aed" oninput="document.getElementById('wt-color-hex').value=this.value.toUpperCase()">
+        <input type="text" id="wt-color-hex" value="#7C3AED" maxlength="7" oninput="if(/^#[0-9A-Fa-f]{6}$/.test(this.value))document.getElementById('wt-color-custom').value=this.value">
+        <button class="wt-btn primary" onclick="wtApplyColor(document.getElementById('wt-color-custom').value,'fore');wtClosePop()" style="padding:12px 18px">החל</button>
+      </div>
+    </div>`
+  },
+  bgcolor:{
+    title:'🖍 צבע הדגשה',
+    html:()=>`<div class="wt-colors">
+      <button class="wt-color transparent" onclick="wtApplyColor('transparent','back');wtClosePop()" title="שקוף"></button>
+      ${WT_COLORS.slice(12).concat(WT_COLORS.slice(4,12)).map(c=>`<button class="wt-color" style="background:${c}" onclick="wtApplyColor('${c}','back');wtClosePop()"></button>`).join('')}
+    </div>
+    <div class="wt-color-custom-wrap">
+      <div class="wt-form-lbl">צבע מותאם אישית</div>
+      <div class="wt-color-custom-row">
+        <input type="color" id="wt-bg-custom" value="#fef9c3" oninput="document.getElementById('wt-bg-hex').value=this.value.toUpperCase()">
+        <input type="text" id="wt-bg-hex" value="#FEF9C3" maxlength="7" oninput="if(/^#[0-9A-Fa-f]{6}$/.test(this.value))document.getElementById('wt-bg-custom').value=this.value">
+        <button class="wt-btn primary" onclick="wtApplyColor(document.getElementById('wt-bg-custom').value,'back');wtClosePop()" style="padding:12px 18px">החל</button>
+      </div>
+    </div>`
+  },
+  // Font size
+  fontsize:{
+    title:'🔤 גודל טקסט',
+    html:()=>`<div class="wt-size-grid">
+      <button class="wt-size-btn" onclick="wtExec('fontSize','1');wtClosePop()"><span style="font-size:11px">Aa</span><span class="wt-size-btn-name">קטן</span></button>
+      <button class="wt-size-btn" onclick="wtExec('fontSize','3');wtClosePop()"><span style="font-size:14px">Aa</span><span class="wt-size-btn-name">רגיל</span></button>
+      <button class="wt-size-btn" onclick="wtExec('fontSize','5');wtClosePop()"><span style="font-size:18px">Aa</span><span class="wt-size-btn-name">גדול</span></button>
+      <button class="wt-size-btn" onclick="wtExec('fontSize','7');wtClosePop()"><span style="font-size:24px">Aa</span><span class="wt-size-btn-name">ענק</span></button>
+    </div>
+    <div class="wt-form-row" style="margin-top:10px">
+      <div class="wt-form-lbl">סגנון כותרת</div>
+      <div class="wt-size-grid">
+        <button class="wt-size-btn" onclick="wtExec('formatBlock','<h1>');wtClosePop()"><span style="font-size:20px;font-weight:900">H1</span><span class="wt-size-btn-name">ראשי</span></button>
+        <button class="wt-size-btn" onclick="wtExec('formatBlock','<h2>');wtClosePop()"><span style="font-size:18px;font-weight:900">H2</span><span class="wt-size-btn-name">משנה</span></button>
+        <button class="wt-size-btn" onclick="wtExec('formatBlock','<h3>');wtClosePop()"><span style="font-size:16px;font-weight:900">H3</span><span class="wt-size-btn-name">קטנה</span></button>
+        <button class="wt-size-btn" onclick="wtExec('formatBlock','<p>');wtClosePop()"><span style="font-size:14px">¶</span><span class="wt-size-btn-name">פסקה</span></button>
+      </div>
+    </div>`
+  },
+  // Link
+  link:{
+    title:'🔗 הוספת קישור',
+    html:()=>`
+      <div class="wt-form-row">
+        <label class="wt-form-lbl">כתובת הקישור</label>
+        <input class="wt-form-inp ltr" id="wt-link-url" placeholder="https://..." value="https://">
+        <div class="wt-form-hint">לטלפון: tel:0585702218 · לווטסאפ: https://wa.me/972585702218</div>
+      </div>
+      <div class="wt-form-row">
+        <label class="wt-form-lbl">טקסט להצגה</label>
+        <input class="wt-form-inp" id="wt-link-text" placeholder="למשל: לחצי כאן">
+      </div>
+      <div class="wt-form-row">
+        <label class="wt-form-lbl" style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="wt-link-blank" checked style="width:16px;height:16px"> פתח בחלון חדש</label>
+      </div>
+      <div class="wt-form-actions">
+        <button class="wt-form-btn cancel" onclick="wtClosePop()">ביטול</button>
+        <button class="wt-form-btn ok" onclick="wtInsertLink()">הוסף קישור</button>
+      </div>`,
+    onOpen:()=>{document.getElementById('wt-link-url').focus();}
+  },
+  // Media upload (image)
+  media:{
+    title:'🖼 הוספת תמונה',
+    html:()=>`
+      <label class="wt-upload-drop" id="wt-image-drop" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="wtImageDrop(event)">
+        <div class="wt-upload-ico">📷</div>
+        <div class="wt-upload-title">לחצי או גררי תמונה</div>
+        <div class="wt-upload-sub">JPG · PNG · GIF · WebP (עד 5MB)</div>
+        <input type="file" accept="image/*" id="wt-image-file" style="display:none" onchange="wtImageFile(event)">
+      </label>
+      <div class="wt-upload-progress" id="wt-image-progress"><div class="wt-upload-progress-bar" id="wt-image-progress-bar"></div></div>
+      <div class="wt-upload-divider">או</div>
+      <div class="wt-form-row">
+        <label class="wt-form-lbl">הדביקי קישור לתמונה</label>
+        <input class="wt-form-inp ltr" id="wt-image-url" placeholder="https://...">
+      </div>
+      <div class="wt-form-row">
+        <label class="wt-form-lbl">תיאור (לנגישות)</label>
+        <input class="wt-form-inp" id="wt-image-alt" placeholder="למשל: לפני ואחרי טיפול לייזר">
+      </div>
+      <div class="wt-form-actions">
+        <button class="wt-form-btn cancel" onclick="wtClosePop()">ביטול</button>
+        <button class="wt-form-btn ok" onclick="wtInsertImage()">הוסף תמונה</button>
+      </div>`,
+    onOpen:()=>{
+      const drop=document.getElementById('wt-image-drop');
+      if(drop)drop.onclick=()=>document.getElementById('wt-image-file').click();
+    }
+  },
+  // Video
+  video:{
+    title:'🎬 הוספת סרטון',
+    html:()=>`
+      <div class="wt-form-row">
+        <label class="wt-form-lbl">קישור YouTube / Vimeo</label>
+        <input class="wt-form-inp ltr" id="wt-video-url" placeholder="https://youtube.com/watch?v=...">
+        <div class="wt-form-hint">הדביקי קישור — אני אהפוך לסרטון מוטמע אוטומטית</div>
+      </div>
+      <div class="wt-upload-divider">או</div>
+      <label class="wt-upload-drop" id="wt-video-drop">
+        <div class="wt-upload-ico">🎥</div>
+        <div class="wt-upload-title">העלי סרטון מהמכשיר</div>
+        <div class="wt-upload-sub">MP4 · WebM · MOV (עד 15MB)</div>
+        <input type="file" accept="video/*" id="wt-video-file" style="display:none" onchange="wtVideoFile(event)">
+      </label>
+      <div class="wt-upload-progress" id="wt-video-progress"><div class="wt-upload-progress-bar" id="wt-video-progress-bar"></div></div>
+      <div class="wt-form-actions">
+        <button class="wt-form-btn cancel" onclick="wtClosePop()">ביטול</button>
+        <button class="wt-form-btn ok" onclick="wtInsertVideoUrl()">הוסף סרטון</button>
+      </div>`,
+    onOpen:()=>{
+      const drop=document.getElementById('wt-video-drop');
+      if(drop)drop.onclick=()=>document.getElementById('wt-video-file').click();
+    }
+  },
+  // Button
+  button:{
+    title:'🔘 כפתור פעולה',
+    html:()=>`
+      <div class="wt-form-row">
+        <label class="wt-form-lbl">טקסט בכפתור</label>
+        <input class="wt-form-inp" id="wt-btn-text" placeholder="למשל: קבעי תור עכשיו" value="קבעי תור עכשיו">
+      </div>
+      <div class="wt-form-row">
+        <label class="wt-form-lbl">קישור</label>
+        <input class="wt-form-inp ltr" id="wt-btn-url" placeholder="https://wa.me/972585702218" value="https://wa.me/972585702218">
+      </div>
+      <div class="wt-form-row">
+        <label class="wt-form-lbl">סגנון</label>
+        <div class="wt-size-grid" style="grid-template-columns:repeat(3,1fr)">
+          <button class="wt-size-btn on" id="wt-btn-style-1" onclick="wtSelectBtnStyle(1)"><span style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;padding:6px 10px;border-radius:8px;font-size:11px;font-weight:700">סגול</span><span class="wt-size-btn-name">עיקרי</span></button>
+          <button class="wt-size-btn" id="wt-btn-style-2" onclick="wtSelectBtnStyle(2)"><span style="background:linear-gradient(135deg,#10b981,#059669);color:white;padding:6px 10px;border-radius:8px;font-size:11px;font-weight:700">ירוק</span><span class="wt-size-btn-name">ווטסאפ</span></button>
+          <button class="wt-size-btn" id="wt-btn-style-3" onclick="wtSelectBtnStyle(3)"><span style="background:linear-gradient(135deg,#f472b6,#db2777);color:white;padding:6px 10px;border-radius:8px;font-size:11px;font-weight:700">ורוד</span><span class="wt-size-btn-name">נשי</span></button>
+        </div>
+      </div>
+      <div class="wt-form-actions">
+        <button class="wt-form-btn cancel" onclick="wtClosePop()">ביטול</button>
+        <button class="wt-form-btn ok" onclick="wtInsertButton()">הוסף כפתור</button>
+      </div>`
+  },
+  // Emoji
+  emoji:{
+    title:'😊 אימוג\'י',
+    html:()=>{
+      const emojis=['❤️','💜','💕','✨','⭐','🌟','💫','🔥','💎','🎉','🎊','🌸','🌺','💐','🌹','🌷','💆‍♀️','💇‍♀️','💅','💋','👑','👸','🎀','🦄','✅','☑️','💯','🆕','🎁','💝','💖','💗','📞','📱','💬','📧','📍','🗓','🕐','⏰','😊','😍','🥰','😘','☺️','👍','👏','🙏','💪'];
+      return`<div class="wt-emoji-grid">${emojis.map(e=>`<button class="wt-emoji" onclick="wtInsertEmoji('${e}')">${e}</button>`).join('')}</div>`;
+    }
+  },
+  // Image alt text editing (for selected image)
+  'alt-text':{
+    title:'📝 תיאור תמונה',
+    html:()=>`
+      <div class="wt-form-row">
+        <label class="wt-form-lbl">תיאור (חשוב לנגישות ו-SEO)</label>
+        <input class="wt-form-inp" id="wt-alt-input" placeholder="למשל: לפני ואחרי הטיפול" value="${(_wtSelection.info&&_wtSelection.info.alt)||''}">
+        <div class="wt-form-hint">גוגל משתמש בזה כדי להבין מה מופיע בתמונה</div>
+      </div>
+      <div class="wt-form-actions">
+        <button class="wt-form-btn cancel" onclick="wtClosePop()">ביטול</button>
+        <button class="wt-form-btn ok" onclick="wtSend('updateSelectedAttr',{attr:'alt',value:document.getElementById('wt-alt-input').value});wtClosePop();webToast('✅ תיאור עודכן')">שמור</button>
+      </div>`,
+    onOpen:()=>{const i=document.getElementById('wt-alt-input');if(i)i.focus();}
+  },
+  // Replace image
+  'replace-image':{
+    title:'🔄 החלפת תמונה',
+    html:()=>`
+      <label class="wt-upload-drop" onclick="document.getElementById('wt-repl-file').click()">
+        <div class="wt-upload-ico">📷</div>
+        <div class="wt-upload-title">לחצי להעלאת תמונה חדשה</div>
+        <div class="wt-upload-sub">התמונה הנוכחית תוחלף</div>
+        <input type="file" accept="image/*" id="wt-repl-file" style="display:none" onchange="wtReplaceImageFile(event)">
+      </label>
+      <div class="wt-upload-divider">או</div>
+      <div class="wt-form-row">
+        <label class="wt-form-lbl">קישור לתמונה</label>
+        <input class="wt-form-inp ltr" id="wt-repl-url" placeholder="https://...">
+      </div>
+      <div class="wt-form-actions">
+        <button class="wt-form-btn cancel" onclick="wtClosePop()">ביטול</button>
+        <button class="wt-form-btn ok" onclick="wtReplaceImageUrl()">החלף</button>
+      </div>`
+  },
+  // Size
+  size:{
+    title:'📐 גודל',
+    html:()=>`
+      <div class="wt-form-row">
+        <label class="wt-form-lbl">רוחב</label>
+        <div class="wt-size-grid" style="grid-template-columns:repeat(4,1fr)">
+          <button class="wt-size-btn" onclick="wtSetSize('25%')"><span style="font-size:15px;font-weight:800">25%</span><span class="wt-size-btn-name">רבע</span></button>
+          <button class="wt-size-btn" onclick="wtSetSize('50%')"><span style="font-size:15px;font-weight:800">50%</span><span class="wt-size-btn-name">חצי</span></button>
+          <button class="wt-size-btn" onclick="wtSetSize('75%')"><span style="font-size:15px;font-weight:800">75%</span><span class="wt-size-btn-name">שלושה רבעים</span></button>
+          <button class="wt-size-btn" onclick="wtSetSize('100%')"><span style="font-size:15px;font-weight:800">100%</span><span class="wt-size-btn-name">מלא</span></button>
+        </div>
+      </div>
+      <div class="wt-form-row">
+        <label class="wt-form-lbl">רוחב מותאם (פיקסלים)</label>
+        <input class="wt-form-inp ltr" id="wt-size-custom" placeholder="400" type="number">
+        <button class="wt-btn primary" onclick="wtSetSize(document.getElementById('wt-size-custom').value+'px')" style="margin-top:8px;width:100%;padding:12px">החל</button>
+      </div>`
+  }
+};
+
+// ── Toolbar actions ──
+function wtApplyColor(color,kind){
+  // 'fore' = text color, 'back' = highlight
+  if(kind==='fore')wtExec('foreColor',color);
+  else wtExec('hiliteColor',color);
+}
+
+function wtInsertLink(){
+  const url=(document.getElementById('wt-link-url')||{}).value||'';
+  const text=(document.getElementById('wt-link-text')||{}).value||'';
+  const blank=(document.getElementById('wt-link-blank')||{}).checked;
+  if(!url||url==='https://'){webToast('⚠️ חסרה כתובת',true);return;}
+  const target=blank?' target="_blank" rel="noopener"':'';
+  const displayText=text||url;
+  wtSend('insertHTML',{html:`<a href="${url}"${target} class="wt-inserted" style="color:#7c3aed;text-decoration:underline">${displayText}</a>`});
+  wtClosePop();
+  webToast('✅ קישור נוסף');
+}
+
+function wtImageFile(e){
+  const f=e.target.files&&e.target.files[0];
+  if(!f)return;
+  if(f.size>5*1024*1024){webToast('⚠️ התמונה גדולה מדי (מקס 5MB)',true);return;}
+  const prog=document.getElementById('wt-image-progress');
+  const bar=document.getElementById('wt-image-progress-bar');
+  if(prog){prog.style.display='block';bar.style.width='30%';}
+  const reader=new FileReader();
+  reader.onload=(ev)=>{
+    if(bar)bar.style.width='100%';
+    const dataUrl=ev.target.result;
+    const alt=(document.getElementById('wt-image-alt')||{}).value||'';
+    wtSend('insertHTML',{html:`<img src="${dataUrl}" alt="${alt}" class="wt-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block">`});
+    wtClosePop();
+    webToast('✅ תמונה נוספה');
+  };
+  reader.onerror=()=>webToast('❌ שגיאה בקריאת הקובץ',true);
+  reader.readAsDataURL(f);
+}
+
+function wtImageDrop(e){
+  e.preventDefault();
+  const drop=document.getElementById('wt-image-drop');
+  if(drop)drop.classList.remove('drag-over');
+  const f=e.dataTransfer.files&&e.dataTransfer.files[0];
+  if(!f||!f.type.startsWith('image/')){webToast('⚠️ צריך קובץ תמונה',true);return;}
+  const inp=document.getElementById('wt-image-file');
+  if(inp){const dt=new DataTransfer();dt.items.add(f);inp.files=dt.files;wtImageFile({target:inp});}
+}
+
+function wtInsertImage(){
+  const url=(document.getElementById('wt-image-url')||{}).value||'';
+  const alt=(document.getElementById('wt-image-alt')||{}).value||'';
+  if(!url){
+    const file=(document.getElementById('wt-image-file')||{}).files;
+    if(file&&file[0]){wtImageFile({target:{files:file}});return;}
+    webToast('⚠️ חסר קובץ או קישור',true);return;
+  }
+  wtSend('insertHTML',{html:`<img src="${url}" alt="${alt}" class="wt-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block">`});
+  wtClosePop();
+  webToast('✅ תמונה נוספה');
+}
+
+function wtVideoFile(e){
+  const f=e.target.files&&e.target.files[0];
+  if(!f)return;
+  if(f.size>15*1024*1024){webToast('⚠️ הסרטון גדול מדי (מקס 15MB)',true);return;}
+  const prog=document.getElementById('wt-video-progress');
+  const bar=document.getElementById('wt-video-progress-bar');
+  if(prog){prog.style.display='block';bar.style.width='30%';}
+  const reader=new FileReader();
+  reader.onload=(ev)=>{
+    if(bar)bar.style.width='100%';
+    const dataUrl=ev.target.result;
+    wtSend('insertHTML',{html:`<video src="${dataUrl}" controls class="wt-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block"></video>`});
+    wtClosePop();
+    webToast('✅ סרטון נוסף');
+  };
+  reader.onerror=()=>webToast('❌ שגיאה בקריאת הקובץ',true);
+  reader.readAsDataURL(f);
+}
+
+function wtInsertVideoUrl(){
+  const url=(document.getElementById('wt-video-url')||{}).value||'';
+  if(!url){webToast('⚠️ חסר קישור',true);return;}
+  // Parse YouTube
+  let embedUrl='';
+  const ytMatch=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&?\/\s]+)/);
+  const vimeoMatch=url.match(/vimeo\.com\/(\d+)/);
+  if(ytMatch){
+    embedUrl=`https://www.youtube.com/embed/${ytMatch[1]}`;
+  }else if(vimeoMatch){
+    embedUrl=`https://player.vimeo.com/video/${vimeoMatch[1]}`;
+  }else if(url.match(/\.(mp4|webm|ogg|mov)$/i)){
+    wtSend('insertHTML',{html:`<video src="${url}" controls class="wt-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block"></video>`});
+    wtClosePop();
+    webToast('✅ סרטון נוסף');
+    return;
+  }else{
+    webToast('⚠️ רק YouTube, Vimeo או MP4',true);return;
+  }
+  wtSend('insertHTML',{html:`<div class="wt-inserted" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin:10px 0"><iframe src="${embedUrl}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:12px" allowfullscreen></iframe></div>`});
+  wtClosePop();
+  webToast('✅ סרטון נוסף');
+}
+
+let _wtBtnStyle=1;
+function wtSelectBtnStyle(n){
+  _wtBtnStyle=n;
+  [1,2,3].forEach(i=>{
+    const b=document.getElementById('wt-btn-style-'+i);
+    if(b)b.classList.toggle('on',i===n);
+  });
+}
+
+function wtInsertButton(){
+  const text=(document.getElementById('wt-btn-text')||{}).value||'לחצי כאן';
+  const url=(document.getElementById('wt-btn-url')||{}).value||'#';
+  const styles={
+    1:'background:linear-gradient(135deg,#7c3aed,#5b21b6);box-shadow:0 4px 14px rgba(124,58,237,.35)',
+    2:'background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 4px 14px rgba(16,185,129,.35)',
+    3:'background:linear-gradient(135deg,#f472b6,#db2777);box-shadow:0 4px 14px rgba(219,39,119,.35)'
+  };
+  const style=styles[_wtBtnStyle]||styles[1];
+  wtSend('insertHTML',{html:`<div class="wt-inserted" style="text-align:center;margin:16px 0"><a href="${url}" target="_blank" rel="noopener" style="display:inline-block;${style};color:white;padding:14px 32px;border-radius:14px;text-decoration:none;font-weight:800;font-size:16px">${text}</a></div>`});
+  wtClosePop();
+  webToast('✅ כפתור נוסף');
+}
+
+function wtInsertEmoji(emoji){
+  wtSend('insertHTML',{html:emoji});
+  wtClosePop();
+}
+
+function wtInsertDivider(){
+  wtSend('insertHTML',{html:`<hr class="wt-inserted" style="border:0;border-top:1.5px solid #e5e7eb;margin:20px 0">`});
+  webToast('✅ מפריד נוסף');
+}
+
+function wtInsertSpacer(){
+  wtSend('insertHTML',{html:`<div class="wt-inserted" style="height:30px"></div>`});
+  webToast('✅ רווח נוסף');
+}
+
+function wtConfirmDelete(){
+  if(confirm('למחוק את האלמנט?')){
+    wtSend('deleteSelected');
+    webToast('🗑 נמחק');
+  }
+}
+
+function wtReplaceImageFile(e){
+  const f=e.target.files&&e.target.files[0];
+  if(!f||!f.type.startsWith('image/'))return;
+  if(f.size>5*1024*1024){webToast('⚠️ התמונה גדולה מדי (5MB)',true);return;}
+  const reader=new FileReader();
+  reader.onload=(ev)=>{
+    wtSend('updateSelectedAttr',{attr:'src',value:ev.target.result});
+    wtClosePop();
+    webToast('✅ תמונה הוחלפה');
+  };
+  reader.readAsDataURL(f);
+}
+
+function wtReplaceImageUrl(){
+  const url=(document.getElementById('wt-repl-url')||{}).value||'';
+  if(!url){webToast('⚠️ חסר קישור',true);return;}
+  wtSend('updateSelectedAttr',{attr:'src',value:url});
+  wtClosePop();
+  webToast('✅ תמונה הוחלפה');
+}
+
+function wtSetSize(width){
+  if(!_wtSelection.info)return;
+  // Set inline style width
+  const ifr=document.getElementById('web-edit-iframe');
+  if(!ifr||!ifr.contentWindow)return;
+  ifr.contentWindow.postMessage({type:'__wt-cmd',cmd:'exec',exec:'noop'},'*');
+  // Use updateSelectedAttr with style
+  const sel=_wtSelection;
+  // Directly ask iframe to update the style attribute
+  wtSend('updateSelectedAttr',{attr:'style',value:`max-width:${width};height:auto;border-radius:12px;margin:10px 0;display:block`});
+  wtClosePop();
+  webToast('✅ גודל עודכן');
 }
 
 function renderWebsiteTab(){

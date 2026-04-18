@@ -737,6 +737,26 @@ textarea.task-modal-area{width:100%;border:1.5px solid #e5e7eb;border-radius:12p
 /* Undo/Redo */
 .wt-history{display:flex;gap:2px;margin-right:auto}
 
+/* Guide cards inside popups */
+.wt-guide{background:linear-gradient(135deg,#ecfeff,#cffafe);border:1.5px solid #a5f3fc;border-radius:14px;padding:14px;margin-bottom:14px;position:relative;overflow:hidden}
+.wt-guide::before{content:'';position:absolute;top:-20px;left:-20px;width:60px;height:60px;background:rgba(6,182,212,.08);border-radius:50%}
+.wt-guide-title{font-size:13px;font-weight:900;color:#0e7490;margin-bottom:8px;display:flex;align-items:center;gap:6px;position:relative;z-index:1}
+.wt-guide-steps{position:relative;z-index:1}
+.wt-guide-step{display:flex;align-items:flex-start;gap:10px;padding:6px 0;color:#155e75;font-size:12.5px;font-weight:600;line-height:1.5}
+.wt-guide-step-num{background:#0891b2;color:white;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.wt-guide-step b{color:#0e7490;font-weight:800}
+.wt-recommended{background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:2px solid #10b981;border-radius:14px;padding:14px;margin-bottom:12px;position:relative}
+.wt-recommended-badge{position:absolute;top:-10px;right:12px;background:linear-gradient(135deg,#10b981,#059669);color:white;font-size:10px;font-weight:900;padding:3px 10px;border-radius:12px;letter-spacing:.5px;box-shadow:0 2px 8px rgba(16,185,129,.4)}
+.wt-recommended-title{font-size:14px;font-weight:900;color:#065f46;margin-bottom:8px;margin-top:2px}
+.wt-recommended-list{font-size:12.5px;color:#047857;line-height:1.7;font-weight:600}
+.wt-recommended-list div{display:flex;align-items:center;gap:6px;padding:2px 0}
+.wt-warn-box{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1.5px solid #f59e0b;border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:11.5px;color:#78350f;line-height:1.55;font-weight:600;display:flex;gap:8px;align-items:flex-start}
+.wt-warn-ico{font-size:18px;flex-shrink:0}
+.wt-section-hdr{font-size:11px;font-weight:900;color:#7c3aed;letter-spacing:1.2px;text-transform:uppercase;margin:14px 0 8px;text-align:right;padding-top:8px;border-top:1px dashed #ede9fe}
+.wt-section-hdr:first-child{margin-top:0;padding-top:0;border-top:none}
+.wt-cursor-reminder{background:#faf5ff;border:1.5px dashed #c4b5fd;border-radius:12px;padding:10px 12px;margin-bottom:14px;font-size:11.5px;color:#5b21b6;font-weight:700;text-align:right;display:flex;align-items:center;gap:8px}
+.wt-cursor-reminder-ico{font-size:20px;flex-shrink:0}
+
 @media(min-width:768px){
   .web-edit-screen{max-width:520px;width:100%;right:50%;transform:translateX(50%);height:calc(100vh - 48px);top:24px;bottom:24px;inset:auto;border-radius:28px;box-shadow:0 20px 60px rgba(76,29,149,.25);overflow:hidden}
 }
@@ -5408,20 +5428,38 @@ const wtPopConfigs={
   media:{
     title:'🖼 הוספת תמונה',
     html:()=>`
+      <div class="wt-cursor-reminder">
+        <span class="wt-cursor-reminder-ico">📍</span>
+        <span>התמונה תוכנס <b>איפה שלחצת באתר לפני</b> שפתחת את החלון הזה</span>
+      </div>
+      
+      <div class="wt-guide">
+        <div class="wt-guide-title">💡 איך להוסיף תמונה — 3 דרכים</div>
+        <div class="wt-guide-steps">
+          <div class="wt-guide-step"><span class="wt-guide-step-num">1</span><span><b>הכי מומלץ:</b> גררי תמונה ישר מהגלריה למלבן המקווקו למטה</span></div>
+          <div class="wt-guide-step"><span class="wt-guide-step-num">2</span><span>או <b>לחצי על המלבן</b> ובחרי תמונה מהמכשיר שלך</span></div>
+          <div class="wt-guide-step"><span class="wt-guide-step-num">3</span><span>או <b>הדביקי קישור</b> לתמונה שנמצאת באינטרנט</span></div>
+        </div>
+      </div>
+      
+      <div class="wt-section-hdr">📷 העלאה מהמכשיר</div>
       <label class="wt-upload-drop" id="wt-image-drop" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="wtImageDrop(event)">
         <div class="wt-upload-ico">📷</div>
-        <div class="wt-upload-title">לחצי או גררי תמונה</div>
+        <div class="wt-upload-title">לחצי או גררי תמונה לכאן</div>
         <div class="wt-upload-sub">JPG · PNG · GIF · WebP (עד 5MB)</div>
         <input type="file" accept="image/*" id="wt-image-file" style="display:none" onchange="wtImageFile(event)">
       </label>
       <div class="wt-upload-progress" id="wt-image-progress"><div class="wt-upload-progress-bar" id="wt-image-progress-bar"></div></div>
+      
       <div class="wt-upload-divider">או</div>
+      
+      <div class="wt-section-hdr">🔗 קישור לתמונה באינטרנט</div>
       <div class="wt-form-row">
-        <label class="wt-form-lbl">הדביקי קישור לתמונה</label>
         <input class="wt-form-inp ltr" id="wt-image-url" placeholder="https://...">
+        <div class="wt-form-hint">💡 הדביקי קישור ישיר לתמונה (למשל מ-Instagram אחרי שתלחצי "העתק קישור")</div>
       </div>
       <div class="wt-form-row">
-        <label class="wt-form-lbl">תיאור (לנגישות)</label>
+        <label class="wt-form-lbl">📝 תיאור קצר (חשוב ל-Google ונגישות)</label>
         <input class="wt-form-inp" id="wt-image-alt" placeholder="למשל: לפני ואחרי טיפול לייזר">
       </div>
       <div class="wt-form-actions">
@@ -5437,23 +5475,56 @@ const wtPopConfigs={
   video:{
     title:'🎬 הוספת סרטון',
     html:()=>`
-      <div class="wt-form-row">
-        <label class="wt-form-lbl">קישור YouTube / Vimeo</label>
-        <input class="wt-form-inp ltr" id="wt-video-url" placeholder="https://youtube.com/watch?v=...">
-        <div class="wt-form-hint">הדביקי קישור — אני אהפוך לסרטון מוטמע אוטומטית</div>
+      <div class="wt-cursor-reminder">
+        <span class="wt-cursor-reminder-ico">📍</span>
+        <span>הסרטון יוכנס <b>איפה שלחצת באתר לפני</b> שפתחת את החלון הזה</span>
       </div>
-      <div class="wt-upload-divider">או</div>
+      
+      <div class="wt-recommended">
+        <div class="wt-recommended-badge">⭐ הכי מומלץ</div>
+        <div class="wt-recommended-title">🎥 העלי קודם ל-YouTube — חינם, 1 דקה</div>
+        <div class="wt-recommended-list">
+          <div>✅ האתר נשאר <b>מהיר פי 100</b></div>
+          <div>✅ רץ חלק על <b>כל מכשיר</b> וכל מהירות אינטרנט</div>
+          <div>✅ נגן מקצועי עם <b>מסך מלא</b> ושליטה</div>
+          <div>✅ חשיפה חינמית בגוגל ו-YouTube</div>
+        </div>
+      </div>
+      
+      <div class="wt-guide">
+        <div class="wt-guide-title">📱 איך להעלות ל-YouTube ולהביא את הקישור</div>
+        <div class="wt-guide-steps">
+          <div class="wt-guide-step"><span class="wt-guide-step-num">1</span><span>פתחי את אפליקציית <b>YouTube</b> בטלפון → לחצי <b>+</b> למטה</span></div>
+          <div class="wt-guide-step"><span class="wt-guide-step-num">2</span><span>בחרי <b>"העלאת סרטון"</b> ובחרי את הקובץ מהגלריה</span></div>
+          <div class="wt-guide-step"><span class="wt-guide-step-num">3</span><span>הגדירי <b>"לא ברשימה"</b> (unlisted) — רק מי שיש לו קישור יראה</span></div>
+          <div class="wt-guide-step"><span class="wt-guide-step-num">4</span><span>כשהעלאה מסתיימת — לחצי <b>"שתף"</b> ואז <b>"העתק קישור"</b></span></div>
+          <div class="wt-guide-step"><span class="wt-guide-step-num">5</span><span>חזרי לכאן → <b>הדביקי</b> בשדה למטה</span></div>
+        </div>
+      </div>
+      
+      <div class="wt-section-hdr">🔗 קישור YouTube / Vimeo</div>
+      <div class="wt-form-row">
+        <input class="wt-form-inp ltr" id="wt-video-url" placeholder="https://youtube.com/watch?v=...">
+        <div class="wt-form-hint">💡 הדביקי כל קישור יוטיוב או Vimeo — אני אהפוך לסרטון מוטמע אוטומטית</div>
+      </div>
+      <div class="wt-form-actions" style="margin-bottom:20px">
+        <button class="wt-form-btn cancel" onclick="wtClosePop()">ביטול</button>
+        <button class="wt-form-btn ok" onclick="wtInsertVideoUrl()">הוסף סרטון</button>
+      </div>
+      
+      <div class="wt-warn-box">
+        <span class="wt-warn-ico">⚠️</span>
+        <span><b>העלאה ישירה מהמכשיר</b> תגדיל את האתר משמעותית ותאט אותו עבור הלקוחות. השתמשי רק לסרטונים ממש קצרים (5 שניות) וכמוצא אחרון.</span>
+      </div>
+      
+      <div class="wt-section-hdr">📤 העלאה ישירה (לא מומלץ)</div>
       <label class="wt-upload-drop" id="wt-video-drop">
         <div class="wt-upload-ico">🎥</div>
-        <div class="wt-upload-title">העלי סרטון מהמכשיר</div>
+        <div class="wt-upload-title">סרטון קצר מהמכשיר</div>
         <div class="wt-upload-sub">MP4 · WebM · MOV (עד 15MB)</div>
         <input type="file" accept="video/*" id="wt-video-file" style="display:none" onchange="wtVideoFile(event)">
       </label>
-      <div class="wt-upload-progress" id="wt-video-progress"><div class="wt-upload-progress-bar" id="wt-video-progress-bar"></div></div>
-      <div class="wt-form-actions">
-        <button class="wt-form-btn cancel" onclick="wtClosePop()">ביטול</button>
-        <button class="wt-form-btn ok" onclick="wtInsertVideoUrl()">הוסף סרטון</button>
-      </div>`,
+      <div class="wt-upload-progress" id="wt-video-progress"><div class="wt-upload-progress-bar" id="wt-video-progress-bar"></div></div>`,
     onOpen:()=>{
       const drop=document.getElementById('wt-video-drop');
       if(drop)drop.onclick=()=>document.getElementById('wt-video-file').click();

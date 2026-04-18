@@ -622,6 +622,13 @@ textarea.task-modal-area{width:100%;border:1.5px solid #e5e7eb;border-radius:12p
 .web-edit-iframe-wrap{flex:1;position:relative;overflow:hidden;display:none}
 .web-edit-iframe-wrap.on{display:block}
 .web-edit-iframe{width:100%;height:100%;border:0;background:white;display:block}
+/* My own loader over the iframe — disappears as soon as iframe content is ready */
+.web-iframe-loader{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;background:white;z-index:5;transition:opacity .3s ease}
+.web-iframe-loader.gone{opacity:0;pointer-events:none}
+.web-iframe-loader-spin{width:44px;height:44px;border:4px solid #ede9fe;border-top-color:#7c3aed;border-radius:50%;animation:webspin 0.9s linear infinite}
+@keyframes webspin{to{transform:rotate(360deg)}}
+.web-iframe-loader-txt{color:#7c3aed;font-weight:800;font-size:14px}
+.web-iframe-loader-sub{color:#a78bfa;font-weight:600;font-size:11px;margin-top:-6px}
 .web-edit-hint{position:absolute;top:10px;right:10px;left:10px;background:linear-gradient(135deg,#fef9c3,#fde68a);border:1px solid #fcd34d;border-radius:12px;padding:10px 12px;font-size:11.5px;color:#78350f;font-weight:700;text-align:right;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,.1);animation:hintFade 6s ease forwards}
 @keyframes hintFade{0%,70%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-20px);pointer-events:none}}
 .web-edit-btns{display:flex;gap:8px;padding:10px 12px 14px;background:white;border-top:1px solid #ede9fe;flex-shrink:0}
@@ -4642,6 +4649,11 @@ async function webOpenEditor(){
       <div class="web-edit-body" id="web-edit-body">
         <div class="web-edit-iframe-wrap on" id="web-iframe-wrap">
           <div class="web-edit-hint">💡 לחצי על כל טקסט באתר (מחירים, כותרות, תיאורים) וכתבי את השינוי. בסוף לחצי "שמור ופרסם".</div>
+          <div class="web-iframe-loader" id="web-iframe-loader">
+            <div class="web-iframe-loader-spin"></div>
+            <div class="web-iframe-loader-txt">טוען את האתר...</div>
+            <div class="web-iframe-loader-sub">רגע אחד</div>
+          </div>
           <iframe class="web-edit-iframe" id="web-edit-iframe"></iframe>
         </div>
         <textarea class="web-edit-textarea" id="web-edit-textarea" spellcheck="false" dir="ltr" placeholder="הקובץ יטען כאן..."></textarea>
@@ -4718,6 +4730,8 @@ function webSwitchView(mode){
 function webInjectEditor(html){
   const editorCode=`
 <style>
+  /* Hide any inherited loader from the site itself */
+  .loader,#app>.loader,.spinner{display:none!important;visibility:hidden!important}
   body.__webedit{padding-bottom:40px!important}
   body.__webedit [data-webedit="1"]{outline:2px dashed rgba(124,58,237,.35);outline-offset:2px;cursor:text;transition:outline .15s;border-radius:3px}
   body.__webedit [data-webedit="1"]:hover{outline:2px dashed #7c3aed;background:rgba(237,233,254,.4)}
@@ -4725,32 +4739,49 @@ function webInjectEditor(html){
 </style>
 <scr`+`ipt>
 (function(){
+  // Signal parent ASAP that iframe loaded — don't wait for everything
+  try{window.parent.postMessage({type:'__webedit-ready'},'*');}catch(e){}
+  // Kill any site-level loader shell
+  function killLoaders(){
+    document.querySelectorAll('.loader,.spinner').forEach(el=>{try{el.remove();}catch(e){}});
+    const app=document.getElementById('app');
+    if(app&&app.children.length===1&&app.children[0].className==='loader'){
+      app.innerHTML='';
+    }
+  }
   function markEditable(){
     const selectors='h1,h2,h3,h4,h5,h6,p,span,a,li,button,td,th,label,strong,em,b,i,figcaption,blockquote,div';
     document.querySelectorAll(selectors).forEach(el=>{
-      // Only leaf-ish elements with actual text
       const hasDirectText=Array.from(el.childNodes).some(n=>n.nodeType===3&&n.textContent.trim().length>1);
       if(hasDirectText)el.setAttribute('data-webedit','1');
     });
   }
-  markEditable();
-  document.body.classList.add('__webedit');
-  document.querySelectorAll('[data-webedit="1"]').forEach(el=>{
-    el.setAttribute('contenteditable','true');
-    el.setAttribute('spellcheck','false');
-  });
+  function activate(){
+    killLoaders();
+    markEditable();
+    document.body.classList.add('__webedit');
+    document.querySelectorAll('[data-webedit="1"]').forEach(el=>{
+      el.setAttribute('contenteditable','true');
+      el.setAttribute('spellcheck','false');
+    });
+    try{window.parent.postMessage({type:'__webedit-active'},'*');}catch(e){}
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',activate);
+  }else{
+    activate();
+  }
+  // Second pass after full load (catches async-rendered content)
+  window.addEventListener('load',function(){setTimeout(activate,100);});
   // Block link navigation in edit mode
   document.addEventListener('click',function(e){
     const a=e.target.closest('a');
     if(a){e.preventDefault();}
   });
-  // Keep iframe taps from scrolling parent window
-  document.addEventListener('touchmove',function(e){e.stopPropagation();},{passive:true});
   // Listen for "extract" message from parent
   window.addEventListener('message',function(e){
     if(!e.data||e.data.type!=='__webedit-extract')return;
     const clone=document.documentElement.cloneNode(true);
-    // Cleanup: remove editor artifacts
     clone.querySelectorAll('style').forEach(s=>{if(s.textContent.includes('__webedit'))s.remove();});
     clone.querySelectorAll('script').forEach(s=>{if(s.textContent.includes('__webedit-extract')||s.textContent.includes('data-webedit'))s.remove();});
     clone.querySelectorAll('[data-webedit]').forEach(el=>{
@@ -4762,24 +4793,37 @@ function webInjectEditor(html){
     const fullHtml='<!DOCTYPE html>\\n'+clone.outerHTML;
     window.parent.postMessage({type:'__webedit-result',html:fullHtml,reqId:e.data.reqId},'*');
   });
-  window.parent.postMessage({type:'__webedit-ready'},'*');
 })();
 </scr`+`ipt>
 `;
-  if(html.includes('</body>'))return html.replace('</body>',editorCode+'\n</body>');
-  return html+editorCode;
+  // Place our code at the START of <head> so it runs before the site's own scripts
+  if(html.includes('<head>')){
+    return html.replace('<head>','<head>'+editorCode);
+  }
+  if(html.includes('<body')){
+    return html.replace(/<body([^>]*)>/,'<body$1>'+editorCode);
+  }
+  return editorCode+html;
 }
 
 // Load the current rawHtml into the iframe via blob URL
 function webLoadIframe(){
   const ifr=document.getElementById('web-edit-iframe');
+  const ldr=document.getElementById('web-iframe-loader');
   if(!ifr||!_webEdit.rawHtml)return;
+  // Show my loader
+  if(ldr){ldr.classList.remove('gone');}
   const injected=webInjectEditor(_webEdit.rawHtml);
   const blob=new Blob([injected],{type:'text/html;charset=utf-8'});
-  // Revoke previous URL if any
   if(ifr._prevUrl){try{URL.revokeObjectURL(ifr._prevUrl);}catch(e){}}
   const url=URL.createObjectURL(blob);
   ifr._prevUrl=url;
+  // Hide loader once iframe load event fires — even if images are still loading, DOM is ready
+  ifr.onload=function(){
+    setTimeout(()=>{if(ldr)ldr.classList.add('gone');},150);
+  };
+  // Absolute fallback — hide loader after 4 seconds no matter what
+  setTimeout(()=>{if(ldr)ldr.classList.add('gone');},4000);
   ifr.src=url;
 }
 
@@ -4789,6 +4833,11 @@ if(!window._webMsgHandler){
   window._webMsgHandler=true;
   window.addEventListener('message',function(e){
     if(!e.data||typeof e.data!=='object')return;
+    // Iframe signals it's alive — kill the loader right away
+    if(e.data.type==='__webedit-ready'||e.data.type==='__webedit-active'){
+      const ldr=document.getElementById('web-iframe-loader');
+      if(ldr)ldr.classList.add('gone');
+    }
     if(e.data.type==='__webedit-result'&&_webExtractCb){
       const cb=_webExtractCb;_webExtractCb=null;
       cb(e.data.html);

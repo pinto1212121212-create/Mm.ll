@@ -98,25 +98,51 @@ button,input{font-family:inherit}
 .card-rinat{background:linear-gradient(145deg,#f472b6 0%,#db2777 60%,#be185d 100%)}
 
 /* Main diary card (full width, bigger) */
-.card-diary{flex:1;border-radius:24px;padding:20px;cursor:pointer;border:none;background:linear-gradient(145deg,#a855f7 0%,#7c3aed 50%,#6d28d9 100%);color:white;box-shadow:0 12px 32px rgba(124,58,237,.35);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;min-height:280px;transition:transform .15s;animation:fadeUp .6s ease;text-align:right}
+.card-diary{flex:1;border-radius:24px;padding:20px;cursor:pointer;border:none;background:linear-gradient(145deg,#a855f7 0%,#7c3aed 50%,#6d28d9 100%);color:white;box-shadow:0 12px 32px rgba(124,58,237,.35);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;min-height:420px;transition:transform .15s;animation:fadeUp .6s ease;text-align:right}
 .card-diary:active{transform:scale(.98)}
 .card-diary::before{content:'';position:absolute;top:-60px;left:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08)}
 .card-diary::after{content:'';position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.06)}
 .dc-top{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-start}
 .dc-badge{background:rgba(255,255,255,.18);backdrop-filter:blur(10px);padding:6px 12px;border-radius:14px;font-size:10.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase}
 .dc-ico{font-size:48px;line-height:1;filter:drop-shadow(0 6px 14px rgba(0,0,0,.2));animation:float 3.5s ease-in-out infinite}
-.dc-mid{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;justify-content:center;padding:18px 0}
-.dc-title{font-size:32px;font-weight:900;letter-spacing:.3px;margin-bottom:8px;line-height:1;color:white}
-.dc-tag{font-size:13px;opacity:.92;font-weight:600;letter-spacing:.3px;line-height:1.5}
-.dc-feats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;position:relative;z-index:1;margin-top:4px}
-.dc-feat{background:rgba(255,255,255,.14);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:10px 6px;text-align:center;transition:transform .15s,background .15s}
-.dc-feat:active{transform:scale(.93);background:rgba(255,255,255,.25)}
-.dc-feat-wide{grid-column:span 3;background:rgba(255,255,255,.22);border:1.5px solid rgba(255,255,255,.35);padding:11px 6px;display:flex;align-items:center;justify-content:center;gap:10px}
-.dc-feat-wide .dc-feat-ico{margin-bottom:0}
-.dc-feat-wide .dc-feat-lbl{font-size:12px;letter-spacing:.5px}
-.dc-feat-ico{font-size:18px;line-height:1;margin-bottom:4px}
-.dc-feat-lbl{font-size:10px;font-weight:700;letter-spacing:.3px}
-.dc-cta{position:relative;z-index:1;background:rgba(255,255,255,.22);backdrop-filter:blur(10px);border:1.5px solid rgba(255,255,255,.3);border-radius:14px;padding:12px;text-align:center;font-size:13.5px;font-weight:800;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.3px;color:white}
+.dc-mid{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;justify-content:center;padding:14px 0 12px;gap:10px}
+.dc-title{font-size:28px;font-weight:900;letter-spacing:.3px;line-height:1;color:white;margin-bottom:2px}
+.dc-tag{font-size:12px;opacity:.85;font-weight:600;letter-spacing:.2px;line-height:1.45;color:white}
+
+/* ═══ AI Tip Panel — premium glass morphism ═══ */
+.dc-tip{position:relative;background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.06));backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:18px;padding:14px 14px 12px;cursor:pointer;overflow:hidden;transition:transform .2s ease,box-shadow .3s ease;border:1px solid rgba(255,255,255,.22);box-shadow:0 8px 24px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.15);margin-top:6px}
+.dc-tip::before{content:'';position:absolute;inset:0;border-radius:18px;padding:1.5px;background:linear-gradient(135deg,#fbbf24,#f472b6,#60a5fa,#fbbf24);background-size:300% 300%;animation:tipBorder 8s linear infinite;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.5;pointer-events:none}
+@keyframes tipBorder{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+.dc-tip:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.2)}
+.dc-tip:hover::before{opacity:.9}
+.dc-tip:active{transform:scale(.985)}
+
+.dc-tip-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;position:relative;z-index:1}
+.dc-tip-brand{display:flex;align-items:center;gap:8px}
+.dc-tip-orb{position:relative;width:22px;height:22px;flex-shrink:0}
+.dc-tip-orb::before{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fde68a,#f59e0b 60%,#b45309);box-shadow:0 0 10px rgba(251,191,36,.7),0 0 20px rgba(251,191,36,.4);animation:orbPulse 2.5s ease-in-out infinite}
+.dc-tip-orb::after{content:'';position:absolute;inset:4px;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.9),transparent 50%);pointer-events:none}
+@keyframes orbPulse{0%,100%{box-shadow:0 0 10px rgba(251,191,36,.7),0 0 20px rgba(251,191,36,.4)}50%{box-shadow:0 0 14px rgba(251,191,36,.9),0 0 28px rgba(251,191,36,.55)}}
+.dc-tip-brand-label{font-size:11px;font-weight:900;color:rgba(255,255,255,.95);letter-spacing:.8px;text-transform:uppercase}
+.dc-tip-meta{font-size:10px;font-weight:800;color:rgba(255,255,255,.6);letter-spacing:.3px;background:rgba(0,0,0,.15);padding:3px 8px;border-radius:8px;backdrop-filter:blur(4px)}
+
+.dc-tip-body{font-size:13.5px;font-weight:600;color:white;line-height:1.55;position:relative;z-index:1;letter-spacing:.1px;margin-bottom:10px;min-height:42px}
+.dc-tip-body b{font-weight:900;color:#fde68a}
+
+.dc-tip-ftr{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;padding-top:8px;border-top:1px solid rgba(255,255,255,.12)}
+.dc-tip-cta{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:rgba(255,255,255,.8);letter-spacing:.2px}
+.dc-tip-cta-ico{font-size:12px}
+.dc-tip-arrow{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:13px;color:white;transition:background .2s,transform .2s}
+.dc-tip:hover .dc-tip-arrow{background:rgba(255,255,255,.28);transform:translateX(-3px)}
+
+.dc-feats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;position:relative;z-index:1;margin-top:2px}
+.dc-feat{background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);border-radius:13px;padding:11px 4px 10px;text-align:center;transition:transform .15s,background .2s,border-color .2s;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:60px}
+.dc-feat:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.32)}
+.dc-feat:active{transform:scale(.93);background:rgba(255,255,255,.28)}
+.dc-feat-ico{font-size:19px;line-height:1}
+.dc-feat-lbl{font-size:10.5px;font-weight:700;letter-spacing:.2px;line-height:1.2}
+.dc-cta{position:relative;z-index:1;background:rgba(255,255,255,.18);backdrop-filter:blur(10px);border:1.5px solid rgba(255,255,255,.28);border-radius:14px;padding:13px;text-align:center;font-size:13.5px;font-weight:800;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.3px;color:white;transition:background .2s,border-color .2s}
+.card-diary:hover .dc-cta{background:rgba(255,255,255,.24);border-color:rgba(255,255,255,.4)}
 .dc-cta .dc-arrow{display:inline-block;transition:transform .2s}
 .card-diary:active .dc-cta .dc-arrow{transform:translateX(-4px)}
 .home-ftr{text-align:center;margin-top:10px;padding:6px;font-size:10.5px;color:#a78bfa;font-weight:600;letter-spacing:.5px;animation:fadeUp .7s ease}
@@ -208,6 +234,68 @@ textarea.task-modal-area{width:100%;border:1.5px solid #e5e7eb;border-radius:12p
 .hist-tab.on{color:#7c3aed;border-bottom-color:#7c3aed;background:#faf5ff}
 .hist-badge{border-radius:20px;padding:1px 7px;font-size:10px;font-weight:800;color:white;display:inline-block;margin-right:3px}
 .hist-content{flex:1;overflow-y:auto;padding:14px}
+
+/* ═══ AI Advisor tab ═══ */
+
+/* ═══ Smart Tip Card (in AI Advisor tab) ═══ */
+.adv-tip-card{background:linear-gradient(135deg,#1e1b4b 0%,#312e81 50%,#1e1b4b 100%);border-radius:20px;padding:16px 16px 14px;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:0 10px 28px rgba(30,27,75,.35),inset 0 1px 0 rgba(255,255,255,.08)}
+.adv-tip-card::before{content:'';position:absolute;top:-50px;left:-30px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(251,191,36,.22),transparent 65%);pointer-events:none;animation:advOrbFloat 8s ease-in-out infinite}
+.adv-tip-card::after{content:'';position:absolute;bottom:-80px;right:-40px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(167,139,250,.18),transparent 65%);pointer-events:none;animation:advOrbFloat 10s ease-in-out infinite reverse}
+@keyframes advOrbFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(10px,-8px) scale(1.05)}}
+.adv-tip-hdr{display:flex;align-items:center;gap:12px;margin-bottom:12px;position:relative;z-index:1}
+.adv-tip-orb-big{position:relative;width:32px;height:32px;flex-shrink:0}
+.adv-tip-orb-big::before{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fde68a,#f59e0b 55%,#b45309);box-shadow:0 0 16px rgba(251,191,36,.8),0 0 32px rgba(251,191,36,.4);animation:orbPulse 2.5s ease-in-out infinite}
+.adv-tip-orb-big::after{content:'';position:absolute;inset:6px;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.9),transparent 50%);pointer-events:none}
+.adv-tip-hdr-txt{flex:1;min-width:0}
+.adv-tip-label{font-size:12px;font-weight:900;color:white;letter-spacing:.2px;margin-bottom:3px}
+.adv-tip-source{font-size:10.5px;font-weight:700;color:#fbbf24;letter-spacing:.3px;background:rgba(251,191,36,.15);display:inline-block;padding:2px 8px;border-radius:8px;border:1px solid rgba(251,191,36,.35)}
+.adv-tip-body{position:relative;z-index:1;background:rgba(255,255,255,.06);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px;font-size:13.5px;line-height:1.65;color:rgba(255,255,255,.95);font-weight:600;margin-bottom:12px;transition:opacity .25s ease,transform .25s ease;min-height:68px}
+.adv-tip-body b{color:#fde68a;font-weight:900}
+.adv-tip-ico{font-size:20px;margin-left:6px;display:inline-block;vertical-align:middle}
+.adv-tip-actions{display:flex;align-items:center;gap:10px;position:relative;z-index:1}
+.adv-tip-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#78350f;border:none;border-radius:12px;padding:11px 14px;font-size:13px;font-weight:900;cursor:pointer;font-family:inherit;letter-spacing:.2px;box-shadow:0 4px 14px rgba(245,158,11,.4),inset 0 1px 0 rgba(255,255,255,.35);transition:all .2s}
+.adv-tip-btn:hover{transform:translateY(-2px);box-shadow:0 7px 20px rgba(245,158,11,.55),inset 0 1px 0 rgba(255,255,255,.35)}
+.adv-tip-btn:active{transform:scale(.97)}
+.adv-tip-counter{background:rgba(255,255,255,.12);color:white;padding:9px 12px;border-radius:10px;font-size:11px;font-weight:900;letter-spacing:.5px;border:1px solid rgba(255,255,255,.15)}
+.adv-hdr{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1.5px solid #f59e0b;border-radius:18px;padding:16px;margin-bottom:14px}
+.adv-hdr-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.adv-hdr-icon{font-size:36px;flex-shrink:0}
+.adv-hdr-txt{flex:1;min-width:0}
+.adv-hdr-title{font-size:18px;font-weight:900;color:#78350f}
+.adv-hdr-sub{font-size:12px;color:#92400e;font-weight:600;margin-top:2px}
+.adv-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.adv-stat{background:rgba(255,255,255,.6);border-radius:12px;padding:10px 8px;text-align:center;backdrop-filter:blur(4px)}
+.adv-stat-val{font-size:20px;font-weight:900;color:#78350f;line-height:1}
+.adv-stat-lbl{font-size:10px;font-weight:700;color:#92400e;margin-top:4px;line-height:1.3}
+.adv-insights{display:flex;flex-direction:column;gap:14px;margin-bottom:14px}
+.adv-card{background:white;border-radius:16px;padding:14px;border:1.5px solid #e5e7eb;box-shadow:0 2px 10px rgba(0,0,0,.04);overflow:hidden;position:relative}
+.adv-card.adv-p-high{border-color:#fecaca;background:linear-gradient(135deg,#fef2f2,#fee2e2)}
+.adv-card.adv-p-high::before{content:'';position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,#dc2626,#f87171)}
+.adv-card.adv-p-medium{border-color:#fcd34d;background:linear-gradient(135deg,#fffbeb,#fef3c7)}
+.adv-card.adv-p-medium::before{content:'';position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.adv-card.adv-p-good{border-color:#a7f3d0;background:linear-gradient(135deg,#f0fdf4,#d1fae5)}
+.adv-card.adv-p-good::before{content:'';position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,#059669,#10b981)}
+.adv-card.adv-p-low{border-color:#bfdbfe;background:linear-gradient(135deg,#eff6ff,#dbeafe)}
+.adv-card.adv-p-low::before{content:'';position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,#2563eb,#60a5fa)}
+.adv-card-hdr{display:flex;gap:10px;margin-bottom:10px}
+.adv-card-ico{font-size:26px;flex-shrink:0}
+.adv-card-hdr-txt{flex:1;min-width:0}
+.adv-card-priority{font-size:10px;font-weight:800;color:#6b7280;letter-spacing:.5px;margin-bottom:3px}
+.adv-card-title{font-size:15px;font-weight:900;color:#1e1b4b;line-height:1.3}
+.adv-card-body{font-size:13px;color:#374151;line-height:1.55;margin-bottom:10px}
+.adv-card-body b{font-weight:800;color:#1e1b4b}
+.adv-card-details{background:rgba(255,255,255,.6);border-radius:10px;padding:10px 12px;font-size:11.5px;color:#4b5563;font-weight:600;line-height:1.75;margin-bottom:10px;white-space:pre-line}
+.adv-card-action{background:rgba(255,255,255,.75);border-radius:12px;padding:11px 13px;border-right:3px solid #7c3aed}
+.adv-card-action-label{font-size:10px;font-weight:900;color:#7c3aed;letter-spacing:.8px;margin-bottom:5px}
+.adv-card-action-body{font-size:12.5px;color:#1e1b4b;font-weight:600;line-height:1.6}
+.adv-card-action-body b{font-weight:900;color:#7c3aed}
+.adv-empty{background:white;border-radius:18px;padding:40px 24px;text-align:center;border:1.5px dashed #d1fae5}
+.adv-empty-ico{font-size:56px;margin-bottom:10px}
+.adv-empty-title{font-size:18px;font-weight:900;color:#059669;margin-bottom:6px}
+.adv-empty-sub{font-size:13px;color:#6b7280;line-height:1.6}
+.adv-footer{background:#f9fafb;border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;border:1px solid #f3f4f6;margin-top:8px}
+.adv-footer-ico{font-size:20px;flex-shrink:0}
+.adv-footer-txt{font-size:11px;color:#6b7280;line-height:1.55;font-weight:600}
 /* Next appt hero */
 .next-hero{background:linear-gradient(135deg,#7c3aed,#5b21b6);border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:0 8px 28px rgba(124,58,237,.35);overflow:hidden}
 .next-hero-lbl{font-size:10px;font-weight:800;color:rgba(255,255,255,.6);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
@@ -592,6 +680,51 @@ textarea.task-modal-area{width:100%;border:1.5px solid #e5e7eb;border-radius:12p
 
 /* Info card */
 .web-info-card{background:linear-gradient(135deg,#fef9c3,#fde68a);border-radius:14px;padding:14px;margin-bottom:12px;border:1px solid #fcd34d}
+
+/* ═══ Website Performance Analyzer ═══ */
+.web-perf-card{background:white;border-radius:18px;padding:16px;margin-bottom:12px;border:1.5px solid #e5e7eb;box-shadow:0 4px 16px rgba(0,0,0,.04)}
+.web-perf-prompt{background:linear-gradient(135deg,#eff6ff,#dbeafe);border:1.5px dashed #93c5fd;border-radius:16px;padding:22px 18px;text-align:center;margin-bottom:12px}
+.web-perf-prompt-ico{font-size:40px;margin-bottom:8px}
+.web-perf-prompt-title{font-size:15px;font-weight:900;color:#1e3a8a;margin-bottom:4px}
+.web-perf-prompt-sub{font-size:12px;color:#1e40af;line-height:1.5;font-weight:600}
+.web-perf-hdr{display:flex;gap:14px;align-items:center;margin-bottom:16px}
+.web-perf-score{width:82px;height:82px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .5s ease}
+.web-perf-score-inner{width:68px;height:68px;border-radius:50%;background:white;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 2px 4px rgba(0,0,0,.06)}
+.web-perf-score-num{font-size:26px;font-weight:900;line-height:1}
+.web-perf-score-lbl{font-size:9px;font-weight:700;color:#9ca3af;margin-top:2px;letter-spacing:.3px}
+.web-perf-info{flex:1;min-width:0}
+.web-perf-label{font-size:11px;font-weight:800;color:#6b7280;letter-spacing:.8px;text-transform:uppercase;margin-bottom:3px}
+.web-perf-title{font-size:20px;font-weight:900;line-height:1.1}
+.web-perf-sub{font-size:12px;color:#6b7280;font-weight:600;margin-top:4px}
+.web-perf-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;padding:10px;background:#f9fafb;border-radius:12px;border:1px solid #f3f4f6}
+.web-perf-stat{text-align:center}
+.web-perf-stat-val{font-size:17px;font-weight:900;color:#1e1b4b;line-height:1}
+.web-perf-stat-lbl{font-size:10px;font-weight:700;color:#6b7280;margin-top:3px;letter-spacing:.2px}
+.web-perf-section-title{font-size:11px;font-weight:900;color:#7c3aed;letter-spacing:.8px;text-transform:uppercase;margin:12px 0 10px}
+.web-perf-issue{background:#fafafa;border:1px solid #e5e7eb;border-right:4px solid #9ca3af;border-radius:12px;padding:12px;margin-bottom:10px}
+.web-perf-issue.sev-high{border-right-color:#dc2626;background:linear-gradient(135deg,#fef2f2,#fee2e2)}
+.web-perf-issue.sev-medium{border-right-color:#f59e0b;background:linear-gradient(135deg,#fffbeb,#fef3c7)}
+.web-perf-issue.sev-low{border-right-color:#3b82f6;background:linear-gradient(135deg,#eff6ff,#dbeafe)}
+.web-perf-issue-hdr{display:flex;gap:10px;margin-bottom:8px}
+.web-perf-issue-ico{font-size:22px;flex-shrink:0}
+.web-perf-issue-body{flex:1;min-width:0}
+.web-perf-issue-title{font-size:13px;font-weight:900;color:#1e1b4b;line-height:1.3;margin-bottom:3px}
+.web-perf-issue-detail{font-size:11.5px;color:#4b5563;font-weight:600;line-height:1.55}
+.web-perf-issue-fix{background:rgba(255,255,255,.7);border-radius:10px;padding:9px 11px;font-size:12px;color:#1e1b4b;font-weight:600;line-height:1.55;margin-bottom:8px;border:1px solid rgba(0,0,0,.04)}
+.web-perf-issue-fix code{background:#1e1b4b;color:#fbbf24;padding:1px 6px;border-radius:4px;font-size:11px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.web-perf-issue-fix b{color:#7c3aed;font-weight:800}
+.web-perf-fix-btn{width:100%;padding:10px;border-radius:10px;border:none;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;font-size:12.5px;font-weight:900;cursor:pointer;font-family:inherit;box-shadow:0 3px 10px rgba(124,58,237,.3);transition:all .15s}
+.web-perf-fix-btn:hover{box-shadow:0 5px 14px rgba(124,58,237,.45);transform:translateY(-1px)}
+.web-perf-fix-btn:active{transform:scale(.97)}
+.web-perf-fix-all{width:100%;padding:14px;border-radius:14px;border:none;background:linear-gradient(135deg,#10b981,#059669);color:white;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit;box-shadow:0 6px 18px rgba(16,185,129,.35);display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px;transition:all .15s;letter-spacing:.3px}
+.web-perf-fix-all:hover{box-shadow:0 8px 22px rgba(16,185,129,.5);transform:translateY(-2px)}
+.web-perf-fix-all:active{transform:scale(.98)}
+.web-perf-fix-all span:first-child{font-size:18px}
+.web-perf-excellent{background:linear-gradient(135deg,#f0fdf4,#d1fae5);border:1.5px solid #86efac;border-radius:14px;padding:24px 18px;text-align:center}
+.web-perf-excellent-ico{font-size:42px;margin-bottom:8px}
+.web-perf-excellent-title{font-size:16px;font-weight:900;color:#065f46;margin-bottom:4px}
+.web-perf-excellent-sub{font-size:12px;color:#047857;font-weight:600;line-height:1.5}
+
 .web-info-title{font-size:12.5px;font-weight:900;color:#78350f;margin-bottom:10px;text-align:right}
 .web-info-item{font-size:12px;color:#78350f;line-height:1.7;padding:3px 0;text-align:right;font-weight:600}
 .web-info-item b{color:#92400e;font-weight:900;margin-left:6px}
@@ -617,6 +750,30 @@ textarea.task-modal-area{width:100%;border:1.5px solid #e5e7eb;border-radius:12p
 .web-edit-body{flex:1;min-height:0;display:flex;background:white;position:relative}
 .web-edit-body.code-mode{padding:10px;background:#f8f7fc}
 .web-edit-textarea{flex:1;background:#1e293b;border:1px solid #334155;border-radius:14px;color:#e2e8f0;font-size:12px;font-family:ui-monospace,Menlo,Consolas,monospace;padding:12px;resize:none;outline:none;direction:ltr;text-align:left;line-height:1.6;width:100%;display:none}
+.web-edit-textarea.orig{display:block!important;background:#18181b;border-color:#3f3f46;color:#d4d4d8;min-height:200px;flex:1}
+.web-edit-textarea.orig[readonly]{background:#27272a;color:#a1a1aa;cursor:not-allowed}
+
+/* Original-code tab panel */
+.web-edit-orig-wrap{flex:1;min-height:0;display:none;flex-direction:column;background:#f8f7fc;padding:10px;overflow-y:auto}
+.web-edit-orig-wrap.on{display:flex}
+.web-orig-panel{flex:1;display:flex;flex-direction:column;gap:10px;min-height:0}
+.web-orig-hdr{background:linear-gradient(135deg,#18181b,#27272a);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;color:white;flex-shrink:0}
+.web-orig-hdr-icon{font-size:32px;flex-shrink:0}
+.web-orig-hdr-txt{flex:1;min-width:0}
+.web-orig-hdr-title{font-size:15px;font-weight:900}
+.web-orig-hdr-sub{font-size:11.5px;opacity:.7;margin-top:2px;direction:ltr;text-align:right;font-family:ui-monospace,monospace}
+.web-orig-unlock-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);color:white;padding:8px 12px;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .15s}
+.web-orig-unlock-btn:hover{background:rgba(255,255,255,.25)}
+.web-orig-unlock-btn.unlocked{background:#dc2626;border-color:#dc2626}
+.web-orig-warn{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1.5px solid #f59e0b;border-radius:12px;padding:11px 13px;font-size:11.5px;color:#78350f;line-height:1.55;font-weight:600;display:flex;gap:8px;align-items:flex-start;flex-shrink:0}
+.web-orig-warn-ico{font-size:18px;flex-shrink:0}
+.web-orig-actions{display:flex;gap:8px;flex-shrink:0}
+.web-orig-action-btn{flex:1;padding:12px;border-radius:12px;border:1.5px solid transparent;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s}
+.web-orig-action-btn.save{background:linear-gradient(135deg,#10b981,#059669);color:white}
+.web-orig-action-btn.save:hover{background:linear-gradient(135deg,#059669,#047857)}
+.web-orig-action-btn.cancel{background:#f3f4f6;color:#4b5563;border-color:#e5e7eb}
+.web-orig-action-btn.revert{background:white;color:#b91c1c;border-color:#fecaca}
+.web-orig-action-btn.revert:hover{background:#fef2f2}
 .web-edit-textarea.on{display:block}
 .web-edit-textarea:focus{border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.2)}
 .web-edit-iframe-wrap{flex:1;position:relative;overflow:hidden;display:none}
@@ -736,6 +893,22 @@ textarea.task-modal-area{width:100%;border:1.5px solid #e5e7eb;border-radius:12p
 
 /* Undo/Redo */
 .wt-history{display:flex;gap:2px;margin-right:auto}
+
+/* Insert menu grid (when clicking "+" between sections) */
+.wt-insert-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.wt-insert-item{background:white;border:1.5px solid #ede9fe;border-radius:14px;padding:16px 8px;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:8px;transition:all .15s}
+.wt-insert-item:hover{border-color:#7c3aed;background:#faf5ff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(124,58,237,.15)}
+.wt-insert-item:active{transform:scale(.96)}
+.wt-insert-ico{font-size:28px}
+.wt-insert-lbl{font-size:12px;font-weight:800;color:#4c1d95}
+
+/* Divider styles grid */
+.wt-divider-styles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wt-divider-style{background:white;border:1.5px solid #ede9fe;border-radius:12px;padding:14px 12px;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;flex-direction:column;gap:10px}
+.wt-divider-style:hover{border-color:#7c3aed;background:#faf5ff}
+.wt-divider-style:active{transform:scale(.97)}
+.wt-divider-preview{width:100%;padding:8px 0}
+.wt-divider-name{font-size:12px;font-weight:800;color:#4c1d95;text-align:center}
 
 /* Guide cards inside popups */
 .wt-guide{background:linear-gradient(135deg,#ecfeff,#cffafe);border:1.5px solid #a5f3fc;border-radius:14px;padding:14px;margin-bottom:14px;position:relative;overflow:hidden}
@@ -862,6 +1035,69 @@ textarea.task-modal-area{width:100%;border:1.5px solid #e5e7eb;border-radius:12p
 /* ── Contact Bottom Sheet ── */
 .contact-icon-btn{background:none;border:none;cursor:pointer;padding:4px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#9ca3af;transition:.15s;flex-shrink:0}
 .contact-icon-btn:active{background:#f3f4f6;transform:scale(.9)}
+/* ═══ Reminder Button (inline on appt cards) ═══ */
+.rem-btn{background:none;border:none;cursor:pointer;padding:4px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#9ca3af;transition:all .15s;flex-shrink:0;position:relative}
+.rem-btn:hover{color:#7c3aed;background:#faf5ff}
+.rem-btn:active{transform:scale(.85)}
+.rem-btn.active{color:#f59e0b;background:linear-gradient(135deg,#fef3c7,#fde68a);box-shadow:0 2px 8px rgba(245,158,11,.3)}
+.rem-btn.active::after{content:'';position:absolute;top:2px;left:2px;width:7px;height:7px;border-radius:50%;background:#dc2626;box-shadow:0 0 0 2px white;animation:remDot 2s ease-in-out infinite}
+@keyframes remDot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.25);opacity:.75}}
+/* ═══ Reminder Bottom Sheet ═══ */
+.rem-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:700;display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .25s ease}
+.rem-overlay.on{opacity:1}
+.rem-sheet{background:#fafaf9;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;border-radius:28px 28px 0 0;transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.56,.64,1);font-family:inherit;direction:rtl;padding-bottom:env(safe-area-inset-bottom,0)}
+.rem-overlay.on .rem-sheet{transform:translateY(0)}
+@media(min-width:768px){.rem-overlay{align-items:center}.rem-sheet{border-radius:28px;margin:16px;max-height:82vh}}
+.rem-hdr{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;padding:20px;position:relative;overflow:hidden}
+.rem-hdr::before{content:'';position:absolute;top:-60px;left:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.08)}
+.rem-hdr::after{content:'';position:absolute;bottom:-80px;right:-50px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.05)}
+.rem-hdr-top{display:flex;align-items:center;gap:12px;margin-bottom:14px;position:relative;z-index:1}
+.rem-hdr-icon{font-size:32px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.2));animation:remBell 2.5s ease-in-out infinite}
+@keyframes remBell{0%,100%{transform:rotate(0)}15%{transform:rotate(-8deg)}30%{transform:rotate(6deg)}45%{transform:rotate(-4deg)}60%{transform:rotate(2deg)}75%{transform:rotate(0)}}
+.rem-hdr-txt{flex:1;min-width:0}
+.rem-hdr-title{font-size:18px;font-weight:900;letter-spacing:.3px;line-height:1.1}
+.rem-hdr-sub{font-size:12px;margin-top:3px;opacity:.9;font-weight:600}
+.rem-close{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);border:none;color:white;font-size:18px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0}
+.rem-close:hover{background:rgba(255,255,255,.3)}
+.rem-close:active{transform:scale(.9)}
+.rem-appt-info{background:rgba(255,255,255,.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:12px 14px;position:relative;z-index:1}
+.rem-appt-name{font-size:17px;font-weight:900;color:white;margin-bottom:2px}
+.rem-appt-meta{font-size:12px;font-weight:600;color:rgba(255,255,255,.85)}
+.rem-body{padding:18px}
+.rem-section-title{font-size:12px;font-weight:900;color:#7c3aed;letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;padding-right:2px}
+.rem-options{display:flex;flex-direction:column;gap:8px}
+.rem-option{background:white;border:1.5px solid #e5e7eb;border-radius:14px;padding:12px 14px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:12px;transition:all .15s;text-align:right}
+.rem-option:hover:not(.disabled){border-color:#c4b5fd;background:#faf5ff;transform:translateX(-2px)}
+.rem-option:active:not(.disabled){transform:scale(.98)}
+.rem-option.selected{border-color:#7c3aed;background:linear-gradient(135deg,#f5f3ff,#ede9fe);box-shadow:0 4px 14px rgba(124,58,237,.2)}
+.rem-option.disabled{opacity:.4;cursor:not-allowed;background:#f9fafb}
+.rem-option-ico{font-size:22px;flex-shrink:0;width:40px;height:40px;background:#faf5ff;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.rem-option.selected .rem-option-ico{background:#7c3aed}
+.rem-option-txt{flex:1;min-width:0}
+.rem-option-title{font-size:14px;font-weight:800;color:#1e1b4b;margin-bottom:2px}
+.rem-option-sub{font-size:11.5px;color:#6b7280;font-weight:600}
+.rem-option-check{font-size:20px;color:#7c3aed;font-weight:900;flex-shrink:0}
+.rem-methods{display:flex;flex-direction:column;gap:10px}
+.rem-method-card{background:white;border:1.5px solid #e5e7eb;border-radius:16px;padding:14px;transition:border-color .15s}
+.rem-method-card:hover{border-color:#c4b5fd}
+.rem-method-hdr{display:flex;gap:12px;margin-bottom:12px}
+.rem-method-ico{font-size:26px;flex-shrink:0;width:44px;height:44px;background:linear-gradient(135deg,#faf5ff,#ede9fe);border-radius:12px;display:flex;align-items:center;justify-content:center}
+.rem-method-body{flex:1;min-width:0}
+.rem-method-title{font-size:14px;font-weight:900;color:#1e1b4b;margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rem-method-badge{font-size:9px;font-weight:900;background:linear-gradient(135deg,#10b981,#059669);color:white;padding:2px 7px;border-radius:8px;letter-spacing:.5px}
+.rem-method-desc{font-size:11.5px;color:#6b7280;font-weight:600;line-height:1.55}
+.rem-method-btn{width:100%;padding:11px;border-radius:12px;border:none;font-size:13.5px;font-weight:800;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;transition:all .15s;box-shadow:0 4px 12px rgba(124,58,237,.25)}
+.rem-method-btn:hover{box-shadow:0 6px 16px rgba(124,58,237,.35);transform:translateY(-1px)}
+.rem-method-btn:active{transform:scale(.98)}
+.rem-method-btn.secondary{background:white;color:#7c3aed;border:1.5px solid #c4b5fd;box-shadow:none}
+.rem-method-btn.secondary:hover{background:#faf5ff;transform:translateY(-1px)}
+.rem-active-info{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#f0fdf4,#d1fae5);border:1.5px solid #86efac;border-radius:14px;padding:12px 14px;margin-top:14px}
+.rem-active-ico{font-size:24px;flex-shrink:0}
+.rem-active-title{font-size:13px;font-weight:900;color:#065f46}
+.rem-active-sub{font-size:11px;font-weight:600;color:#047857;margin-top:2px}
+.rem-active-cancel{background:white;border:1.5px solid #fecaca;color:#b91c1c;font-size:12px;font-weight:800;padding:7px 12px;border-radius:10px;cursor:pointer;font-family:inherit;margin-right:auto;flex-shrink:0;transition:all .15s}
+.rem-active-cancel:hover{background:#fef2f2}
+
 .contact-sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;display:flex;align-items:flex-end}
 .contact-sheet{background:white;width:100%;border-radius:24px 24px 0 0;padding:0 0 36px;animation:slideUp .28s cubic-bezier(.34,1.56,.64,1)}
 .contact-sheet-client{display:flex;align-items:center;gap:14px;padding:20px 20px 16px;border-bottom:1px solid #f3f4f6}
@@ -1384,15 +1620,36 @@ function render(){
         </div>
         <div class="dc-mid">
           <div class="dc-title">היומן שלנו</div>
-          <div class="dc-tag">ניהול מלא של הקליניקה — תורים, לקוחות, הכנסות, הוצאות ויעדים</div>
+          <div class="dc-tag">ניהול מלא של הקליניקה — תורים, לקוחות, הכנסות ויעדים</div>
+          ${(()=>{const t=getTodayTip();return `
+          <div class="dc-tip" onclick="event.stopPropagation();goFeat('advisor')">
+            <div class="dc-tip-hdr">
+              <div class="dc-tip-brand">
+                <div class="dc-tip-orb"></div>
+                <div class="dc-tip-brand-label">יועץ AI · טיפ יומי</div>
+              </div>
+              <div class="dc-tip-meta">${formatTipDate(t.date)}</div>
+            </div>
+            <div class="dc-tip-body">${t.i} ${t.t}</div>
+            <div class="dc-tip-ftr">
+              <div class="dc-tip-cta"><span class="dc-tip-cta-ico">💡</span><span>עוד תובנות אישיות על העסק</span></div>
+              <div class="dc-tip-arrow">←</div>
+            </div>
+          </div>`;})()}
         </div>
         <div class="dc-feats">
-          <div class="dc-feat" onclick="event.stopPropagation();goFeat('laser')" style="cursor:pointer"><div class="dc-feat-ico">💆‍♀️</div><div class="dc-feat-lbl">לייזר</div></div>
-          <div class="dc-feat" onclick="event.stopPropagation();goFeat('upcoming')" style="cursor:pointer"><div class="dc-feat-ico">📅</div><div class="dc-feat-lbl">תורים</div></div>
-          <div class="dc-feat" onclick="event.stopPropagation();goFeat('payments')" style="cursor:pointer"><div class="dc-feat-ico">💰</div><div class="dc-feat-lbl">תשלומים</div></div>
-          <div class="dc-feat" onclick="event.stopPropagation();goFeat('expenses')" style="cursor:pointer"><div class="dc-feat-ico">💸</div><div class="dc-feat-lbl">הוצאות</div></div>
-          <div class="dc-feat" onclick="event.stopPropagation();goFeat('clients')" style="cursor:pointer"><div class="dc-feat-ico">👥</div><div class="dc-feat-lbl">לקוחות</div></div>
-          <div class="dc-feat" onclick="event.stopPropagation();goFeat('promo')" style="cursor:pointer"><div class="dc-feat-ico">📢</div><div class="dc-feat-lbl">פרסום</div></div>
+          <div class="dc-feat" onclick="event.stopPropagation();goFeat('laser')"><div class="dc-feat-ico">💆‍♀️</div><div class="dc-feat-lbl">לייזר</div></div>
+          <div class="dc-feat" onclick="event.stopPropagation();goFeat('upcoming')"><div class="dc-feat-ico">📅</div><div class="dc-feat-lbl">תורים</div></div>
+          <div class="dc-feat" onclick="event.stopPropagation();goFeat('clients')"><div class="dc-feat-ico">👥</div><div class="dc-feat-lbl">לקוחות</div></div>
+          <div class="dc-feat" onclick="event.stopPropagation();goFeat('debts')"><div class="dc-feat-ico">💳</div><div class="dc-feat-lbl">חובות</div></div>
+          <div class="dc-feat" onclick="event.stopPropagation();goFeat('payments')"><div class="dc-feat-ico">💰</div><div class="dc-feat-lbl">תשלומים</div></div>
+          <div class="dc-feat" onclick="event.stopPropagation();goFeat('expenses')"><div class="dc-feat-ico">💸</div><div class="dc-feat-lbl">הוצאות</div></div>
+          <div class="dc-feat" onclick="event.stopPropagation();goFeat('bgoals')"><div class="dc-feat-ico">🎯</div><div class="dc-feat-lbl">יעדים</div></div>
+          <div class="dc-feat" onclick="event.stopPropagation();goFeat('packages')"><div class="dc-feat-ico">📦</div><div class="dc-feat-lbl">חבילות</div></div>
+          <div class="dc-feat" onclick="event.stopPropagation();goFeat('history')"><div class="dc-feat-ico">🗂</div><div class="dc-feat-lbl">היסטוריה</div></div>
+          <div class="dc-feat" onclick="event.stopPropagation();goFeat('cancellations')"><div class="dc-feat-ico">❌</div><div class="dc-feat-lbl">ביטולים</div></div>
+          <div class="dc-feat" onclick="event.stopPropagation();goFeat('promo')"><div class="dc-feat-ico">📢</div><div class="dc-feat-lbl">פרסום</div></div>
+          <div class="dc-feat" onclick="event.stopPropagation();goFeat('website')"><div class="dc-feat-ico">🌐</div><div class="dc-feat-lbl">האתר</div></div>
         </div>
         <div class="dc-cta">פתח את היומן <span class="dc-arrow">←</span></div>
       </button>
@@ -1686,6 +1943,68 @@ function getLaserAnim(){
 .hist-tab.on{color:#7c3aed;border-bottom-color:#7c3aed;background:#faf5ff}
 .hist-badge{border-radius:20px;padding:1px 7px;font-size:10px;font-weight:800;color:white;display:inline-block;margin-right:3px}
 .hist-content{flex:1;overflow-y:auto;padding:14px}
+
+/* ═══ AI Advisor tab ═══ */
+
+/* ═══ Smart Tip Card (in AI Advisor tab) ═══ */
+.adv-tip-card{background:linear-gradient(135deg,#1e1b4b 0%,#312e81 50%,#1e1b4b 100%);border-radius:20px;padding:16px 16px 14px;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:0 10px 28px rgba(30,27,75,.35),inset 0 1px 0 rgba(255,255,255,.08)}
+.adv-tip-card::before{content:'';position:absolute;top:-50px;left:-30px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(251,191,36,.22),transparent 65%);pointer-events:none;animation:advOrbFloat 8s ease-in-out infinite}
+.adv-tip-card::after{content:'';position:absolute;bottom:-80px;right:-40px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(167,139,250,.18),transparent 65%);pointer-events:none;animation:advOrbFloat 10s ease-in-out infinite reverse}
+@keyframes advOrbFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(10px,-8px) scale(1.05)}}
+.adv-tip-hdr{display:flex;align-items:center;gap:12px;margin-bottom:12px;position:relative;z-index:1}
+.adv-tip-orb-big{position:relative;width:32px;height:32px;flex-shrink:0}
+.adv-tip-orb-big::before{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fde68a,#f59e0b 55%,#b45309);box-shadow:0 0 16px rgba(251,191,36,.8),0 0 32px rgba(251,191,36,.4);animation:orbPulse 2.5s ease-in-out infinite}
+.adv-tip-orb-big::after{content:'';position:absolute;inset:6px;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.9),transparent 50%);pointer-events:none}
+.adv-tip-hdr-txt{flex:1;min-width:0}
+.adv-tip-label{font-size:12px;font-weight:900;color:white;letter-spacing:.2px;margin-bottom:3px}
+.adv-tip-source{font-size:10.5px;font-weight:700;color:#fbbf24;letter-spacing:.3px;background:rgba(251,191,36,.15);display:inline-block;padding:2px 8px;border-radius:8px;border:1px solid rgba(251,191,36,.35)}
+.adv-tip-body{position:relative;z-index:1;background:rgba(255,255,255,.06);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px;font-size:13.5px;line-height:1.65;color:rgba(255,255,255,.95);font-weight:600;margin-bottom:12px;transition:opacity .25s ease,transform .25s ease;min-height:68px}
+.adv-tip-body b{color:#fde68a;font-weight:900}
+.adv-tip-ico{font-size:20px;margin-left:6px;display:inline-block;vertical-align:middle}
+.adv-tip-actions{display:flex;align-items:center;gap:10px;position:relative;z-index:1}
+.adv-tip-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#78350f;border:none;border-radius:12px;padding:11px 14px;font-size:13px;font-weight:900;cursor:pointer;font-family:inherit;letter-spacing:.2px;box-shadow:0 4px 14px rgba(245,158,11,.4),inset 0 1px 0 rgba(255,255,255,.35);transition:all .2s}
+.adv-tip-btn:hover{transform:translateY(-2px);box-shadow:0 7px 20px rgba(245,158,11,.55),inset 0 1px 0 rgba(255,255,255,.35)}
+.adv-tip-btn:active{transform:scale(.97)}
+.adv-tip-counter{background:rgba(255,255,255,.12);color:white;padding:9px 12px;border-radius:10px;font-size:11px;font-weight:900;letter-spacing:.5px;border:1px solid rgba(255,255,255,.15)}
+.adv-hdr{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1.5px solid #f59e0b;border-radius:18px;padding:16px;margin-bottom:14px}
+.adv-hdr-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.adv-hdr-icon{font-size:36px;flex-shrink:0}
+.adv-hdr-txt{flex:1;min-width:0}
+.adv-hdr-title{font-size:18px;font-weight:900;color:#78350f}
+.adv-hdr-sub{font-size:12px;color:#92400e;font-weight:600;margin-top:2px}
+.adv-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.adv-stat{background:rgba(255,255,255,.6);border-radius:12px;padding:10px 8px;text-align:center;backdrop-filter:blur(4px)}
+.adv-stat-val{font-size:20px;font-weight:900;color:#78350f;line-height:1}
+.adv-stat-lbl{font-size:10px;font-weight:700;color:#92400e;margin-top:4px;line-height:1.3}
+.adv-insights{display:flex;flex-direction:column;gap:14px;margin-bottom:14px}
+.adv-card{background:white;border-radius:16px;padding:14px;border:1.5px solid #e5e7eb;box-shadow:0 2px 10px rgba(0,0,0,.04);overflow:hidden;position:relative}
+.adv-card.adv-p-high{border-color:#fecaca;background:linear-gradient(135deg,#fef2f2,#fee2e2)}
+.adv-card.adv-p-high::before{content:'';position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,#dc2626,#f87171)}
+.adv-card.adv-p-medium{border-color:#fcd34d;background:linear-gradient(135deg,#fffbeb,#fef3c7)}
+.adv-card.adv-p-medium::before{content:'';position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.adv-card.adv-p-good{border-color:#a7f3d0;background:linear-gradient(135deg,#f0fdf4,#d1fae5)}
+.adv-card.adv-p-good::before{content:'';position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,#059669,#10b981)}
+.adv-card.adv-p-low{border-color:#bfdbfe;background:linear-gradient(135deg,#eff6ff,#dbeafe)}
+.adv-card.adv-p-low::before{content:'';position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,#2563eb,#60a5fa)}
+.adv-card-hdr{display:flex;gap:10px;margin-bottom:10px}
+.adv-card-ico{font-size:26px;flex-shrink:0}
+.adv-card-hdr-txt{flex:1;min-width:0}
+.adv-card-priority{font-size:10px;font-weight:800;color:#6b7280;letter-spacing:.5px;margin-bottom:3px}
+.adv-card-title{font-size:15px;font-weight:900;color:#1e1b4b;line-height:1.3}
+.adv-card-body{font-size:13px;color:#374151;line-height:1.55;margin-bottom:10px}
+.adv-card-body b{font-weight:800;color:#1e1b4b}
+.adv-card-details{background:rgba(255,255,255,.6);border-radius:10px;padding:10px 12px;font-size:11.5px;color:#4b5563;font-weight:600;line-height:1.75;margin-bottom:10px;white-space:pre-line}
+.adv-card-action{background:rgba(255,255,255,.75);border-radius:12px;padding:11px 13px;border-right:3px solid #7c3aed}
+.adv-card-action-label{font-size:10px;font-weight:900;color:#7c3aed;letter-spacing:.8px;margin-bottom:5px}
+.adv-card-action-body{font-size:12.5px;color:#1e1b4b;font-weight:600;line-height:1.6}
+.adv-card-action-body b{font-weight:900;color:#7c3aed}
+.adv-empty{background:white;border-radius:18px;padding:40px 24px;text-align:center;border:1.5px dashed #d1fae5}
+.adv-empty-ico{font-size:56px;margin-bottom:10px}
+.adv-empty-title{font-size:18px;font-weight:900;color:#059669;margin-bottom:6px}
+.adv-empty-sub{font-size:13px;color:#6b7280;line-height:1.6}
+.adv-footer{background:#f9fafb;border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;border:1px solid #f3f4f6;margin-top:8px}
+.adv-footer-ico{font-size:20px;flex-shrink:0}
+.adv-footer-txt{font-size:11px;color:#6b7280;line-height:1.55;font-weight:600}
 /* Next appt hero */
 .next-hero{background:linear-gradient(135deg,#7c3aed,#5b21b6);border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:0 8px 28px rgba(124,58,237,.35);overflow:hidden}
 .next-hero-lbl{font-size:10px;font-weight:800;color:rgba(255,255,255,.6);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
@@ -2234,6 +2553,69 @@ function getLaserAnim(){
 /* ── Contact Bottom Sheet ── */
 .contact-icon-btn{background:none;border:none;cursor:pointer;padding:4px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#9ca3af;transition:.15s;flex-shrink:0}
 .contact-icon-btn:active{background:#f3f4f6;transform:scale(.9)}
+/* ═══ Reminder Button (inline on appt cards) ═══ */
+.rem-btn{background:none;border:none;cursor:pointer;padding:4px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#9ca3af;transition:all .15s;flex-shrink:0;position:relative}
+.rem-btn:hover{color:#7c3aed;background:#faf5ff}
+.rem-btn:active{transform:scale(.85)}
+.rem-btn.active{color:#f59e0b;background:linear-gradient(135deg,#fef3c7,#fde68a);box-shadow:0 2px 8px rgba(245,158,11,.3)}
+.rem-btn.active::after{content:'';position:absolute;top:2px;left:2px;width:7px;height:7px;border-radius:50%;background:#dc2626;box-shadow:0 0 0 2px white;animation:remDot 2s ease-in-out infinite}
+@keyframes remDot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.25);opacity:.75}}
+/* ═══ Reminder Bottom Sheet ═══ */
+.rem-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:700;display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .25s ease}
+.rem-overlay.on{opacity:1}
+.rem-sheet{background:#fafaf9;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;border-radius:28px 28px 0 0;transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.56,.64,1);font-family:inherit;direction:rtl;padding-bottom:env(safe-area-inset-bottom,0)}
+.rem-overlay.on .rem-sheet{transform:translateY(0)}
+@media(min-width:768px){.rem-overlay{align-items:center}.rem-sheet{border-radius:28px;margin:16px;max-height:82vh}}
+.rem-hdr{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;padding:20px;position:relative;overflow:hidden}
+.rem-hdr::before{content:'';position:absolute;top:-60px;left:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.08)}
+.rem-hdr::after{content:'';position:absolute;bottom:-80px;right:-50px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.05)}
+.rem-hdr-top{display:flex;align-items:center;gap:12px;margin-bottom:14px;position:relative;z-index:1}
+.rem-hdr-icon{font-size:32px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.2));animation:remBell 2.5s ease-in-out infinite}
+@keyframes remBell{0%,100%{transform:rotate(0)}15%{transform:rotate(-8deg)}30%{transform:rotate(6deg)}45%{transform:rotate(-4deg)}60%{transform:rotate(2deg)}75%{transform:rotate(0)}}
+.rem-hdr-txt{flex:1;min-width:0}
+.rem-hdr-title{font-size:18px;font-weight:900;letter-spacing:.3px;line-height:1.1}
+.rem-hdr-sub{font-size:12px;margin-top:3px;opacity:.9;font-weight:600}
+.rem-close{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);border:none;color:white;font-size:18px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0}
+.rem-close:hover{background:rgba(255,255,255,.3)}
+.rem-close:active{transform:scale(.9)}
+.rem-appt-info{background:rgba(255,255,255,.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:12px 14px;position:relative;z-index:1}
+.rem-appt-name{font-size:17px;font-weight:900;color:white;margin-bottom:2px}
+.rem-appt-meta{font-size:12px;font-weight:600;color:rgba(255,255,255,.85)}
+.rem-body{padding:18px}
+.rem-section-title{font-size:12px;font-weight:900;color:#7c3aed;letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;padding-right:2px}
+.rem-options{display:flex;flex-direction:column;gap:8px}
+.rem-option{background:white;border:1.5px solid #e5e7eb;border-radius:14px;padding:12px 14px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:12px;transition:all .15s;text-align:right}
+.rem-option:hover:not(.disabled){border-color:#c4b5fd;background:#faf5ff;transform:translateX(-2px)}
+.rem-option:active:not(.disabled){transform:scale(.98)}
+.rem-option.selected{border-color:#7c3aed;background:linear-gradient(135deg,#f5f3ff,#ede9fe);box-shadow:0 4px 14px rgba(124,58,237,.2)}
+.rem-option.disabled{opacity:.4;cursor:not-allowed;background:#f9fafb}
+.rem-option-ico{font-size:22px;flex-shrink:0;width:40px;height:40px;background:#faf5ff;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.rem-option.selected .rem-option-ico{background:#7c3aed}
+.rem-option-txt{flex:1;min-width:0}
+.rem-option-title{font-size:14px;font-weight:800;color:#1e1b4b;margin-bottom:2px}
+.rem-option-sub{font-size:11.5px;color:#6b7280;font-weight:600}
+.rem-option-check{font-size:20px;color:#7c3aed;font-weight:900;flex-shrink:0}
+.rem-methods{display:flex;flex-direction:column;gap:10px}
+.rem-method-card{background:white;border:1.5px solid #e5e7eb;border-radius:16px;padding:14px;transition:border-color .15s}
+.rem-method-card:hover{border-color:#c4b5fd}
+.rem-method-hdr{display:flex;gap:12px;margin-bottom:12px}
+.rem-method-ico{font-size:26px;flex-shrink:0;width:44px;height:44px;background:linear-gradient(135deg,#faf5ff,#ede9fe);border-radius:12px;display:flex;align-items:center;justify-content:center}
+.rem-method-body{flex:1;min-width:0}
+.rem-method-title{font-size:14px;font-weight:900;color:#1e1b4b;margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rem-method-badge{font-size:9px;font-weight:900;background:linear-gradient(135deg,#10b981,#059669);color:white;padding:2px 7px;border-radius:8px;letter-spacing:.5px}
+.rem-method-desc{font-size:11.5px;color:#6b7280;font-weight:600;line-height:1.55}
+.rem-method-btn{width:100%;padding:11px;border-radius:12px;border:none;font-size:13.5px;font-weight:800;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;transition:all .15s;box-shadow:0 4px 12px rgba(124,58,237,.25)}
+.rem-method-btn:hover{box-shadow:0 6px 16px rgba(124,58,237,.35);transform:translateY(-1px)}
+.rem-method-btn:active{transform:scale(.98)}
+.rem-method-btn.secondary{background:white;color:#7c3aed;border:1.5px solid #c4b5fd;box-shadow:none}
+.rem-method-btn.secondary:hover{background:#faf5ff;transform:translateY(-1px)}
+.rem-active-info{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#f0fdf4,#d1fae5);border:1.5px solid #86efac;border-radius:14px;padding:12px 14px;margin-top:14px}
+.rem-active-ico{font-size:24px;flex-shrink:0}
+.rem-active-title{font-size:13px;font-weight:900;color:#065f46}
+.rem-active-sub{font-size:11px;font-weight:600;color:#047857;margin-top:2px}
+.rem-active-cancel{background:white;border:1.5px solid #fecaca;color:#b91c1c;font-size:12px;font-weight:800;padding:7px 12px;border-radius:10px;cursor:pointer;font-family:inherit;margin-right:auto;flex-shrink:0;transition:all .15s}
+.rem-active-cancel:hover{background:#fef2f2}
+
 .contact-sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;display:flex;align-items:flex-end}
 .contact-sheet{background:white;width:100%;border-radius:24px 24px 0 0;padding:0 0 36px;animation:slideUp .28s cubic-bezier(.34,1.56,.64,1)}
 .contact-sheet-client{display:flex;align-items:center;gap:14px;padding:20px 20px 16px;border-bottom:1px solid #f3f4f6}
@@ -2861,6 +3243,7 @@ function buildUpcoming(upcoming){
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div style="display:flex;gap:5px;align-items:center">
               ${a.d.paid?'<span style="font-size:10px;font-weight:700;color:#059669;background:#f0fdf4;padding:2px 6px;border-radius:8px">✓ שולם</span>':''}
+              ${reminderBtn(a)}
               ${contactBtns(a.d.phone,a.d.name,a.date+' '+a.time)}
             </div>
             <div style="text-align:right">
@@ -3489,7 +3872,7 @@ function tabsHTML(upcoming,history){
   Object.entries(S.A||{}).forEach(([date,slots])=>{Object.entries(slots||{}).forEach(([time,d])=>{if(d&&d.name&&d.price&&Number(d.price)>0&&!d.paid&&new Date(date+'T'+time)<=n2)debtCount++;});});
   const pkgCount=Object.keys(S.PKGS||{}).length;
   const expCount=Object.keys(S.EXP||{}).length;
-  return`<button class="hist-tab${S.histTab==='upcoming'?' on':''}" onclick="S.histTab='upcoming';hRender()">📅 תורים ${upcoming.length?`<span class="hist-badge" style="background:#059669">${upcoming.length}</span>`:''}</button><button class="hist-tab${S.histTab==='clients'?' on':''}" onclick="S.histTab='clients';hRender()">👥 לקוחות</button><button class="hist-tab${S.histTab==='debts'?' on':''}" onclick="S.histTab='debts';hRender()">💳 חובות ${debtCount?`<span class="hist-badge" style="background:#dc2626">${debtCount}</span>`:''}</button><button class="hist-tab${S.histTab==='history'?' on':''}" onclick="S.histTab='history';hRender()">🗂 היסטוריית עסקאות ${history.length?`<span class="hist-badge" style="background:#7c3aed">${history.length}</span>`:''}</button><button class="hist-tab${S.histTab==='cancellations'?' on':''}" onclick="S.histTab='cancellations';hRender()">❌ ביטולים ${cancCount?`<span class="hist-badge" style="background:#dc2626">${cancCount}</span>`:''}</button><button class="hist-tab${S.histTab==='payments'?' on':''}" onclick="S.histTab='payments';hRender()">💰 תשלומים</button><button class="hist-tab${S.histTab==='expenses'?' on':''}" onclick="S.histTab='expenses';hRender()">💸 הוצאות ${expCount?`<span class="hist-badge" style="background:#ea580c">${expCount}</span>`:''}</button><button class="hist-tab${S.histTab==='bgoals'?' on':''}" onclick="S.histTab='bgoals';hRender()">🎯 יעדים</button><button class="hist-tab${S.histTab==='packages'?' on':''}" onclick="S.histTab='packages';hRender()">📦 חבילות ${pkgCount?`<span class="hist-badge" style="background:#0891b2">${pkgCount}</span>`:''}</button><button class="hist-tab${S.histTab==='promo'?' on':''}" onclick="S.histTab='promo';hRender()">📢 איפה לפרסם <span class="hist-badge" style="background:#0891b2">מתעדכן</span></button><button class="hist-tab${S.histTab==='website'?' on':''}" onclick="S.histTab='website';hRender()">🌐 האתר</button>`;
+  return`<button class="hist-tab${S.histTab==='upcoming'?' on':''}" onclick="S.histTab='upcoming';hRender()">📅 תורים ${upcoming.length?`<span class="hist-badge" style="background:#059669">${upcoming.length}</span>`:''}</button><button class="hist-tab${S.histTab==='clients'?' on':''}" onclick="S.histTab='clients';hRender()">👥 לקוחות</button><button class="hist-tab${S.histTab==='debts'?' on':''}" onclick="S.histTab='debts';hRender()">💳 חובות ${debtCount?`<span class="hist-badge" style="background:#dc2626">${debtCount}</span>`:''}</button><button class="hist-tab${S.histTab==='history'?' on':''}" onclick="S.histTab='history';hRender()">🗂 היסטוריית עסקאות ${history.length?`<span class="hist-badge" style="background:#7c3aed">${history.length}</span>`:''}</button><button class="hist-tab${S.histTab==='cancellations'?' on':''}" onclick="S.histTab='cancellations';hRender()">❌ ביטולים ${cancCount?`<span class="hist-badge" style="background:#dc2626">${cancCount}</span>`:''}</button><button class="hist-tab${S.histTab==='payments'?' on':''}" onclick="S.histTab='payments';hRender()">💰 תשלומים</button><button class="hist-tab${S.histTab==='expenses'?' on':''}" onclick="S.histTab='expenses';hRender()">💸 הוצאות ${expCount?`<span class="hist-badge" style="background:#ea580c">${expCount}</span>`:''}</button><button class="hist-tab${S.histTab==='bgoals'?' on':''}" onclick="S.histTab='bgoals';hRender()">🎯 יעדים</button><button class="hist-tab${S.histTab==='packages'?' on':''}" onclick="S.histTab='packages';hRender()">📦 חבילות ${pkgCount?`<span class="hist-badge" style="background:#0891b2">${pkgCount}</span>`:''}</button><button class="hist-tab${S.histTab==='promo'?' on':''}" onclick="S.histTab='promo';hRender()">📢 איפה לפרסם <span class="hist-badge" style="background:#0891b2">מתעדכן</span></button><button class="hist-tab${S.histTab==='website'?' on':''}" onclick="S.histTab='website';hRender()">🌐 האתר</button><button class="hist-tab${S.histTab==='advisor'?' on':''}" onclick="S.histTab='advisor';hRender()" style="background:linear-gradient(135deg,#fef3c7,#fde68a);color:#78350f;font-weight:900;border:1.5px solid #f59e0b">🤖 יועץ AI <span class="hist-badge" style="background:#f59e0b">חדש</span></button>`;
 }
 function hRender(){
   const sheet=document.querySelector('.hist-sheet');
@@ -3508,6 +3891,7 @@ function hRender(){
   else if(S.histTab==='website')content.innerHTML=renderWebsiteTab();
   else if(S.histTab==='debts')content.innerHTML=renderDebts();
   else if(S.histTab==='cancellations')content.innerHTML=renderCancellations();
+  else if(S.histTab==='advisor')content.innerHTML=renderAdvisor();
   else if(S.histTab==='clients')content.innerHTML=renderCRM();
 }
 function renderHistory(){
@@ -3523,6 +3907,7 @@ function renderHistory(){
   else if(S.histTab==='website')tabContent=renderWebsiteTab();
   else if(S.histTab==='debts')tabContent=renderDebts();
   else if(S.histTab==='cancellations')tabContent=renderCancellations();
+  else if(S.histTab==='advisor')tabContent=renderAdvisor();
   else tabContent=renderCRM();
   const html=`<div class="hist-sheet"><div class="hist-hdr"><button class="hist-close" onclick="closeHistPanel()">✕</button><div class="hist-hdr-info"><div class="hist-hdr-title">📋 ניהול תורים ולקוחות</div><div class="hist-hdr-sub">${upcoming.length} קרובים · ${history.length} בהיסטוריה</div></div></div><div class="hist-tabs">${tabsHTML(upcoming,history)}</div><div class="hist-content">${tabContent}</div></div>`;
   setTimeout(()=>{if(S.histTab==='upcoming'&&document.getElementById('cd-d'))startTimer();},80);
@@ -3613,6 +3998,558 @@ function ncPick(color,y,m){
   if(dc&&S.screen==='diary'){diaryRender();}
   else if(S.screen==='daniel'||S.screen==='rinat'){const p=document.querySelector('#personal-content');if(p)p.innerHTML=personalPanel(S.screen);}
   else render();
+}
+
+// ═══════════════════════════════════════════════════════
+// ═══ 🤖 AI Advisor — מנתח את העסק ונותן תובנות  ═══
+// ═══════════════════════════════════════════════════════
+
+// Analyze the business data and extract actionable insights
+function advisorAnalyze(){
+  const n=new Date();
+  const all=allAppts();
+  const insights=[];
+  
+  // ══ 1. Client retention — clients who haven't come back ══
+  const clientVisits={};
+  all.filter(a=>a.dt<n).forEach(a=>{
+    const name=a.name;
+    if(!name)return;
+    if(!clientVisits[name])clientVisits[name]={count:0,lastVisit:null,totalPaid:0};
+    clientVisits[name].count++;
+    if(!clientVisits[name].lastVisit||a.dt>clientVisits[name].lastVisit){
+      clientVisits[name].lastVisit=a.dt;
+    }
+    if(a.paid&&Number(a.price)>0)clientVisits[name].totalPaid+=Number(a.price);
+  });
+  
+  const lostClients=Object.entries(clientVisits).filter(([name,v])=>{
+    const daysSince=(n-v.lastVisit)/(1000*60*60*24);
+    return daysSince>60&&daysSince<180&&v.count>=2; // was regular, 2-6 months gone
+  }).sort((a,b)=>b[1].totalPaid-a[1].totalPaid).slice(0,5);
+  
+  if(lostClients.length>=2){
+    insights.push({
+      priority:'high',
+      icon:'🎯',
+      title:`${lostClients.length} לקוחות קבועות "נעלמו" — הן שווה זהב`,
+      body:`זיהיתי ${lostClients.length} לקוחות שהגיעו לפחות פעמיים, אבל לא חזרו כבר חודשיים-חצי שנה. לפי הנתונים הן שילמו סה"כ ${lostClients.reduce((s,[,v])=>s+v.totalPaid,0).toLocaleString('he-IL')} ₪ — זה כסף שמפספסים.`,
+      action:`השבוע: שלחי להן הודעת WhatsApp אישית — לא שיווקית. משהו כמו "היי ${lostClients[0][0]}, שמתי לב שמזמן לא נפגשנו! אני מחדשת את ה[טיפול האחרון שלה] בהנחה של 15% לשבוע הקרוב. אשמח לראות אותך". זה ממיר 30-40% מהלקוחות שחזרו.`,
+      details:lostClients.map(([name,v])=>{
+        const daysSince=Math.floor((n-v.lastVisit)/(1000*60*60*24));
+        return `• ${name} — ${v.count} ביקורים · ${v.totalPaid.toLocaleString('he-IL')} ₪ · נעדרת ${daysSince} ימים`;
+      }).join('\n')
+    });
+  }
+  
+  // ══ 2. Cancellation rate ══
+  const cancs=Object.entries(S.CANC||{});
+  const last30days=cancs.filter(([k,c])=>{
+    const d=new Date(c.created);
+    return (n-d)<30*24*60*60*1000;
+  });
+  const last30Appts=all.filter(a=>(n-a.dt)<30*24*60*60*1000&&a.dt<n);
+  const cancRate=last30Appts.length>0?(last30days.length/(last30Appts.length+last30days.length))*100:0;
+  
+  if(cancRate>=10){
+    // Analyze WHY
+    const reasons={};
+    last30days.forEach(([,c])=>{
+      const r=c.reason||'לא צוין';
+      reasons[r]=(reasons[r]||0)+1;
+    });
+    const topReason=Object.entries(reasons).sort((a,b)=>b[1]-a[1])[0];
+    insights.push({
+      priority:cancRate>=20?'high':'medium',
+      icon:'⚠️',
+      title:`${cancRate.toFixed(0)}% ביטולים בחודש האחרון — גבוה מהממוצע`,
+      body:`בחודש האחרון היו ${last30days.length} ביטולים מתוך ${last30Appts.length+last30days.length} תורים. הממוצע בתחום הוא 5-8%, את נמצאת על ${cancRate.toFixed(0)}%. ${topReason?`הסיבה הנפוצה: "${topReason[0]}" (${topReason[1]} פעמים).`:''}`,
+      action:`פתרון פשוט: הכניסי <b>אישור תור ב-WhatsApp יום לפני</b>. רוב הלקוחות שבאמת רצו לבטל — יבטלו ביום שלפני במקום לפספס. ככה תוכלי למלא את המקום. אם את עוד לא עושה, תכניסי בטופס רישום שדה "מי מתחייבת" — לקוחות שחתמו על התחייבות בטלים ב-60% פחות.`
+    });
+  }
+  
+  // ══ 3. Outstanding debts ══
+  let totalDebt=0;
+  const debtClients=[];
+  Object.entries(S.DEBTS||{}).forEach(([name,d])=>{
+    if(d.amount>0){
+      totalDebt+=d.amount;
+      debtClients.push({name,amount:d.amount,since:d.since});
+    }
+  });
+  
+  if(totalDebt>500){
+    const oldDebts=debtClients.filter(d=>{
+      if(!d.since)return false;
+      return (n-new Date(d.since))>60*24*60*60*1000; // over 2 months
+    });
+    insights.push({
+      priority:totalDebt>2000?'high':'medium',
+      icon:'💳',
+      title:`${totalDebt.toLocaleString('he-IL')} ₪ חובות פתוחים${oldDebts.length?` · ${oldDebts.length} מעל חודשיים`:''}`,
+      body:`יש לך ${debtClients.length} לקוחות עם חובות — סה"כ ${totalDebt.toLocaleString('he-IL')} ₪. ${oldDebts.length?`מתוכן ${oldDebts.length} חייבות מעל חודשיים (${oldDebts.reduce((s,d)=>s+d.amount,0).toLocaleString('he-IL')} ₪) — לרוב חוב מתיישן יותר קשה לגבות.`:'רובן עדיין "טריים".'}`,
+      action:`השבוע: שלחי תזכורת עדינה בווטסאפ ללקוחות שחייבות מעל 30 יום. נוסח מוצע: "היי [שם], נשאר לך חיוב פתוח של X ₪ מהטיפול ב-[תאריך]. אם נוח לך, אפשר לסגור את זה בביט/מזומן בתור הבא או עכשיו בלינק: [לינק]". עדיף לא להמתין שייצברו — ואם כבר הצטברו חובות ישנים, שקלי להציע הסדר תשלומים של 2-3 פעמים.`
+    });
+  }
+  
+  // ══ 4. Weak days analysis ══
+  const dayStats=[0,0,0,0,0,0,0]; // 0=Sunday...6=Saturday
+  const dayNames=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+  all.filter(a=>a.dt<n&&(n-a.dt)<90*24*60*60*1000).forEach(a=>{
+    dayStats[a.dt.getDay()]++;
+  });
+  const activeTotal=dayStats.reduce((s,v)=>s+v,0);
+  if(activeTotal>=20){
+    const workdays=dayStats.map((c,i)=>({day:i,count:c})).filter(d=>d.day!==5&&d.day!==6); // exclude Fri/Sat
+    const weakest=workdays.sort((a,b)=>a.count-b.count)[0];
+    const strongest=workdays.sort((a,b)=>b.count-a.count)[0];
+    if(strongest.count>0&&weakest.count<strongest.count*0.5){
+      insights.push({
+        priority:'medium',
+        icon:'📅',
+        title:`יום ${dayNames[weakest.day]} הכי חלש — חצי פחות מיום ${dayNames[strongest.day]}`,
+        body:`ב-3 חודשים אחרונים: ${dayNames[strongest.day]} — ${strongest.count} תורים. ${dayNames[weakest.day]} — רק ${weakest.count}. יום חלש שחוזר על עצמו זה הזדמנות — הלקוחות פשוט לא חושבות עליו.`,
+        action:`הציעי "מבצע יום ${dayNames[weakest.day]}" — הנחה של 10-15% רק בימי ${dayNames[weakest.day]}. שווה לך להוריד מחיר מלקבל 0 שקלים. תפרסמי את זה פעם בשבועיים בסטטוס + בסטורי.`
+      });
+    }
+  }
+  
+  // ══ 5. Revenue trend (last 3 months vs previous 3) ══
+  const last3Months=all.filter(a=>a.paid&&(n-a.dt)<90*24*60*60*1000&&a.dt<n).reduce((s,a)=>s+(Number(a.price)||0),0);
+  const prev3Months=all.filter(a=>a.paid&&(n-a.dt)>=90*24*60*60*1000&&(n-a.dt)<180*24*60*60*1000).reduce((s,a)=>s+(Number(a.price)||0),0);
+  
+  if(prev3Months>500&&last3Months>0){
+    const diff=((last3Months-prev3Months)/prev3Months)*100;
+    if(Math.abs(diff)>=15){
+      const isGrowing=diff>0;
+      insights.push({
+        priority:isGrowing?'good':'high',
+        icon:isGrowing?'📈':'📉',
+        title:isGrowing?`צומחת — ${Math.abs(diff).toFixed(0)}% יותר הכנסות מרבעון קודם!`:`ירידה של ${Math.abs(diff).toFixed(0)}% ברבעון האחרון`,
+        body:`3 חודשים אחרונים: ${last3Months.toLocaleString('he-IL')} ₪. 3 חודשים לפני: ${prev3Months.toLocaleString('he-IL')} ₪.`,
+        action:isGrowing?`את עושה משהו נכון — תזהי מה השתנה! האם חידשת שירות? התחלת לפרסם במקום חדש? חזרת לרשימת הלקוחות הישנות? מה שפעל — תמשיכי לעשות יותר.`:`בדקי: האם הייתה תקופת חגים שלא ספרתי? האם איבדת לקוחות קבועות? האם המחירים עודכנו ולא ידעת? חזור לשאלה 1 של היועץ — ייתכן והלקוחות שנעלמו הן הסיבה.`
+      });
+    }
+  }
+  
+  // ══ 6. Average ticket ══
+  const paid=all.filter(a=>a.paid&&Number(a.price)>0);
+  if(paid.length>=10){
+    const avg=paid.reduce((s,a)=>s+Number(a.price),0)/paid.length;
+    const highTicket=paid.filter(a=>Number(a.price)>avg*1.5).length;
+    const lowTicket=paid.filter(a=>Number(a.price)<avg*0.5).length;
+    
+    if(highTicket<paid.length*0.1){
+      insights.push({
+        priority:'low',
+        icon:'💎',
+        title:`יכולה לייקר — רק ${highTicket} טיפולים פרימיום מתוך ${paid.length}`,
+        body:`ממוצע טיפול אצלך: ${avg.toFixed(0)} ₪. רק ${highTicket} טיפולים בפרמיום (מעל ${(avg*1.5).toFixed(0)} ₪) בכל ההיסטוריה. יש פה פוטנציאל — לא כל לקוחה רוצה את הזול, חלק ישמחו לשלם יותר עבור משהו מיוחד.`,
+        action:`הוסיפי "חבילת VIP" — שילוב של טיפול + שירות נוסף (הסרת שיער פנים חינם, בדיקת עור, תה צמחים מיוחד). תמחור ${(avg*1.6).toFixed(0)}-${(avg*2).toFixed(0)} ₪. 5-10% מהלקוחות יבחרו באוטומט, וזה מעלה ממוצע עסקה ב-15-20%.`
+      });
+    }
+  }
+  
+  // ══ 7. New clients growth ══
+  const firstVisitMap={};
+  all.filter(a=>a.dt<n).forEach(a=>{
+    const name=a.name;
+    if(!name)return;
+    if(!firstVisitMap[name]||a.dt<firstVisitMap[name]){
+      firstVisitMap[name]=a.dt;
+    }
+  });
+  const newLast30=Object.values(firstVisitMap).filter(d=>(n-d)<30*24*60*60*1000).length;
+  const newPrev30=Object.values(firstVisitMap).filter(d=>(n-d)>=30*24*60*60*1000&&(n-d)<60*24*60*60*1000).length;
+  
+  if(newLast30+newPrev30>=4){
+    const ratio=newPrev30>0?newLast30/newPrev30:newLast30;
+    if(ratio<0.5&&newPrev30>=3){
+      insights.push({
+        priority:'medium',
+        icon:'🌱',
+        title:`${newLast30} לקוחות חדשות החודש — חצי מהחודש הקודם`,
+        body:`ראיתי ${newLast30} לקוחות חדשות החודש, לעומת ${newPrev30} בחודש לפני. ייתכן שהפרסום דעך או שמישהי אחרת "לוקחת" לקוחות פוטנציאליות.`,
+        action:`לכי לטאב <b>📢 פרסום</b>. בחרי ערוץ חדש שעדיין לא ניסית (נסי לוח רמות אם עוד לא פרסמת שם — הוא מאוד אפקטיבי לשכונה). בנוסף, בקשי מ-3 לקוחות מרוצות להמליץ עלייך בקבוצת WhatsApp של רמות — המלצה אישית שווה 10 מודעות.`
+      });
+    }else if(ratio>1.5){
+      insights.push({
+        priority:'good',
+        icon:'🚀',
+        title:`${newLast30} לקוחות חדשות החודש — ${((ratio-1)*100).toFixed(0)}% יותר!`,
+        body:`מעולה! הגיעו ${newLast30} לקוחות חדשות (לעומת ${newPrev30} בחודש קודם). זאת אומרת שמשהו בשיווק שלך עובד.`,
+        action:`קריטי: אל תעצרי, <b>תגברי</b>. שאלי את הלקוחות החדשות "איך הגעת אליי?" ותרשמי בהערות. ככה תדעי איזה ערוץ עובד הכי טוב ותוכלי להשקיע יותר בו.`
+      });
+    }
+  }
+  
+  // Sort by priority: high > medium > good > low
+  const priorityOrder={high:0,medium:1,good:2,low:3};
+  insights.sort((a,b)=>priorityOrder[a.priority]-priorityOrder[b.priority]);
+  
+  return insights;
+}
+
+// ═══════════════════════════════════════════════════════
+// ═══ 🎲 Smart Tip Generator — dynamic, data-driven   ═══
+// ═══════════════════════════════════════════════════════
+// Generates a fresh insight each time — blending:
+//   70% data-driven observations about THIS business
+//   30% general clinic-growth tips from the 30-tip pool
+
+function generateSmartTip(){
+  const now=new Date();
+  const all=allAppts();
+  const future=all.filter(a=>a.dt>now);
+  const past=all.filter(a=>a.dt<=now);
+  const paidPast=past.filter(a=>a.paid&&Number(a.price)>0);
+  
+  // Build pool of data-driven tip candidates
+  const candidates=[];
+  
+  // ── Client-focused insights ──
+  // 1. Specific client not seen recently
+  const clientVisits={};
+  past.forEach(a=>{
+    const name=a.d?.name||a.name;
+    if(!name)return;
+    if(!clientVisits[name])clientVisits[name]={count:0,lastVisit:null,totalPaid:0,phone:a.d?.phone||a.phone||''};
+    clientVisits[name].count++;
+    if(!clientVisits[name].lastVisit||a.dt>clientVisits[name].lastVisit)clientVisits[name].lastVisit=a.dt;
+    if(a.paid&&Number(a.price)>0)clientVisits[name].totalPaid+=Number(a.price);
+  });
+  const lostClients=Object.entries(clientVisits).filter(([n,v])=>{
+    const d=(now-v.lastVisit)/(1000*60*60*24);
+    return d>60&&d<200&&v.count>=2;
+  }).sort((a,b)=>b[1].totalPaid-a[1].totalPaid);
+  if(lostClients.length){
+    const [name,info]=lostClients[Math.floor(Math.random()*Math.min(5,lostClients.length))];
+    const daysGone=Math.floor((now-info.lastVisit)/(1000*60*60*24));
+    candidates.push({
+      i:'💌',
+      t:`<b>${x(name)}</b> לא הגיעה כבר ${daysGone} ימים. היא ביקרה ${info.count} פעמים ושילמה בסה"כ ₪${info.totalPaid.toLocaleString()}. שלחי לה היום הודעה אישית — לקוחות "אבודות" כאלה חוזרות ב-40% מהמקרים.`,
+      priority:2
+    });
+  }
+  
+  // 2. Very loyal client celebration
+  const topLoyal=Object.entries(clientVisits).filter(([n,v])=>v.count>=8)
+    .sort((a,b)=>b[1].count-a[1].count);
+  if(topLoyal.length){
+    const [name,info]=topLoyal[Math.floor(Math.random()*Math.min(3,topLoyal.length))];
+    candidates.push({
+      i:'👑',
+      t:`<b>${x(name)}</b> הגיעה אליך ${info.count} פעמים — זו לקוחה מיוחדת. תני לה הטבה קטנה בתור הבא (תה צמחים, הסרת שיער פנים בונוס) או הודעה "שמחה שאת איתי כבר ${info.count} טיפולים!". נאמנות כזאת שווה זהב.`,
+      priority:2
+    });
+  }
+  
+  // 3. Debt reminder for specific client
+  const debtors=Object.entries(S.DEBTS||{}).filter(([,d])=>d.amount>0)
+    .sort((a,b)=>b[1].amount-a[1].amount);
+  if(debtors.length){
+    const [name,d]=debtors[Math.floor(Math.random()*Math.min(3,debtors.length))];
+    candidates.push({
+      i:'💳',
+      t:`<b>${x(name)}</b> חייבת ₪${d.amount.toLocaleString()}. הדרך הכי נעימה לגבות: "היי ${x(name)}, נשאר חיוב פתוח של ₪${d.amount} — נוח לך לסגור בביט היום? לינק: [שלחי ביט]". 70% מהלקוחות משלמות בהזדמנות הראשונה שמזכירים.`,
+      priority:1
+    });
+  }
+  
+  // ── Time-based insights ──
+  // 4. Today's schedule
+  const today=future.filter(a=>a.date===TD);
+  if(today.length>=3){
+    const totalToday=today.reduce((s,a)=>s+(Number(a.d?.price||a.price)||0),0);
+    candidates.push({
+      i:'🔥',
+      t:`יש לך <b>${today.length} תורים היום</b> בהכנסה של ₪${totalToday.toLocaleString()}! קחי 2 דקות לסדר את הכלים, למלא מים, ולקחת נשימה. יום עמוס = שירות איכותי רק אם את רגועה.`,
+      priority:2
+    });
+  }else if(today.length===0&&future.length){
+    const nextDate=future[0].date;
+    candidates.push({
+      i:'📅',
+      t:`היום ללא תורים. <b>תנצלי את היום</b> — שלחי הודעה ל-3 לקוחות קבועות שלא הגיעו לאחרונה, עדכני פוסט באינסטגרם, או סדרי את הקליניקה. התור הבא שלך: ${nextDate}.`,
+      priority:2
+    });
+  }
+  
+  // 5. Day-of-week analysis
+  const dayStats=[0,0,0,0,0,0,0];
+  const dayRev=[0,0,0,0,0,0,0];
+  const dayNames=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+  paidPast.forEach(a=>{
+    if((now-a.dt)<90*24*60*60*1000){
+      const d=a.dt.getDay();
+      dayStats[d]++;
+      dayRev[d]+=Number(a.d?.price||a.price)||0;
+    }
+  });
+  const workdays=[0,1,2,3,4].map(i=>({d:i,c:dayStats[i],r:dayRev[i]}));
+  const activeWorkdays=workdays.filter(d=>d.c>0);
+  if(activeWorkdays.length>=3){
+    const strongest=[...activeWorkdays].sort((a,b)=>b.r-a.r)[0];
+    const weakest=[...activeWorkdays].sort((a,b)=>a.r-b.r)[0];
+    if(strongest.r>weakest.r*2){
+      candidates.push({
+        i:'📊',
+        t:`ב-3 חודשים אחרונים: <b>יום ${dayNames[strongest.d]}</b> הוא היום הכי רווחי (₪${strongest.r.toLocaleString()}), <b>יום ${dayNames[weakest.d]}</b> הכי חלש (₪${weakest.r.toLocaleString()}). שקלי "מבצע יום ${dayNames[weakest.d]}" עם 10% הנחה — עדיף לעבוד ברווח מופחת מלא לעבוד בכלל.`,
+        priority:2
+      });
+    }
+  }
+  
+  // 6. Revenue trend this month vs last
+  const thisMonth=paidPast.filter(a=>{
+    const d=a.dt;return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();
+  }).reduce((s,a)=>s+(Number(a.d?.price||a.price)||0),0);
+  const lastMonthDate=new Date(now.getFullYear(),now.getMonth()-1,1);
+  const lastMonth=paidPast.filter(a=>{
+    const d=a.dt;return d.getMonth()===lastMonthDate.getMonth()&&d.getFullYear()===lastMonthDate.getFullYear();
+  }).reduce((s,a)=>s+(Number(a.d?.price||a.price)||0),0);
+  if(lastMonth>500){
+    const diff=((thisMonth-lastMonth)/lastMonth)*100;
+    if(Math.abs(diff)>=10){
+      const isUp=diff>0;
+      candidates.push({
+        i:isUp?'📈':'📉',
+        t:isUp?`<b>החודש עד עכשיו: ₪${thisMonth.toLocaleString()}</b> — ${diff.toFixed(0)}% יותר מחודש שעבר (₪${lastMonth.toLocaleString()})! תמשיכי במה שאת עושה, ותזהי מה השתנה בחודש הזה כדי לשחזר.`:`החודש עד עכשיו: ₪${thisMonth.toLocaleString()} — <b>ירידה של ${Math.abs(diff).toFixed(0)}%</b> מחודש שעבר (₪${lastMonth.toLocaleString()}). אולי הייתה חופשה/חגים? אם לא — בדקי את לקוחות ה-CRM, ייתכן שיש "נעלמות" שכדאי לדובב.`,
+        priority:1
+      });
+    }
+  }
+  
+  // 7. Cancellation alert
+  const cancs=Object.entries(S.CANC||{});
+  const recentCancs=cancs.filter(([,c])=>{
+    const d=new Date(c.created);
+    return (now-d)<14*24*60*60*1000;
+  });
+  if(recentCancs.length>=3){
+    candidates.push({
+      i:'⚠️',
+      t:`<b>${recentCancs.length} ביטולים בשבועיים האחרונים</b> — זה יותר מהרגיל. הטיפ: שלחי אישור-תור ב-WhatsApp יום לפני כל תור. פסיכולוגית, כשמישהי "מאשרת" היא תבטל פחות. זה מוריד ביטולים ב-60%.`,
+      priority:1
+    });
+  }
+  
+  // 8. New clients this month
+  const firstSeen={};
+  past.forEach(a=>{
+    const name=a.d?.name||a.name;
+    if(!name)return;
+    if(!firstSeen[name]||a.dt<firstSeen[name])firstSeen[name]=a.dt;
+  });
+  const newThisMonth=Object.values(firstSeen).filter(d=>d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear()).length;
+  if(newThisMonth>=3){
+    candidates.push({
+      i:'🌱',
+      t:`<b>${newThisMonth} לקוחות חדשות</b> הגיעו החודש! זה מצוין — אל תעצרי. תוך שבוע מהביקור הראשון, שלחי הודעה "איך את מרגישה? יש שאלות?". 80% יהפכו ללקוחות קבועות אם מרגישות שחשוב לך.`,
+      priority:2
+    });
+  }
+  
+  // 9. Pricing insight — cheap clients
+  if(paidPast.length>=15){
+    const avg=paidPast.reduce((s,a)=>s+Number(a.d?.price||a.price||0),0)/paidPast.length;
+    const hasClient=Object.keys(clientVisits).length;
+    if(hasClient&&avg<300){
+      candidates.push({
+        i:'💎',
+        t:`ממוצע טיפול אצלך: <b>₪${avg.toFixed(0)}</b>. זה נמוך יחסית. לא חייב להעלות לכל הלקוחות — תוסיפי "חבילת פרימיום" במחיר ₪${(avg*1.7).toFixed(0)} עם בונוס (הסרת שיער פנים חינם / תה צמחים / בדיקת עור). 10% יבחרו בה אוטומטית.`,
+        priority:2
+      });
+    }
+  }
+  
+  // 10. Package reminders
+  const pkgs=Object.entries(S.PKGS||{}).filter(([,p])=>p.remaining>0&&p.remaining<=2);
+  if(pkgs.length){
+    const [name,p]=pkgs[Math.floor(Math.random()*pkgs.length)];
+    candidates.push({
+      i:'📦',
+      t:`<b>${x(name)}</b> נותרה לה ${p.remaining} טיפולים בחבילה. <b>זה הזמן להודיע לה</b>: "היי, נשאר לך ${p.remaining} טיפולים מהחבילה — נקבע?". חידוש חבילות אחרי תום ב-80% מהמקרים.`,
+      priority:1
+    });
+  }
+  
+  // 11. Holiday/season tip (current month)
+  const month=now.getMonth()+1; // 1-12
+  const seasonTips={
+    1:'ינואר — התחלת שנה. <b>פרסמי מחירון מעודכן</b> והציעי "חבילת התחלת שנה" עם הנחה לחתימה על 5+ טיפולים.',
+    2:'פברואר — חורף אמצע. לקוחות פחות מתכננות יציאות, <b>זה הזמן לטיפולי עומק ומבצעי "הכנה לקיץ"</b>.',
+    3:'מרץ — לקראת פורים ופסח. <b>נשים ישימו לב למראה יותר</b>. דחפי את הפרסום 2 שבועות לפני.',
+    4:'אפריל — אחרי פסח. <b>עונת החתונות מתחילה</b>. הציעי חבילות "כלה" / "אמא של הכלה" עם 3-4 טיפולים.',
+    5:'מאי — שבועות + קיץ. <b>לקוחות מתחילות להתכונן לים</b>. הסרת שיער והבהרות הם לוהטים.',
+    6:'יוני — תחילת קיץ. <b>שיא העומס</b>. תדאגי לרשימת המתנה — לקוחה שלא מצליחה לקבוע הולכת למתחרה.',
+    7:'יולי — חופש גדול. <b>הרבה חוסר יציבות</b>. הציעי "כרטיסיית 5 טיפולים" עם תוקף 3 חודשים כדי לעגן אותן.',
+    8:'אוגוסט — סוף חופש גדול. <b>אמהות עייפות ורוצות פינוק</b>. פרסמי "חצי שעה רק לעצמך" עם מחיר מיוחד.',
+    9:'ספטמבר — חזרה לשגרה + חגים. <b>נשים רוצות להיראות טוב לראש השנה</b>. פתחי רשימת המתנה ליום כיפור.',
+    10:'אוקטובר — סוף חגים. <b>תקופה שקטה</b>. שלחי הודעה "תנוחי מהחגים אצלי" עם הנחה 20%.',
+    11:'נובמבר — חורף מתחיל. <b>טיפולי עור להכנה לחורף</b>. שיתוף עם קוסמטיקאית יכולה להיות מצוין.',
+    12:'דצמבר — סיום שנה. <b>"בלאק פריידי קליניקה"</b> — מבצע 48 שעות בלבד, יצירת דחיפות.'
+  };
+  if(seasonTips[month]){
+    candidates.push({i:'🗓',t:seasonTips[month],priority:3});
+  }
+  
+  // ── Add some from the static pool for diversity ──
+  const staticTips=AI_DAILY_TIPS.slice().sort(()=>Math.random()-0.5).slice(0,4);
+  staticTips.forEach(s=>candidates.push({...s,priority:3,static:true}));
+  
+  // Priority-weighted random selection
+  // Priority 1 (urgent data): weight 4
+  // Priority 2 (important data): weight 3
+  // Priority 3 (general): weight 1
+  const weighted=[];
+  candidates.forEach(c=>{
+    const weight=c.priority===1?4:c.priority===2?3:1;
+    for(let i=0;i<weight;i++)weighted.push(c);
+  });
+  
+  if(weighted.length===0){
+    // Fallback to random static tip
+    const t=AI_DAILY_TIPS[Math.floor(Math.random()*AI_DAILY_TIPS.length)];
+    return {...t,source:'static'};
+  }
+  
+  const picked=weighted[Math.floor(Math.random()*weighted.length)];
+  return {...picked,source:picked.static?'static':'data'};
+}
+
+// Counter for how many tips user has browsed
+let _advTipCount=1;
+
+// Generate and swap in a fresh tip with animation
+function advNextTip(){
+  const tip=generateSmartTip();
+  const body=document.getElementById('adv-tip-body');
+  const ico=document.getElementById('adv-tip-ico');
+  const txt=document.getElementById('adv-tip-text');
+  const src=document.getElementById('adv-tip-source');
+  const counter=document.getElementById('adv-tip-counter');
+  const svg=document.getElementById('adv-tip-icon-svg');
+  if(!body)return;
+  
+  // Animate refresh icon spin
+  if(svg){
+    svg.style.transform='rotate(0deg)';
+    svg.style.transition='transform .5s ease';
+    requestAnimationFrame(()=>{svg.style.transform='rotate(360deg)';});
+  }
+  
+  // Fade out
+  body.style.opacity='0';
+  body.style.transform='translateY(6px)';
+  setTimeout(()=>{
+    if(ico)ico.textContent=tip.i;
+    if(txt)txt.innerHTML=tip.t;
+    if(src)src.textContent=tip.source==='data'?'🎯 מנתון אמיתי מהעסק':'📚 מבסיס ידע';
+    _advTipCount++;
+    if(counter)counter.textContent='#'+_advTipCount;
+    // Fade back in
+    body.style.transform='translateY(0)';
+    body.style.opacity='1';
+  },220);
+}
+
+function renderAdvisor(){
+  const insights=advisorAnalyze();
+  const all=allAppts();
+  const n=new Date();
+  const last30=all.filter(a=>a.dt<n&&(n-a.dt)<30*24*60*60*1000);
+  const revenue30=last30.filter(a=>a.paid).reduce((s,a)=>s+(Number(a.price)||0),0);
+  const clients=new Set(all.filter(a=>a.dt<n&&(n-a.dt)<90*24*60*60*1000).map(a=>a.name)).size;
+  
+  // Header with stats
+  let html=`<div class="adv-hdr">
+    <div class="adv-hdr-top">
+      <div class="adv-hdr-icon">🤖</div>
+      <div class="adv-hdr-txt">
+        <div class="adv-hdr-title">יועץ AI</div>
+        <div class="adv-hdr-sub">ניתוח חכם של העסק שלך · ${insights.length} תובנות מעשיות</div>
+      </div>
+    </div>
+    <div class="adv-stats">
+      <div class="adv-stat">
+        <div class="adv-stat-val">${last30.length}</div>
+        <div class="adv-stat-lbl">תורים · 30 ימים</div>
+      </div>
+      <div class="adv-stat">
+        <div class="adv-stat-val">${revenue30.toLocaleString('he-IL')}</div>
+        <div class="adv-stat-lbl">₪ הכנסות · 30 ימים</div>
+      </div>
+      <div class="adv-stat">
+        <div class="adv-stat-val">${clients}</div>
+        <div class="adv-stat-lbl">לקוחות פעילות · 90 ימים</div>
+      </div>
+    </div>
+  </div>`;
+  
+  // ── Smart Tip Card with "next tip" button ──
+  const firstTip=generateSmartTip();
+  html+=`<div class="adv-tip-card" id="adv-smart-tip">
+    <div class="adv-tip-hdr">
+      <div class="adv-tip-orb-big"></div>
+      <div class="adv-tip-hdr-txt">
+        <div class="adv-tip-label">💡 טיפ חכם — מבוסס על הנתונים שלך</div>
+        <div class="adv-tip-source" id="adv-tip-source">${firstTip.source==='data'?'🎯 מנתון אמיתי מהעסק':'📚 מבסיס ידע'}</div>
+      </div>
+    </div>
+    <div class="adv-tip-body" id="adv-tip-body">
+      <span class="adv-tip-ico" id="adv-tip-ico">${firstTip.i}</span>
+      <span id="adv-tip-text">${firstTip.t}</span>
+    </div>
+    <div class="adv-tip-actions">
+      <button class="adv-tip-btn" onclick="advNextTip()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="adv-tip-icon-svg"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+        <span>טיפ נוסף</span>
+      </button>
+      <div class="adv-tip-counter" id="adv-tip-counter">#1</div>
+    </div>
+  </div>`;
+  
+  // If no insights
+  if(insights.length===0){
+    html+=`<div class="adv-empty">
+      <div class="adv-empty-ico">🎉</div>
+      <div class="adv-empty-title">הכל נראה מצוין!</div>
+      <div class="adv-empty-sub">לא זיהיתי בעיות דחופות בנתונים. תמשיכי כך! ככל שיהיו יותר נתונים (תורים, תשלומים), אוכל לתת תובנות מדויקות יותר.</div>
+    </div>`;
+    return html;
+  }
+  
+  // Render insights
+  html+=`<div class="adv-insights">`;
+  insights.forEach((ins,idx)=>{
+    const priorityClass='adv-p-'+ins.priority;
+    const priorityLabel={high:'🔴 דחוף',medium:'🟡 חשוב',good:'🟢 חיובי',low:'🔵 טיפ'}[ins.priority]||'';
+    html+=`<div class="adv-card ${priorityClass}">
+      <div class="adv-card-hdr">
+        <div class="adv-card-ico">${ins.icon}</div>
+        <div class="adv-card-hdr-txt">
+          <div class="adv-card-priority">${priorityLabel}</div>
+          <div class="adv-card-title">${x(ins.title)}</div>
+        </div>
+      </div>
+      <div class="adv-card-body">${ins.body.replace(/<b>/g,'<b>').replace(/<\/b>/g,'</b>')}</div>
+      ${ins.details?`<div class="adv-card-details">${ins.details.split('\n').map(l=>`<div>${x(l)}</div>`).join('')}</div>`:''}
+      <div class="adv-card-action">
+        <div class="adv-card-action-label">✨ פעולה מומלצת</div>
+        <div class="adv-card-action-body">${ins.action}</div>
+      </div>
+    </div>`;
+  });
+  html+=`</div>`;
+  
+  // Footer note
+  html+=`<div class="adv-footer">
+    <div class="adv-footer-ico">💡</div>
+    <div class="adv-footer-txt">התובנות מבוססות על ניתוח הנתונים שלך — תורים, תשלומים, ביטולים, חובות והוצאות. ככל שיהיו יותר נתונים, התובנות יהיו מדויקות יותר. הניתוח רץ מקומית במכשיר — אף אחד חוץ ממך לא רואה את הנתונים.</div>
+  </div>`;
+  
+  return html;
 }
 
 function renderDebts(){
@@ -4043,6 +4980,344 @@ function updatePkgCalc(id){
   const calcEl=document.getElementById(id?'pec-'+id:'pk-calc');
   if(remEl)remEl.textContent='₪'+rem.toLocaleString();
   if(calcEl)calcEl.style.display='flex';
+}
+
+// ═══════════════════════════════════════════════════════
+// ═══ 🔔 Appointment Reminders System                 ═══
+// ═══════════════════════════════════════════════════════
+
+// Get reminders map from localStorage (keyed by appointmentId)
+function getReminders(){
+  try{return JSON.parse(localStorage.getItem('dr_reminders')||'{}');}catch(e){return {};}
+}
+function setReminder(apptId,data){
+  const r=getReminders();
+  if(data)r[apptId]=data;else delete r[apptId];
+  localStorage.setItem('dr_reminders',JSON.stringify(r));
+}
+function hasReminder(apptId){
+  return !!getReminders()[apptId];
+}
+
+// Build a stable ID for an appointment
+function apptReminderId(a){
+  return `${a.date}_${a.time}_${(a.d.name||'').replace(/\s+/g,'_')}`;
+}
+
+// The reminder button to inject into every appointment card
+function reminderBtn(a){
+  const id=apptReminderId(a);
+  const active=hasReminder(id);
+  return `<button class="rem-btn${active?' active':''}" onclick="event.stopPropagation();openReminderSheet('${encodeURIComponent(JSON.stringify({date:a.date,time:a.time,name:a.d.name||'',type:a.d.type||'',duration:a.d.duration||'',price:a.d.price||'',phone:a.d.phone||''}))}')" title="${active?'התראה פעילה — לחצי לשינוי':'הוסף התראה'}">
+    ${active?'<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22a2 2 0 002-2h-4a2 2 0 002 2zm6-6V11a6 6 0 00-5-5.91V5a1 1 0 10-2 0v.09A6 6 0 006 11v5l-2 2v1h16v-1z"/></svg>':'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 003.4 0"/></svg>'}
+  </button>`;
+}
+
+// Open the reminder options sheet
+function openReminderSheet(encodedAppt){
+  let appt;
+  try{appt=JSON.parse(decodeURIComponent(encodedAppt));}catch(e){return;}
+  const apptId=`${appt.date}_${appt.time}_${(appt.name||'').replace(/\s+/g,'_')}`;
+  const existing=getReminders()[apptId];
+  
+  // Parse appt datetime
+  const apptDt=new Date(appt.date+'T'+appt.time+':00');
+  const now=new Date();
+  const dt=apptDt-now;
+  
+  const options=[
+    {v:15,l:'15 דקות לפני',ms:15*60*1000,ico:'⚡',sub:'קצר לפני התור'},
+    {v:30,l:'30 דקות לפני',ms:30*60*1000,ico:'🕐',sub:'זמן לצאת מהבית'},
+    {v:60,l:'שעה לפני',ms:60*60*1000,ico:'⏰',sub:'מומלץ לרוב הלקוחות'},
+    {v:180,l:'3 שעות לפני',ms:180*60*1000,ico:'📅',sub:'הכנה מוקדמת'},
+    {v:1440,l:'יום שלם לפני',ms:1440*60*1000,ico:'🌅',sub:'לתכנון יום מראש'}
+  ];
+  
+  const timeInfo=dt<=0?'<span style="color:#dc2626;font-weight:700">⚠️ התור כבר עבר</span>':
+                 dt<3600000?`<span style="color:#ea580c;font-weight:700">⏰ בעוד ${Math.floor(dt/60000)} דקות</span>`:
+                 dt<86400000?`<span style="color:#059669;font-weight:700">📅 בעוד ${Math.floor(dt/3600000)} שעות</span>`:
+                 `<span style="color:#059669;font-weight:700">📅 בעוד ${Math.floor(dt/86400000)} ימים</span>`;
+  
+  // Create overlay
+  let ov=document.getElementById('rem-overlay');
+  if(ov)ov.remove();
+  ov=document.createElement('div');
+  ov.id='rem-overlay';
+  ov.className='rem-overlay';
+  ov.onclick=function(e){if(e.target===ov)closeReminderSheet();};
+  
+  ov.innerHTML=`<div class="rem-sheet">
+    <div class="rem-hdr">
+      <div class="rem-hdr-top">
+        <div class="rem-hdr-icon">🔔</div>
+        <div class="rem-hdr-txt">
+          <div class="rem-hdr-title">הוסף התראה</div>
+          <div class="rem-hdr-sub">${timeInfo}</div>
+        </div>
+        <button class="rem-close" onclick="closeReminderSheet()">✕</button>
+      </div>
+      <div class="rem-appt-info">
+        <div class="rem-appt-name">${x(appt.name)}</div>
+        <div class="rem-appt-meta">${appt.date===TD?'היום':appt.date} · ${appt.time}${appt.type?' · '+x(appt.type):''}</div>
+      </div>
+    </div>
+    
+    <div class="rem-body">
+      <div class="rem-section-title">⏱ מתי להתריע?</div>
+      <div class="rem-options">
+        ${options.map(o=>{
+          const futureTime=new Date(apptDt.getTime()-o.ms);
+          const isPast=futureTime<=now;
+          const sel=existing&&existing.minutes===o.v;
+          return`<button class="rem-option${sel?' selected':''}${isPast?' disabled':''}" ${isPast?'disabled':`onclick="setApptReminder('${apptId}',${o.v},'${encodeURIComponent(JSON.stringify(appt))}')"`}>
+            <div class="rem-option-ico">${o.ico}</div>
+            <div class="rem-option-txt">
+              <div class="rem-option-title">${o.l}</div>
+              <div class="rem-option-sub">${isPast?'⚠️ עבר כבר':o.sub}</div>
+            </div>
+            ${sel?'<div class="rem-option-check">✓</div>':''}
+          </button>`;
+        }).join('')}
+      </div>
+      
+      <div class="rem-section-title" style="margin-top:16px">📲 איך להתריע?</div>
+      <div class="rem-methods">
+        <div class="rem-method-card">
+          <div class="rem-method-hdr">
+            <div class="rem-method-ico">📅</div>
+            <div class="rem-method-body">
+              <div class="rem-method-title">קלנדר המכשיר <span class="rem-method-badge">מומלץ</span></div>
+              <div class="rem-method-desc">שמירה אל לוח השנה של הטלפון — Google Calendar / Apple Calendar. ההתראה פועלת גם אם האפליקציה סגורה.</div>
+            </div>
+          </div>
+          <button class="rem-method-btn" onclick="downloadApptICS('${encodeURIComponent(JSON.stringify(appt))}',${existing?existing.minutes:60})">
+            📥 הוסף ללוח השנה
+          </button>
+        </div>
+        
+        <div class="rem-method-card">
+          <div class="rem-method-hdr">
+            <div class="rem-method-ico">🔔</div>
+            <div class="rem-method-body">
+              <div class="rem-method-title">התראת דפדפן</div>
+              <div class="rem-method-desc">התראה קופצת מהדפדפן בזמן הנכון. דורש שהדפדפן יהיה פתוח — לא אמין כמו קלנדר המערכת.</div>
+            </div>
+          </div>
+          <button class="rem-method-btn secondary" onclick="enableBrowserReminder('${apptId}','${encodeURIComponent(JSON.stringify(appt))}',${existing?existing.minutes:60})">
+            🔔 הפעל התראת דפדפן
+          </button>
+        </div>
+      </div>
+      
+      ${existing?`<div class="rem-active-info">
+        <span class="rem-active-ico">✅</span>
+        <div>
+          <div class="rem-active-title">התראה פעילה — ${existing.minutes>=1440?(existing.minutes/1440)+' יום':existing.minutes>=60?(existing.minutes/60)+' שעות':existing.minutes+' דק'} לפני</div>
+          <div class="rem-active-sub">${existing.method==='browser'?'🔔 דפדפן':'📅 לוח שנה'}</div>
+        </div>
+        <button class="rem-active-cancel" onclick="cancelApptReminder('${apptId}')">בטל</button>
+      </div>`:''}
+    </div>
+  </div>`;
+  document.body.appendChild(ov);
+  setTimeout(()=>ov.classList.add('on'),20);
+}
+
+function closeReminderSheet(){
+  const ov=document.getElementById('rem-overlay');
+  if(ov){ov.classList.remove('on');setTimeout(()=>ov.remove(),250);}
+}
+
+// Save that user chose a reminder time (but not method yet)
+function setApptReminder(apptId,minutes,encodedAppt){
+  const existing=getReminders()[apptId]||{};
+  setReminder(apptId,{...existing,minutes,createdAt:Date.now()});
+  // Re-open the sheet to show updated state
+  openReminderSheet(encodedAppt);
+  toast(`⏱ התראה תוגדר ל-${minutes>=1440?(minutes/1440)+' יום':minutes>=60?(minutes/60)+' שעות':minutes+' דקות'} לפני`);
+}
+
+function cancelApptReminder(apptId){
+  setReminder(apptId,null);
+  // Remove scheduled browser timeout if any
+  if(window._apptReminderTimeouts&&window._apptReminderTimeouts[apptId]){
+    clearTimeout(window._apptReminderTimeouts[apptId]);
+    delete window._apptReminderTimeouts[apptId];
+  }
+  closeReminderSheet();
+  toast('🔕 ההתראה בוטלה');
+  if(typeof hRender==='function')hRender();
+  else if(typeof render==='function')render();
+}
+
+// Download .ics file for system calendar
+function downloadApptICS(encodedAppt,minutesBefore){
+  let appt;try{appt=JSON.parse(decodeURIComponent(encodedAppt));}catch(e){return;}
+  const apptId=`${appt.date}_${appt.time}_${(appt.name||'').replace(/\s+/g,'_')}`;
+  
+  // Parse to UTC
+  const [y,mo,d]=appt.date.split('-').map(Number);
+  const [hh,mm]=appt.time.split(':').map(Number);
+  const start=new Date(y,mo-1,d,hh,mm,0);
+  const duration=Number(appt.duration)||60;
+  const end=new Date(start.getTime()+duration*60000);
+  
+  const fmt=(dt)=>dt.getUTCFullYear().toString().padStart(4,'0')+
+                  (dt.getUTCMonth()+1).toString().padStart(2,'0')+
+                  dt.getUTCDate().toString().padStart(2,'0')+'T'+
+                  dt.getUTCHours().toString().padStart(2,'0')+
+                  dt.getUTCMinutes().toString().padStart(2,'0')+
+                  dt.getUTCSeconds().toString().padStart(2,'0')+'Z';
+  
+  const uid=apptId+'@diary-rinat';
+  const summary=`${appt.name||'תור'}${appt.type?' - '+appt.type:''}`;
+  const description=`לקוחה: ${appt.name||''}\\n${appt.type?'טיפול: '+appt.type+'\\n':''}${appt.phone?'טלפון: '+appt.phone+'\\n':''}${appt.price?'מחיר: ₪'+appt.price:''}`;
+  
+  const ics=`BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Diary Rinat//HE
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:${uid}
+DTSTAMP:${fmt(new Date())}
+DTSTART:${fmt(start)}
+DTEND:${fmt(end)}
+SUMMARY:${summary}
+DESCRIPTION:${description}
+LOCATION:הקליניקה
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:${summary}
+TRIGGER:-PT${minutesBefore}M
+END:VALARM
+END:VEVENT
+END:VCALENDAR`;
+  
+  const blob=new Blob([ics],{type:'text/calendar;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`appointment_${appt.date}_${appt.time.replace(':','-')}.ics`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  
+  // Save reminder state
+  setReminder(apptId,{minutes:minutesBefore,method:'ics',createdAt:Date.now()});
+  closeReminderSheet();
+  toast('✅ הקובץ הורד — פתחי אותו כדי להוסיף ללוח השנה');
+  if(typeof hRender==='function')hRender();
+}
+
+// Browser notification reminder (using Notification API + setTimeout)
+async function enableBrowserReminder(apptId,encodedAppt,minutesBefore){
+  let appt;try{appt=JSON.parse(decodeURIComponent(encodedAppt));}catch(e){return;}
+  
+  // Request notification permission
+  if(!('Notification'in window)){
+    toast('❌ הדפדפן לא תומך בהתראות',true);
+    return;
+  }
+  
+  if(Notification.permission==='default'){
+    const perm=await Notification.requestPermission();
+    if(perm!=='granted'){
+      toast('⚠️ אישור התראות נדחה',true);
+      return;
+    }
+  }else if(Notification.permission==='denied'){
+    toast('❌ התראות חסומות בהגדרות הדפדפן',true);
+    return;
+  }
+  
+  // Schedule the notification
+  const [y,mo,d]=appt.date.split('-').map(Number);
+  const [hh,mm]=appt.time.split(':').map(Number);
+  const apptDt=new Date(y,mo-1,d,hh,mm,0);
+  const triggerAt=apptDt.getTime()-minutesBefore*60*1000;
+  const delay=triggerAt-Date.now();
+  
+  if(delay<=0){
+    toast('⚠️ הזמן כבר עבר',true);
+    return;
+  }
+  
+  if(delay>2147483647){ // > ~24.8 days (setTimeout max)
+    toast('⚠️ ההתראה רחוקה מדי — השתמשי בלוח השנה',true);
+    return;
+  }
+  
+  // Clear any existing timeout for this apptId
+  if(!window._apptReminderTimeouts)window._apptReminderTimeouts={};
+  if(window._apptReminderTimeouts[apptId]){
+    clearTimeout(window._apptReminderTimeouts[apptId]);
+  }
+  
+  window._apptReminderTimeouts[apptId]=setTimeout(()=>{
+    try{
+      new Notification(`🔔 תור בעוד ${minutesBefore>=1440?(minutesBefore/1440)+' יום':minutesBefore>=60?(minutesBefore/60)+' שעות':minutesBefore+' דקות'}`,{
+        body:`${appt.name} · ${appt.time}${appt.type?' · '+appt.type:''}`,
+        icon:'https://pinto1212121212-create.github.io/diary-rinat/favicon.png',
+        tag:apptId,
+        requireInteraction:true
+      });
+    }catch(e){console.warn('Notification failed:',e);}
+    delete window._apptReminderTimeouts[apptId];
+  },delay);
+  
+  setReminder(apptId,{minutes:minutesBefore,method:'browser',scheduledFor:triggerAt,createdAt:Date.now()});
+  closeReminderSheet();
+  toast('🔔 התראת דפדפן תופעל בזמן');
+  if(typeof hRender==='function')hRender();
+}
+
+// Restore scheduled browser reminders on page load
+function restoreReminders(){
+  const reminders=getReminders();
+  const now=Date.now();
+  if(!window._apptReminderTimeouts)window._apptReminderTimeouts={};
+  Object.entries(reminders).forEach(([apptId,rem])=>{
+    if(rem.method!=='browser'||!rem.scheduledFor)return;
+    const delay=rem.scheduledFor-now;
+    if(delay<=0){
+      // Already past — clean it up
+      setReminder(apptId,null);
+      return;
+    }
+    if(delay>2147483647)return;
+    // Need to parse apptId back into basic info
+    const parts=apptId.split('_');
+    const date=parts[0],time=parts[1],name=parts.slice(2).join(' ');
+    window._apptReminderTimeouts[apptId]=setTimeout(()=>{
+      try{
+        new Notification(`🔔 תור בעוד ${rem.minutes>=1440?(rem.minutes/1440)+' יום':rem.minutes>=60?(rem.minutes/60)+' שעות':rem.minutes+' דקות'}`,{
+          body:`${name} · ${time}`,
+          tag:apptId,
+          requireInteraction:true
+        });
+      }catch(e){}
+      delete window._apptReminderTimeouts[apptId];
+    },delay);
+  });
+}
+
+// Call on load
+if(typeof window!=='undefined'){
+  window.addEventListener('load',function(){setTimeout(restoreReminders,1000);});
+}
+
+// Simple toast helper (if not already defined)
+if(typeof toast==='undefined'){
+  window.toast=function(msg,isErr){
+    const el=document.createElement('div');
+    el.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:'+(isErr?'#dc2626':'#1e1b4b')+';color:white;padding:10px 18px;border-radius:14px;font-size:13.5px;font-weight:700;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.3);font-family:inherit;direction:rtl;max-width:85vw;text-align:center';
+    el.textContent=msg;
+    document.body.appendChild(el);
+    setTimeout(()=>el.style.opacity='0',2500);
+    setTimeout(()=>el.remove(),2800);
+  };
 }
 
 function contactBtns(phone,name,apptInfo){
@@ -4732,7 +6007,7 @@ async function webUpload(input){
 }
 
 // ── Editor state: tracks both view and code modes ──
-let _webEdit={sha:'',loaded:false,rawHtml:'',view:'visual'}; // view: 'visual' | 'code'
+let _webEdit={sha:'',loaded:false,rawHtml:'',originalHtml:'',originalLoadedAt:0,view:'visual'}; // view: 'visual' | 'code'
 
 async function webOpenEditor(){
   let token=localStorage.getItem('gh_deploy_token');
@@ -4761,7 +6036,10 @@ async function webOpenEditor(){
           <span class="web-edit-tab-icon">👁</span><span>תצוגה חיה</span>
         </button>
         <button class="web-edit-tab" id="web-tab-code" onclick="webSwitchView('code')">
-          <span class="web-edit-tab-icon">📄</span><span>קוד</span>
+          <span class="web-edit-tab-icon">📝</span><span>קוד נוכחי</span>
+        </button>
+        <button class="web-edit-tab" id="web-tab-orig" onclick="webSwitchView('orig')">
+          <span class="web-edit-tab-icon">📜</span><span>קוד מקורי</span>
         </button>
       </div>
       <div class="wt-toolbar" id="wt-toolbar">
@@ -4772,12 +6050,13 @@ async function webOpenEditor(){
           <button class="wt-btn" onclick="wtOpenPop('button')"><span class="wt-btn-ico">🔘</span><span class="wt-btn-txt">כפתור</span></button>
           <button class="wt-btn" onclick="wtOpenPop('emoji')"><span class="wt-btn-ico">😊</span><span class="wt-btn-txt">אימוג'י</span></button>
           <div class="wt-sep"></div>
-          <button class="wt-btn" onclick="wtInsertDivider()"><span class="wt-btn-ico">➖</span><span class="wt-btn-txt">מפריד</span></button>
-          <button class="wt-btn" onclick="wtInsertSpacer()"><span class="wt-btn-ico">⬜</span><span class="wt-btn-txt">רווח</span></button>
+          <button class="wt-btn" onclick="wtOpenPop('divider')"><span class="wt-btn-ico">➖</span><span class="wt-btn-txt">מפריד</span></button>
+          <button class="wt-btn" onclick="wtOpenPop('spacer')"><span class="wt-btn-ico">⬜</span><span class="wt-btn-txt">רווח</span></button>
           <div class="wt-sep"></div>
           <div class="wt-history">
             <button class="wt-btn icon-only" onclick="wtSend('undo')" title="בטל"><span class="wt-btn-ico">↶</span></button>
             <button class="wt-btn icon-only" onclick="wtSend('redo')" title="חזור"><span class="wt-btn-ico">↷</span></button>
+            <button class="wt-btn icon-only danger" onclick="wtConfirmReset()" title="החזר להתחלה"><span class="wt-btn-ico">🔄</span></button>
           </div>
         </div>
         <div class="wt-row contextual" id="wt-contextual"></div>
@@ -4794,6 +6073,30 @@ async function webOpenEditor(){
           <iframe class="web-edit-iframe" id="web-edit-iframe"></iframe>
         </div>
         <textarea class="web-edit-textarea" id="web-edit-textarea" spellcheck="false" dir="ltr" placeholder="הקובץ יטען כאן..."></textarea>
+        <div class="web-edit-orig-wrap" id="web-edit-orig-wrap">
+          <div class="web-orig-panel">
+            <div class="web-orig-hdr">
+              <div class="web-orig-hdr-icon">📜</div>
+              <div class="web-orig-hdr-txt">
+                <div class="web-orig-hdr-title">קוד מקורי — נעול</div>
+                <div class="web-orig-hdr-sub" id="web-orig-info">טרם נטען</div>
+              </div>
+              <button class="web-orig-unlock-btn" id="web-orig-unlock-btn" onclick="webToggleOrigEdit()">🔒 פתח לעריכה</button>
+            </div>
+            <div class="web-orig-warn" id="web-orig-warn">
+              <span class="web-orig-warn-ico">⚠️</span>
+              <span>זו הגרסה <b>המקורית</b> של האתר — היא לא משתנה כשרינת עורכת. משמשת כ"גיבוי" שאפשר תמיד לחזור אליו. שינוי כאן יחליף את נקודת האמת. לאחר שמירה ופרסום מוצלחים — הקוד המקורי מתעדכן אוטומטית לגרסה שפורסמה.</span>
+            </div>
+            <textarea class="web-edit-textarea orig" id="web-edit-textarea-orig" spellcheck="false" dir="ltr" readonly placeholder="הקוד המקורי יטען כאן..."></textarea>
+            <div class="web-orig-actions" id="web-orig-actions" style="display:none">
+              <button class="web-orig-action-btn save" onclick="webSaveOrigAsCurrent()">💾 שמור ככ קוד נוכחי</button>
+              <button class="web-orig-action-btn cancel" onclick="webCancelOrigEdit()">ביטול</button>
+            </div>
+            <div class="web-orig-actions">
+              <button class="web-orig-action-btn revert" onclick="webConfirmRevertToOrig()">↩️ החזר את האתר למקור</button>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="web-edit-btns">
         <button class="web-edit-btn cancel" onclick="webCloseEditor()">ביטול</button>
@@ -4817,7 +6120,7 @@ async function webOpenEditor(){
   ta.value='';
   st.textContent='⏳ טוען קובץ מגיטהאב...';
   st.className='web-edit-status-bar';
-  _webEdit={sha:'',loaded:false,rawHtml:'',view:'visual'};
+  _webEdit={sha:'',loaded:false,rawHtml:'',originalHtml:'',originalLoadedAt:0,view:'visual'};
   webSwitchView('visual'); // default tab
   try{
     const r=await fetch(`https://api.github.com/repos/${WEB_OWNER}/${WEB_REPO}/contents/index.html?t=`+Date.now(),
@@ -4828,8 +6131,14 @@ async function webOpenEditor(){
     if(!d.content)throw new Error(d.message||'קובץ לא נמצא');
     _webEdit.sha=d.sha;
     _webEdit.rawHtml=decodeURIComponent(escape(atob(d.content.replace(/\n/g,''))));
+    // Save the original (pristine from GitHub) — doesn't change until we explicitly update
+    _webEdit.originalHtml=_webEdit.rawHtml;
+    _webEdit.originalLoadedAt=Date.now();
     _webEdit.loaded=true;
     ta.value=_webEdit.rawHtml;
+    // Also populate the original-code textarea if it exists
+    const taOrig=document.getElementById('web-edit-textarea-orig');
+    if(taOrig)taOrig.value=_webEdit.originalHtml;
     webLoadIframe();
     st.innerHTML=`✅ נטען בהצלחה · ${(_webEdit.rawHtml.length/1024).toFixed(1)}KB · לחצי על כל טקסט באתר וערכי`;
     st.className='web-edit-status-bar ok';
@@ -4840,39 +6149,138 @@ async function webOpenEditor(){
   }
 }
 
-// Switch between visual (iframe) and code (textarea) views
+// Switch between visual (iframe), code (current), and orig (original) views
 function webSwitchView(mode){
   _webEdit.view=mode;
   const tabV=document.getElementById('web-tab-visual');
   const tabC=document.getElementById('web-tab-code');
+  const tabO=document.getElementById('web-tab-orig');
   const ifr=document.getElementById('web-iframe-wrap');
   const ta=document.getElementById('web-edit-textarea');
+  const origWrap=document.getElementById('web-edit-orig-wrap');
   const body=document.getElementById('web-edit-body');
   const toolbar=document.getElementById('wt-toolbar');
   if(!tabV||!tabC)return;
+  
+  // Reset all tabs
+  [tabV,tabC,tabO].forEach(t=>t&&t.classList.remove('on'));
+  if(ifr)ifr.classList.remove('on');
+  if(ta)ta.classList.remove('on');
+  if(origWrap)origWrap.classList.remove('on');
+  if(body)body.classList.remove('code-mode');
+  
   if(mode==='visual'){
-    tabV.classList.add('on');tabC.classList.remove('on');
-    ifr.classList.add('on');ta.classList.remove('on');
-    body.classList.remove('code-mode');
+    tabV.classList.add('on');
+    if(ifr)ifr.classList.add('on');
     if(toolbar)toolbar.style.display='';
-    // If textarea was edited, sync changes into iframe
-    if(_webEdit.loaded&&ta.value!==_webEdit.rawHtml){
+    // If textarea was edited directly, sync changes back into iframe
+    if(_webEdit.loaded&&ta&&ta.value&&ta.value!==_webEdit.rawHtml){
       _webEdit.rawHtml=ta.value;
       webLoadIframe();
     }
-  }else{
-    tabC.classList.add('on');tabV.classList.remove('on');
-    ta.classList.add('on');ifr.classList.remove('on');
-    body.classList.add('code-mode');
+  }else if(mode==='code'){
+    tabC.classList.add('on');
+    if(ta)ta.classList.add('on');
+    if(body)body.classList.add('code-mode');
     if(toolbar)toolbar.style.display='none';
     // Pull latest edits out of iframe into textarea+rawHtml
     if(_webEdit.loaded){
-      webExtractFromIframe((html)=>{
+      webExtractFromIframe(function(html){
         _webEdit.rawHtml=html;
-        ta.value=html;
+        if(ta)ta.value=html;
       });
     }
+  }else if(mode==='orig'){
+    tabO.classList.add('on');
+    if(origWrap)origWrap.classList.add('on');
+    if(toolbar)toolbar.style.display='none';
+    // Load the original into the original-textarea
+    const taOrig=document.getElementById('web-edit-textarea-orig');
+    if(taOrig)taOrig.value=_webEdit.originalHtml||'(טרם נטען)';
+    webUpdateOrigInfo();
   }
+}
+
+// Update the info text shown in the original-code tab header
+function webUpdateOrigInfo(){
+  const info=document.getElementById('web-orig-info');
+  if(!info)return;
+  if(!_webEdit.originalHtml){
+    info.textContent='טרם נטען';
+    return;
+  }
+  const sizeKB=(_webEdit.originalHtml.length/1024).toFixed(1);
+  const date=new Date(_webEdit.originalLoadedAt);
+  const dateStr=date.toLocaleString('he-IL',{dateStyle:'short',timeStyle:'short'});
+  info.textContent=`${sizeKB}KB · עודכן: ${dateStr}`;
+}
+
+// Toggle between read-only and editable for the original-code textarea
+function webToggleOrigEdit(){
+  const ta=document.getElementById('web-edit-textarea-orig');
+  const btn=document.getElementById('web-orig-unlock-btn');
+  const actions=document.getElementById('web-orig-actions');
+  if(!ta||!btn)return;
+  if(ta.hasAttribute('readonly')){
+    // Unlock
+    if(!confirm('⚠️ שימי לב: עריכה של הקוד המקורי משנה את נקודת ההתחלה של האתר.\n\nאם תרצי לחזור למצב הזה אחרי שינויים של רינת — זה מה שיוחזר.\n\nלהמשיך?'))return;
+    ta.removeAttribute('readonly');
+    ta.focus();
+    btn.textContent='🔓 מצב עריכה';
+    btn.classList.add('unlocked');
+    if(actions)actions.style.display='flex';
+  }else{
+    // Re-lock without saving
+    ta.value=_webEdit.originalHtml;
+    ta.setAttribute('readonly','');
+    btn.textContent='🔒 פתח לעריכה';
+    btn.classList.remove('unlocked');
+    if(actions)actions.style.display='none';
+  }
+}
+
+// Cancel edit mode (revert textarea to stored original)
+function webCancelOrigEdit(){
+  const ta=document.getElementById('web-edit-textarea-orig');
+  if(ta){
+    ta.value=_webEdit.originalHtml;
+    ta.setAttribute('readonly','');
+  }
+  const btn=document.getElementById('web-orig-unlock-btn');
+  if(btn){btn.textContent='🔒 פתח לעריכה';btn.classList.remove('unlocked');}
+  const actions=document.getElementById('web-orig-actions');
+  if(actions)actions.style.display='none';
+  webToast('ביטול שינויים');
+}
+
+// Save the edited "original" code as the new original baseline
+function webSaveOrigAsCurrent(){
+  const ta=document.getElementById('web-edit-textarea-orig');
+  if(!ta)return;
+  const newOriginal=ta.value;
+  if(!newOriginal){webToast('⚠️ הקוד ריק',true);return;}
+  if(!confirm('לעדכן את הקוד המקורי?\n\n• זה הופך לנקודת ההתחלה החדשה\n• הקוד הנוכחי (שרינת עורכת) לא משתנה\n• לחיצה על "החזר את האתר למקור" תחזיר לקוד הזה'))return;
+  _webEdit.originalHtml=newOriginal;
+  _webEdit.originalLoadedAt=Date.now();
+  ta.setAttribute('readonly','');
+  const btn=document.getElementById('web-orig-unlock-btn');
+  if(btn){btn.textContent='🔒 פתח לעריכה';btn.classList.remove('unlocked');}
+  const actions=document.getElementById('web-orig-actions');
+  if(actions)actions.style.display='none';
+  webUpdateOrigInfo();
+  webToast('✅ הקוד המקורי עודכן');
+}
+
+// Revert the current edited version back to the original
+function webConfirmRevertToOrig(){
+  if(!_webEdit.originalHtml){webToast('⚠️ אין גרסה מקורית',true);return;}
+  if(!confirm('⚠️ אזהרה: פעולה זו תחליף את האתר הנוכחי בגרסה המקורית.\n\n• כל השינויים של רינת יימחקו\n• האתר יחזור לגרסה שמופיעה בטאב "קוד מקורי"\n• פעולה זו לא נשמרת בגיטהאב עד שתלחצי "שמור ופרסם"\n\nלהמשיך?'))return;
+  _webEdit.rawHtml=_webEdit.originalHtml;
+  const ta=document.getElementById('web-edit-textarea');
+  if(ta)ta.value=_webEdit.rawHtml;
+  webLoadIframe();
+  webSwitchView('visual');
+  webToast('↩️ האתר חזר לגרסה המקורית');
 }
 
 // Inject contenteditable attributes + messaging script into iframe HTML
@@ -4902,6 +6310,14 @@ function webInjectEditor(html){
   body.__webedit .w-inserted{animation:wPop .35s cubic-bezier(.34,1.56,.64,1)}
   @keyframes wPop{0%{transform:scale(.92);opacity:0}100%{transform:scale(1);opacity:1}}
   
+  /* Insert points — show "+" between sections */
+  body.__webedit .__w-insert{position:relative;height:4px;margin:2px 0;cursor:pointer;transition:all .2s;z-index:100}
+  body.__webedit .__w-insert::before{content:'';position:absolute;inset:0;background:transparent;transition:background .15s}
+  body.__webedit .__w-insert:hover::before{background:linear-gradient(90deg,transparent,#7c3aed,transparent)}
+  body.__webedit .__w-insert::after{content:'+';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;background:#7c3aed;color:white;font-size:18px;font-weight:900;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;box-shadow:0 4px 12px rgba(124,58,237,.4)}
+  body.__webedit .__w-insert:hover::after{opacity:1}
+  body.__webedit .__w-insert.active::after{opacity:1;background:#059669;transform:translate(-50%,-50%) scale(1.1)}
+  
   /* Text highlight while selecting */
   body.__webedit ::selection{background:rgba(124,58,237,.35);color:#1e1b4b}
 </style>
@@ -4919,25 +6335,28 @@ function webInjectEditor(html){
     }
   }
   
-  // ── TEXT-BEARING element detector (improved) ──
-  const INLINE_TAGS=new Set(['SPAN','STRONG','EM','B','I','U','S','SMALL','MARK','SUB','SUP','CODE','FONT','BIG','CITE','Q','ABBR','BR','WBR','TIME']);
+  // ── TEXT-BEARING element detector (rewritten — more inclusive) ──
+  const INLINE_TAGS=new Set(['SPAN','STRONG','EM','B','I','U','S','SMALL','MARK','SUB','SUP','CODE','FONT','BIG','CITE','Q','ABBR','TIME']);
   const BLOCK_TAGS=new Set(['H1','H2','H3','H4','H5','H6','P','LI','TD','TH','LABEL','BUTTON','FIGCAPTION','BLOCKQUOTE','DT','DD','SUMMARY','CAPTION','A']);
   const CONTAINER_TAGS=new Set(['DIV','SECTION','ARTICLE','ASIDE','NAV','HEADER','FOOTER','MAIN']);
   const SKIP_TAGS=new Set(['SCRIPT','STYLE','NOSCRIPT','IFRAME','IMG','VIDEO','AUDIO','SOURCE','TRACK','CANVAS','SVG','INPUT','TEXTAREA','SELECT','OPTION','PICTURE','OBJECT','EMBED','BR','HR','META','LINK']);
   
-  function hasOnlyInlineChildren(el){
-    for(let i=0;i<el.children.length;i++){
-      const child=el.children[i];
-      if(!INLINE_TAGS.has(child.tagName)&&child.tagName!=='A')return false;
-    }
-    return true;
-  }
-  
   function hasDirectText(el){
-    // True if el has at least one text node child with non-whitespace content
     for(let i=0;i<el.childNodes.length;i++){
       const n=el.childNodes[i];
       if(n.nodeType===3&&n.textContent.trim().length>0)return true;
+    }
+    return false;
+  }
+  
+  function hasBlockChildren(el){
+    for(let i=0;i<el.children.length;i++){
+      const c=el.children[i];
+      // If child is a container or block, it's a block child
+      if(CONTAINER_TAGS.has(c.tagName))return true;
+      if(BLOCK_TAGS.has(c.tagName)&&c.tagName!=='A')return true;
+      // Recursive check for nested blocks
+      if(hasBlockChildren(c))return true;
     }
     return false;
   }
@@ -4948,30 +6367,38 @@ function webInjectEditor(html){
   
   function shouldMakeEditable(el){
     if(SKIP_TAGS.has(el.tagName))return false;
-    if(el.closest('[data-wedit]'))return false; // already inside an editable
+    if(el.closest('[data-wedit]'))return false;
     if(getTextLen(el)===0)return false;
     
-    // Block element with text content and only inline children → editable leaf
+    // Block tags (h1-h6, p, li, button, a, etc.)
     if(BLOCK_TAGS.has(el.tagName)){
-      if(hasOnlyInlineChildren(el))return true;
-      // If block has mixed content but also direct text, still editable
-      if(hasDirectText(el))return true;
+      // Editable if it has text AND no nested block elements
+      if(!hasBlockChildren(el))return true;
     }
     
-    // Container (div/section/etc): only if it has direct text and no block children
+    // Container tags (div, section, etc.)
     if(CONTAINER_TAGS.has(el.tagName)){
-      if(hasDirectText(el)&&hasOnlyInlineChildren(el))return true;
+      // Editable if no nested blocks (children are all inline/span)
+      if(!hasBlockChildren(el))return true;
+    }
+    
+    // Inline tags (span, strong, etc.) — editable if leaf with text
+    if(INLINE_TAGS.has(el.tagName)){
+      // Only if it's a direct leaf (no element children with text)
+      let hasElementChild=false;
+      for(let i=0;i<el.children.length;i++){
+        if(getTextLen(el.children[i])>0){hasElementChild=true;break;}
+      }
+      if(!hasElementChild&&hasDirectText(el))return true;
     }
     
     return false;
   }
   
   function markEditable(){
-    // Walk through ALL elements in document order
     const all=document.querySelectorAll('body *');
     for(let i=0;i<all.length;i++){
       const el=all[i];
-      // Skip if already marked — don't re-mark, preserves state
       if(el.hasAttribute('data-wedit'))continue;
       if(shouldMakeEditable(el)){
         el.setAttribute('data-wedit','1');
@@ -4979,6 +6406,85 @@ function webInjectEditor(html){
         el.setAttribute('spellcheck','false');
       }
     }
+  }
+  
+  // ── Insert points between top-level sections ──
+  // Tell parent to open insertion dialog at a specific position
+  let _pendingInsertAfter=null;
+  
+  function addInsertPoints(){
+    // Remove old insert points first
+    document.querySelectorAll('.__w-insert').forEach(el=>el.remove());
+    // Find top-level children of body (sections, main containers)
+    const body=document.body;
+    const topLevel=Array.from(body.children).filter(el=>{
+      if(SKIP_TAGS.has(el.tagName))return false;
+      if(el.classList&&el.classList.contains('__w-insert'))return false;
+      return true;
+    });
+    // Add an insert-point before the first and between each pair
+    topLevel.forEach((el,idx)=>{
+      // Before the first element
+      if(idx===0){
+        const before=createInsertPoint(el,'before');
+        body.insertBefore(before,el);
+      }
+      // After every element
+      const after=createInsertPoint(el,'after');
+      if(el.nextSibling)body.insertBefore(after,el.nextSibling);
+      else body.appendChild(after);
+    });
+  }
+  
+  function createInsertPoint(refEl,position){
+    const div=document.createElement('div');
+    div.className='__w-insert';
+    div.setAttribute('data-webedit-tag','1'); // will be removed on save
+    div.addEventListener('click',function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      _pendingInsertAfter={el:refEl,position:position};
+      // Mark active
+      document.querySelectorAll('.__w-insert.active').forEach(el=>el.classList.remove('active'));
+      div.classList.add('active');
+      // Tell parent to open the insert dialog
+      window.parent.postMessage({type:'__wt-open-insert'},'*');
+    });
+    return div;
+  }
+  
+  function insertAtPendingPoint(html){
+    if(!_pendingInsertAfter){
+      // No insert point — append at body end
+      const tmp=document.createElement('template');
+      tmp.innerHTML=html;
+      while(tmp.content.firstChild){
+        document.body.appendChild(tmp.content.firstChild);
+      }
+      setTimeout(()=>{markEditable();addInsertPoints();},50);
+      return;
+    }
+    const tmp=document.createElement('template');
+    tmp.innerHTML=html;
+    const nodes=[];
+    while(tmp.content.firstChild){
+      nodes.push(tmp.content.firstChild);
+      tmp.content.removeChild(tmp.content.firstChild);
+    }
+    const ref=_pendingInsertAfter.el;
+    const pos=_pendingInsertAfter.position;
+    if(pos==='before'){
+      nodes.forEach(n=>ref.parentNode.insertBefore(n,ref));
+    }else{
+      // insert after
+      nodes.reverse().forEach(n=>{
+        if(ref.nextSibling)ref.parentNode.insertBefore(n,ref.nextSibling);
+        else ref.parentNode.appendChild(n);
+      });
+    }
+    _pendingInsertAfter=null;
+    document.querySelectorAll('.__w-insert.active').forEach(el=>el.classList.remove('active'));
+    setTimeout(()=>{markEditable();addInsertPoints();},50);
   }
   
   // ── Selection state ──
@@ -5351,11 +6857,15 @@ function webInjectEditor(html){
   
   // ── Activate editor (only once) ──
   let _activated=false;
+  let _originalBodyHTML=''; // snapshot of pristine content for reset
   function activate(){
     if(_activated)return;
     _activated=true;
     killLoaders();
+    // Save pristine HTML BEFORE marking editable
+    _originalBodyHTML=document.body.innerHTML;
     markEditable();
+    addInsertPoints();
     document.body.classList.add('__webedit');
     snapshot(); // initial snapshot (cursor=0)
     
@@ -5429,6 +6939,16 @@ function webInjectEditor(html){
         case 'block':setBlockTag(d.value);break;
         case 'clearFormat':clearFormatting();break;
         case 'insertHTML':insertHTMLSmart(d.html);break;
+        case 'insertAtPoint':insertAtPendingPoint(d.html);break;
+        case 'clearInsertPoint':_pendingInsertAfter=null;document.querySelectorAll('.__w-insert.active').forEach(el=>el.classList.remove('active'));break;
+        case 'resetAll':
+          if(_originalBodyHTML){
+            document.body.innerHTML=_originalBodyHTML;
+            _savedRange=null;_lastFocusedEditable=null;_selectedElement=null;_pendingInsertAfter=null;
+            setTimeout(function(){markEditable();addInsertPoints();snapshot();},50);
+            window.parent.postMessage({type:'__wt-selection',mode:'none'},'*');
+          }
+          break;
         case 'replaceSelected':if(_selectedElement){const n=replaceElement(_selectedElement,d.html);if(n){_selectedElement=null;setTimeout(markEditable,50);}}break;
         case 'updateSelectedAttr':if(_selectedElement)updateAttr(_selectedElement,d.attr,d.value);break;
         case 'deleteSelected':if(_selectedElement){deleteElement(_selectedElement);_selectedElement=null;window.parent.postMessage({type:'__wt-selection',mode:'none'},'*');}break;
@@ -5511,7 +7031,7 @@ function webCloseEditor(){
   // Clean up blob URL
   const ifr=document.getElementById('web-edit-iframe');
   if(ifr&&ifr._prevUrl){try{URL.revokeObjectURL(ifr._prevUrl);}catch(e){}ifr._prevUrl=null;}
-  _webEdit={sha:'',loaded:false,rawHtml:'',view:'visual'};
+  _webEdit={sha:'',loaded:false,rawHtml:'',originalHtml:'',originalLoadedAt:0,view:'visual'};
 }
 
 function webDownloadEdit(){
@@ -5565,8 +7085,15 @@ async function webSaveEdit(){
       // Update tracked state so the next save doesn't conflict
       if(d.content.sha)_webEdit.sha=d.content.sha;
       _webEdit.rawHtml=content;
+      // After successful publish, the new content IS the original (it's in GitHub now)
+      _webEdit.originalHtml=content;
+      _webEdit.originalLoadedAt=Date.now();
       const ta=document.getElementById('web-edit-textarea');
       if(ta)ta.value=content;
+      const taOrig=document.getElementById('web-edit-textarea-orig');
+      if(taOrig)taOrig.value=content;
+      // Refresh the original tab info panel if visible
+      webUpdateOrigInfo();
       btn.textContent='✅ נשמר!';
       btn.style.background='linear-gradient(135deg,#10b981,#059669)';
       st.innerHTML=`✅ נשמר בהצלחה! <a href="${WEB_LIVE_URL}?v=${Date.now()}" target="_blank">פתח אתר חי ←</a>`;
@@ -5596,6 +7123,17 @@ function wtSend(cmd,extras){
   const ifr=document.getElementById('web-edit-iframe');
   if(!ifr||!ifr.contentWindow)return;
   ifr.contentWindow.postMessage(Object.assign({type:'__wt-cmd',cmd:cmd},extras||{}),'*');
+}
+
+// Insert HTML — smart routing: if user clicked "+" insert point, use it;
+// otherwise insert at cursor
+function wtInsertSmart(html){
+  if(_wtUseInsertPoint){
+    _wtUseInsertPoint=false;
+    wtSend('insertAtPoint',{html:html});
+  }else{
+    wtSend('insertHTML',{html:html});
+  }
 }
 
 // Prevent toolbar buttons from stealing focus from the iframe
@@ -5658,9 +7196,14 @@ function wtUpdateContextual(){
 if(!window._wtSelHandler){
   window._wtSelHandler=true;
   window.addEventListener('message',function(e){
-    if(!e.data||e.data.type!=='__wt-selection')return;
-    _wtSelection={mode:e.data.mode,text:e.data.text,kind:e.data.kind,info:e.data.info};
-    wtUpdateContextual();
+    if(!e.data)return;
+    if(e.data.type==='__wt-selection'){
+      _wtSelection={mode:e.data.mode,text:e.data.text,kind:e.data.kind,info:e.data.info};
+      wtUpdateContextual();
+    }else if(e.data.type==='__wt-open-insert'){
+      // User clicked a "+ insert point" in the iframe
+      wtOpenPop('insert-menu');
+    }
   });
 }
 
@@ -5688,6 +7231,117 @@ function wtClosePop(){
 const WT_COLORS=['#000000','#4b5563','#9ca3af','#ffffff','#dc2626','#ea580c','#eab308','#16a34a','#0891b2','#2563eb','#7c3aed','#db2777','#fce7f3','#ddd6fe','#dbeafe','#d1fae5','#fef3c7','#fed7aa','#fecaca','#e9d5ff'];
 
 const wtPopConfigs={
+  // Divider — horizontal line separator
+  divider:{
+    title:'➖ מפריד — קו הפרדה',
+    html:()=>`
+      <div class="wt-guide">
+        <div class="wt-guide-title">💡 מה זה מפריד?</div>
+        <div class="wt-guide-steps">
+          <div class="wt-guide-step"><span class="wt-guide-step-num">1</span><span>קו אופקי דק שמפריד בין <b>2 חלקים</b> באתר</span></div>
+          <div class="wt-guide-step"><span class="wt-guide-step-num">2</span><span>שימושי לחלוקה ויזואלית — בין פסקאות, בין נושאים, בין סעיפים</span></div>
+          <div class="wt-guide-step"><span class="wt-guide-step-num">3</span><span>לדוגמה: "מחירים" — מפריד — "לקוחות ממליצות" — מפריד — "צרי קשר"</span></div>
+        </div>
+      </div>
+      <div class="wt-form-lbl" style="margin-top:14px;margin-bottom:10px">בחרי סגנון מפריד</div>
+      <div class="wt-divider-styles">
+        <button class="wt-divider-style" onclick="wtApplyDivider('thin');wtClosePop()">
+          <div class="wt-divider-preview"><hr style="border:0;border-top:1px solid #d1d5db;margin:0"></div>
+          <div class="wt-divider-name">דק · אפור</div>
+        </button>
+        <button class="wt-divider-style" onclick="wtApplyDivider('bold');wtClosePop()">
+          <div class="wt-divider-preview"><hr style="border:0;border-top:3px solid #7c3aed;margin:0"></div>
+          <div class="wt-divider-name">מודגש · סגול</div>
+        </button>
+        <button class="wt-divider-style" onclick="wtApplyDivider('dashed');wtClosePop()">
+          <div class="wt-divider-preview"><hr style="border:0;border-top:2px dashed #a78bfa;margin:0"></div>
+          <div class="wt-divider-name">מקווקו</div>
+        </button>
+        <button class="wt-divider-style" onclick="wtApplyDivider('gradient');wtClosePop()">
+          <div class="wt-divider-preview"><div style="height:2px;background:linear-gradient(90deg,transparent,#7c3aed,transparent)"></div></div>
+          <div class="wt-divider-name">גרדיאנט דהוי</div>
+        </button>
+        <button class="wt-divider-style" onclick="wtApplyDivider('dots');wtClosePop()">
+          <div class="wt-divider-preview" style="text-align:center;color:#9ca3af;letter-spacing:8px;font-size:18px">• • •</div>
+          <div class="wt-divider-name">שלוש נקודות</div>
+        </button>
+        <button class="wt-divider-style" onclick="wtApplyDivider('star');wtClosePop()">
+          <div class="wt-divider-preview" style="text-align:center;color:#f59e0b;font-size:14px">✨ ✨ ✨</div>
+          <div class="wt-divider-name">כוכבים</div>
+        </button>
+      </div>`
+  },
+  
+  // Spacer — vertical gap
+  spacer:{
+    title:'⬜ רווח — מרווח בין סעיפים',
+    html:()=>`
+      <div class="wt-guide">
+        <div class="wt-guide-title">💡 מה זה רווח?</div>
+        <div class="wt-guide-steps">
+          <div class="wt-guide-step"><span class="wt-guide-step-num">1</span><span><b>רווח ריק אנכי</b> — כמו שורת רווח כפול, בלי שום דבר נראה</span></div>
+          <div class="wt-guide-step"><span class="wt-guide-step-num">2</span><span>שימושי כשהתוכן צפוף מדי ורוצים לתת "נשימה" לעין</span></div>
+          <div class="wt-guide-step"><span class="wt-guide-step-num">3</span><span>בניגוד למפריד — כאן אין קו נראה לעין, רק מקום ריק</span></div>
+        </div>
+      </div>
+      <div class="wt-form-lbl" style="margin-top:14px;margin-bottom:10px">בחרי גובה רווח</div>
+      <div class="wt-size-grid">
+        <button class="wt-size-btn" onclick="wtApplySpacer(20);wtClosePop()"><span style="font-size:15px;font-weight:800">20px</span><span class="wt-size-btn-name">קטן</span></button>
+        <button class="wt-size-btn" onclick="wtApplySpacer(40);wtClosePop()"><span style="font-size:15px;font-weight:800">40px</span><span class="wt-size-btn-name">בינוני</span></button>
+        <button class="wt-size-btn" onclick="wtApplySpacer(60);wtClosePop()"><span style="font-size:15px;font-weight:800">60px</span><span class="wt-size-btn-name">גדול</span></button>
+        <button class="wt-size-btn" onclick="wtApplySpacer(100);wtClosePop()"><span style="font-size:15px;font-weight:800">100px</span><span class="wt-size-btn-name">ענק</span></button>
+      </div>
+      <div class="wt-form-row" style="margin-top:14px">
+        <label class="wt-form-lbl">📏 גובה מותאם (פיקסלים)</label>
+        <div style="display:flex;gap:8px">
+          <input class="wt-form-inp ltr" id="wt-spacer-custom" type="number" placeholder="30" value="30" min="5" max="500" style="flex:1">
+          <button class="wt-btn primary" onclick="wtApplySpacer(parseInt(document.getElementById('wt-spacer-custom').value)||30);wtClosePop()" style="padding:12px 20px">הוסיפי</button>
+        </div>
+      </div>`
+  },
+  
+  // ═══ Insert Menu — triggered when user clicks "+" between sections ═══
+  'insert-menu':{
+    title:'✨ מה להוסיף כאן?',
+    html:()=>`
+      <div class="wt-insert-grid">
+        <button class="wt-insert-item" onclick="wtInsertQuick('text')">
+          <div class="wt-insert-ico">📝</div>
+          <div class="wt-insert-lbl">טקסט/פסקה</div>
+        </button>
+        <button class="wt-insert-item" onclick="wtInsertQuick('heading')">
+          <div class="wt-insert-ico">📰</div>
+          <div class="wt-insert-lbl">כותרת</div>
+        </button>
+        <button class="wt-insert-item" onclick="wtInsertQuick('image')">
+          <div class="wt-insert-ico">🖼</div>
+          <div class="wt-insert-lbl">תמונה</div>
+        </button>
+        <button class="wt-insert-item" onclick="wtInsertQuick('video')">
+          <div class="wt-insert-ico">🎬</div>
+          <div class="wt-insert-lbl">סרטון</div>
+        </button>
+        <button class="wt-insert-item" onclick="wtInsertQuick('button')">
+          <div class="wt-insert-ico">🔘</div>
+          <div class="wt-insert-lbl">כפתור</div>
+        </button>
+        <button class="wt-insert-item" onclick="wtInsertQuick('divider')">
+          <div class="wt-insert-ico">➖</div>
+          <div class="wt-insert-lbl">מפריד</div>
+        </button>
+        <button class="wt-insert-item" onclick="wtInsertQuick('spacer')">
+          <div class="wt-insert-ico">⬜</div>
+          <div class="wt-insert-lbl">רווח</div>
+        </button>
+        <button class="wt-insert-item" onclick="wtInsertQuick('card')">
+          <div class="wt-insert-ico">🎴</div>
+          <div class="wt-insert-lbl">כרטיס</div>
+        </button>
+      </div>
+      <div class="wt-form-actions" style="margin-top:14px">
+        <button class="wt-form-btn cancel" onclick="wtCancelInsert()">ביטול</button>
+      </div>`
+  },
   // Text color
   color:{
     title:'🎨 צבע טקסט',
@@ -5983,7 +7637,7 @@ function wtInsertLink(){
   if(!url||url==='https://'){webToast('⚠️ חסרה כתובת',true);return;}
   const target=blank?' target="_blank" rel="noopener"':'';
   const displayText=text||url;
-  wtSend('insertHTML',{html:`<a href="${url}"${target} class="w-inserted" style="color:#7c3aed;text-decoration:underline">${displayText}</a>`});
+  wtInsertSmart(`<a href="${url}"${target} class="w-inserted" style="color:#7c3aed;text-decoration:underline">${displayText}</a>`);
   wtClosePop();
   webToast('✅ קישור נוסף');
 }
@@ -6000,7 +7654,7 @@ function wtImageFile(e){
     if(bar)bar.style.width='100%';
     const dataUrl=ev.target.result;
     const alt=(document.getElementById('wt-image-alt')||{}).value||'';
-    wtSend('insertHTML',{html:`<img src="${dataUrl}" alt="${alt}" class="w-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block">`});
+    wtInsertSmart(`<img src="${dataUrl}" alt="${alt}" class="w-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block">`);
     wtClosePop();
     webToast('✅ תמונה נוספה');
   };
@@ -6026,7 +7680,7 @@ function wtInsertImage(){
     if(file&&file[0]){wtImageFile({target:{files:file}});return;}
     webToast('⚠️ חסר קובץ או קישור',true);return;
   }
-  wtSend('insertHTML',{html:`<img src="${url}" alt="${alt}" class="w-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block">`});
+  wtInsertSmart(`<img src="${url}" alt="${alt}" class="w-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block">`);
   wtClosePop();
   webToast('✅ תמונה נוספה');
 }
@@ -6042,7 +7696,7 @@ function wtVideoFile(e){
   reader.onload=(ev)=>{
     if(bar)bar.style.width='100%';
     const dataUrl=ev.target.result;
-    wtSend('insertHTML',{html:`<video src="${dataUrl}" controls class="w-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block"></video>`});
+    wtInsertSmart(`<video src="${dataUrl}" controls class="w-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block"></video>`);
     wtClosePop();
     webToast('✅ סרטון נוסף');
   };
@@ -6062,14 +7716,14 @@ function wtInsertVideoUrl(){
   }else if(vimeoMatch){
     embedUrl=`https://player.vimeo.com/video/${vimeoMatch[1]}`;
   }else if(url.match(/\.(mp4|webm|ogg|mov)$/i)){
-    wtSend('insertHTML',{html:`<video src="${url}" controls class="w-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block"></video>`});
+    wtInsertSmart(`<video src="${url}" controls class="w-inserted" style="max-width:100%;height:auto;border-radius:12px;margin:10px 0;display:block"></video>`);
     wtClosePop();
     webToast('✅ סרטון נוסף');
     return;
   }else{
     webToast('⚠️ רק YouTube, Vimeo או MP4',true);return;
   }
-  wtSend('insertHTML',{html:`<div class="w-inserted" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin:10px 0"><iframe src="${embedUrl}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:12px" allowfullscreen></iframe></div>`});
+  wtInsertSmart(`<div class="w-inserted" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin:10px 0"><iframe src="${embedUrl}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:12px" allowfullscreen></iframe></div>`);
   wtClosePop();
   webToast('✅ סרטון נוסף');
 }
@@ -6092,7 +7746,7 @@ function wtInsertButton(){
     3:'background:linear-gradient(135deg,#f472b6,#db2777);box-shadow:0 4px 14px rgba(219,39,119,.35)'
   };
   const style=styles[_wtBtnStyle]||styles[1];
-  wtSend('insertHTML',{html:`<div class="w-inserted" style="text-align:center;margin:16px 0"><a href="${url}" target="_blank" rel="noopener" style="display:inline-block;${style};color:white;padding:14px 32px;border-radius:14px;text-decoration:none;font-weight:800;font-size:16px">${text}</a></div>`});
+  wtInsertSmart(`<div class="w-inserted" style="text-align:center;margin:16px 0"><a href="${url}" target="_blank" rel="noopener" style="display:inline-block;${style};color:white;padding:14px 32px;border-radius:14px;text-decoration:none;font-weight:800;font-size:16px">${text}</a></div>`);
   wtClosePop();
   webToast('✅ כפתור נוסף');
 }
@@ -6103,13 +7757,64 @@ function wtInsertEmoji(emoji){
 }
 
 function wtInsertDivider(){
-  wtSend('insertHTML',{html:`<hr class="w-inserted" style="border:0;border-top:1.5px solid #e5e7eb;margin:20px 0">`});
+  // Kept for backward compat — defaults to thin style
+  wtApplyDivider('thin');
+}
+
+function wtApplyDivider(style){
+  const styles={
+    thin:`<hr class="w-inserted" style="border:0;border-top:1px solid #d1d5db;margin:20px 0">`,
+    bold:`<hr class="w-inserted" style="border:0;border-top:3px solid #7c3aed;margin:24px 0">`,
+    dashed:`<hr class="w-inserted" style="border:0;border-top:2px dashed #a78bfa;margin:22px 0">`,
+    gradient:`<div class="w-inserted" style="height:2px;background:linear-gradient(90deg,transparent,#7c3aed,transparent);margin:24px 0"></div>`,
+    dots:`<div class="w-inserted" style="text-align:center;color:#9ca3af;letter-spacing:10px;font-size:20px;margin:24px 0">• • •</div>`,
+    star:`<div class="w-inserted" style="text-align:center;color:#f59e0b;font-size:16px;margin:24px 0">✨ ✨ ✨</div>`
+  };
+  const html=styles[style]||styles.thin;
+  wtInsertSmart(html);
   webToast('✅ מפריד נוסף');
 }
 
+// ── Quick insert from the insert-menu (between sections) ──
+function wtInsertQuick(kind){
+  const templates={
+    text:`<p class="w-inserted" style="padding:14px 18px;font-size:16px;line-height:1.6;color:#374151">טקסט חדש — לחצי כאן כדי לערוך</p>`,
+    heading:`<h2 class="w-inserted" style="padding:12px 18px;font-size:28px;font-weight:900;color:#1e1b4b;text-align:center">כותרת חדשה</h2>`,
+    divider:`<hr class="w-inserted" style="border:0;border-top:1.5px solid #e5e7eb;margin:24px 18px">`,
+    spacer:`<div class="w-inserted" style="height:40px"></div>`,
+    card:`<div class="w-inserted" style="padding:20px;margin:14px;background:linear-gradient(135deg,#faf5ff,#ede9fe);border-radius:16px;box-shadow:0 4px 14px rgba(124,58,237,.1);text-align:center"><div style="font-size:28px;margin-bottom:8px">✨</div><div style="font-size:18px;font-weight:900;color:#4c1d95;margin-bottom:6px">כותרת הכרטיס</div><div style="font-size:14px;color:#6b7280;line-height:1.6">תיאור קצר של מה שהכרטיס מציג ללקוחות</div></div>`
+  };
+  if(templates[kind]){
+    wtSend('insertAtPoint',{html:templates[kind]});
+    wtClosePop();
+    webToast('✅ נוסף!');
+    return;
+  }
+  // For image/video/button — open their existing popups
+  wtClosePop();
+  setTimeout(()=>{
+    // Mark a flag so the image/video/button popup inserts at the point, not at cursor
+    _wtUseInsertPoint=true;
+    wtOpenPop(kind==='image'?'media':kind);
+  },250);
+}
+
+function wtCancelInsert(){
+  wtSend('clearInsertPoint');
+  wtClosePop();
+}
+
+let _wtUseInsertPoint=false;
+
 function wtInsertSpacer(){
-  wtSend('insertHTML',{html:`<div class="w-inserted" style="height:30px"></div>`});
-  webToast('✅ רווח נוסף');
+  // Kept for backward compat — defaults to 30px
+  wtApplySpacer(30);
+}
+
+function wtApplySpacer(height){
+  const h=Math.max(5,Math.min(500,parseInt(height)||30));
+  wtInsertSmart(`<div class="w-inserted" style="height:${h}px"></div>`);
+  webToast(`✅ רווח של ${h}px נוסף`);
 }
 
 function wtConfirmDelete(){
@@ -6117,6 +7822,13 @@ function wtConfirmDelete(){
     wtSend('deleteSelected');
     webToast('🗑 נמחק');
   }
+}
+
+// Reset entire page to the original loaded state
+function wtConfirmReset(){
+  if(!confirm('⚠️ אזהרה: פעולה זו תמחק את כל השינויים שעשית ותחזיר את האתר למצבו המקורי (כפי שנטען בפתיחה).\n\nפעולה זו ניתנת לביטול עם ↶ (undo) אחר כך.\n\nלהמשיך?'))return;
+  wtSend('resetAll');
+  webToast('🔄 האתר חזר למצב המקורי');
 }
 
 function wtReplaceImageFile(e){
@@ -6151,7 +7863,354 @@ function wtSetSize(width){
   webToast('✅ גודל עודכן');
 }
 
+// ═══════════════════════════════════════════════════════
+// ═══ ⚡ Website Performance Analyzer + Optimizer     ═══
+// ═══════════════════════════════════════════════════════
+
+// Analyze HTML content and return performance report
+function analyzeWebPerf(html){
+  if(!html){
+    return {score:0,issues:[],stats:{},hasData:false};
+  }
+  const stats={
+    totalSize:html.length,
+    totalKB:(html.length/1024).toFixed(1),
+    imgCount:0,
+    base64Images:0,
+    base64Size:0,
+    videoCount:0,
+    base64Videos:0,
+    externalScripts:0,
+    externalStyles:0,
+    googleFonts:0,
+    inlineStyles:0,
+    inlineScriptsSize:0,
+    commentsSize:0,
+    hasLazyLoad:false,
+    hasViewportMeta:false,
+    hasPreconnect:false,
+    hasCacheHeaders:false
+  };
+  const issues=[];
+  
+  // Parse structure
+  const doc=new DOMParser().parseFromString(html,'text/html');
+  
+  // Images
+  const imgs=doc.querySelectorAll('img');
+  stats.imgCount=imgs.length;
+  imgs.forEach(img=>{
+    const src=img.getAttribute('src')||'';
+    if(src.startsWith('data:image')){
+      stats.base64Images++;
+      stats.base64Size+=src.length;
+    }
+    if(img.hasAttribute('loading')&&img.getAttribute('loading')==='lazy'){
+      stats.hasLazyLoad=true;
+    }
+  });
+  
+  // Videos
+  const vids=doc.querySelectorAll('video');
+  stats.videoCount=vids.length;
+  vids.forEach(v=>{
+    const src=v.getAttribute('src')||'';
+    if(src.startsWith('data:video')){
+      stats.base64Videos++;
+      stats.base64Size+=src.length;
+    }
+  });
+  
+  // Scripts
+  const scripts=doc.querySelectorAll('script');
+  scripts.forEach(s=>{
+    const src=s.getAttribute('src');
+    if(src){
+      stats.externalScripts++;
+    }else{
+      stats.inlineScriptsSize+=(s.textContent||'').length;
+    }
+  });
+  
+  // Styles
+  const links=doc.querySelectorAll('link[rel="stylesheet"]');
+  stats.externalStyles=links.length;
+  links.forEach(l=>{
+    const href=l.getAttribute('href')||'';
+    if(href.includes('fonts.googleapis.com')||href.includes('fonts.gstatic.com')){
+      stats.googleFonts++;
+    }
+  });
+  
+  const styles=doc.querySelectorAll('style');
+  styles.forEach(s=>stats.inlineStyles+=(s.textContent||'').length);
+  
+  // Meta
+  stats.hasViewportMeta=!!doc.querySelector('meta[name="viewport"]');
+  stats.hasPreconnect=!!doc.querySelector('link[rel="preconnect"]');
+  
+  // Comments rough estimate
+  const commentMatches=html.match(/<!--[\s\S]*?-->/g)||[];
+  stats.commentsSize=commentMatches.reduce((s,c)=>s+c.length,0);
+  
+  // ── Build issues list ──
+  if(stats.base64Images>0){
+    issues.push({
+      severity:stats.base64Images>2?'high':'medium',
+      icon:'🖼',
+      title:`${stats.base64Images} תמונות מוטמעות בקוד (Base64)`,
+      detail:`גודל כולל של תמונות מוטמעות: ${(stats.base64Size/1024).toFixed(0)}KB. כל ביקור באתר מוריד את זה מחדש, גם אם זה אותה תמונה בדף אחר.`,
+      fix:'העלי תמונות כ-<b>קבצים נפרדים</b> (למשל ל-imgbb.com או ל-GitHub) וקשרי אותן דרך URL. האתר יהיה מהיר פי 3-5.',
+      autoFix:false
+    });
+  }
+  if(stats.base64Videos>0){
+    issues.push({
+      severity:'high',
+      icon:'🎬',
+      title:`${stats.base64Videos} סרטונים מוטמעים בקוד`,
+      detail:`סרטונים מוטמעים מאטים את האתר משמעותית. גודל: ${(stats.base64Size/1024/1024).toFixed(1)}MB.`,
+      fix:'העלי את הסרטון ל-<b>YouTube</b> (Unlisted — לא לחיפוש) והחליפי לקוד הטמעה של iframe. האתר יקל פי 10.',
+      autoFix:false
+    });
+  }
+  if(stats.imgCount>0&&!stats.hasLazyLoad){
+    issues.push({
+      severity:'medium',
+      icon:'⚡',
+      title:`${stats.imgCount} תמונות ללא טעינה עצלה (lazy loading)`,
+      detail:`התמונות נטענות כולן בבת אחת גם אם לא רואים אותן. לקוחה שפותחת את האתר מחכה עד שהכל יירד.`,
+      fix:'הוספת <code>loading="lazy"</code> לכל התמונות — תמונה תיטען רק כשהיא מגיעה למסך. <b>ניתן לתיקון אוטומטי</b> ⚡',
+      autoFix:'addLazyLoading'
+    });
+  }
+  if(stats.googleFonts>0){
+    issues.push({
+      severity:'low',
+      icon:'🔤',
+      title:`${stats.googleFonts} גופנים חיצוניים מ-Google Fonts`,
+      detail:`גופנים חיצוניים יפים אבל מוסיפים 200-400ms לטעינה. הדפדפן חייב להמתין עד שהם יורדים.`,
+      fix:'הוסף <code>&lt;link rel="preconnect" href="https://fonts.gstatic.com"&gt;</code> לתוך <code>&lt;head&gt;</code>. מקצר זמן טעינה. <b>ניתן לתיקון אוטומטי</b> ⚡',
+      autoFix:'addFontPreconnect'
+    });
+  }
+  if(stats.commentsSize>500){
+    issues.push({
+      severity:'low',
+      icon:'💬',
+      title:`הערות בקוד — ${(stats.commentsSize/1024).toFixed(1)}KB`,
+      detail:`יש הערות HTML בקוד שלקוחות לא רואות אבל הדפדפן עדיין מוריד.`,
+      fix:'ניתן להסיר אוטומטית <b>בלי לפגוע בפונקציונליות</b>. <b>ניתן לתיקון אוטומטי</b> ⚡',
+      autoFix:'removeComments'
+    });
+  }
+  if(stats.inlineStyles>50000){
+    issues.push({
+      severity:'low',
+      icon:'🎨',
+      title:`CSS פנימי גדול — ${(stats.inlineStyles/1024).toFixed(0)}KB`,
+      detail:`CSS בתוך הקובץ עצמו. אי אפשר לשמור אותו במטמון בנפרד.`,
+      fix:'בעתיד: העבירי את ה-CSS לקובץ נפרד. כרגע זה יחסית קטן ולא קריטי.',
+      autoFix:false
+    });
+  }
+  if(!stats.hasViewportMeta){
+    issues.push({
+      severity:'medium',
+      icon:'📱',
+      title:'אין meta viewport',
+      detail:'בלי זה האתר לא מתאים את עצמו לטלפון — נראה כמו מחשב קטן. <b>ניתן לתיקון אוטומטי</b>',
+      fix:'הוספת <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code>. <b>ניתן לתיקון אוטומטי</b> ⚡',
+      autoFix:'addViewport'
+    });
+  }
+  if(stats.totalSize>500*1024){
+    issues.push({
+      severity:'high',
+      icon:'📦',
+      title:`האתר גדול מאוד — ${stats.totalKB}KB`,
+      detail:`אתר מעל 500KB נחשב "כבד". קליינט על 4G יחכה 3-5 שניות עד שיראה משהו.`,
+      fix:'הסרת סרטונים/תמונות Base64 תוריד את הגודל דרמטית. שקלי גם פיצול לכמה דפים קטנים.',
+      autoFix:false
+    });
+  }
+  
+  // ── Calculate score (0-100) ──
+  let score=100;
+  issues.forEach(i=>{
+    if(i.severity==='high')score-=20;
+    else if(i.severity==='medium')score-=10;
+    else score-=5;
+  });
+  score=Math.max(0,Math.min(100,score));
+  
+  return {score,issues,stats,hasData:true};
+}
+
+// Auto-fix: add loading="lazy" to all images
+function webOptAddLazyLoading(html){
+  // Skip first 2 images (above the fold) so they load immediately
+  let count=0;
+  return html.replace(/<img\b([^>]*)>/gi,(match,attrs)=>{
+    count++;
+    if(count<=2)return match; // keep hero images eager
+    if(/\bloading\s*=/i.test(attrs))return match; // already has loading attr
+    return `<img${attrs} loading="lazy" decoding="async">`;
+  });
+}
+
+// Auto-fix: add preconnect for Google Fonts
+function webOptAddFontPreconnect(html){
+  if(html.includes('rel="preconnect" href="https://fonts.gstatic.com"'))return html;
+  const preconnect='\n    <link rel="preconnect" href="https://fonts.googleapis.com">\n    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
+  if(html.includes('<head>'))return html.replace('<head>','<head>'+preconnect);
+  return html;
+}
+
+// Auto-fix: remove HTML comments (but keep IE conditionals)
+function webOptRemoveComments(html){
+  // Remove <!-- ... --> but preserve conditional comments starting with <!--[if
+  return html.replace(/<!--(?!\[if)[\s\S]*?-->/g,'');
+}
+
+// Auto-fix: add viewport meta
+function webOptAddViewport(html){
+  if(html.match(/<meta[^>]*name=["']viewport["']/i))return html;
+  const vp='\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">';
+  if(html.includes('<head>'))return html.replace('<head>','<head>'+vp);
+  return html;
+}
+
+// Apply all automatic fixes at once
+function webOptimizeAll(html){
+  let out=html;
+  const applied=[];
+  if(!out.match(/<meta[^>]*name=["']viewport["']/i)){
+    out=webOptAddViewport(out);applied.push('viewport');
+  }
+  const hasGF=/fonts\.googleapis\.com|fonts\.gstatic\.com/.test(out);
+  if(hasGF&&!out.includes('rel="preconnect" href="https://fonts.gstatic.com"')){
+    out=webOptAddFontPreconnect(out);applied.push('preconnect');
+  }
+  // Count imgs without loading attr
+  const imgsWithoutLazy=(out.match(/<img\b(?![^>]*\bloading\s*=)[^>]*>/gi)||[]).length;
+  if(imgsWithoutLazy>2){
+    out=webOptAddLazyLoading(out);applied.push('lazy loading');
+  }
+  const commentsSize=(out.match(/<!--(?!\[if)[\s\S]*?-->/g)||[]).reduce((s,c)=>s+c.length,0);
+  if(commentsSize>500){
+    out=webOptRemoveComments(out);applied.push('comments');
+  }
+  return {html:out,applied};
+}
+
+// Apply a single optimization
+function webApplySingleFix(fixName){
+  if(!_webEdit||!_webEdit.loaded||!_webEdit.rawHtml){
+    webToast('⚠️ פתחי קודם את עורך האתר וטעני אותו',true);
+    return;
+  }
+  const fns={
+    addLazyLoading:webOptAddLazyLoading,
+    addFontPreconnect:webOptAddFontPreconnect,
+    removeComments:webOptRemoveComments,
+    addViewport:webOptAddViewport
+  };
+  const fn=fns[fixName];
+  if(!fn){webToast('❌ תיקון לא מזוהה',true);return;}
+  const before=_webEdit.rawHtml.length;
+  _webEdit.rawHtml=fn(_webEdit.rawHtml);
+  const after=_webEdit.rawHtml.length;
+  const diff=before-after;
+  webToast(`✅ התיקון הוחל${diff>0?` · נחסך ${(diff/1024).toFixed(1)}KB`:''}`);
+  // Refresh the analysis panel
+  if(typeof hRender==='function')hRender();
+}
+
+// Apply all fixes
+function webApplyAllFixes(){
+  if(!_webEdit||!_webEdit.loaded||!_webEdit.rawHtml){
+    webToast('⚠️ פתחי קודם את עורך האתר וטעני אותו',true);
+    return;
+  }
+  const before=_webEdit.rawHtml.length;
+  const {html,applied}=webOptimizeAll(_webEdit.rawHtml);
+  _webEdit.rawHtml=html;
+  const diff=before-html.length;
+  if(applied.length===0){
+    webToast('✅ הכל כבר מיטוב — אין מה לתקן');
+  }else{
+    webToast(`✅ ${applied.length} אופטימיזציות הוחלו${diff>0?` · נחסך ${(diff/1024).toFixed(1)}KB`:''}`);
+  }
+  if(typeof hRender==='function')hRender();
+}
+
 function renderWebsiteTab(){
+  // If site is loaded, show analysis
+  let analysisHTML='';
+  if(_webEdit&&_webEdit.loaded&&_webEdit.rawHtml){
+    const a=analyzeWebPerf(_webEdit.rawHtml);
+    const scoreColor=a.score>=80?'#059669':a.score>=60?'#f59e0b':'#dc2626';
+    const scoreLabel=a.score>=90?'מצוין':a.score>=75?'טוב':a.score>=60?'בינוני':a.score>=40?'חלש':'גרוע';
+    const scoreRing=`conic-gradient(${scoreColor} ${a.score*3.6}deg, #f3f4f6 0deg)`;
+    
+    analysisHTML=`<div class="web-perf-card">
+      <div class="web-perf-hdr">
+        <div class="web-perf-score" style="background:${scoreRing}">
+          <div class="web-perf-score-inner">
+            <div class="web-perf-score-num" style="color:${scoreColor}">${a.score}</div>
+            <div class="web-perf-score-lbl">מתוך 100</div>
+          </div>
+        </div>
+        <div class="web-perf-info">
+          <div class="web-perf-label">⚡ ביצועי האתר</div>
+          <div class="web-perf-title" style="color:${scoreColor}">${scoreLabel}</div>
+          <div class="web-perf-sub">${a.issues.length?`${a.issues.length} המלצות לשיפור`:'הכל נראה מעולה!'}</div>
+        </div>
+      </div>
+      
+      <div class="web-perf-stats">
+        <div class="web-perf-stat"><div class="web-perf-stat-val">${a.stats.totalKB}</div><div class="web-perf-stat-lbl">KB גודל</div></div>
+        <div class="web-perf-stat"><div class="web-perf-stat-val">${a.stats.imgCount}</div><div class="web-perf-stat-lbl">תמונות</div></div>
+        <div class="web-perf-stat"><div class="web-perf-stat-val">${a.stats.videoCount}</div><div class="web-perf-stat-lbl">סרטונים</div></div>
+        <div class="web-perf-stat"><div class="web-perf-stat-val">${a.stats.externalScripts+a.stats.externalStyles}</div><div class="web-perf-stat-lbl">קבצים חיצוניים</div></div>
+      </div>
+      
+      ${a.issues.length?`
+        <div class="web-perf-section-title">🔧 המלצות לשיפור</div>
+        ${a.issues.map(iss=>`
+          <div class="web-perf-issue sev-${iss.severity}">
+            <div class="web-perf-issue-hdr">
+              <div class="web-perf-issue-ico">${iss.icon}</div>
+              <div class="web-perf-issue-body">
+                <div class="web-perf-issue-title">${iss.title}</div>
+                <div class="web-perf-issue-detail">${iss.detail}</div>
+              </div>
+            </div>
+            <div class="web-perf-issue-fix">${iss.fix}</div>
+            ${iss.autoFix?`<button class="web-perf-fix-btn" onclick="webApplySingleFix('${iss.autoFix}')">⚡ תקן אוטומטית</button>`:''}
+          </div>
+        `).join('')}
+        
+        <button class="web-perf-fix-all" onclick="webApplyAllFixes()">
+          <span>✨</span><span>החל את כל האופטימיזציות האוטומטיות</span>
+        </button>
+      `:`
+        <div class="web-perf-excellent">
+          <div class="web-perf-excellent-ico">🎉</div>
+          <div class="web-perf-excellent-title">מעולה! האתר מוטב היטב</div>
+          <div class="web-perf-excellent-sub">לא נמצאו בעיות ביצועים משמעותיות. תמשיכי כך!</div>
+        </div>
+      `}
+    </div>`;
+  }else{
+    analysisHTML=`<div class="web-perf-prompt">
+      <div class="web-perf-prompt-ico">⚡</div>
+      <div class="web-perf-prompt-title">בדיקת ביצועי האתר</div>
+      <div class="web-perf-prompt-sub">לחצי "ערוך אתר" כדי לטעון את האתר — אחזור לכאן ויופיע דוח מלא עם המלצות לשיפור מהירות</div>
+    </div>`;
+  }
+  
   return `<div class="web-status">
     <div class="web-status-ico">🌐</div>
     <div class="web-status-body">
@@ -6164,6 +8223,7 @@ function renderWebsiteTab(){
     <a class="web-action-btn primary" href="${WEB_LIVE_URL}" target="_blank" rel="noopener">👁 פתח אתר חי</a>
     <button class="web-action-btn" onclick="webOpenEditor()">✏️ ערוך אתר</button>
   </div>
+  ${analysisHTML}
   <div class="web-deploy-card">
     <div class="web-deploy-title">🚀 פרסום אתר חדש</div>
     <div class="web-deploy-sub">בחרי קובץ HTML מהמכשיר — יעלה אוטומטית לגיטהאב וישתקף באתר החי תוך דקה</div>
@@ -6183,6 +8243,56 @@ function renderWebsiteTab(){
 }
 
 // Navigate from home feature tiles to the right spot
+// ═══ 30 Daily AI Tips — rotating pool for the front card ═══
+const AI_DAILY_TIPS=[
+  {i:'🎯',t:'לקוחות קבועות שלא חזרו 2-3 חודשים — <b>שלחי הודעה אישית</b>. 40% חוזרות כשמרגישות שחסר להן.'},
+  {i:'💎',t:'כל לקוחה שמגיעה פעם 3 — <b>הציעי חבילה</b> של 5 טיפולים. הן יקבלו הנחה, את תקבלי מחויבות.'},
+  {i:'📅',t:'יום חלש בשבוע? <b>הנחה של 15%</b> רק ליום ההוא. עדיף להוריד מחיר מלשבת בחוסר תפוסה.'},
+  {i:'💬',t:'אחרי כל טיפול — <b>בקשי ביקורת בגוגל</b>. 10 ביקורות חדשות = עלייה בחיפושים במקומיים.'},
+  {i:'💳',t:'חוב פתוח מעל חודש? <b>תזכורת ווטסאפ עדינה</b>: "היי, נשאר חיוב של X, נוח לסגור בביט?"'},
+  {i:'⭐',t:'לקוחה ממליצה חברה — <b>תני לשתיהן 10% הנחה</b>. זה הדרך הכי זולה למצוא לקוחות חדשות.'},
+  {i:'📸',t:'תמונות <b>לפני/אחרי</b> (באישור הלקוחה!) בסטורי — הוכחה חזקה יותר מכל פרסום ששילמת עליו.'},
+  {i:'⏰',t:'שלחי תזכורת <b>24 שעות לפני כל תור</b>. זה מוריד ביטולים ב-60%. אוטומציה = פחות פספוסים.'},
+  {i:'🎁',t:'ליום הולדת של לקוחה — <b>טיפול בחצי מחיר</b>. היא תספר את זה לכולן. שיווק חינם ואותנטי.'},
+  {i:'💅',t:'מזוהמות בשגרה. <b>שירות נלווה</b> חינם (תה צמחים, לק יבש) מרומם את החוויה בלי עלות גדולה.'},
+  {i:'📊',t:'פעם בחודש — <b>בדקי את הנתונים</b>. איזה טיפול הכי רווחי? איזה הכי פחות? תפסיקי את החלשים.'},
+  {i:'🌸',t:'לקוחה חדשה? <b>תוך 3 ימים</b> שלחי לה הודעה "איך את מרגישה? שאלות?". חוויה > שירות.'},
+  {i:'💰',t:'תעלי מחירים <b>פעם בשנה ב-5-10%</b>. הלקוחות יתאימו. את לא חייבת תמיד להישאר זולה.'},
+  {i:'🔄',t:'חבילה שהסתיימה? <b>יומיים לפני</b> שלחי הודעה "נותר לך עוד טיפול אחד, נקבע?" — מחדש 80%.'},
+  {i:'🌟',t:'לקוחת VIP (10+ ביקורים) — <b>הטבה ייחודית</b>: זימון ללא עלות, מתנה קטנה. נאמנות משתלמת.'},
+  {i:'📞',t:'לא ענו על הודעה? <b>אל תשלחי אותה שוב</b>. שלחי משהו אחר ("טיפ לשימור העור"). בלי הטרדה.'},
+  {i:'🤝',t:'שתפי פעולה עם <b>קוסמטיקאית/ספרית קרובה</b> — המלצות הדדיות. כל אחת מרוויחה.'},
+  {i:'📝',t:'כל שיחה עם לקוחה — <b>תעדי 2 הערות</b>. "אהבה את הניחוח", "ביקשה זמן קצר יותר". הם זוכרים.'},
+  {i:'🚫',t:'לקוחה שמבטלת 3 פעמים — <b>תבקשי תשלום מראש</b> לתור הבא. מסננת לקוחות רציניות.'},
+  {i:'📱',t:'פרופיל אינסטגרם — <b>לפחות 3 פוסטים בשבוע</b>. אחד טכני, אחד אישי, אחד ביקורת מלקוחה.'},
+  {i:'🎨',t:'רינת — <b>הסטורי שלך</b> יותר חזק מהפיד. 500 אנשים רואים סטורי, 50 רואים פוסט.'},
+  {i:'🧘',t:'ביום עמוס — <b>קחי 5 דקות בין לקוחות</b>. זה משפר את החוויה שלהן, לא רק שלך.'},
+  {i:'📈',t:'טיפול חדש שהכנסת? <b>תני ל-5 לקוחות קבועות</b> בחינם לניסיון. הן יספרו לאחרות.'},
+  {i:'🎯',t:'שיעור ביטולים מעל 10%? <b>הוסיפי חיוב של 50 ₪</b> על ביטול פחות מ-4 שעות לפני.'},
+  {i:'💡',t:'טיפול של שעה = מחיר של שעתיים <b>אם כולל ייעוץ עור</b>. ערך > זמן.'},
+  {i:'🎪',t:'<b>אירוע קטן</b> פעם ברבעון — "ערב בוטיק", 5-8 לקוחות קבועות, הדגמות, הנחות. קהילה > עסקה.'},
+  {i:'🔐',t:'שמרי <b>גיבוי של כל הלקוחות</b> — שמות, טלפונים, היסטוריה. אובדן נתונים = אובדן עסק.'},
+  {i:'🌊',t:'עונה חלשה? <b>אל תעצרי שיווק</b>. להפך — אז הכי חשוב להופיע. קיץ/חגים = הזדמנות.'},
+  {i:'💆‍♀️',t:'מלא/ריק? <b>חבילות "זוגיות"</b> — 2 לקוחות ביחד = הנחה. מביאות אחת את השנייה.'},
+  {i:'✨',t:'לקוחה מרוצה? <b>בקשי המלצה ספציפית</b> — "את מכירה מישהי שלא נוח לה עם השיער?". ישירות.'}
+];
+
+// Get today's tip deterministically based on day-of-year
+function getTodayTip(){
+  const now=new Date();
+  const start=new Date(now.getFullYear(),0,0);
+  const diff=now-start;
+  const dayOfYear=Math.floor(diff/(1000*60*60*24));
+  const idx=dayOfYear%AI_DAILY_TIPS.length;
+  return {...AI_DAILY_TIPS[idx],num:idx+1,date:now};
+}
+
+function formatTipDate(d){
+  const day=d.getDate().toString().padStart(2,'0');
+  const month=(d.getMonth()+1).toString().padStart(2,'0');
+  return `${day}/${month}`;
+}
+
 function goFeat(feat){
   S.screen='diary';S.lModal=null;
   if(feat==='laser'){S.tab=1;render();diaryTap();}

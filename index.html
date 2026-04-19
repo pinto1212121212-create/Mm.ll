@@ -30,6 +30,11 @@
 <!-- ═══ Favicon (emoji-based for simplicity, no external files needed) ═══ -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📖%3C/text%3E%3C/svg%3E">
 
+<!-- ═══ Luxury serif font — Cormorant Garamond (same as Beit LaRegesh) ═══ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet">
+
 <title>היומן שלנו</title>
 
 <!-- ═══ Performance-First: System fonts only ═══
@@ -2640,6 +2645,830 @@ textarea:focus-visible,
 .hist-tab.active .hist-tab-badge.red{background:var(--danger-600);color:white}
 .hist-tab-badge.green{background:var(--success-100);color:var(--success-700)}
 .hist-tab.active .hist-tab-badge.green{background:var(--success-600);color:white}
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ LUXURY DARK OVERRIDE — Quick Action cards (4 gold tones)  ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+/* Transforms .lux-card from white → dark luxury like .lux-hero  */
+/* Each of the 4 cards gets its own gold tint (amber/rose/champagne/bronze) */
+
+.lux-grid .lux-card{
+  background:linear-gradient(180deg,#14100a 0%,#0a0805 100%)!important;
+  border:1px solid rgba(212,165,116,0.18)!important;
+  box-shadow:0 10px 28px -8px rgba(0,0,0,0.5),inset 0 1px 0 rgba(212,165,116,0.08)!important;
+  aspect-ratio:1/1.1;
+  overflow:hidden;
+  position:relative;
+}
+.lux-grid .lux-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(212,165,116,0.4)!important;
+  box-shadow:0 16px 36px -8px rgba(0,0,0,0.6),inset 0 1px 0 rgba(212,165,116,0.15)!important;
+}
+
+/* The inline-styled .lux-card-bg becomes a subtle gold glow at the top */
+.lux-grid .lux-card .lux-card-bg{
+  height:60%!important;
+  opacity:0.22;
+  filter:saturate(0.6) brightness(0.7);
+  mix-blend-mode:screen;
+}
+.lux-grid .lux-card .lux-card-bg::after{
+  background:linear-gradient(180deg,transparent 0%,rgba(10,8,5,0.5) 60%,rgba(10,8,5,0.95) 100%)!important;
+}
+
+/* Sparkle ✦ — gold */
+.lux-grid .lux-card .lux-card-sparkle{
+  color:rgba(212,165,116,0.8)!important;
+  font-size:13px;
+  text-shadow:0 1px 4px rgba(0,0,0,0.6);
+}
+
+/* Icon — larger, gold drop-shadow, slightly transparent so emoji colors subdue into gold warmth */
+.lux-grid .lux-card .lux-card-ico{
+  font-size:40px;
+  margin-top:-4px;
+  margin-bottom:14px;
+  filter:drop-shadow(0 4px 10px rgba(212,165,116,0.35));
+  position:relative;
+  z-index:2;
+}
+/* Gold ring around icon area */
+.lux-grid .lux-card .lux-card-ico::before{
+  content:'';
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:68px;height:68px;
+  border-radius:50%;
+  border:1px solid rgba(212,165,116,0.3);
+  pointer-events:none;
+}
+.lux-grid .lux-card .lux-card-ico::after{
+  content:'';
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:82px;height:82px;
+  border-radius:50%;
+  border:0.5px solid rgba(212,165,116,0.14);
+  pointer-events:none;
+}
+
+/* Title — gold serif */
+.lux-grid .lux-card .lux-card-title{
+  color:#e5c395!important;
+  font-family:'Cormorant Garamond','Georgia','Times New Roman',serif!important;
+  font-size:16px!important;
+  font-weight:500!important;
+  letter-spacing:-0.2px!important;
+  margin-bottom:6px!important;
+  text-shadow:0 1px 10px rgba(212,165,116,0.2);
+}
+.lux-grid .lux-card .lux-card-desc{
+  color:rgba(212,165,116,0.65)!important;
+  font-family:'Cormorant Garamond','Georgia',serif!important;
+  font-style:italic;
+  font-size:12px!important;
+  letter-spacing:0.2px!important;
+  line-height:1.45!important;
+  padding:0 6px;
+}
+
+/* Bottom gold line — more visible */
+.lux-grid .lux-card .lux-card-line{
+  background:linear-gradient(to left,transparent,rgba(212,165,116,0.55) 50%,transparent)!important;
+  opacity:0.7!important;
+  bottom:10px;
+  left:15%;right:15%;
+}
+.lux-grid .lux-card:hover .lux-card-line{opacity:1!important}
+
+/* Card body padding tweak */
+.lux-grid .lux-card .lux-card-body{padding:20px 14px 22px}
+
+/* ═══ Per-card gold variations — each keeps a distinct warmth ═══ */
+
+/* Card 1 — Review (amber champagne) */
+.lux-grid .lux-card:nth-child(1){
+  background:linear-gradient(180deg,#1a1410 0%,#0a0805 100%)!important;
+}
+.lux-grid .lux-card:nth-child(1) .lux-card-title{color:#f0d092!important}
+.lux-grid .lux-card:nth-child(1):hover{border-color:rgba(240,208,146,0.45)!important}
+
+/* Card 2 — Winback (rose gold) */
+.lux-grid .lux-card:nth-child(2){
+  background:linear-gradient(180deg,#181110 0%,#0a0605 100%)!important;
+}
+.lux-grid .lux-card:nth-child(2) .lux-card-title{color:#e5b38e!important}
+.lux-grid .lux-card:nth-child(2):hover{border-color:rgba(229,179,142,0.45)!important}
+
+/* Card 3 — Birthday (deep champagne) */
+.lux-grid .lux-card:nth-child(3){
+  background:linear-gradient(180deg,#141210 0%,#070605 100%)!important;
+}
+.lux-grid .lux-card:nth-child(3) .lux-card-title{color:#d4a574!important}
+.lux-grid .lux-card:nth-child(3):hover{border-color:rgba(212,165,116,0.45)!important}
+
+/* Card 4 — Story Ideas (bronze olive) */
+.lux-grid .lux-card:nth-child(4){
+  background:linear-gradient(180deg,#131410 0%,#070805 100%)!important;
+}
+.lux-grid .lux-card:nth-child(4) .lux-card-title{color:#c9a16f!important}
+.lux-grid .lux-card:nth-child(4):hover{border-color:rgba(201,161,111,0.45)!important}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ RELOCATED #2 — Full promo/tasks CSS from template          ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ LUXURY PROMO DESIGN — Beauty brand aesthetic           ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Section dividers (gold accent) ─── */
+.lux-sec-hdr{display:flex;align-items:center;gap:14px;margin:28px 4px 16px}
+.lux-sec-hdr-line{flex:1;height:1px;background:linear-gradient(to left,transparent,#d4a574 50%,transparent)}
+.lux-sec-hdr-title{font-size:12px;font-weight:600;color:#78350f;letter-spacing:3px;text-transform:uppercase;font-family:Georgia,'Times New Roman',serif;font-style:italic}
+
+/* ─── TODAY'S TASKS — refined white card ─── */
+.lux-tasks{background:linear-gradient(180deg,#ffffff 0%,#fdfbf8 100%);border:1px solid #e8dcc8;border-radius:20px;padding:22px 20px 20px;margin-bottom:20px;box-shadow:0 2px 12px rgba(120,83,15,0.04),0 0 0 1px rgba(212,165,116,0.05);position:relative;overflow:hidden}
+.lux-tasks::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to left,transparent,#d4a574 30%,#c9a878 70%,transparent)}
+.lux-tasks-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid #f3e8d8}
+.lux-tasks-hdr-left{flex:1;min-width:0}
+.lux-tasks-date{font-size:10.5px;font-weight:700;color:#a97b3c;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;font-family:Georgia,serif}
+.lux-tasks-title{font-size:20px;font-weight:300;color:#1a1a1a;letter-spacing:-0.3px;line-height:1.15;margin-bottom:4px;font-family:Georgia,'Times New Roman',serif}
+.lux-tasks-sub{font-size:11.5px;color:#8b8b8b;font-weight:400;letter-spacing:0.2px;font-family:inherit}
+.lux-tasks-prog{position:relative;width:52px;height:52px;flex-shrink:0;margin-right:12px}
+.lux-tasks-prog-svg{width:100%;height:100%;transform:rotate(0deg)}
+.lux-tasks-prog-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#78350f;letter-spacing:-0.5px;font-variant-numeric:tabular-nums;font-family:Georgia,serif}
+.lux-tasks-prog-num span{font-size:11px;opacity:0.6;margin:0 1px}
+
+.lux-tasks-list{display:flex;flex-direction:column;gap:2px}
+.lux-task{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid #f5ede0;transition:background 0.2s}
+.lux-task:last-child{border-bottom:none}
+.lux-task-done{opacity:0.55}
+.lux-task-done .lux-task-title{text-decoration:line-through;text-decoration-color:#c9a878;text-decoration-thickness:1px}
+
+.lux-task-check{width:22px;height:22px;border-radius:50%;border:1.5px solid #d4a574;background:transparent;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;padding:0;color:white;margin-top:2px}
+.lux-task-check:hover{border-color:#78350f;background:#fdfbf8}
+.lux-task-done .lux-task-check{background:#d4a574;border-color:#d4a574}
+.lux-task-check svg{width:12px;height:12px}
+
+.lux-task-body{flex:1;min-width:0}
+.lux-task-ch{font-size:10px;font-weight:700;color:#a97b3c;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:3px;font-family:inherit}
+.lux-task-title{font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:4px;letter-spacing:-0.1px;line-height:1.3;font-family:Georgia,serif}
+.lux-task-desc{font-size:12px;color:#6b6b6b;font-weight:400;line-height:1.5;letter-spacing:0.1px}
+
+.lux-task-actions{display:flex;flex-direction:column;gap:5px;flex-shrink:0;padding-top:1px}
+.lux-task-btn-ai{padding:6px 12px;background:linear-gradient(135deg,#d4a574,#b8915f);color:white;border:none;border-radius:14px;font-size:10.5px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;letter-spacing:0.3px;transition:all 0.2s;box-shadow:0 2px 6px rgba(184,145,95,0.25)}
+.lux-task-btn-ai:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(184,145,95,0.35)}
+.lux-task-btn-ai:active{transform:scale(0.97)}
+.lux-task-btn-open{padding:6px 12px;background:transparent;color:#78350f;border:1px solid #d4a574;border-radius:14px;font-size:10.5px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;letter-spacing:0.3px;transition:all 0.2s;text-decoration:none;text-align:center;display:inline-flex;align-items:center;justify-content:center}
+.lux-task-btn-open:hover{background:#d4a574;color:white}
+
+.lux-tasks-celebration{margin-top:14px;padding:14px;background:linear-gradient(135deg,#fef9f0,#fdf0d8);border:1px solid #d4a574;border-radius:14px;text-align:center;display:flex;align-items:center;justify-content:center;gap:10px}
+.lux-tasks-celebration-ico{font-size:18px;color:#d4a574}
+.lux-tasks-celebration-txt{font-size:13px;color:#78350f;font-weight:500;letter-spacing:0.3px;font-family:Georgia,serif}
+
+/* ─── LUXURY HERO — AI Post Generator ─── */
+.lux-hero{width:100%;background:linear-gradient(135deg,#1a1a1a 0%,#2d1b2e 50%,#1a1a1a 100%);color:#fdfbf8;border:1px solid #3a2a1a;border-radius:24px;padding:36px 24px;margin-bottom:24px;cursor:pointer;font-family:inherit;text-align:center;position:relative;overflow:hidden;transition:transform 0.3s ease,box-shadow 0.3s ease;box-shadow:0 10px 30px -8px rgba(0,0,0,0.4)}
+.lux-hero:hover{transform:translateY(-2px);box-shadow:0 16px 40px -8px rgba(0,0,0,0.5)}
+.lux-hero:active{transform:translateY(-1px) scale(0.995)}
+
+.lux-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 120% 80% at 50% 0%,rgba(212,165,116,0.15),transparent 60%);pointer-events:none}
+.lux-hero::after{content:'';position:absolute;inset:1px;border-radius:23px;background:linear-gradient(135deg,transparent 0%,transparent 45%,rgba(212,165,116,0.08) 50%,transparent 55%,transparent 100%);background-size:200% 200%;animation:luxShimmer 8s ease-in-out infinite;pointer-events:none}
+@keyframes luxShimmer{
+  0%,100%{background-position:200% 0%}
+  50%{background-position:-100% 0%}
+}
+
+.lux-hero-ornament{display:flex;align-items:center;gap:12px;justify-content:center;position:relative;z-index:1}
+.lux-hero-ornament-top{margin-bottom:20px}
+.lux-hero-ornament-bot{margin-top:20px}
+.lux-line{flex:1;max-width:80px;height:1px;background:linear-gradient(to left,transparent,#d4a574);opacity:0.6}
+.lux-hero-ornament-bot .lux-line{background:linear-gradient(to right,transparent,#d4a574)}
+.lux-diamond{color:#d4a574;font-size:12px;letter-spacing:1px}
+.lux-diamond.small{font-size:9px;opacity:0.7}
+
+.lux-hero-kicker{font-size:10.5px;font-weight:600;color:#d4a574;letter-spacing:3.5px;text-transform:uppercase;margin-bottom:10px;font-family:Georgia,serif;font-style:italic;position:relative;z-index:1}
+.lux-hero-title{font-size:34px;font-weight:300;color:#fdfbf8;letter-spacing:-1px;line-height:1;font-family:Georgia,'Times New Roman',serif;margin-bottom:14px;position:relative;z-index:1}
+.lux-hero-accent{font-size:10px;color:#d4a574;letter-spacing:2px;margin-bottom:14px;position:relative;z-index:1;opacity:0.8}
+.lux-hero-desc{font-size:13px;color:rgba(253,251,248,0.75);font-weight:300;line-height:1.75;letter-spacing:0.3px;margin-bottom:24px;position:relative;z-index:1;font-family:Georgia,serif}
+
+.lux-hero-cta{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:transparent;border:1px solid #d4a574;border-radius:2px;color:#d4a574;font-size:11.5px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;position:relative;z-index:1;transition:all 0.25s ease;font-family:inherit}
+.lux-hero:hover .lux-hero-cta{background:#d4a574;color:#1a1a1a}
+.lux-hero-cta-arrow{font-size:14px;transition:transform 0.25s ease}
+.lux-hero:hover .lux-hero-cta-arrow{transform:translateX(-4px)}
+
+/* ─── LUXURY GRID — Quick Actions ─── */
+.lux-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px}
+.lux-card{background:#ffffff;border:none;border-radius:18px;padding:0;cursor:pointer;font-family:inherit;position:relative;overflow:hidden;aspect-ratio:1/1.05;display:flex;flex-direction:column;transition:transform 0.25s ease,box-shadow 0.25s ease;box-shadow:0 2px 8px rgba(0,0,0,0.05),0 0 0 1px rgba(0,0,0,0.03)}
+.lux-card:hover{transform:translateY(-3px);box-shadow:0 12px 24px -4px rgba(0,0,0,0.12),0 0 0 1px rgba(0,0,0,0.03)}
+.lux-card:active{transform:translateY(-1px) scale(0.98)}
+
+.lux-card-bg{position:absolute;top:0;left:0;right:0;height:45%;pointer-events:none}
+.lux-card-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.1) 0%,transparent 30%,rgba(255,255,255,0.1) 70%,rgba(255,255,255,0.3) 100%)}
+
+.lux-card-sparkle{position:absolute;top:10px;right:12px;font-size:12px;color:rgba(255,255,255,0.7);letter-spacing:1px;z-index:2;text-shadow:0 1px 2px rgba(0,0,0,0.2)}
+
+.lux-card-body{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:16px 14px 20px;text-align:center}
+.lux-card-ico{font-size:34px;line-height:1;margin-top:-8px;margin-bottom:10px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.15));position:relative;z-index:1}
+.lux-card-title{font-size:14px;font-weight:500;color:#1a1a1a;letter-spacing:-0.1px;line-height:1.2;margin-bottom:4px;font-family:Georgia,serif}
+.lux-card-desc{font-size:11px;color:#8b8b8b;font-weight:400;line-height:1.4;letter-spacing:0.1px}
+.lux-card-line{position:absolute;bottom:0;left:20%;right:20%;height:1px;background:linear-gradient(to left,transparent,#d4a574 50%,transparent);opacity:0.4;transition:opacity 0.2s}
+.lux-card:hover .lux-card-line{opacity:0.8}
+
+
+
+/* ─── Luxury overrides for Post Generator Popup ─── */
+.pg-sheet{background:#fdfbf8!important}
+.pg-hdr{background:linear-gradient(135deg,#1a1a1a,#2d1b2e)!important;padding:22px 20px!important}
+.pg-hdr-ico{background:rgba(212,165,116,0.2)!important;border:1px solid rgba(212,165,116,0.3)!important;color:#d4a574!important}
+.pg-hdr-title{font-family:Georgia,serif!important;font-weight:400!important;font-size:18px!important;letter-spacing:-0.3px!important}
+.pg-hdr-sub{color:rgba(212,165,116,0.8)!important;letter-spacing:2px!important;text-transform:uppercase!important;font-size:9.5px!important;font-weight:600!important}
+.pg-close{background:rgba(212,165,116,0.2)!important;border:1px solid rgba(212,165,116,0.3)!important}
+.pg-close:hover{background:#d4a574!important;color:#1a1a1a!important}
+
+.pg-sec-label{font-family:Georgia,serif!important;font-style:italic!important;color:#78350f!important;font-size:13px!important;letter-spacing:0.2px!important;font-weight:500!important}
+
+.pg-ch-btn{background:white!important;border-color:#e8dcc8!important;font-weight:500!important;transition:all 0.2s!important;font-family:inherit!important}
+.pg-ch-btn:hover:not(.on){border-color:#d4a574!important;color:#78350f!important}
+.pg-ch-btn.on{background:linear-gradient(135deg,#d4a574,#b8915f)!important;border-color:#b8915f!important;box-shadow:0 4px 12px rgba(184,145,95,0.3)!important}
+
+.pg-goal-btn{background:white!important;border-color:#e8dcc8!important}
+.pg-goal-btn:hover:not(.on){border-color:#d4a574!important}
+.pg-goal-btn.on{background:#fdf9f1!important;border-color:#d4a574!important;box-shadow:inset 0 0 0 1px #d4a574!important}
+.pg-goal-btn.on .pg-goal-l{color:#78350f!important}
+
+.pg-textarea{background:white!important;border-color:#e8dcc8!important;font-family:inherit!important}
+.pg-textarea:focus{border-color:#d4a574!important;box-shadow:0 0 0 3px rgba(212,165,116,0.15)!important}
+
+.pg-gen-btn{background:linear-gradient(135deg,#1a1a1a,#2d1b2e)!important;color:#d4a574!important;border:1px solid #d4a574!important;letter-spacing:2.5px!important;text-transform:uppercase!important;font-size:12px!important;font-weight:600!important;box-shadow:0 6px 16px -4px rgba(0,0,0,0.3)!important}
+.pg-gen-btn:hover{background:linear-gradient(135deg,#d4a574,#b8915f)!important;color:#1a1a1a!important;border-color:#d4a574!important;box-shadow:0 10px 22px -4px rgba(184,145,95,0.4)!important}
+
+.pg-spinner{border-color:#f5ede0!important;border-top-color:#d4a574!important}
+.pg-loading-text{color:#78350f!important;font-family:Georgia,serif!important;font-weight:500!important}
+
+.pg-results-title{color:#78350f!important;font-family:Georgia,serif!important;font-weight:500!important;font-size:14px!important;letter-spacing:-0.2px!important}
+
+.pg-variant{border-color:#e8dcc8!important;background:white!important;transition:all 0.2s!important}
+.pg-variant:hover{border-color:#d4a574!important;box-shadow:0 4px 12px rgba(184,145,95,0.12)!important}
+.pg-variant-hdr{background:linear-gradient(90deg,#fdf9f1,#fdfbf8)!important;border-bottom-color:#f3e8d8!important}
+.pg-variant-num{background:linear-gradient(135deg,#d4a574,#b8915f)!important}
+.pg-variant-style{color:#78350f!important;font-family:Georgia,serif!important;font-weight:500!important;font-style:italic!important;font-size:12.5px!important;letter-spacing:0.1px!important}
+.pg-variant-copy{background:transparent!important;border:1px solid #d4a574!important;color:#78350f!important;font-weight:600!important;letter-spacing:0.4px!important}
+.pg-variant-copy:hover{background:#d4a574!important;color:white!important}
+.pg-variant-body{color:#1a1a1a!important;font-family:inherit!important;font-weight:400!important;font-size:13px!important;line-height:1.75!important}
+
+.pg-regen-btn{background:white!important;color:#78350f!important;border:1px dashed #d4a574!important;font-weight:600!important;letter-spacing:0.3px!important}
+.pg-regen-btn:hover{background:#fdf9f1!important;border-style:solid!important}
+
+
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ Smart Tasks — Client Data Display                      ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+
+/* Hint message under each task */
+.lux-task-hint{margin-top:6px;padding:8px 10px;background:#fdf9f1;border-right:2px solid #d4a574;border-radius:6px;font-size:11.5px;color:#78350f;font-weight:500;line-height:1.5;letter-spacing:0.1px;font-family:Georgia,serif;font-style:italic}
+
+/* Contact row (phone + WhatsApp) */
+.lux-task-contact{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.lux-task-phone,.lux-task-wa{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;background:white;border:1px solid #e8dcc8;border-radius:10px;font-size:11px;font-weight:700;color:#1a1a1a;cursor:pointer;font-family:inherit;text-decoration:none;transition:all 0.15s;letter-spacing:0.2px}
+.lux-task-phone:hover{border-color:#d4a574;background:#fdf9f1}
+.lux-task-wa{border-color:#25d366;color:#075e54}
+.lux-task-wa:hover{background:#25d366;color:white;border-color:#25d366}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ Client Message Builder Popup                           ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.cmb-ov{position:fixed;inset:0;background:rgba(26,26,26,0.65);z-index:9700;display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .22s ease;pointer-events:none}
+.cmb-ov.on{opacity:1;pointer-events:auto}
+.cmb-sheet{background:#fdfbf8;width:100%;max-width:560px;max-height:90vh;border-radius:20px 20px 0 0;transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.3,.5,1);direction:rtl;font-family:inherit;overflow:hidden;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom,0)}
+.cmb-ov.on .cmb-sheet{transform:translateY(0)}
+@media(min-width:768px){.cmb-ov{align-items:center;padding:16px}.cmb-sheet{border-radius:20px;max-height:86vh}}
+
+.cmb-hdr{background:linear-gradient(135deg,#1a1a1a 0%,#2d1b2e 100%);color:white;padding:20px 20px 22px;position:relative;flex-shrink:0;border-bottom:1px solid rgba(212,165,116,0.3)}
+.cmb-close{position:absolute;top:14px;left:14px;width:32px;height:32px;border-radius:50%;background:rgba(212,165,116,0.2);border:1px solid rgba(212,165,116,0.3);color:#d4a574;font-size:15px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:all 0.15s;z-index:2}
+.cmb-close:hover{background:#d4a574;color:#1a1a1a}
+
+.cmb-client-card{display:flex;gap:14px;align-items:center;margin-bottom:12px;margin-left:40px}
+.cmb-client-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#d4a574,#b8915f);color:white;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;flex-shrink:0;box-shadow:0 4px 12px rgba(184,145,95,0.3);font-family:Georgia,serif;letter-spacing:-0.5px}
+.cmb-client-info{flex:1;min-width:0}
+.cmb-client-name{font-size:18px;font-weight:400;color:white;font-family:Georgia,serif;letter-spacing:-0.2px;margin-bottom:3px}
+.cmb-client-phone{font-size:12px;color:#d4a574;font-weight:600;letter-spacing:0.3px;margin-bottom:2px;font-variant-numeric:tabular-nums}
+.cmb-client-meta{font-size:10.5px;color:rgba(253,251,248,0.6);font-weight:400;letter-spacing:0.2px}
+
+.cmb-title{font-size:11px;color:#d4a574;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;font-family:Georgia,serif;font-style:italic;border-top:1px solid rgba(212,165,116,0.2);padding-top:10px;margin-top:4px}
+
+.cmb-body{flex:1;overflow-y:auto;padding:16px;-webkit-overflow-scrolling:touch}
+
+.cmb-loading{padding:40px 20px;text-align:center}
+.cmb-loading-text{margin-top:14px;font-size:13px;color:#78350f;font-weight:500;font-family:Georgia,serif}
+.cmb-error{background:#fef2f2;border:1px solid #fecaca;border-radius:12px;padding:12px;color:#991b1b;font-size:12px;font-weight:600;line-height:1.5}
+
+.cmb-msg{background:white;border:1px solid #e8dcc8;border-radius:14px;margin-bottom:12px;overflow:hidden;transition:border-color 0.2s,box-shadow 0.2s}
+.cmb-msg:hover{border-color:#d4a574;box-shadow:0 4px 12px rgba(184,145,95,0.12)}
+
+.cmb-msg-hdr{display:flex;align-items:center;gap:10px;padding:10px 14px;background:linear-gradient(90deg,#fdf9f1,#fdfbf8);border-bottom:1px solid #f3e8d8}
+.cmb-msg-num{width:26px;height:26px;background:linear-gradient(135deg,#d4a574,#b8915f);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;box-shadow:0 2px 6px rgba(184,145,95,0.3)}
+.cmb-msg-style{flex:1;font-size:12.5px;font-weight:500;color:#78350f;letter-spacing:0.2px;font-family:Georgia,serif;font-style:italic}
+
+.cmb-msg-body{padding:14px 16px;font-size:13.5px;color:#1a1a1a;line-height:1.75;white-space:pre-wrap;font-weight:400;-webkit-user-select:text;user-select:text;letter-spacing:0.1px}
+
+.cmb-msg-actions{display:flex;gap:6px;padding:10px 12px;border-top:1px solid #f3e8d8;background:#fdfbf8}
+.cmb-msg-btn{flex:1;padding:8px;border-radius:10px;font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit;border:none;transition:all 0.15s;letter-spacing:0.2px}
+.cmb-copy{background:white;color:#78350f;border:1px solid #d4a574}
+.cmb-copy:hover{background:#d4a574;color:white}
+.cmb-wa{background:linear-gradient(135deg,#25d366,#128c7e);color:white;box-shadow:0 2px 8px rgba(37,211,102,0.3)}
+.cmb-wa:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,211,102,0.4)}
+
+.cmb-regen{width:100%;padding:12px;margin-top:6px;background:transparent;color:#78350f;border:1px dashed #d4a574;border-radius:12px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.15s;letter-spacing:0.3px}
+.cmb-regen:hover{background:#fdf9f1;border-style:solid}
+
+
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ Sub-tabs Navigation (Tasks / Channels)                 ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.promo-subnav{display:flex;gap:8px;padding:6px;background:linear-gradient(135deg,#faf7f2,#f5ede0);border:1px solid #e8dcc8;border-radius:16px;margin-bottom:20px;box-shadow:inset 0 1px 3px rgba(120,83,15,0.04)}
+.promo-subnav-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 14px;background:transparent;border:none;border-radius:11px;color:#78350f;font-size:13px;font-weight:600;cursor:pointer;font-family:Georgia,serif;transition:all 0.2s ease;letter-spacing:0.2px;position:relative}
+.promo-subnav-btn:hover:not(.on){background:rgba(255,255,255,0.5)}
+.promo-subnav-btn.on{background:linear-gradient(135deg,#1a1a1a,#2d1b2e);color:#d4a574;box-shadow:0 4px 12px rgba(26,26,26,0.2)}
+.promo-subnav-ico{font-size:16px;line-height:1}
+.promo-subnav-lbl{letter-spacing:0.3px}
+.promo-subnav-badge{background:rgba(212,165,116,0.25);color:#78350f;border:1px solid rgba(212,165,116,0.4);padding:2px 8px;border-radius:10px;font-size:10.5px;font-weight:800;font-variant-numeric:tabular-nums;font-family:inherit;letter-spacing:0}
+.promo-subnav-btn.on .promo-subnav-badge{background:rgba(212,165,116,0.25);color:#d4a574;border-color:rgba(212,165,116,0.4)}
+.promo-subnav-badge.done{background:#10b981;color:white;border-color:#10b981}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ Luxury Tasks Header Refresh Button                     ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.lux-tasks-hdr-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.lux-tasks-refresh{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#fdf9f1,#fef3d7);border:1px solid #d4a574;color:#78350f;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s ease;padding:0;flex-shrink:0;box-shadow:0 2px 6px rgba(184,145,95,0.15)}
+.lux-tasks-refresh:hover{background:linear-gradient(135deg,#d4a574,#b8915f);color:white;transform:rotate(-90deg);box-shadow:0 4px 12px rgba(184,145,95,0.3)}
+.lux-tasks-refresh svg{width:17px;height:17px}
+.lux-tasks-refresh.spinning svg{animation:spin 0.8s linear infinite}
+.lux-tasks-refreshing-banner{display:flex;align-items:center;gap:10px;padding:10px 14px;margin-bottom:12px;background:linear-gradient(135deg,#fdf9f1,#fef3d7);border:1px solid #d4a574;border-radius:12px}
+.lux-tasks-refreshing-txt{font-size:12px;color:#78350f;font-weight:600;font-family:Georgia,serif;font-style:italic;letter-spacing:0.2px}
+
+/* ═══ TASK CARD — Colorful, Luxurious per-type design        ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.tsk-card{background:white;border:1px solid #e8dcc8;border-radius:18px;overflow:hidden;margin-bottom:14px;transition:transform 0.25s ease,box-shadow 0.25s ease,border-color 0.2s ease;box-shadow:0 2px 8px rgba(0,0,0,0.04);position:relative}
+.tsk-card:hover{transform:translateY(-2px);border-color:var(--tsk-accent);box-shadow:0 8px 20px var(--tsk-glow)}
+.tsk-done{opacity:0.55}
+.tsk-done .tsk-name,.tsk-done .tsk-title{text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:var(--tsk-accent)}
+
+/* Color banner at top of card */
+.tsk-banner{position:relative;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,0,0,0.06)}
+.tsk-banner-badge{font-size:11px;font-weight:700;color:var(--tsk-accent-dark);letter-spacing:1.8px;text-transform:uppercase;font-family:Georgia,serif;text-shadow:0 1px 0 rgba(255,255,255,0.5)}
+
+.tsk-check{width:26px;height:26px;border-radius:50%;border:2px solid var(--tsk-accent-dark);background:rgba(255,255,255,0.7);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;padding:0;color:white;flex-shrink:0;backdrop-filter:blur(4px);box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.tsk-check:hover{background:white;transform:scale(1.1)}
+.tsk-done .tsk-check{background:var(--tsk-accent);border-color:var(--tsk-accent)}
+.tsk-check svg{width:14px;height:14px}
+
+/* Body */
+.tsk-body{padding:16px 18px 14px;background:linear-gradient(180deg,white 0%,var(--tsk-bg-light) 100%)}
+
+/* Client header with avatar */
+.tsk-client-head{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+.tsk-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--tsk-accent),var(--tsk-accent-dark));color:white;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;flex-shrink:0;font-family:Georgia,serif;letter-spacing:-0.3px;box-shadow:0 3px 8px var(--tsk-glow)}
+.tsk-client-info{flex:1;min-width:0}
+.tsk-name{font-size:18px;font-weight:400;color:var(--tsk-text);letter-spacing:-0.3px;line-height:1.2;margin-bottom:3px;font-family:Georgia,'Times New Roman',serif}
+.tsk-meta{font-size:11.5px;color:#6b6b6b;font-weight:500;line-height:1.5;letter-spacing:0.1px}
+
+/* Generic task header (no client) */
+.tsk-generic-head{margin-bottom:10px}
+.tsk-title{font-size:17px;font-weight:400;color:var(--tsk-text);letter-spacing:-0.3px;line-height:1.2;margin-bottom:4px;font-family:Georgia,'Times New Roman',serif}
+
+/* AI hint tip */
+.tsk-hint{display:flex;gap:8px;padding:10px 12px;margin:10px 0;background:rgba(255,255,255,0.7);border:1px solid var(--tsk-accent);border-right:3px solid var(--tsk-accent);border-radius:10px;font-size:12px;color:var(--tsk-text);font-weight:500;line-height:1.55;letter-spacing:0.1px;font-family:inherit;backdrop-filter:blur(8px)}
+.tsk-hint-ico{color:var(--tsk-accent);font-size:13px;flex-shrink:0;line-height:1.5}
+
+/* Footer with contacts + CTA */
+.tsk-footer{display:flex;gap:8px;margin-top:12px;align-items:center;flex-wrap:wrap}
+.tsk-contacts{display:flex;gap:6px;flex:1;min-width:0}
+.tsk-phone-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 12px;background:white;border:1.5px solid var(--tsk-accent);color:var(--tsk-text);border-radius:11px;font-size:12px;font-weight:700;text-decoration:none;transition:all 0.15s;font-variant-numeric:tabular-nums;letter-spacing:0.2px}
+.tsk-phone-btn:hover{background:var(--tsk-accent);color:white}
+.tsk-phone-btn svg{width:13px;height:13px}
+
+.tsk-cta-btn{padding:11px 18px;background:linear-gradient(135deg,var(--tsk-accent),var(--tsk-accent-dark));color:white;border:none;border-radius:11px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:0.3px;transition:all 0.2s;box-shadow:0 3px 10px var(--tsk-glow);white-space:nowrap;flex-shrink:0}
+.tsk-cta-btn:hover{transform:translateY(-1px);box-shadow:0 5px 14px var(--tsk-glow)}
+.tsk-cta-btn:active{transform:scale(0.97)}
+
+/* Luxury typography upgrades for headers */
+.lux-tasks-title{font-family:Georgia,'Times New Roman',serif!important;font-weight:300!important;font-size:22px!important;letter-spacing:-0.4px!important}
+.lux-tasks-date{font-family:Georgia,serif!important;font-style:italic!important;color:#a97b3c!important;font-size:10.5px!important;letter-spacing:2.2px!important}
+.lux-tasks-sub{font-size:11.5px!important;color:#8b8b8b!important;letter-spacing:0.3px!important;font-family:inherit!important}
+
+@media(max-width:380px){
+  .tsk-banner-badge{font-size:10px;letter-spacing:1.5px}
+  .tsk-avatar{width:40px;height:40px;font-size:13px}
+  .tsk-name,.tsk-title{font-size:16px}
+  .tsk-cta-btn{padding:10px 14px;font-size:12px}
+  .tsk-phone-btn{padding:8px 10px;font-size:11.5px}
+}
+
+
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ v60 Tasks — Integrated with Diary Design System         ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+
+/* Container */
+.tsk-wrap{margin-bottom:20px}
+
+/* Section Header — matches diary day headers */
+.tsk-section-hdr{display:flex;justify-content:space-between;align-items:flex-end;padding:0 2px 12px;margin-bottom:14px;border-bottom:1px solid #f3e8d8;position:relative}
+.tsk-section-hdr::before{content:'';position:absolute;bottom:-1px;right:0;width:64px;height:2px;background:linear-gradient(to left,#d4a574,#b8915f);border-radius:2px}
+.tsk-section-left{flex:1;min-width:0}
+.tsk-section-date{font-size:10px;font-weight:700;color:#a97b3c;letter-spacing:2.2px;text-transform:uppercase;margin-bottom:4px;font-family:Georgia,serif;font-style:italic}
+.tsk-section-title{font-size:22px;font-weight:300;color:#1a1a1a;letter-spacing:-0.4px;line-height:1;font-family:Georgia,'Times New Roman',serif}
+.tsk-section-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.tsk-section-count{display:flex;flex-direction:column;align-items:center;padding:6px 10px;background:linear-gradient(135deg,#fdf9f1,#fef3d7);border:1px solid #e8dcc8;border-radius:10px;line-height:1.1;flex-shrink:0}
+.tsk-section-count.all-done{background:linear-gradient(135deg,#d1fae5,#a7f3d0);border-color:#6ee7b7}
+.tsk-section-count-num{font-size:14px;font-weight:800;color:#78350f;font-variant-numeric:tabular-nums;font-family:Georgia,serif;letter-spacing:-0.3px}
+.tsk-section-count.all-done .tsk-section-count-num{color:#065f46}
+.tsk-section-count-lbl{font-size:8.5px;font-weight:700;color:#a97b3c;letter-spacing:0.8px;text-transform:uppercase;margin-top:1px}
+.tsk-section-count.all-done .tsk-section-count-lbl{color:#065f46}
+.tsk-section-refresh{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#fdf9f1,#fef3d7);border:1px solid #e8dcc8;color:#78350f;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .22s;padding:0;flex-shrink:0}
+.tsk-section-refresh:hover{background:linear-gradient(135deg,#d4a574,#b8915f);color:white;transform:rotate(-90deg);border-color:#b8915f}
+.tsk-section-refresh.spinning svg{animation:tskspin .8s linear infinite}
+@keyframes tskspin{to{transform:rotate(-360deg)}}
+
+/* Refreshing banner */
+.tsk-refreshing{display:flex;align-items:center;gap:10px;padding:12px 14px;margin-bottom:10px;background:linear-gradient(90deg,#fdf9f1,#fffdf8);border:1px solid #e8dcc8;border-right:3px solid #d4a574;border-radius:12px;font-size:12px;color:#78350f;font-weight:600;font-family:Georgia,serif;font-style:italic;letter-spacing:0.2px}
+.tsk-refreshing-dot{width:6px;height:6px;background:#d4a574;border-radius:50%;animation:tskdot 1s ease-in-out infinite}
+.tsk-refreshing-dot:nth-child(2){animation-delay:0.15s}
+.tsk-refreshing-dot:nth-child(3){animation-delay:0.3s}
+@keyframes tskdot{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1.2);opacity:1}}
+
+/* List */
+.tsk-list{display:flex;flex-direction:column;gap:10px}
+
+/* ═══ TASK CARD — styled like appointment card (.apt2 family) ═══ */
+.tsk{display:flex;background:white;border:1px solid #e8dcc8;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(120,83,15,0.04);transition:transform .2s,box-shadow .2s,border-color .2s;position:relative}
+.tsk:hover{transform:translateY(-1px);border-color:var(--t-accent);box-shadow:0 6px 14px var(--t-glow)}
+.tsk-is-done{opacity:0.5}
+.tsk-is-done .tsk-name,.tsk-is-done .tsk-title{text-decoration:line-through;text-decoration-color:var(--t-accent)}
+
+/* Left STRIP (colored, like time-col on appointment cards) */
+.tsk-strip{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:13px 10px;min-width:56px;background:var(--t-grad);border-left:1px solid rgba(0,0,0,0.05);gap:10px;flex-shrink:0}
+.tsk-strip-ico{font-size:22px;line-height:1;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.08))}
+.tsk-strip-check{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.85);background:rgba(255,255,255,0.3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;padding:0;color:white;backdrop-filter:blur(4px);box-shadow:0 1px 3px rgba(0,0,0,0.1);flex-shrink:0}
+.tsk-strip-check:hover{background:white;border-color:white;transform:scale(1.1)}
+.tsk-is-done .tsk-strip-check{background:var(--t-dark);border-color:var(--t-dark)}
+
+/* Right CONTENT (main body) */
+.tsk-content{flex:1;min-width:0;padding:11px 13px 11px;display:flex;flex-direction:column;gap:6px}
+
+.tsk-label{font-size:9.5px;font-weight:700;color:var(--t-dark);letter-spacing:1.5px;text-transform:uppercase;font-family:Georgia,serif;font-style:italic;opacity:0.85}
+
+/* Client head (with avatar) */
+.tsk-head{display:flex;gap:10px;align-items:center}
+.tsk-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--t-accent),var(--t-dark));color:white;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600;flex-shrink:0;font-family:Georgia,serif;letter-spacing:-0.3px;box-shadow:0 2px 6px var(--t-glow)}
+.tsk-head-info{flex:1;min-width:0}
+.tsk-name{font-size:16px;font-weight:400;color:var(--t-text);letter-spacing:-0.3px;line-height:1.15;margin-bottom:2px;font-family:Georgia,'Times New Roman',serif}
+.tsk-meta{font-size:11px;color:#6b6b6b;font-weight:500;line-height:1.4;letter-spacing:0.1px}
+
+/* Generic (no client) task head */
+.tsk-title{font-size:15px;font-weight:500;color:var(--t-text);letter-spacing:-0.2px;line-height:1.2;font-family:Georgia,'Times New Roman',serif}
+.tsk-desc{font-size:11.5px;color:#6b6b6b;font-weight:500;line-height:1.45;letter-spacing:0.1px}
+
+/* Action hint — small colored tip */
+.tsk-action-hint{padding:7px 10px;background:var(--t-bg);border-right:2px solid var(--t-accent);border-radius:6px;font-size:11px;color:var(--t-text);font-weight:500;line-height:1.45;font-family:inherit;letter-spacing:0.1px}
+
+/* Bottom row with actions */
+.tsk-bottom{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding-top:4px}
+.tsk-phone{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;background:white;border:1px solid var(--t-accent);color:var(--t-text);border-radius:8px;font-size:11px;font-weight:700;text-decoration:none;transition:all .15s;font-variant-numeric:tabular-nums;letter-spacing:0.2px}
+.tsk-phone:hover{background:var(--t-accent);color:white}
+
+.tsk-cta{padding:8px 14px;background:linear-gradient(135deg,var(--t-accent),var(--t-dark));color:white;border:none;border-radius:8px;font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:0.3px;transition:all .2s;box-shadow:0 2px 6px var(--t-glow);white-space:nowrap;flex-shrink:0;margin-right:auto}
+.tsk-cta:hover{transform:translateY(-1px);box-shadow:0 4px 10px var(--t-glow)}
+.tsk-cta:active{transform:scale(0.97)}
+
+/* Celebration when all done */
+.tsk-celebration{margin-top:12px;padding:14px;background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:1px solid #6ee7b7;border-radius:14px;text-align:center;display:flex;align-items:center;justify-content:center;gap:10px}
+.tsk-celebration-ico{font-size:18px;color:#047857}
+.tsk-celebration-txt{font-size:13px;color:#065f46;font-weight:600;letter-spacing:0.3px;font-family:Georgia,serif}
+
+/* Small screen tweaks */
+@media(max-width:380px){
+  .tsk-strip{min-width:48px;padding:11px 8px}
+  .tsk-strip-ico{font-size:20px}
+  .tsk-content{padding:10px 11px}
+  .tsk-avatar{width:34px;height:34px;font-size:11.5px}
+  .tsk-name{font-size:15px}
+  .tsk-cta{padding:7px 11px;font-size:11px}
+  .tsk-phone{padding:5px 8px;font-size:10.5px}
+  .tsk-section-title{font-size:20px}
+}
+
+/* Disable old progress circle (bug fix) */
+.lux-tasks-prog{display:none!important}
+.lux-tasks-hdr-right{display:none!important}
+
+
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ v61 Tasks — Clean Cards + Luxury Fullscreen Modal       ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Container ─── */
+.mt-wrap{margin-bottom:20px}
+
+/* ─── Section Header ─── */
+.mt-section-hdr{display:flex;justify-content:space-between;align-items:flex-end;padding:0 2px 12px;margin-bottom:14px;border-bottom:1px solid #f3e8d8;position:relative}
+.mt-section-hdr::before{content:'';position:absolute;bottom:-1px;right:0;width:64px;height:2px;background:linear-gradient(to left,#d4a574,#b8915f);border-radius:2px}
+.mt-section-left{flex:1;min-width:0}
+.mt-section-date{font-size:10px;font-weight:700;color:#a97b3c;letter-spacing:2.2px;text-transform:uppercase;margin-bottom:4px;font-family:Georgia,serif;font-style:italic}
+.mt-section-title{font-size:22px;font-weight:300;color:#1a1a1a;letter-spacing:-0.4px;line-height:1;font-family:Georgia,'Times New Roman',serif}
+.mt-section-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.mt-section-count{display:flex;flex-direction:column;align-items:center;padding:5px 9px;background:linear-gradient(135deg,#fdf9f1,#fef3d7);border:1px solid #e8dcc8;border-radius:9px;line-height:1.05;flex-shrink:0}
+.mt-section-count.all-done{background:linear-gradient(135deg,#d1fae5,#a7f3d0);border-color:#6ee7b7}
+.mt-count-num{font-size:13px;font-weight:800;color:#78350f;font-variant-numeric:tabular-nums;font-family:Georgia,serif;letter-spacing:-0.3px}
+.mt-section-count.all-done .mt-count-num{color:#065f46}
+.mt-count-lbl{font-size:8px;font-weight:700;color:#a97b3c;letter-spacing:0.7px;text-transform:uppercase;margin-top:1px}
+.mt-section-count.all-done .mt-count-lbl{color:#065f46}
+.mt-refresh{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#fdf9f1,#fef3d7);border:1px solid #e8dcc8;color:#78350f;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .22s;padding:0;flex-shrink:0}
+.mt-refresh:hover{background:linear-gradient(135deg,#d4a574,#b8915f);color:white;transform:rotate(-90deg);border-color:#b8915f}
+.mt-refresh.spinning svg{animation:mtspin .8s linear infinite}
+@keyframes mtspin{to{transform:rotate(-360deg)}}
+
+.mt-refreshing{display:flex;align-items:center;gap:8px;padding:10px 14px;margin-bottom:10px;background:linear-gradient(90deg,#fdf9f1,#fffdf8);border:1px solid #e8dcc8;border-right:3px solid #d4a574;border-radius:12px;font-size:12px;color:#78350f;font-weight:600;font-family:Georgia,serif;font-style:italic}
+.mt-dot{width:6px;height:6px;background:#d4a574;border-radius:50%;animation:mtdot 1s ease-in-out infinite}
+.mt-dot:nth-child(2){animation-delay:0.15s}
+.mt-dot:nth-child(3){animation-delay:0.3s}
+@keyframes mtdot{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1.2);opacity:1}}
+
+/* ─── Task Card (simple, clickable) ─── */
+.mt-list{display:flex;flex-direction:column;gap:10px}
+.mt-card{position:relative;border:1px solid #e8dcc8;border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .25s,border-color .2s;box-shadow:0 1px 3px rgba(120,83,15,0.05)}
+.mt-card:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,0.08);border-color:#d4a574}
+.mt-card:active{transform:translateY(-1px) scale(0.995)}
+.mt-done{opacity:0.55}
+.mt-done .mt-card-title{text-decoration:line-through}
+
+.mt-card-accent{position:absolute;top:0;right:0;bottom:0;width:6px;pointer-events:none}
+.mt-card-row{display:flex;align-items:flex-start;gap:12px;padding:14px 20px 12px 14px}
+.mt-icon-wrap{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+.mt-icon{font-size:22px;line-height:1;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.1))}
+.mt-card-body{flex:1;min-width:0}
+.mt-type-label{font-size:9.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:3px;font-family:Georgia,serif;font-style:italic;opacity:0.85}
+.mt-card-title{font-size:17px;font-weight:400;letter-spacing:-0.3px;line-height:1.2;margin-bottom:4px;font-family:Georgia,'Times New Roman',serif}
+.mt-card-meta{font-size:11.5px;color:#6b6b6b;font-weight:500;line-height:1.4;letter-spacing:0.1px}
+.mt-check{width:24px;height:24px;border-radius:50%;border:2px solid var(--c);background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;padding:0;color:white;flex-shrink:0;margin-top:2px}
+.mt-check:hover{transform:scale(1.1)}
+.mt-done .mt-check{background:var(--c)}
+
+.mt-card-open{display:flex;align-items:center;justify-content:space-between;padding:8px 20px 10px 14px;border-top:1px dashed #e8dcc8;font-size:10.5px;font-weight:700;color:#8b8b8b;letter-spacing:0.5px}
+.mt-arrow{font-size:16px;font-weight:400}
+.mt-card:hover .mt-card-open{color:#1a1a1a}
+
+.mt-celebration{margin-top:12px;padding:14px;background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:1px solid #6ee7b7;border-radius:14px;text-align:center;font-size:13px;color:#065f46;font-weight:600;letter-spacing:0.3px;font-family:Georgia,serif}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ FULLSCREEN LUXURY TASK MODAL                             ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.task-modal-ov{position:fixed;inset:0;background:#000;z-index:9800;opacity:0;transition:opacity .35s ease;pointer-events:none;overflow:hidden}
+.task-modal-ov.on{opacity:1;pointer-events:auto}
+
+.task-modal{position:absolute;inset:0;background:radial-gradient(ellipse 140% 90% at 50% -20%,rgba(212,165,116,0.18),transparent 55%),linear-gradient(180deg,#0a0a0a 0%,#1a1612 50%,#0a0806 100%);color:#fdfbf8;direction:rtl;font-family:inherit;overflow:hidden;display:flex;flex-direction:column;transform:scale(0.96);opacity:0;transition:transform .4s cubic-bezier(.34,1.3,.5,1),opacity .3s ease}
+.task-modal-ov.on .task-modal{transform:scale(1);opacity:1}
+
+/* Sparkle background */
+.tm-sparkle-bg{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1px 1px at 13% 22%,rgba(212,165,116,0.6),transparent),radial-gradient(1px 1px at 47% 38%,rgba(212,165,116,0.4),transparent),radial-gradient(1.5px 1.5px at 76% 14%,rgba(212,165,116,0.7),transparent),radial-gradient(1px 1px at 91% 46%,rgba(212,165,116,0.3),transparent),radial-gradient(1px 1px at 21% 71%,rgba(212,165,116,0.5),transparent),radial-gradient(1.5px 1.5px at 58% 82%,rgba(212,165,116,0.6),transparent),radial-gradient(1px 1px at 83% 91%,rgba(212,165,116,0.4),transparent),radial-gradient(1px 1px at 9% 55%,rgba(212,165,116,0.3),transparent),radial-gradient(2px 2px at 37% 7%,rgba(212,165,116,0.5),transparent);background-size:100% 100%;opacity:0.6;animation:tmSparkle 6s ease-in-out infinite alternate}
+@keyframes tmSparkle{from{opacity:0.4}to{opacity:0.75}}
+
+.tm-close{position:absolute;top:18px;left:18px;width:40px;height:40px;border-radius:50%;background:rgba(212,165,116,0.15);border:1px solid rgba(212,165,116,0.3);color:#d4a574;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:10;backdrop-filter:blur(8px)}
+.tm-close:hover{background:rgba(212,165,116,0.3);border-color:#d4a574}
+
+.tm-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:60px 24px 40px;position:relative;z-index:2}
+
+/* Hero section */
+.tm-hero{text-align:center;margin-bottom:32px;padding-top:10px}
+.tm-icon-circle{width:110px;height:110px;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(212,165,116,0.3),inset 0 1px 0 rgba(255,255,255,0.2);position:relative}
+.tm-icon-circle::before{content:'';position:absolute;inset:-4px;border:1px solid rgba(212,165,116,0.4);border-radius:50%;pointer-events:none}
+.tm-icon-big{font-size:52px;line-height:1;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.2))}
+
+.tm-sparkles{display:flex;justify-content:center;gap:12px;margin-bottom:18px;color:#d4a574;font-size:16px;line-height:1}
+.tm-sparkle-1{animation:tmSparkleA 2s ease-in-out infinite}
+.tm-sparkle-2{font-size:22px;animation:tmSparkleA 2s ease-in-out infinite .3s}
+.tm-sparkle-3{animation:tmSparkleA 2s ease-in-out infinite .6s}
+@keyframes tmSparkleA{0%,100%{opacity:0.5;transform:scale(0.9)}50%{opacity:1;transform:scale(1.15)}}
+
+.tm-type{font-size:11px;font-weight:600;color:#d4a574;letter-spacing:4px;text-transform:uppercase;margin-bottom:12px;font-family:Georgia,serif;font-style:italic;opacity:0.9}
+.tm-main-title{font-size:42px;font-weight:300;letter-spacing:-1.2px;line-height:1.05;color:#fdfbf8;font-family:Georgia,'Times New Roman',serif;margin-bottom:24px;padding:0 12px;text-shadow:0 2px 12px rgba(212,165,116,0.2)}
+
+.tm-divider{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:18px}
+.tm-divider-line{width:60px;height:1px;background:linear-gradient(to left,transparent,#d4a574);opacity:0.7}
+.tm-divider-line:last-child{background:linear-gradient(to right,transparent,#d4a574)}
+.tm-divider-sym{color:#d4a574;font-size:12px;letter-spacing:1px}
+
+.tm-tagline{font-size:15px;color:rgba(253,251,248,0.7);font-weight:300;line-height:1.6;letter-spacing:0.3px;padding:0 16px;max-width:440px;margin:0 auto;font-family:Georgia,serif;font-style:italic}
+
+/* Sections */
+.tm-section{max-width:500px;margin:0 auto 26px;position:relative}
+.tm-sec-label{font-size:10.5px;font-weight:700;color:#d4a574;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px;text-align:center;font-family:Georgia,serif;font-style:italic;opacity:0.85}
+
+/* Client card */
+.tm-client-card{background:linear-gradient(135deg,rgba(212,165,116,0.08),rgba(212,165,116,0.03));border:1px solid rgba(212,165,116,0.25);border-radius:18px;padding:18px;display:flex;align-items:center;gap:14px;margin-bottom:14px;backdrop-filter:blur(8px)}
+.tm-client-avatar{width:54px;height:54px;border-radius:50%;background:var(--m-grad);color:white;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;font-family:Georgia,serif;letter-spacing:-0.4px;flex-shrink:0;box-shadow:0 4px 14px var(--m-glow)}
+.tm-client-name-wrap{flex:1;min-width:0}
+.tm-client-name{font-size:20px;font-weight:400;color:#fdfbf8;letter-spacing:-0.3px;font-family:Georgia,serif;line-height:1.1;margin-bottom:3px}
+.tm-client-phone{font-size:12.5px;color:#d4a574;font-weight:600;letter-spacing:0.5px;font-variant-numeric:tabular-nums;direction:ltr;text-align:right}
+
+/* Facts grid */
+.tm-facts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.tm-fact{background:rgba(212,165,116,0.06);border:1px solid rgba(212,165,116,0.15);border-radius:12px;padding:10px 12px;backdrop-filter:blur(8px)}
+.tm-fact-lbl{font-size:9.5px;color:rgba(212,165,116,0.75);font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:3px;font-family:Georgia,serif}
+.tm-fact-val{font-size:13px;color:#fdfbf8;font-weight:500;letter-spacing:-0.1px;line-height:1.2;font-variant-numeric:tabular-nums}
+
+/* Action hint box (like the quote box in screenshot 2) */
+.tm-action-box{background:rgba(255,255,255,0.04);border:1px solid rgba(212,165,116,0.25);border-radius:16px;padding:18px 18px 18px 22px;position:relative;backdrop-filter:blur(8px)}
+.tm-action-box::before{content:'';position:absolute;top:0;bottom:0;right:0;width:3px;background:linear-gradient(180deg,#d4a574,transparent);border-radius:3px 0 0 3px}
+.tm-action-icon{color:#d4a574;font-size:18px;margin-bottom:10px;line-height:1}
+.tm-action-text{font-size:14px;color:rgba(253,251,248,0.92);line-height:1.75;font-weight:400;letter-spacing:0.2px;font-family:Georgia,serif;font-style:italic}
+
+/* Actions */
+.tm-actions{max-width:500px;margin:30px auto 20px;display:flex;flex-direction:column;gap:10px;padding:0 4px}
+.tm-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:16px 20px;border-radius:14px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:all .25s;letter-spacing:0.4px;text-decoration:none;border:1px solid transparent}
+.tm-btn-call{background:transparent;color:#fdfbf8;border-color:rgba(212,165,116,0.4)}
+.tm-btn-call:hover{background:rgba(212,165,116,0.1);border-color:#d4a574}
+.tm-btn-wa{background:linear-gradient(135deg,#25d366,#128c7e);color:white;box-shadow:0 4px 14px rgba(37,211,102,0.3)}
+.tm-btn-wa:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(37,211,102,0.4)}
+.tm-btn-ai{background:linear-gradient(135deg,#d4a574,#b8915f);color:#1a1a1a;border-color:#d4a574;box-shadow:0 4px 14px rgba(212,165,116,0.3);font-weight:700}
+.tm-btn-ai:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(212,165,116,0.45);background:linear-gradient(135deg,#e5b88a,#c9a16f)}
+.tm-btn:active{transform:scale(0.98)}
+
+.tm-bottom-ornament{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:30px;opacity:0.5}
+.tm-orn-line{width:40px;height:1px;background:linear-gradient(to left,transparent,#d4a574)}
+.tm-orn-line:last-child{background:linear-gradient(to right,transparent,#d4a574)}
+.tm-orn-sym{color:#d4a574;font-size:10px}
+
+/* Mobile adjustments */
+@media(max-width:480px){
+  .tm-scroll{padding:56px 18px 30px}
+  .tm-icon-circle{width:92px;height:92px}
+  .tm-icon-big{font-size:42px}
+  .tm-main-title{font-size:34px;letter-spacing:-0.8px}
+  .tm-tagline{font-size:14px;padding:0 8px}
+  .tm-facts{grid-template-columns:1fr 1fr}
+  .tm-fact-val{font-size:12px}
+  .tm-client-avatar{width:48px;height:48px;font-size:14px}
+  .tm-client-name{font-size:18px}
+}
+@media(max-width:340px){
+  .tm-main-title{font-size:28px}
+  .tm-facts{grid-template-columns:1fr}
+}
+
+/* Hide old conflicting tsk-* classes */
+.tsk-wrap,.tsk-section-hdr,.tsk-list,.tsk{display:none!important}
+
+
+
+
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ RELOCATED FROM webInjectEditor() — was broken in template ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ v62 — Each task is a LUXURY BLACK CARD                  ═══ */
+/* ═══ Like "מרכז הכתר" — dark bg, gold, sparkles, serif       ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+
+/* Kill conflicting old CSS */
+.mt-wrap,.mt-section-hdr,.mt-list,.mt-card,.tsk-wrap,.tsk-section-hdr,.tsk-list,.tsk{display:none!important}
+
+/* ─── Wrap ─── */
+.lx-wrap{margin-bottom:20px;max-width:100%}
+
+/* ─── Top Bar (date + count + refresh) ─── */
+.lx-top-bar{display:flex;justify-content:space-between;align-items:flex-end;padding:0 4px 12px;margin-bottom:14px;border-bottom:1px solid #f3e8d8;position:relative}
+.lx-top-bar::before{content:'';position:absolute;bottom:-1px;right:0;width:64px;height:2px;background:linear-gradient(to left,#d4a574,#b8915f);border-radius:2px}
+.lx-top-left{flex:1;min-width:0}
+.lx-top-date{font-size:10px;font-weight:700;color:#a97b3c;letter-spacing:2.2px;text-transform:uppercase;margin-bottom:4px;font-family:Georgia,serif;font-style:italic}
+.lx-top-title{font-size:22px;font-weight:300;color:#1a1a1a;letter-spacing:-0.4px;line-height:1;font-family:Georgia,'Times New Roman',serif}
+.lx-top-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.lx-count{display:flex;flex-direction:column;align-items:center;padding:5px 9px;background:linear-gradient(135deg,#fdf9f1,#fef3d7);border:1px solid #e8dcc8;border-radius:9px;line-height:1.05}
+.lx-count.all-done{background:linear-gradient(135deg,#d1fae5,#a7f3d0);border-color:#6ee7b7}
+.lx-count-num{font-size:13px;font-weight:800;color:#78350f;font-variant-numeric:tabular-nums;font-family:Georgia,serif;letter-spacing:-0.3px}
+.lx-count.all-done .lx-count-num{color:#065f46}
+.lx-count-lbl{font-size:8px;font-weight:700;color:#a97b3c;letter-spacing:0.7px;text-transform:uppercase;margin-top:1px}
+.lx-count.all-done .lx-count-lbl{color:#065f46}
+.lx-refresh{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#fdf9f1,#fef3d7);border:1px solid #e8dcc8;color:#78350f;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .22s;padding:0;flex-shrink:0}
+.lx-refresh:hover{background:linear-gradient(135deg,#d4a574,#b8915f);color:white;transform:rotate(-90deg);border-color:#b8915f}
+.lx-refresh.spinning svg{animation:lxspin .8s linear infinite}
+@keyframes lxspin{to{transform:rotate(-360deg)}}
+
+.lx-refreshing{display:flex;align-items:center;gap:8px;padding:10px 14px;margin-bottom:10px;background:linear-gradient(90deg,#fdf9f1,#fffdf8);border:1px solid #e8dcc8;border-right:3px solid #d4a574;border-radius:12px;font-size:12px;color:#78350f;font-weight:600;font-family:Georgia,serif;font-style:italic}
+.lx-dot{width:6px;height:6px;background:#d4a574;border-radius:50%;animation:lxdot 1s ease-in-out infinite}
+.lx-dot:nth-child(2){animation-delay:0.15s}
+.lx-dot:nth-child(3){animation-delay:0.3s}
+@keyframes lxdot{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1.2);opacity:1}}
+
+/* ─── Stack of cards ─── */
+.lx-stack{display:flex;flex-direction:column;gap:16px}
+
+/* ─── LUXURY BLACK CARD ─── */
+.lx-card{position:relative;border-radius:24px;overflow:hidden;background:radial-gradient(ellipse 120% 70% at 50% 0%,rgba(212,165,116,0.14),transparent 55%),linear-gradient(180deg,#0a0805 0%,#14100a 30%,#0d0a06 65%,#050403 100%);color:#fdfbf8;box-shadow:0 18px 44px -10px rgba(0,0,0,0.6),0 0 0 1px rgba(212,165,116,0.18),inset 0 1px 0 rgba(212,165,116,0.12);min-height:500px;transition:transform .28s,box-shadow .28s}
+.lx-card:hover{transform:translateY(-2px);box-shadow:0 24px 52px -10px rgba(0,0,0,0.7),0 0 0 1px rgba(212,165,116,0.3),inset 0 1px 0 rgba(212,165,116,0.18)}
+.lx-card.is-done{opacity:0.55}
+.lx-card.is-done .lx-title{text-decoration:line-through;text-decoration-color:rgba(212,165,116,0.4)}
+
+/* Sparkle background pattern */
+.lx-card-sparkles{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1px 1px at 13% 22%,rgba(212,165,116,0.7),transparent),radial-gradient(1px 1px at 47% 38%,rgba(212,165,116,0.4),transparent),radial-gradient(1.5px 1.5px at 76% 14%,rgba(212,165,116,0.8),transparent),radial-gradient(1px 1px at 91% 46%,rgba(212,165,116,0.3),transparent),radial-gradient(1px 1px at 21% 71%,rgba(212,165,116,0.5),transparent),radial-gradient(1.5px 1.5px at 58% 82%,rgba(212,165,116,0.6),transparent),radial-gradient(1px 1px at 83% 91%,rgba(212,165,116,0.4),transparent),radial-gradient(1px 1px at 9% 55%,rgba(212,165,116,0.35),transparent),radial-gradient(2px 2px at 37% 7%,rgba(212,165,116,0.55),transparent),radial-gradient(1px 1px at 67% 63%,rgba(212,165,116,0.4),transparent);background-size:100% 100%;opacity:0.65;animation:lxTwinkle 5s ease-in-out infinite alternate}
+@keyframes lxTwinkle{from{opacity:0.5}to{opacity:0.85}}
+
+/* Top glow tied to task accent color */
+.lx-card-bg{position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:140%;height:80%;background:radial-gradient(ellipse 60% 100% at 50% 100%,var(--lx-glow),transparent 60%);pointer-events:none;opacity:0.6}
+
+/* Inner content — more spacious "מרכז הכתר" style */
+.lx-card-inner{position:relative;z-index:2;padding:46px 22px 32px;text-align:center;display:flex;flex-direction:column;align-items:center}
+
+/* Check button (top-left corner of card, like X in reference) */
+.lx-check-wrap{position:absolute;top:16px;left:16px;z-index:3}
+.lx-check{width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(212,165,116,0.4);background:rgba(212,165,116,0.08);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;padding:0;color:#d4a574;backdrop-filter:blur(8px)}
+.lx-check:hover{background:rgba(212,165,116,0.2);border-color:#d4a574;transform:scale(1.08)}
+.lx-card.is-done .lx-check{background:#d4a574;border-color:#d4a574;color:#1a1a1a}
+
+/* Icon circle — "מרכז הכתר" style: transparent with gold ring */
+.lx-icon-circle{width:98px;height:98px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:22px;position:relative;box-shadow:0 10px 40px var(--lx-glow),inset 0 0 24px rgba(212,165,116,0.08);border:1.5px solid rgba(212,165,116,0.55)}
+.lx-icon-circle::before{content:'';position:absolute;inset:-7px;border:1px solid rgba(212,165,116,0.25);border-radius:50%;pointer-events:none}
+.lx-icon-circle::after{content:'';position:absolute;inset:-13px;border:0.5px solid rgba(212,165,116,0.12);border-radius:50%;pointer-events:none}
+.lx-icon-big{font-size:44px;line-height:1;filter:drop-shadow(0 2px 8px rgba(212,165,116,0.3));color:#d4a574}
+
+/* Sparkles row */
+.lx-sparkles-row{display:flex;justify-content:center;gap:12px;margin-bottom:14px;color:#d4a574;line-height:1}
+.lx-spark{display:inline-block}
+.lx-spark-1{font-size:14px;animation:lxSpark 2.2s ease-in-out infinite}
+.lx-spark-2{font-size:20px;animation:lxSpark 2.2s ease-in-out infinite .3s}
+.lx-spark-3{font-size:14px;animation:lxSpark 2.2s ease-in-out infinite .6s}
+@keyframes lxSpark{0%,100%{opacity:0.5;transform:scale(0.85)}50%{opacity:1;transform:scale(1.15)}}
+
+/* Kicker (type label) */
+.lx-kicker{font-size:10.5px;font-weight:500;color:rgba(212,165,116,0.85);letter-spacing:4.5px;text-transform:uppercase;margin-bottom:12px;font-family:'Cormorant Garamond','Georgia',serif;font-style:italic;opacity:0.95}
+
+/* Main title — BIG serif, GOLD like "מרכז הכתר" */
+.lx-title{font-size:34px;font-weight:400;letter-spacing:-0.5px;line-height:1.08;color:#e5c395;font-family:'Cormorant Garamond','Georgia','Times New Roman',serif;margin-bottom:18px;padding:0 8px;text-shadow:0 2px 14px rgba(212,165,116,0.25)}
+
+/* Gold divider — longer elegant line like "מרכז הכתר" */
+.lx-gold-div{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:18px;width:100%;max-width:280px}
+.lx-gold-line{flex:1;height:1px;background:linear-gradient(to left,transparent,rgba(212,165,116,0.6));opacity:0.85}
+.lx-gold-line:last-child{background:linear-gradient(to right,transparent,rgba(212,165,116,0.6))}
+.lx-gold-sym{color:#d4a574;font-size:11px;letter-spacing:1px;opacity:0.9}
+
+/* Tagline — poetic subtitle like "חיבור לנשמה ולתכלית" */
+.lx-tagline{font-size:14px;color:rgba(212,165,116,0.72);font-weight:300;line-height:1.65;letter-spacing:0.5px;padding:0 14px;margin-bottom:26px;font-family:'Cormorant Garamond','Georgia',serif;font-style:italic;max-width:360px}
+
+/* Facts grid */
+.lx-facts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;width:100%;max-width:360px;margin-bottom:18px}
+.lx-fact{background:rgba(212,165,116,0.06);border:1px solid rgba(212,165,116,0.18);border-radius:12px;padding:9px 11px;backdrop-filter:blur(6px)}
+.lx-fact-lbl{font-size:9px;color:rgba(212,165,116,0.75);font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:2px;font-family:Georgia,serif;text-align:center}
+.lx-fact-val{font-size:13px;color:#fdfbf8;font-weight:500;letter-spacing:-0.1px;line-height:1.2;font-variant-numeric:tabular-nums;text-align:center;font-family:Georgia,serif}
+
+/* Quote box (like the quote in reference image) */
+.lx-quote{background:rgba(255,255,255,0.03);border:1px solid rgba(212,165,116,0.22);border-radius:14px;padding:16px 16px 16px 20px;position:relative;width:100%;max-width:360px;margin-bottom:20px;text-align:right;backdrop-filter:blur(6px)}
+.lx-quote::before{content:'';position:absolute;top:0;bottom:0;right:0;width:3px;background:linear-gradient(180deg,#d4a574,rgba(212,165,116,0.3));border-radius:3px 0 0 3px}
+.lx-quote-mark{color:#d4a574;font-size:16px;margin-bottom:8px;line-height:1;text-align:right}
+.lx-quote-text{font-size:13px;color:rgba(253,251,248,0.88);line-height:1.65;font-weight:400;letter-spacing:0.15px;font-family:Georgia,serif;font-style:italic}
+
+/* Actions */
+.lx-actions{display:flex;flex-direction:column;gap:8px;width:100%;max-width:360px;margin-bottom:18px}
+.lx-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border-radius:11px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:0.3px;text-decoration:none;border:1px solid transparent;line-height:1}
+.lx-btn-ghost{background:transparent;color:#fdfbf8;border-color:rgba(212,165,116,0.4)}
+.lx-btn-ghost:hover{background:rgba(212,165,116,0.12);border-color:#d4a574}
+.lx-btn-wa{background:linear-gradient(135deg,#25d366,#128c7e);color:white;box-shadow:0 3px 10px rgba(37,211,102,0.25)}
+.lx-btn-wa:hover{transform:translateY(-1px);box-shadow:0 5px 15px rgba(37,211,102,0.35)}
+.lx-btn-gold{background:linear-gradient(135deg,#d4a574,#b8915f);color:#1a1a1a;border-color:#d4a574;box-shadow:0 3px 12px rgba(212,165,116,0.3);font-weight:700}
+.lx-btn-gold:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(212,165,116,0.42);background:linear-gradient(135deg,#e5b88a,#c9a16f)}
+.lx-btn:active{transform:scale(0.97)}
+
+/* Bottom ornament */
+.lx-bot-orn{display:flex;align-items:center;justify-content:center;gap:12px;opacity:0.4;margin-top:4px}
+.lx-bot-line{width:36px;height:1px;background:linear-gradient(to left,transparent,#d4a574)}
+.lx-bot-line:last-child{background:linear-gradient(to right,transparent,#d4a574)}
+.lx-bot-sym{color:#d4a574;font-size:9px}
+
+.lx-all-done{margin-top:16px;padding:14px;background:linear-gradient(135deg,#0f0c08,#1a1510);border:1px solid rgba(212,165,116,0.3);border-radius:14px;text-align:center;font-size:13px;color:#d4a574;font-weight:600;letter-spacing:2px;font-family:Georgia,serif;font-style:italic}
+
+/* Responsive */
+@media(max-width:380px){
+  .lx-card{min-height:460px}
+  .lx-card-inner{padding:30px 18px 22px}
+  .lx-icon-circle{width:82px;height:82px}
+  .lx-icon-big{font-size:36px}
+  .lx-title{font-size:27px;letter-spacing:-0.5px}
+  .lx-tagline{font-size:12.5px;padding:0 4px}
+  .lx-facts{grid-template-columns:1fr 1fr}
+  .lx-fact-val{font-size:12px}
+}
+
 
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -2727,7 +3556,7 @@ const S={
   tY:now.getFullYear(),tM:now.getMonth()+1,tSel:TD,
   gY:now.getFullYear(),gM:now.getMonth()+1,
   // data
-  DT:{},RT:{},A:{},T:{},G:{},BG:{},CL:{},CANC:{},PKGS:{},EXP:{},WEB:{},showHistory:false,histTab:"upcoming",payFilter:"all",expFilter:"all",expCat:"all",showAddGoal:false,newGoal:{title:"",target:"",period:"month",type:"revenue"},openClient:null,editClient:false,crmSearch:"",crmFilter:"all",showMonthPicker:false,showYearPicker:false,editPayKey:null,showAddPkg:false,editPkgKey:null,showAddExp:false,newExp:{amount:"",category:"supplies",description:"",vendor:"",date:"",recurring:false},editExpKey:null,editWeb:false,showAddPromoItem:false,newPromoItem:{title:"",desc:""}
+  DT:{},RT:{},A:{},T:{},G:{},BG:{},CL:{},CANC:{},PKGS:{},EXP:{},WEB:{},showHistory:false,histTab:"upcoming",payFilter:"all",expFilter:"all",expCat:"all",showAddGoal:false,newGoal:{title:"",target:"",period:"month",type:"revenue"},openClient:null,editClient:false,crmSearch:"",crmFilter:"all",showMonthPicker:false,showYearPicker:false,editPayKey:null,showAddPkg:false,editPkgKey:null,showAddExp:false,newExp:{amount:"",category:"supplies",description:"",vendor:"",date:"",recurring:false},editExpKey:null,editWeb:false,showAddPromoItem:false,newPromoItem:{title:"",desc:""},promoSubTab:"tasks",tasksRefreshing:false
 };
 
 // ── Calendar HTML ─────────────────────────────────────
@@ -8465,73 +9294,91 @@ function findTodayAppointments(){
 
 function getSmartTodayTasks(){
   const tasks=[];
+  const usedTypes=new Set();
+  const taskIds=[];
   
-  // 1. TODAY'S APPOINTMENTS - send reminders
+  // ═══ HIGH PRIORITY — always show if data exists ═══
+  
+  // 1. TODAY'S APPOINTMENTS - reminders
   const todayAppts=findTodayAppointments();
   const upcomingToday=todayAppts.filter(a=>{
     const now=new Date();
     const apptTime=new Date(todayISO()+'T'+a.time);
     const hoursUntil=(apptTime-now)/3600000;
-    return hoursUntil>=1&&hoursUntil<=8; // 1-8 hours away
+    return hoursUntil>=1&&hoursUntil<=8;
   });
   if(upcomingToday.length){
     const a=upcomingToday[0];
     tasks.push({
-      type:'reminder',
-      ch:'💬 תזכורת',
-      priority:1,
+      type:'reminder',priority:1,
       client:{name:a.name,phone:a.phone,type:a.type,time:a.time,price:a.price},
       t:`תזכורת ל${a.name}`,
       d:`היום בשעה ${a.time} · ${a.type||'טיפול'}${a.price?' · ₪'+a.price:''}`,
       action:'שלחי תזכורת חמה ב-WhatsApp שעה-שעתיים לפני',
       actionType:'send_reminder'
     });
+    usedTypes.add('reminder');
+    taskIds.push('smart_reminder');
   }
   
-  // 2. REVIEW REQUESTS - clients 1-4 days after treatment
+  // 2. DEBT COLLECTION - highest financial impact
+  const debtors=findDebtClients();
+  if(debtors.length&&tasks.length<1){
+    const c=debtors[0];
+    tasks.push({
+      type:'debt',priority:2,client:c,
+      t:`${c.name}`,
+      d:`חוב ₪${c.totalDebt.toLocaleString()} · ${c.debtCount} טיפולים · הכי ישן: ${c.oldestDebt}`,
+      action:'שלחי תזכורת עדינה על התשלום (או תשאלי בצורה יפה בביקור הבא)',
+      actionType:'debt_reminder'
+    });
+    usedTypes.add('debt');
+    taskIds.push('smart_debt');
+  }
+  
+  // ═══ ROTATING DATA-DRIVEN — daily variety ═══
+  const today=new Date();
+  const dayOfYear=Math.floor((today-new Date(today.getFullYear(),0,0))/86400000);
+  const dayOfWeek=today.getDay(); // 0=Sunday, 6=Saturday
+  
+  // Pool of data-driven options — pick based on rotation
+  const dataOptions=[];
+  
+  // REVIEW REQUEST
   const recent=findRecentClients();
   if(recent.length){
     const c=recent[0];
-    const lastPrice=c.lastVisit.price?' · שילמה ₪'+c.lastVisit.price:'';
-    tasks.push({
-      type:'review',
-      ch:'⭐ בקשת ביקורת',
-      priority:2,
-      client:c,
+    const daysAgo=Math.floor(c.hoursAgo/24);
+    dataOptions.push({
+      key:'review',type:'review',priority:3,client:c,
       t:`${c.name}`,
-      d:`הייתה לפני ${Math.floor(c.hoursAgo/24)||'פחות מיום'}${c.hoursAgo<24?' שעות':' ימים'} · ${c.lastType||'טיפול'}${lastPrice}`,
+      d:`הייתה לפני ${daysAgo>0?daysAgo+' ימים':c.hoursAgo+' שעות'} · ${c.lastType||'טיפול'}${c.lastVisit&&c.lastVisit.price?' · שילמה ₪'+c.lastVisit.price:''}`,
       action:'הזמן מושלם לבקש ביקורת ב-Google — היא עוד זוכרת חוויה טובה',
       actionType:'review_request'
     });
   }
   
-  // 3. MISSING CLIENTS - haven't visited 45+ days
+  // MISSING CLIENTS - different levels
   const missing=findMissingClients(45);
   if(missing.length){
-    const c=missing[0];
-    tasks.push({
-      type:'winback',
-      ch:'💌 החזרת לקוחה',
-      priority:3,
-      client:c,
+    const c=missing[dayOfYear%Math.min(missing.length,5)]; // rotate through top 5
+    dataOptions.push({
+      key:'winback',type:'winback',priority:3,client:c,
       t:`${c.name}`,
       d:`לא הייתה ${c.daysMissing} יום · ${c.visits.length} ביקורים · סה"כ ₪${c.total.toLocaleString()}`,
-      action:`בואי נחזיר אותה — שלחי הודעה עם הצעה מיוחדת (הנחה/טיפול חינם)`,
+      action:'בואי נחזיר אותה — שלחי הודעה עם הצעה מיוחדת (הנחה 15-20%)',
       actionType:'winback_msg'
     });
   }
   
-  // 4. BIRTHDAYS - within 14 days
+  // BIRTHDAYS
   const birthdays=findUpcomingBirthdays();
   if(birthdays.length){
     const c=birthdays[0];
     const bdayStr=String(c.bdayDD).padStart(2,'0')+'/'+String(c.bdayMM).padStart(2,'0');
     const when=c.daysUntil===0?'היום 🎉':c.daysUntil===1?'מחר':`בעוד ${c.daysUntil} ימים`;
-    tasks.push({
-      type:'birthday',
-      ch:'🎂 יומולדת',
-      priority:4,
-      client:c,
+    dataOptions.push({
+      key:'birthday',type:'birthday',priority:3,client:c,
       t:`${c.name} חוגגת ${when}`,
       d:`תאריך: ${bdayStr}${c.visits.length?' · '+c.visits.length+' ביקורים':''}`,
       action:'שלחי ברכה חמה + הצעה מיוחדת ליומולדת (20% הנחה לטיפול הבא)',
@@ -8539,42 +9386,92 @@ function getSmartTodayTasks(){
     });
   }
   
-  // 5. DEBT COLLECTION
-  const debtors=findDebtClients();
-  if(debtors.length){
-    const c=debtors[0];
-    tasks.push({
-      type:'debt',
-      ch:'💳 חוב פתוח',
-      priority:5,
-      client:c,
+  // FIRST-TIMERS LOST
+  const firstTimers=findFirstTimersLost();
+  if(firstTimers.length){
+    const c=firstTimers[dayOfYear%Math.min(firstTimers.length,3)];
+    dataOptions.push({
+      key:'first_lost',type:'winback',priority:4,client:c,
       t:`${c.name}`,
-      d:`חוב ₪${c.totalDebt.toLocaleString()} · ${c.debtCount} טיפולים · הכי ישן: ${c.oldestDebt}`,
-      action:'שלחי תזכורת עדינה על התשלום (או תשאלי בצורה יפה בביקור הבא)',
-      actionType:'debt_reminder'
+      d:`הייתה ${c.visitCount} פעמים · נעלמה לפני ${c.daysSince} יום`,
+      action:'לקוחה חדשה שלא חזרה - שלחי "איך הרגשת? בא לך לחזור?"',
+      actionType:'winback_msg'
     });
   }
   
-  // 6. FALLBACK - if no data-driven tasks, add generic promo
-  if(tasks.length<3){
-    const generic=[
-      {ch:'📸 אינסטגרם',t:'פוסט השבוע',d:'שתפי תמונת לפני-ואחרי מהימים האחרונים',action:'הזמן הטוב ביותר לפרסום: 19:00-21:00',actionType:'generate_post',genType:'instagram_before_after'},
-      {ch:'📸 אינסטגרם Stories',t:'סטורי טיפ מקצועי',d:'3 טיפים לטיפוח העור אחרי לייזר',action:'פוסט חינוכי בונה אמון',actionType:'generate_post',genType:'instagram_tip'},
-      {ch:'⭐ Google Business',t:'העלי תמונות חדשות',d:'3 תמונות מהקליניקה — מעלה בדירוג החיפוש',action:'תמונות פנים של הקליניקה + תהליך הטיפול (ללא פנים לקוחות)',actionType:'open_url',url:'https://business.google.com'},
-      {ch:'📘 קבוצות פייסבוק',t:'תגובה מקצועית',d:'חפשי שאלות על לייזר בקבוצות ירושלים',action:'תגובי במקצועיות בלי פרסום ישיר — מעלה אמון',actionType:'open_url',url:'https://www.facebook.com'}
-    ];
-    // Add enough generic tasks to reach 3
-    const dayOfYear=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
-    let i=dayOfYear%generic.length;
-    while(tasks.length<3){
-      tasks.push({type:'generic',priority:9,...generic[i]});
-      i=(i+1)%generic.length;
-      if(i===dayOfYear%generic.length)break;
+  // VIP CLIENT - loyal deserves attention
+  const vips=findVIPClients();
+  if(vips.length){
+    const c=vips[dayOfYear%Math.min(vips.length,3)];
+    dataOptions.push({
+      key:'vip',type:'vip',priority:4,client:c,
+      t:`${c.name} 💎`,
+      d:`${c.visits.length} ביקורים · סה"כ ₪${c.total.toLocaleString()} · לא הייתה ${c.daysSince} יום`,
+      action:'לקוחה נאמנה - הציעי לה טיפול חינם/הנחת VIP כהערכה',
+      actionType:'winback_msg'
+    });
+  }
+  
+  // FOLLOW-UP needed
+  const followups=findFollowUpNeeded();
+  if(followups.length){
+    const c=followups[dayOfYear%Math.min(followups.length,3)];
+    dataOptions.push({
+      key:'followup',type:'followup',priority:4,client:c,
+      t:`${c.name}`,
+      d:`לא הייתה ${c.daysSince} יום · מעולה לקבוע טיפול עוקב`,
+      action:'תזמון נכון! תזכירי לה שזה הזמן הטוב ביותר לטיפול הבא',
+      actionType:'winback_msg'
+    });
+  }
+  
+  // ANNIVERSARIES
+  const anniversaries=findAnniversaries();
+  if(anniversaries.length){
+    const c=anniversaries[0];
+    const whenText=c.daysToAnniversary>0?`בעוד ${c.daysToAnniversary} ימים`:c.daysToAnniversary===0?'היום!':`לפני ${Math.abs(c.daysToAnniversary)} ימים`;
+    dataOptions.push({
+      key:'anniversary',type:'vip',priority:5,client:c,
+      t:`שנה של ${c.name} 🎉`,
+      d:`יום שנה לטיפול הראשון ${whenText} · ${c.visits.length} ביקורים מאז`,
+      action:'הזדמנות מוצלחת - שלחי ברכה + הצעה מיוחדת ליום השנה',
+      actionType:'winback_msg'
+    });
+  }
+  
+  // Pick 1-2 data-driven (not already shown) based on day rotation
+  const sortedOptions=dataOptions.filter(o=>!usedTypes.has(o.type));
+  sortedOptions.sort((a,b)=>a.priority-b.priority);
+  
+  // Pick top 1-2 varied
+  for(const opt of sortedOptions){
+    if(tasks.length>=3)break;
+    if(!usedTypes.has(opt.type)){
+      tasks.push(opt);
+      usedTypes.add(opt.type);
+      taskIds.push('smart_'+opt.key);
     }
   }
   
-  // Return top 3 by priority
-  return tasks.sort((a,b)=>a.priority-b.priority).slice(0,3);
+  // ═══ FILL WITH VARIED GENERIC TASKS ═══
+  const remaining=3-tasks.length;
+  if(remaining>0){
+    const genericPicked=pickVariedGenericTasks(remaining,usedTypes);
+    genericPicked.forEach(g=>{
+      tasks.push({
+        type:g.type,priority:9,
+        t:g.t,d:g.d,action:g.action,
+        actionType:g.actionType,
+        genType:g.genType,url:g.url
+      });
+      taskIds.push(g.id);
+    });
+  }
+  
+  // Mark all as shown for future rotation
+  markTaskShown(taskIds);
+  
+  return tasks.slice(0,3);
 }
 
 // Replace old function
@@ -8805,62 +9702,671 @@ function togglePromoTask(taskIdx){
   }
 }
 
+// Task type styling (colors, gradients, icons)
+// ═══════════════════════════════════════════════════════
+// ═══ 💎 LUXURY GOLD PALETTE — unified "מרכז הכתר" style ═══
+// ═══════════════════════════════════════════════════════
+// All task types share the same gold-on-black aesthetic.
+// Variations are subtle (champagne / bronze / rose gold)
+// so the tasks feel like a curated luxury collection.
+const TASK_STYLES={
+  reminder:{
+    name:'תזכורת לתור · רגע של קשר',icon:'✧',
+    grad:'linear-gradient(135deg,rgba(229,195,149,0.15) 0%,rgba(212,165,116,0.08) 100%)',
+    accent:'#d4a574',accentDark:'#9d7a4c',glow:'rgba(212,165,116,0.18)'
+  },
+  review:{
+    name:'בקשת ביקורת · עדות של יופי',icon:'✦',
+    grad:'linear-gradient(135deg,rgba(247,228,180,0.18) 0%,rgba(212,165,116,0.10) 100%)',
+    accent:'#e5c395',accentDark:'#b8915f',glow:'rgba(229,195,149,0.20)'
+  },
+  winback:{
+    name:'החזרת לקוחה · לב שנפתח',icon:'❧',
+    grad:'linear-gradient(135deg,rgba(212,165,116,0.14) 0%,rgba(184,145,95,0.08) 100%)',
+    accent:'#c9a16f',accentDark:'#8a6b40',glow:'rgba(201,161,111,0.16)'
+  },
+  birthday:{
+    name:'ברכת יומולדת · חגיגה של אור',icon:'❀',
+    grad:'linear-gradient(135deg,rgba(247,228,180,0.20) 0%,rgba(212,165,116,0.10) 100%)',
+    accent:'#f0d092',accentDark:'#c4a268',glow:'rgba(240,208,146,0.20)'
+  },
+  debt:{
+    name:'חוב פתוח · סגירת מעגל',icon:'◇',
+    grad:'linear-gradient(135deg,rgba(184,145,95,0.15) 0%,rgba(139,108,69,0.08) 100%)',
+    accent:'#b8915f',accentDark:'#6b5230',glow:'rgba(184,145,95,0.16)'
+  },
+  content:{
+    name:'תוכן יצירתי · נוכחות דיגיטלית',icon:'✦',
+    grad:'linear-gradient(135deg,rgba(212,165,116,0.14) 0%,rgba(229,195,149,0.08) 100%)',
+    accent:'#d4a574',accentDark:'#9d7a4c',glow:'rgba(212,165,116,0.16)'
+  },
+  social:{
+    name:'אינגייג\'מנט · קהילה חיה',icon:'✧',
+    grad:'linear-gradient(135deg,rgba(229,195,149,0.16) 0%,rgba(184,145,95,0.08) 100%)',
+    accent:'#e5c395',accentDark:'#b8915f',glow:'rgba(229,195,149,0.18)'
+  },
+  business:{
+    name:'פעולה עסקית · הצעד הבא',icon:'◆',
+    grad:'linear-gradient(135deg,rgba(184,145,95,0.14) 0%,rgba(157,122,76,0.08) 100%)',
+    accent:'#b8915f',accentDark:'#7d6038',glow:'rgba(184,145,95,0.16)'
+  },
+  seasonal:{
+    name:'עונת האור · רגע לנצח',icon:'❖',
+    grad:'linear-gradient(135deg,rgba(212,165,116,0.16) 0%,rgba(201,161,111,0.08) 100%)',
+    accent:'#c9a16f',accentDark:'#8a6b40',glow:'rgba(201,161,111,0.17)'
+  },
+  growth:{
+    name:'צמיחה אישית · משמעות',icon:'✤',
+    grad:'linear-gradient(135deg,rgba(212,165,116,0.13) 0%,rgba(184,145,95,0.07) 100%)',
+    accent:'#d4a574',accentDark:'#9d7a4c',glow:'rgba(212,165,116,0.15)'
+  },
+  vip:{
+    name:'לקוחת VIP · כתר על הראש',icon:'✦',
+    grad:'linear-gradient(135deg,rgba(247,228,180,0.24) 0%,rgba(229,195,149,0.14) 50%,rgba(212,165,116,0.08) 100%)',
+    accent:'#f0d092',accentDark:'#c4a268',glow:'rgba(240,208,146,0.24)'
+  },
+  referral:{
+    name:'בקשת המלצה · מעגלי אמון',icon:'◈',
+    grad:'linear-gradient(135deg,rgba(212,165,116,0.15) 0%,rgba(184,145,95,0.08) 100%)',
+    accent:'#d4a574',accentDark:'#9d7a4c',glow:'rgba(212,165,116,0.17)'
+  },
+  followup:{
+    name:'מעקב טיפול · דאגה אמיתית',icon:'✧',
+    grad:'linear-gradient(135deg,rgba(212,165,116,0.12) 0%,rgba(201,161,111,0.06) 100%)',
+    accent:'#c9a16f',accentDark:'#8a6b40',glow:'rgba(201,161,111,0.14)'
+  },
+  urgent:{
+    name:'דחוף · כאן ועכשיו',icon:'⟡',
+    grad:'linear-gradient(135deg,rgba(184,145,95,0.18) 0%,rgba(139,108,69,0.10) 100%)',
+    accent:'#b8915f',accentDark:'#6b5230',glow:'rgba(184,145,95,0.20)'
+  },
+  gift:{
+    name:'מתנה · הפתעה של חסד',icon:'❀',
+    grad:'linear-gradient(135deg,rgba(229,195,149,0.16) 0%,rgba(212,165,116,0.08) 100%)',
+    accent:'#e5c395',accentDark:'#b8915f',glow:'rgba(229,195,149,0.18)'
+  },
+  collab:{
+    name:'שיתוף פעולה · עוצמה משותפת',icon:'◉',
+    grad:'linear-gradient(135deg,rgba(212,165,116,0.14) 0%,rgba(184,145,95,0.08) 100%)',
+    accent:'#d4a574',accentDark:'#9d7a4c',glow:'rgba(212,165,116,0.16)'
+  },
+  milestone:{
+    name:'אבן דרך · רגע של הישג',icon:'✦',
+    grad:'linear-gradient(135deg,rgba(247,228,180,0.22) 0%,rgba(212,165,116,0.12) 100%)',
+    accent:'#f0d092',accentDark:'#c4a268',glow:'rgba(240,208,146,0.22)'
+  },
+  scheduled:{
+    name:'הודעה מתוכננת · זמן נכון',icon:'✧',
+    grad:'linear-gradient(135deg,rgba(212,165,116,0.12) 0%,rgba(201,161,111,0.06) 100%)',
+    accent:'#c9a16f',accentDark:'#8a6b40',glow:'rgba(201,161,111,0.14)'
+  },
+  wellness:{
+    name:'שירות ומצוינות · נגיעה רכה',icon:'❋',
+    grad:'linear-gradient(135deg,rgba(212,165,116,0.14) 0%,rgba(229,195,149,0.08) 100%)',
+    accent:'#d4a574',accentDark:'#9d7a4c',glow:'rgba(212,165,116,0.16)'
+  },
+  generic:{
+    name:'פעולת יום · ריטואל קטן',icon:'✦',
+    grad:'linear-gradient(135deg,rgba(212,165,116,0.13) 0%,rgba(184,145,95,0.07) 100%)',
+    accent:'#d4a574',accentDark:'#9d7a4c',glow:'rgba(212,165,116,0.15)'
+  }
+};
+
+// ═══════════════════════════════════════════════════════
+// ═══ Extended smart finders — MORE data-driven         ═══
+// ═══════════════════════════════════════════════════════
+
+// First-timers who didn't come back (1-2 visits only, 14+ days ago)
+function findFirstTimersLost(){
+  const cm=getAllClientsWithHistory();
+  const today=todayISO();
+  const results=[];
+  Object.entries(cm).forEach(([k,c])=>{
+    if(!c.lastVisit||!c.phone)return;
+    if(c.visits.length<=2){
+      const days=daysBetween(c.lastVisit,today);
+      if(days>=14&&days<=90){
+        results.push({...c,key:k,daysSince:days,visitCount:c.visits.length});
+      }
+    }
+  });
+  results.sort((a,b)=>b.daysSince-a.daysSince);
+  return results;
+}
+
+// VIP loyal clients (5+ visits) - deserve special attention
+function findVIPClients(){
+  const cm=getAllClientsWithHistory();
+  const today=todayISO();
+  const results=[];
+  Object.entries(cm).forEach(([k,c])=>{
+    if(!c.phone||c.visits.length<5)return;
+    const daysSince=c.lastVisit?daysBetween(c.lastVisit,today):0;
+    // VIP that hasn't been in 14-60 days - gentle reach out
+    if(daysSince>=14&&daysSince<=60){
+      results.push({...c,key:k,daysSince});
+    }
+  });
+  results.sort((a,b)=>b.visits.length-a.visits.length);
+  return results;
+}
+
+// Follow-up needed after laser (4-6 weeks since last)
+function findFollowUpNeeded(){
+  const cm=getAllClientsWithHistory();
+  const today=todayISO();
+  const results=[];
+  Object.entries(cm).forEach(([k,c])=>{
+    if(!c.phone||!c.lastVisit)return;
+    const days=daysBetween(c.lastVisit,today);
+    // Ideal laser followup window: 28-42 days after treatment
+    if(days>=28&&days<=42){
+      results.push({...c,key:k,daysSince:days});
+    }
+  });
+  results.sort((a,b)=>a.daysSince-b.daysSince);
+  return results;
+}
+
+// Treatment anniversaries (around 1 year since first visit)
+function findAnniversaries(){
+  const cm=getAllClientsWithHistory();
+  const today=new Date();
+  const results=[];
+  Object.entries(cm).forEach(([k,c])=>{
+    if(!c.visits||!c.visits.length||!c.phone)return;
+    // Get first visit
+    const sorted=[...c.visits].sort((a,b)=>a.date.localeCompare(b.date));
+    const first=sorted[0];
+    const firstDate=new Date(first.date);
+    const oneYearLater=new Date(firstDate);
+    oneYearLater.setFullYear(oneYearLater.getFullYear()+1);
+    const daysToAnniversary=Math.floor((oneYearLater-today)/86400000);
+    // Show within 14 days of anniversary (past or future)
+    if(Math.abs(daysToAnniversary)<=14){
+      results.push({...c,key:k,daysToAnniversary,firstVisit:first.date,yearMark:1});
+    }
+  });
+  return results;
+}
+
+// ═══════════════════════════════════════════════════════
+// ═══ GENERIC TASK POOL — 50+ varied tasks             ═══
+// ═══════════════════════════════════════════════════════
+
+const GENERIC_TASK_POOL=[
+  // ─── CONTENT: Instagram (15) ───
+  {id:'ig_before_after',type:'content',t:'פוסט לפני-ואחרי',d:'העלי תמונת תוצאה מרשימה מטיפול השבוע',action:'שעות שיא: 19:00-21:00 בימי שלישי/רביעי',actionType:'generate_post',genType:'instagram_before_after',cad:'weekly'},
+  {id:'ig_tip_skin',type:'content',t:'טיפ טיפוח עור',d:'שתפי טיפ שימושי לטיפוח עור אחרי לייזר',action:'תוכן חינוכי בונה אמון ומושך עוקבות חדשות',actionType:'generate_post',genType:'instagram_tip',cad:'biweekly'},
+  {id:'ig_tip_laser',type:'content',t:'מיתוס על לייזר שצריך לנפץ',d:'3 דברים שחייבות לדעת לפני טיפול ראשון',action:'פורמט carousel עובד הכי טוב',actionType:'generate_post',genType:'instagram_tip',cad:'monthly'},
+  {id:'ig_reel_bts',type:'content',t:'ריל "מאחורי הקלעים"',d:'צלמי 15 שניות של הקליניקה — סידור, הכנה, אווירה',action:'ריל עם מוזיקה רגועה = engagement גבוה',actionType:'generate_post',genType:'instagram_reel',cad:'weekly'},
+  {id:'ig_reel_quick',type:'content',t:'ריל "3 טיפים מהירים"',d:'15 שניות עם 3 טיפים מקצועיים — מהיר ושימושי',action:'reels נותנים את ה-reach הכי גדול',actionType:'generate_post',genType:'instagram_reel',cad:'biweekly'},
+  {id:'ig_story_poll',type:'content',t:'סקר בסטורי',d:'"מה הכי מפחיד אתכן בלייזר?" — 4 אפשרויות',action:'סקרים מגדילים את הצפייה בסטוריז',actionType:'generate_post',genType:'instagram_story_question',cad:'weekly'},
+  {id:'ig_story_question',type:'content',t:'שאלה בסטורי',d:'"יש שאלות על לייזר? כתבו!" — עם סטיקר שאלה',action:'אחרי 24 שעות, תעני על כולן בסטורי',actionType:'generate_post',genType:'instagram_story_question',cad:'biweekly'},
+  {id:'ig_story_day',type:'content',t:'סטורי "יום בקליניקה"',d:'3-4 סטוריז קצרים שמראים את היום שלך',action:'אותנטיות מנצחת ריצוף מושלם',actionType:'generate_post',genType:'instagram_story_question',cad:'weekly'},
+  {id:'ig_testimonial',type:'content',t:'תגית עם לקוחה מרוצה',d:'תני ללקוחה חוגגת להקליט קצר + תייג',action:'הכי אפקטיבי למשיכת חברותיה',actionType:'generate_post',genType:'instagram_testimonial',cad:'biweekly'},
+  {id:'ig_product',type:'content',t:'פוסט על מוצר/חבילה',d:'הציגי חבילת טיפולים או מחיר מיוחד',action:'שלבי תמונה מזמינה + מחיר ברור + CTA',actionType:'generate_post',genType:'instagram_tip',cad:'biweekly'},
+  {id:'ig_reel_transform',type:'content',t:'ריל תהליך טיפול',d:'לפני→במהלך→אחרי, טיפול בסיסי של 10 דקות',action:'תהליכים vizualiים מקבלים המון שיתופים',actionType:'generate_post',genType:'instagram_reel',cad:'monthly'},
+  {id:'ig_carousel_edu',type:'content',t:'קרוסל חינוכי',d:'5 שקפים: "כל מה שחייבות לדעת על לייזר"',action:'carousel מקבל 2-3x יותר engagement מפוסט רגיל',actionType:'generate_post',genType:'instagram_tip',cad:'monthly'},
+  {id:'ig_live',type:'content',t:'שידור חי שאלות ותשובות',d:'לייב של 20 דקות פעם בחודש - Q&A',action:'הודיעי 48 שעות מראש בסטורי',actionType:'open_url',url:'https://www.instagram.com',cad:'monthly'},
+  {id:'ig_product_demo',type:'content',t:'הדגמת מוצר טיפוח',d:'הראי איך להשתמש במוצר שאת ממליצה עליו',action:'מוצרים שאת משתמשת = אמינות',actionType:'generate_post',genType:'instagram_reel',cad:'monthly'},
+  {id:'ig_trend',type:'content',t:'ריל על טרנד',d:'חברי את עצמך לטרנד beauty נוכחי',action:'טרנדים נותנים דחיפה ראשונית באלגוריתם',actionType:'generate_post',genType:'instagram_reel',cad:'biweekly'},
+  
+  // ─── SOCIAL ENGAGEMENT (8) ───
+  {id:'soc_reply_comments',type:'social',t:'עני לתגובות',d:'בדקי את הפוסטים מהשבוע האחרון - עני לכל תגובה',action:'תגובות תוך שעה = אלגוריתם אוהב אותך יותר',actionType:'open_url',url:'https://www.instagram.com',cad:'daily'},
+  {id:'soc_reply_dms',type:'social',t:'עני להודעות (DMs)',d:'בדקי בזריזות - יש הודעות מלקוחות פוטנציאליות?',action:'מהירות תגובה = שיעור המרה גבוה',actionType:'open_url',url:'https://www.instagram.com/direct/inbox/',cad:'daily'},
+  {id:'soc_like_followers',type:'social',t:'הייקי פוסטים של עוקבות',d:'היכנסי ל-10 פרופילים של לקוחות והגיבי',action:'מחזיר אהבה = נוצר חיבור אישי',actionType:'open_url',url:'https://www.instagram.com',cad:'biweekly'},
+  {id:'soc_fb_group_help',type:'social',t:'תגובה מקצועית בקבוצות',d:'חפשי בקבוצות ירושלים שאלות על לייזר - תגיבי מקצועית',action:'אל תפרסמי ישר - תני ערך, מישהי תזהה אותך',actionType:'open_url',url:'https://www.facebook.com',cad:'weekly'},
+  {id:'soc_engage_competitors',type:'social',t:'הגיבי לעוקבות מתחרות',d:'פרופילים של קליניקות אחרות - תגיבי ללקוחותיהן',action:'בצורה עדינה ולא דורסנית',actionType:'open_url',url:'https://www.instagram.com',cad:'monthly'},
+  {id:'soc_comment_local',type:'social',t:'אינטראקציה עם עסקי השכונה',d:'עני/הייקי פוסטים של 5 עסקים בשכונת רמות',action:'בונה רשת מקומית + שיתופים הדדיים',actionType:'open_url',url:'https://www.instagram.com',cad:'weekly'},
+  {id:'soc_share_story',type:'social',t:'שתפי סטורי של לקוחה',d:'אם לקוחה תייגה אותך, שתפי בסטורי שלך',action:'עוזר לבנות קהילה',actionType:'open_url',url:'https://www.instagram.com',cad:'weekly'},
+  {id:'soc_ask_poll',type:'social',t:'סקר בחשבון אחר',d:'השתתפי בסקר של משפיענית מקומית',action:'חשיפה לקהל שלה',actionType:'open_url',url:'https://www.instagram.com',cad:'weekly'},
+  
+  // ─── BUSINESS ACTIONS (10) ───
+  {id:'biz_google_photos',type:'business',t:'העלי תמונות ל-Google Business',d:'3 תמונות חדשות - קליניקה, מוצרים, או תהליך',action:'תמונות חדשות כל שבועיים מעלות בדירוג',actionType:'open_url',url:'https://business.google.com',cad:'biweekly'},
+  {id:'biz_google_post',type:'business',t:'פוסט ב-Google Business',d:'הודעה קצרה על הצעה/חדשות - מופיעה בחיפוש',action:'פוסט כל שבוע = SEO טוב יותר',actionType:'open_url',url:'https://business.google.com',cad:'weekly'},
+  {id:'biz_google_update_hours',type:'business',t:'עדכני שעות פעילות ב-Google',d:'בדקי שהשעות מעודכנות, במיוחד לפני חג',action:'לקוחה שמגיעה ומוצאת סגור = יצאת מהטופ',actionType:'open_url',url:'https://business.google.com',cad:'monthly'},
+  {id:'biz_instagram_bio',type:'business',t:'עדכני את הביו באינסטגרם',d:'הוסיפי/החליפי משפט, קישור, או אמוג\'י',action:'ביו טרי מעלה תחושת activity',actionType:'open_url',url:'https://www.instagram.com',cad:'monthly'},
+  {id:'biz_check_prices',type:'business',t:'בדקי מחירי מתחרים',d:'היכנסי ל-3 קליניקות אחרות בירושלים - בדקי מחירים',action:'כל 2-3 חודשים להישאר עדכנית',actionType:'open_url',url:'https://www.google.com/search?q=קליניקת+לייזר+ירושלים',cad:'monthly'},
+  {id:'biz_update_services',type:'business',t:'עדכני רשימת שירותים',d:'וודאי שכל הטיפולים והמחירים עדכניים באתר/אינסטגרם',action:'רשימה לא עדכנית מבריחה לקוחות',actionType:'open_url',url:'https://www.instagram.com',cad:'monthly'},
+  {id:'biz_review_schedule',type:'business',t:'סקירת לוח הזמנים השבוע',d:'בדקי שעות ריקות - תכנני איך למלא אותן',action:'כל שעה ריקה = הכנסה מפוספסת',actionType:'open_url',url:'#upcoming',cad:'weekly'},
+  {id:'biz_check_package_expiry',type:'business',t:'בדקי חבילות שעומדות להסתיים',d:'לקוחות עם חבילה שכמעט נגמרה - הציעי חידוש',action:'הקדמת ההצעה = נאמנות ארוכת טווח',actionType:'open_url',url:'#packages',cad:'weekly'},
+  {id:'biz_review_expenses',type:'business',t:'סקירת הוצאות השבוע',d:'בדקי שכל ההוצאות רשומות ומסודרות',action:'5 דקות חוסכים כאב ראש בסוף החודש',actionType:'open_url',url:'#expenses',cad:'weekly'},
+  {id:'biz_set_goal',type:'business',t:'הגדירי יעד שבועי',d:'מה מטרה אחת שתשיגי השבוע? (לקוחות חדשות/הכנסה)',action:'יעד ספציפי = סיכוי גבוה להשיגו',actionType:'open_url',url:'#bgoals',cad:'weekly'},
+  
+  // ─── SEASONAL (10) ───
+  {id:'sea_summer_body',type:'seasonal',t:'קמפיין "Summer Body"',d:'חבילת הכנה לקיץ - הציעי הטבה לטיפול גוף',action:'אפריל-יוני = עונת שיא להכנה',actionType:'generate_post',genType:'seasonal',cad:'monthly',months:[3,4,5]},
+  {id:'sea_wedding',type:'seasonal',t:'הצעה לעונת החתונות',d:'חבילת "כלה מושלמת" - 3 טיפולים בהנחה',action:'מרץ-יוני עונת חתונות עיקרית',actionType:'generate_post',genType:'seasonal',cad:'monthly',months:[2,3,4,5]},
+  {id:'sea_winter_care',type:'seasonal',t:'טיפים לטיפוח עור בחורף',d:'פוסט על איך לשמור על העור יבש בקור',action:'תוכן עונתי = שיתופים',actionType:'generate_post',genType:'seasonal',cad:'monthly',months:[10,11,0,1]},
+  {id:'sea_holiday_pesach',type:'seasonal',t:'הצעה לפסח',d:'טיפול "ניקיון אמיתי" לכבוד החג',action:'שבועיים לפני החג - הזמן המושלם',actionType:'generate_post',genType:'seasonal',cad:'monthly',months:[2,3]},
+  {id:'sea_holiday_rosh',type:'seasonal',t:'הצעה לראש השנה',d:'"התחדשות" - חבילת 3 טיפולים במחיר מיוחד',action:'מתחילת אלול - מעלים פוסטים',actionType:'generate_post',genType:'seasonal',cad:'monthly',months:[7,8]},
+  {id:'sea_holiday_purim',type:'seasonal',t:'קמפיין לפורים',d:'"להיראות זוהרת במסיבה" - טיפול מזורז',action:'שבוע לפני פורים',actionType:'generate_post',genType:'seasonal',cad:'monthly',months:[1,2]},
+  {id:'sea_women_day',type:'seasonal',t:'יום האישה הבינלאומי (8/3)',d:'מבצע מיוחד ליום האישה - 15-20% הנחה',action:'הרבה מותגים עושים - את חייבת',actionType:'generate_post',genType:'seasonal',cad:'monthly',months:[1,2]},
+  {id:'sea_mothers_day',type:'seasonal',t:'יום האם - תווי מתנה',d:'בני משפחה מחפשים מתנה - הציעי תו שי',action:'פרסמי 10 ימים לפני',actionType:'generate_post',genType:'seasonal',cad:'monthly',months:[1,2]},
+  {id:'sea_back_to_school',type:'seasonal',t:'התחזקות אחרי החגים',d:'"חוזרים לשגרה" - טיפול מאזן אחרי חגי תשרי',action:'אוקטובר הוא חודש הכנסה חזק',actionType:'generate_post',genType:'seasonal',cad:'monthly',months:[8,9]},
+  {id:'sea_hanukah',type:'seasonal',t:'מבצע חנוכה (8 ימים)',d:'הצעה שונה כל יום מ-8 ימי החג',action:'בנייה מושלמת של engagement',actionType:'generate_post',genType:'seasonal',cad:'monthly',months:[10,11]},
+  
+  // ─── GROWTH (5) ───
+  {id:'gr_read_article',type:'growth',t:'קראי מאמר מקצועי',d:'10 דקות - התחדשי על טכניקה/מוצר חדש',action:'ידע מקצועי = הרבה יותר ביטחון',actionType:'open_url',url:'https://www.google.com/search?q=laser+hair+removal+techniques+2026',cad:'weekly'},
+  {id:'gr_watch_webinar',type:'growth',t:'צפי ב-webinar מקצועי',d:'בדקי ב-YouTube webinarים של קליניקות מובילות',action:'30-60 דקות = השקעה שמחזירה פי 10',actionType:'open_url',url:'https://www.youtube.com/results?search_query=laser+clinic+business+tips',cad:'monthly'},
+  {id:'gr_network',type:'growth',t:'התחברי עם קוסמטיקאית אחרת',d:'שלחי הודעה לקולגה - שיתוף ידע/רפרלים',action:'שיתופי פעולה = win-win',actionType:'open_url',url:'https://www.instagram.com',cad:'monthly'},
+  {id:'gr_photo_gallery',type:'growth',t:'עדכני גלריית "לפני-אחרי"',d:'סדרי את התמונות בפולדר נגיש - חוסך זמן בעתיד',action:'גלריה מסודרת = תגובה מהירה ללקוחות',actionType:'open_url',url:'#history',cad:'monthly'},
+  {id:'gr_testimonials',type:'growth',t:'אספי 3 ביקורות לדף הבית',d:'בחרי 3 ביקורות חזקות מ-Google והוסיפי לאתר שלך',action:'ביקורות טובות באתר = המרה גבוהה',actionType:'open_url',url:'#website',cad:'monthly'},
+  
+  // ─── REFERRAL & COLLAB (6) ───
+  {id:'ref_best_client',type:'referral',t:'בקשת המלצה מלקוחה קבועה',d:'בחרי אחת מהלקוחות הכי קבועות - הציעי לה הנחה על הפנייה',action:'הפנייה מלקוחה קבועה = 85% סיכוי להמרה',actionType:'open_url',url:'#clients',cad:'biweekly'},
+  {id:'ref_friend_discount',type:'referral',t:'מבצע "הביאי חברה"',d:'פרסמי: "את וחברה = 15% הנחה לשתיכן"',action:'עובד פנומנלי על קבוצת הורות מתלכדות',actionType:'generate_post',genType:'promo',cad:'monthly'},
+  {id:'collab_local_salon',type:'collab',t:'פנייה למעצב שיער שכונתי',d:'הציעי חבילה משותפת "Look מושלם" - לייזר + שיער',action:'2 מומחיות = לקוחות ששתיהן מקבלות',actionType:'open_url',url:'https://www.instagram.com/explore/tags/%D7%A8%D7%9E%D7%95%D7%AA%D7%99%D7%A8%D7%95%D7%A9%D7%9C%D7%99%D7%9D/',cad:'monthly'},
+  {id:'collab_makeup',type:'collab',t:'שיתוף עם מאפרת',d:'הצעת חבילה לאירועים - לייזר מראש + איפור באירוע',action:'שירות "מעטפת מלאה" - חוויית יוקרה',actionType:'open_url',url:'https://www.instagram.com',cad:'monthly'},
+  {id:'collab_influencer',type:'collab',t:'פנייה למשפיענית קטנה',d:'מציעי טיפול בחינם לתוצר - לא 100K עוקבים, גם 3K רלוונטיים',action:'משפיעניות מקומיות = קהל מדויק',actionType:'open_url',url:'https://www.instagram.com',cad:'monthly'},
+  {id:'collab_referral_prog',type:'collab',t:'תוכנית נאמנות',d:'5 הפניות = טיפול חינם. תכננו יחד',action:'מבנה שמגמיש הפניות - עובד לטווח ארוך',actionType:'open_url',url:'#clients',cad:'monthly'},
+  
+  // ─── MILESTONES & CELEBRATIONS (5) ───
+  {id:'ms_100_clients',type:'milestone',t:'חגגי הישגים',d:'יש לך X לקוחות רשומות - פוסט הודיה לקהילה',action:'מספרים עגולים = שיתופים גבוהים',actionType:'generate_post',genType:'instagram_testimonial',cad:'monthly'},
+  {id:'ms_year_mark',type:'milestone',t:'ציון שנה לעסק',d:'סטורי סקירה - "השנה בקליניקה" עם תמונות מרכזיות',action:'אנשים אוהבים סיפורי צמיחה',actionType:'generate_post',genType:'instagram_story_question',cad:'monthly'},
+  {id:'ms_best_month',type:'milestone',t:'ציון חודש מוצלח',d:'אם החודש היה טוב - שתפי עם הקהילה',action:'"תודה שאתן חלק מזה" - מחזק קשר',actionType:'generate_post',genType:'instagram_tip',cad:'monthly'},
+  {id:'ms_new_service',type:'milestone',t:'השקת שירות חדש',d:'הכריזי על שירות/מכשיר חדש - פוסט חגיגי',action:'חדשות = התעוררות של עוקבים ישנים',actionType:'generate_post',genType:'promo',cad:'monthly'},
+  {id:'ms_certificate',type:'milestone',t:'תעודה/הסמכה חדשה',d:'סיימת קורס? שתפי - מעלה אמינות',action:'מומחיות נוספת = ביקוש גבוה יותר',actionType:'generate_post',genType:'instagram_tip',cad:'monthly'},
+  
+  // ─── GIFTS & SURPRISES (4) ───
+  {id:'gift_surprise_vip',type:'gift',t:'הפתעה קטנה ללקוחה VIP',d:'בחרי לקוחה נאמנה - שלחי מסר אישי עם טיפול מוזל/חינם',action:'הפתעות לא צפויות = נאמנות לכל החיים',actionType:'open_url',url:'#clients',cad:'weekly'},
+  {id:'gift_sample',type:'gift',t:'דגימת מוצר חינם',d:'בטיפול הבא - תני לקוחה לקבל דגימה קטנה',action:'מעלה את ההוצאה הממוצעת לטווח ארוך',actionType:'open_url',url:'#laser',cad:'biweekly'},
+  {id:'gift_birthday_month',type:'gift',t:'מתנה לחודש היומולדת',d:'כל לקוחה בחודש שלה - מקבלת טיפול קצר חינם',action:'מתנה צפויה = תחושת שייכות',actionType:'open_url',url:'#clients',cad:'monthly'},
+  {id:'gift_post_treatment',type:'gift',t:'מוצר קטן אחרי טיפול',d:'דוגמית קרם/שמן קטן בסיום טיפול',action:'זכרון חיובי שנשאר אחרי הביקור',actionType:'open_url',url:'#laser',cad:'weekly'},
+  
+  // ─── URGENT / TIME-SENSITIVE (4) ───
+  {id:'urg_cancel_slot',type:'urgent',t:'תור התבטל - למלא דחוף',d:'בדקי אם יש ביטול שצריך למלא השעה הקרובה',action:'WhatsApp Status "תור התפנה ל-X" - תוך שעה נמלא',actionType:'open_url',url:'#upcoming',cad:'daily'},
+  {id:'urg_review_negative',type:'urgent',t:'ענחי לביקורת שלילית',d:'אם יש ביקורת שלילית - ענחי מקצועית תוך 24 שעות',action:'תגובה חיובית לביקורת שלילית = שיפור תדמית',actionType:'open_url',url:'https://business.google.com',cad:'daily'},
+  {id:'urg_supplies',type:'urgent',t:'בדקי מלאי חומרים',d:'וודאי שיש מספיק ג\'ל/חומרים לשבוע הקרוב',action:'בלי חומרים = ביטול טיפולים = הפסד',actionType:'open_url',url:'#expenses',cad:'weekly'},
+  {id:'urg_equipment',type:'urgent',t:'בדיקת מכשיר',d:'וודאי שהמכשיר עובד תקין - ניקוי/כיול',action:'תקלה באמצע טיפול = מצב קשה',actionType:'open_url',url:'#laser',cad:'weekly'},
+  
+  // ─── WELLNESS / SERVICE EXCELLENCE (5) ───
+  {id:'well_check_experience',type:'wellness',t:'בדיקת חוויית לקוחה',d:'אחרי טיפול - שאלי איך הרגישה, רשמי הערות',action:'הערות אישיות = שירות לא נשכח',actionType:'open_url',url:'#clients',cad:'daily'},
+  {id:'well_ambiance',type:'wellness',t:'שיפור אווירה בקליניקה',d:'נרות/מוזיקה/ריח - שדרגי משהו קטן',action:'חוויית מותרות = לקוחות חוזרות',actionType:'open_url',url:'#laser',cad:'monthly'},
+  {id:'well_comfort',type:'wellness',t:'בדקי נוחות לקוחות',d:'מיטת טיפולים נוחה? מים קרים זמינים?',action:'פרטים קטנים = הבדל גדול',actionType:'open_url',url:'#laser',cad:'monthly'},
+  {id:'well_aftercare_doc',type:'wellness',t:'הודעה "טיפוח לאחר טיפול"',d:'שלחי לכל לקוחה הנחיות מסודרות אחרי הטיפול',action:'מראה מקצועיות + מונע בעיות',actionType:'open_url',url:'#clients',cad:'weekly'},
+  {id:'well_welcome_kit',type:'wellness',t:'ערכת ברוכה הבאה ללקוחה חדשה',d:'גלוית ברוכה הבאה + טיפים בטיפול ראשון',action:'ראשון הכי חשוב - מקבע נאמנות',actionType:'open_url',url:'#clients',cad:'weekly'},
+  
+  // ─── SCHEDULED COMMUNICATIONS (4) ───
+  {id:'sch_weekly_digest',type:'scheduled',t:'עדכון שבועי ללקוחות',d:'ברודקאסט קצר - מה חדש השבוע, טיפ, הצעה',action:'תקשורת סדירה = לקוחות לא שוכחות',actionType:'open_url',url:'https://web.whatsapp.com',cad:'weekly'},
+  {id:'sch_auto_reminder',type:'scheduled',t:'הגדירי תזכורות אוטומטיות',d:'ודאי שתזכורות יום לפני יוצאות - חוסך שעות שלמות',action:'WhatsApp Business = תזכורות אוטומטיות',actionType:'open_url',url:'https://web.whatsapp.com',cad:'monthly'},
+  {id:'sch_follow_up_auto',type:'scheduled',t:'הודעת שבוע אחרי',d:'לכל לקוחה - שבוע אחרי הטיפול: "איך הרגשת?"',action:'שגרה של מעקב = מקצועיות',actionType:'open_url',url:'#clients',cad:'weekly'},
+  {id:'sch_newsletter',type:'scheduled',t:'מייל עונתי ללקוחות',d:'פעם בעונה - מייל מסכם עם תוכן ערך',action:'רשימת דיוור = נכס שלא תלוי באינסטגרם',actionType:'open_url',url:'https://www.google.com/search?q=mailchimp',cad:'monthly'},
+];
+
+// Track shown tasks (7 day memory)
+function getRecentlyShownTaskIds(){
+  const mem=localStore.get('task_history')||{};
+  const cutoff=new Date(Date.now()-7*86400000).toISOString().slice(0,10);
+  const shown=new Set();
+  Object.entries(mem).forEach(([d,ids])=>{
+    if(d>=cutoff)(ids||[]).forEach(id=>shown.add(id));
+  });
+  return shown;
+}
+
+function markTaskShown(ids){
+  const today=todayISO();
+  const mem=localStore.get('task_history')||{};
+  if(!mem[today])mem[today]=[];
+  ids.forEach(id=>{if(!mem[today].includes(id))mem[today].push(id);});
+  // Cleanup old
+  const cutoff=new Date(Date.now()-10*86400000).toISOString().slice(0,10);
+  const kept={};
+  Object.entries(mem).forEach(([d,v])=>{if(d>=cutoff)kept[d]=v;});
+  localStore.set('task_history',kept);
+}
+
+// Pick varied generic tasks avoiding recent repeats
+function pickVariedGenericTasks(count,excludeTypes){
+  const recent=getRecentlyShownTaskIds();
+  const today=new Date();
+  const month=today.getMonth();
+  const dayOfYear=Math.floor((today-new Date(today.getFullYear(),0,0))/86400000);
+  
+  // Filter pool - by season, by avoiding recent, by excluding already-shown types
+  let pool=GENERIC_TASK_POOL.filter(t=>{
+    // Season check
+    if(t.months&&!t.months.includes(month))return false;
+    // Not recently shown
+    if(recent.has(t.id))return false;
+    // Not same type as already shown today (variety)
+    if(excludeTypes.has(t.type))return false;
+    return true;
+  });
+  
+  // Fallback: if too filtered, allow recent ones (but keep season filter)
+  if(pool.length<count){
+    pool=GENERIC_TASK_POOL.filter(t=>{
+      if(t.months&&!t.months.includes(month))return false;
+      if(excludeTypes.has(t.type))return false;
+      return true;
+    });
+  }
+  // Last fallback: just allow all
+  if(pool.length<count)pool=[...GENERIC_TASK_POOL];
+  
+  // Rotate based on day to ensure day-to-day variation
+  const rotated=[];
+  const seen=new Set();
+  let i=dayOfYear%pool.length;
+  let tries=0;
+  while(rotated.length<count&&tries<pool.length*2){
+    const idx=i%pool.length;
+    if(!seen.has(idx)){
+      seen.add(idx);
+      // Avoid same type repeats within selection
+      const picked=pool[idx];
+      if(!excludeTypes.has(picked.type)){
+        rotated.push(picked);
+        excludeTypes.add(picked.type);
+      }
+    }
+    i=(i*7+3)%pool.length; // pseudo-random skip
+    tries++;
+  }
+  
+  // If still not enough (all same types), just fill
+  while(rotated.length<count&&pool.length){
+    const picked=pool[rotated.length%pool.length];
+    if(!rotated.find(r=>r.id===picked.id))rotated.push(picked);
+    else break;
+  }
+  
+  return rotated;
+}
+
+function refreshPromoTasks(){
+  S.tasksRefreshing=true;
+  // Re-render to show spinner
+  const hc=document.querySelector('.hist-content');
+  if(hc)hc.innerHTML=renderPromoTab();
+  // Small delay for visual feedback
+  setTimeout(()=>{
+    S.tasksRefreshing=false;
+    const hc2=document.querySelector('.hist-content');
+    if(hc2)hc2.innerHTML=renderPromoTab();
+  },800);
+}
+
 function renderPromoTasks(){
   const tasks=getTodayPromoTasks();
   const doneCnt=tasks.filter((_,i)=>getTaskStatus(i)).length;
-  const pct=Math.round((doneCnt/tasks.length)*100);
   const today=new Date();
   const days=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
   const months=['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
   const dayName=days[today.getDay()];
   const dayNum=today.getDate();
   const monthName=months[today.getMonth()];
+  const refreshing=S.tasksRefreshing;
+  window._currentTasks=tasks;
   
-  return`<div class="lux-tasks">
-    <div class="lux-tasks-hdr">
-      <div class="lux-tasks-hdr-left">
-        <div class="lux-tasks-date">יום ${dayName} · ${dayNum} ב${monthName}</div>
-        <div class="lux-tasks-title">המשימות שלי היום</div>
-        <div class="lux-tasks-sub">מבוסס על נתוני העסק שלך · עדכני היום</div>
+  return`<div class="lx-wrap">
+    <div class="lx-top-bar">
+      <div class="lx-top-left">
+        <div class="lx-top-date">יום ${dayName} · ${dayNum} ב${monthName}</div>
+        <div class="lx-top-title">המשימות שלי</div>
       </div>
-      <div class="lux-tasks-prog">
-        <svg viewBox="0 0 52 52" class="lux-tasks-prog-svg">
-          <circle cx="26" cy="26" r="22" fill="none" stroke="rgba(212,165,116,0.2)" stroke-width="3"/>
-          <circle cx="26" cy="26" r="22" fill="none" stroke="#d4a574" stroke-width="3" stroke-linecap="round" stroke-dasharray="${pct*1.382}, 138.2" transform="rotate(-90 26 26)" style="transition:stroke-dasharray .5s ease"/>
-        </svg>
-        <div class="lux-tasks-prog-num">${doneCnt}<span>/${tasks.length}</span></div>
+      <div class="lx-top-right">
+        <div class="lx-count ${doneCnt===tasks.length?'all-done':''}">
+          <span class="lx-count-num">${doneCnt}/${tasks.length}</span>
+          <span class="lx-count-lbl">הושלמו</span>
+        </div>
+        <button class="lx-refresh ${refreshing?'spinning':''}" onclick="refreshPromoTasks()" aria-label="עדכני">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <polyline points="1 20 1 14 7 14"></polyline>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+        </button>
       </div>
     </div>
-    <div class="lux-tasks-list">
+    ${refreshing?`<div class="lx-refreshing"><div class="lx-dot"></div><div class="lx-dot"></div><div class="lx-dot"></div><span>מעדכן...</span></div>`:''}
+    
+    <div class="lx-stack">
       ${tasks.map((task,i)=>{
         const done=getTaskStatus(i);
+        const style=TASK_STYLES[task.type]||TASK_STYLES.generic;
         const hasClient=task.client&&task.client.name;
         const phone=task.client&&task.client.phone;
-        return`<div class="lux-task ${done?'lux-task-done':''}">
-          <button class="lux-task-check" onclick="togglePromoTask(${i})" aria-label="${done?'בטלי סימון':'סמני כמושלם'}">
-            ${done?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>':''}
-          </button>
-          <div class="lux-task-body">
-            <div class="lux-task-ch">${task.ch}</div>
-            <div class="lux-task-title">${x(task.t)}</div>
-            <div class="lux-task-desc">${x(task.d)}</div>
-            ${task.action?`<div class="lux-task-hint">${x(task.action)}</div>`:''}
-            ${hasClient&&phone?`<div class="lux-task-contact">
-              <a class="lux-task-phone" href="tel:${x(phone)}">📞 ${x(phone)}</a>
-              <button class="lux-task-wa" onclick="openWhatsAppWith('${x(phone)}','היי ${x(task.client.name)} 💜')">💬 WhatsApp</button>
+        const initials=hasClient?(task.client.name||'?').split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase():'';
+        
+        // Collect client facts
+        let facts=[];
+        if(hasClient){
+          const c=task.client;
+          if(c.visits&&c.visits.length)facts.push({l:'ביקורים',v:c.visits.length});
+          if(c.total)facts.push({l:'סה"כ',v:'₪'+c.total.toLocaleString()});
+          if(c.lastType&&!c.totalDebt)facts.push({l:'טיפול אחרון',v:c.lastType});
+          if(c.daysMissing)facts.push({l:'נעלמה',v:c.daysMissing+' יום'});
+          if(c.daysSince)facts.push({l:'מהטיפול',v:c.daysSince+' יום'});
+          if(c.totalDebt)facts.push({l:'חוב',v:'₪'+c.totalDebt.toLocaleString()});
+          if(c.daysUntil!==undefined&&c.daysUntil>=0)facts.push({l:'יומולדת',v:c.daysUntil===0?'היום':c.daysUntil+' ימים'});
+          if(c.hoursAgo){const h=c.hoursAgo;facts.push({l:'סיימה',v:h<24?h+' שעות':Math.floor(h/24)+' ימים'});}
+          if(c.visitCount&&c.visitCount<=2)facts.push({l:'ביקורים',v:c.visitCount});
+        }
+        facts=facts.slice(0,4);
+        
+        return`<div class="lx-card ${done?'is-done':''}" style="--lx-accent:${style.accent};--lx-dark:${style.accentDark};--lx-glow:${style.glow};--lx-grad:${style.grad}">
+          <div class="lx-card-bg"></div>
+          <div class="lx-card-sparkles"></div>
+          
+          <div class="lx-card-inner">
+            
+            <div class="lx-check-wrap">
+              <button class="lx-check" onclick="event.stopPropagation();togglePromoTask(${i})" aria-label="${done?'בטלי':'סמני'}">
+                ${done?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><polyline points="20 6 9 17 4 12"></polyline></svg>':''}
+              </button>
+            </div>
+            
+            <div class="lx-icon-circle" style="background:${style.grad}">
+              <span class="lx-icon-big">${style.icon}</span>
+            </div>
+            
+            <div class="lx-sparkles-row">
+              <span class="lx-spark lx-spark-1">✦</span>
+              <span class="lx-spark lx-spark-2">✧</span>
+              <span class="lx-spark lx-spark-3">✦</span>
+            </div>
+            
+            <div class="lx-kicker">${style.name}</div>
+            <div class="lx-title">${x(hasClient?task.client.name:task.t)}</div>
+            
+            <div class="lx-gold-div">
+              <span class="lx-gold-line"></span>
+              <span class="lx-gold-sym">◆</span>
+              <span class="lx-gold-line"></span>
+            </div>
+            
+            <div class="lx-tagline">${x(hasClient?task.t:(task.d||''))}</div>
+            
+            ${facts.length?`<div class="lx-facts">
+              ${facts.map(f=>`<div class="lx-fact">
+                <div class="lx-fact-lbl">${x(f.l)}</div>
+                <div class="lx-fact-val">${x(String(f.v))}</div>
+              </div>`).join('')}
             </div>`:''}
-          </div>
-          <div class="lux-task-actions">
-            ${task.actionType?`<button class="lux-task-btn-ai" onclick="doTaskAction(${i})">${task.actionType==='generate_post'?'✦ צרי פוסט':task.actionType==='open_url'?'→ פתחי':'✦ הודעה אישית'}</button>`:''}
+            
+            ${task.action?`<div class="lx-quote">
+              <div class="lx-quote-mark">✦</div>
+              <div class="lx-quote-text">${x(task.action)}</div>
+            </div>`:''}
+            
+            <div class="lx-actions">
+              ${phone?`<a class="lx-btn lx-btn-ghost" href="tel:${x(phone)}">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                <span>התקשרי</span>
+              </a>`:''}
+              ${phone?`<button class="lx-btn lx-btn-wa" onclick="openWhatsAppWith('${x(phone)}','היי ${x(task.client.name)} 💜')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.39c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2M12.05 20.15c-1.48 0-2.93-.4-4.2-1.15l-.3-.18l-3.12.82l.83-3.04l-.2-.32c-.82-1.31-1.25-2.82-1.25-4.38c0-4.54 3.7-8.24 8.24-8.24c2.2 0 4.27.86 5.82 2.42a8.183 8.183 0 0 1 2.41 5.83c.02 4.54-3.68 8.24-8.23 8.24m4.52-6.16c-.25-.12-1.47-.72-1.69-.81c-.23-.08-.39-.12-.56.12c-.17.25-.64.81-.78.97c-.14.17-.29.19-.54.06c-.25-.12-1.05-.39-1.99-1.23c-.74-.66-1.23-1.47-1.38-1.72c-.14-.25-.02-.38.11-.51c.11-.11.25-.29.37-.43s.17-.25.25-.41c.08-.17.04-.31-.02-.43c-.06-.12-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43c-.14 0-.31-.02-.48-.02c-.17 0-.45.06-.68.31c-.23.25-.88.86-.88 2.1c0 1.24.9 2.43 1.02 2.6c.12.17 1.75 2.67 4.23 3.74c.59.26 1.05.41 1.41.52c.59.19 1.13.16 1.56.1c.48-.07 1.47-.6 1.67-1.18c.21-.58.21-1.07.14-1.18s-.22-.16-.47-.28"/></svg>
+                <span>WhatsApp</span>
+              </button>`:''}
+              ${task.actionType?`<button class="lx-btn lx-btn-gold" onclick="doTaskAction(${i})">
+                ${task.actionType==='generate_post'?'<span>✦</span><span>צרי פוסט</span>':task.actionType==='open_url'?'<span>←</span><span>פתחי</span>':'<span>✦</span><span>הודעה אישית</span>'}
+              </button>`:''}
+            </div>
+            
+            <div class="lx-bot-orn">
+              <span class="lx-bot-line"></span>
+              <span class="lx-bot-sym">✧</span>
+              <span class="lx-bot-line"></span>
+            </div>
           </div>
         </div>`;
       }).join('')}
     </div>
-    ${doneCnt===tasks.length?`<div class="lux-tasks-celebration">
-      <div class="lux-tasks-celebration-ico">✦</div>
-      <div class="lux-tasks-celebration-txt">סיימת את כל המשימות להיום</div>
-    </div>`:''}
+    
+    ${doneCnt===tasks.length?`<div class="lx-all-done">✦ סיימת את כל המשימות ✦</div>`:''}
   </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+// ═══ 💎 FULLSCREEN TASK MODAL — Luxury detail view     ═══
+// ═══════════════════════════════════════════════════════
+
+function openTaskModal(idx){
+  const task=(window._currentTasks||[])[idx];
+  if(!task)return;
+  renderTaskModal(idx,task);
+}
+
+function closeTaskModal(){
+  const ov=document.getElementById('task-modal-ov');
+  if(ov){ov.classList.remove('on');setTimeout(()=>ov.remove(),350);}
+}
+
+function renderTaskModal(idx,task){
+  let ov=document.getElementById('task-modal-ov');
+  if(!ov){
+    ov=document.createElement('div');
+    ov.id='task-modal-ov';
+    ov.className='task-modal-ov';
+    document.body.appendChild(ov);
+  }
+  const style=TASK_STYLES[task.type]||TASK_STYLES.generic;
+  const done=getTaskStatus(idx);
+  const hasClient=task.client&&task.client.name;
+  const phone=task.client&&task.client.phone;
+  const initials=hasClient?(task.client.name||'?').split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase():'';
+  
+  // Build client context details if exists
+  let clientDetails='';
+  if(hasClient){
+    const c=task.client;
+    const facts=[];
+    if(c.visits&&c.visits.length)facts.push({l:'ביקורים',v:c.visits.length});
+    if(c.total)facts.push({l:'סה"כ הוציאה',v:'₪'+c.total.toLocaleString()});
+    if(c.lastVisit)facts.push({l:'ביקור אחרון',v:c.lastVisit});
+    if(c.lastType)facts.push({l:'טיפול אחרון',v:c.lastType});
+    if(c.daysMissing)facts.push({l:'נעלמה',v:c.daysMissing+' יום'});
+    if(c.daysSince)facts.push({l:'מהטיפול האחרון',v:c.daysSince+' יום'});
+    if(c.totalDebt)facts.push({l:'חוב',v:'₪'+c.totalDebt.toLocaleString()});
+    if(c.debtCount)facts.push({l:'טיפולים לא משולמים',v:c.debtCount});
+    if(c.daysUntil!==undefined&&c.daysUntil>=0)facts.push({l:'יומולדת',v:c.daysUntil===0?'היום':c.daysUntil+' ימים'});
+    if(c.hoursAgo){
+      const h=c.hoursAgo;
+      facts.push({l:'סיימה טיפול',v:h<24?h+' שעות':Math.floor(h/24)+' ימים'});
+    }
+    if(c.visitCount&&c.visitCount<=2)facts.push({l:'סה"כ ביקורים',v:c.visitCount});
+    
+    clientDetails=`<div class="tm-client-card">
+      <div class="tm-client-avatar">${initials}</div>
+      <div class="tm-client-name-wrap">
+        <div class="tm-client-name">${x(c.name)}</div>
+        ${phone?`<div class="tm-client-phone">${x(phone)}</div>`:''}
+      </div>
+    </div>
+    ${facts.length?`<div class="tm-facts">
+      ${facts.map(f=>`<div class="tm-fact">
+        <div class="tm-fact-lbl">${x(f.l)}</div>
+        <div class="tm-fact-val">${x(String(f.v))}</div>
+      </div>`).join('')}
+    </div>`:''}`;
+  }
+  
+  const actionBtns=[];
+  if(phone){
+    actionBtns.push(`<a class="tm-btn tm-btn-call" href="tel:${x(phone)}">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+      <span>התקשרי</span>
+    </a>`);
+    actionBtns.push(`<button class="tm-btn tm-btn-wa" onclick="openWhatsAppWith('${x(phone)}','היי ${x(task.client.name)} 💜')">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.39c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2M12.05 20.15c-1.48 0-2.93-.4-4.2-1.15l-.3-.18l-3.12.82l.83-3.04l-.2-.32c-.82-1.31-1.25-2.82-1.25-4.38c0-4.54 3.7-8.24 8.24-8.24c2.2 0 4.27.86 5.82 2.42a8.183 8.183 0 0 1 2.41 5.83c.02 4.54-3.68 8.24-8.23 8.24m4.52-6.16c-.25-.12-1.47-.72-1.69-.81c-.23-.08-.39-.12-.56.12c-.17.25-.64.81-.78.97c-.14.17-.29.19-.54.06c-.25-.12-1.05-.39-1.99-1.23c-.74-.66-1.23-1.47-1.38-1.72c-.14-.25-.02-.38.11-.51c.11-.11.25-.29.37-.43s.17-.25.25-.41c.08-.17.04-.31-.02-.43c-.06-.12-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43c-.14 0-.31-.02-.48-.02c-.17 0-.45.06-.68.31c-.23.25-.88.86-.88 2.1c0 1.24.9 2.43 1.02 2.6c.12.17 1.75 2.67 4.23 3.74c.59.26 1.05.41 1.41.52c.59.19 1.13.16 1.56.1c.48-.07 1.47-.6 1.67-1.18c.21-.58.21-1.07.14-1.18s-.22-.16-.47-.28"/></svg>
+      <span>WhatsApp</span>
+    </button>`);
+  }
+  if(task.actionType==='generate_post'){
+    actionBtns.push(`<button class="tm-btn tm-btn-ai" onclick="closeTaskModal();setTimeout(()=>generatePostFor('${x(task.genType||'instagram_tip')}','${x(task.t).replace(/'/g,"\\\\'")}'),300)">
+      <span>✦</span><span>צרי פוסט AI</span>
+    </button>`);
+  } else if(task.actionType==='open_url'&&task.url){
+    if(task.url.startsWith('#')){
+      actionBtns.push(`<button class="tm-btn tm-btn-ai" onclick="closeTaskModal();setTimeout(()=>goFeat('${task.url.substring(1)}'),300)">
+        <span>←</span><span>פתחי במסך</span>
+      </button>`);
+    } else {
+      actionBtns.push(`<a class="tm-btn tm-btn-ai" href="${x(task.url)}" target="_blank" rel="noopener">
+        <span>↗</span><span>פתחי</span>
+      </a>`);
+    }
+  } else if(task.actionType&&hasClient){
+    actionBtns.push(`<button class="tm-btn tm-btn-ai" onclick="closeTaskModal();setTimeout(()=>doTaskAction(${idx}),300)">
+      <span>✦</span><span>הודעה אישית עם AI</span>
+    </button>`);
+  }
+  
+  ov.innerHTML=`<div class="task-modal" style="--m-accent:${style.accent};--m-dark:${style.accentDark};--m-glow:${style.glow};--m-text:${style.text};--m-bg:${style.bgLight};--m-grad:${style.grad}">
+    <div class="tm-sparkle-bg"></div>
+    <button class="tm-close" onclick="closeTaskModal()" aria-label="סגור">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+    
+    <div class="tm-scroll">
+      <div class="tm-hero">
+        <div class="tm-icon-circle" style="background:${style.grad}">
+          <span class="tm-icon-big">${style.icon}</span>
+        </div>
+        <div class="tm-sparkles">
+          <span class="tm-sparkle-1">✦</span>
+          <span class="tm-sparkle-2">✧</span>
+          <span class="tm-sparkle-3">✦</span>
+        </div>
+        <div class="tm-type">${style.name}</div>
+        <div class="tm-main-title">${x(hasClient?task.client.name:task.t)}</div>
+        <div class="tm-divider">
+          <span class="tm-divider-line"></span>
+          <span class="tm-divider-sym">◆</span>
+          <span class="tm-divider-line"></span>
+        </div>
+        <div class="tm-tagline">${x(hasClient?task.t:(task.d||''))}</div>
+      </div>
+      
+      ${clientDetails?`<div class="tm-section">${clientDetails}</div>`:''}
+      
+      ${task.action?`<div class="tm-section">
+        <div class="tm-sec-label">הטיפ שלי</div>
+        <div class="tm-action-box">
+          <div class="tm-action-icon">✦</div>
+          <div class="tm-action-text">${x(task.action)}</div>
+        </div>
+      </div>`:''}
+      
+      <div class="tm-section">
+        <div class="tm-sec-label">${x(task.d)}</div>
+      </div>
+      
+      ${actionBtns.length?`<div class="tm-actions">
+        ${actionBtns.join('')}
+      </div>`:''}
+      
+      <div class="tm-bottom-ornament">
+        <span class="tm-orn-line"></span>
+        <span class="tm-orn-sym">✧</span>
+        <span class="tm-orn-line"></span>
+      </div>
+    </div>
+  </div>`;
+  setTimeout(()=>ov.classList.add('on'),20);
 }
 
 // ═══════════════════════════════════════════════════════
@@ -9138,11 +10644,26 @@ function renderPromoTab(){
   const picks=getTopPicks();
   const tip=getDailyTip();
   const dateLbl=getDateLabel();
+  const sub=S.promoSubTab||'tasks';
   
-  // ═══ Tasks ═══
-  const tasksSection=renderPromoTasks();
+  // Count tasks for badge
+  const taskCount=getSmartTodayTasks().length;
+  const doneCnt=getSmartTodayTasks().filter((_,i)=>getTaskStatus(i)).length;
   
-  // ═══ Luxury Hero — AI Generator ═══
+  // Sub-tab navigation
+  const subNav=`<div class="promo-subnav">
+    <button class="promo-subnav-btn ${sub==='tasks'?'on':''}" onclick="S.promoSubTab='tasks';const hc=document.querySelector('.hist-content');if(hc)hc.innerHTML=renderPromoTab();">
+      <span class="promo-subnav-ico">⚡</span>
+      <span class="promo-subnav-lbl">המשימות שלי</span>
+      <span class="promo-subnav-badge ${doneCnt===taskCount?'done':''}">${doneCnt}/${taskCount}</span>
+    </button>
+    <button class="promo-subnav-btn ${sub==='channels'?'on':''}" onclick="S.promoSubTab='channels';const hc=document.querySelector('.hist-content');if(hc)hc.innerHTML=renderPromoTab();">
+      <span class="promo-subnav-ico">🌐</span>
+      <span class="promo-subnav-lbl">אתרי פרסום</span>
+    </button>
+  </div>`;
+  
+  // ═══ Luxury Hero — AI Generator (shown on tasks tab) ═══
   const generatorSection=`<button class="lux-hero" onclick="openPostGenerator()">
     <div class="lux-hero-ornament lux-hero-ornament-top">
       <span class="lux-line"></span>
@@ -9213,7 +10734,7 @@ function renderPromoTab(){
     </button>
   </div>`;
   
-  // Top 5 section with rank badges and reasoning
+  // Top channels section
   const topSection=`<div class="lux-sec-hdr">
     <div class="lux-sec-hdr-line"></div>
     <div class="lux-sec-hdr-title">הערוצים המובילים</div>
@@ -9239,7 +10760,7 @@ function renderPromoTab(){
   </div>`).join('')}</div>
   <div class="promo-daily-tip"><div class="promo-daily-tip-ico">${tip.i}</div><div class="promo-daily-tip-txt"><b>טיפ היום:</b> ${x(tip.t)}</div></div>`;
   
-  // All categories with price tags
+  // All categories
   const cats=Object.entries(PROMO_SITES).map(([k,cat])=>{
     const cards=cat.sites.map(s=>{
       const priceCls=s.price==='חינם'||s.price==='חינם (אורגני)'?'free':s.price&&s.price.startsWith('חינם')?'mixed':'paid';
@@ -9259,13 +10780,19 @@ function renderPromoTab(){
     </div>`;
   }).join('');
   
-  return`${tasksSection}
-    ${generatorSection}
-    ${quickActions}
-    ${topSection}
-    <div class="promo-all-hdr">📚 כל האתרים לפי קטגוריה</div>
-    ${cats}
-    <div class="promo-disclaimer">💡 המחירים הם הערכה ממוצעת בלבד — משתנים לפי גודל מודעה, תדירות ותקופה. תמיד שווה להתמקח ולהשוות.</div>`;
+  // ═══ Return based on sub-tab ═══
+  if(sub==='tasks'){
+    return`${subNav}
+      ${renderPromoTasks()}
+      ${generatorSection}
+      ${quickActions}`;
+  } else {
+    return`${subNav}
+      ${topSection}
+      <div class="promo-all-hdr">📚 כל האתרים לפי קטגוריה</div>
+      ${cats}
+      <div class="promo-disclaimer">💡 המחירים הם הערכה ממוצעת בלבד — משתנים לפי גודל מודעה, תדירות ותקופה. תמיד שווה להתמקח ולהשוות.</div>`;
+  }
 }
 
 // ── Website Tab — פרסום פשוט כמו הצינור ──
@@ -10243,6 +11770,485 @@ function webInjectEditor(html){
 
 .cmb-regen{width:100%;padding:12px;margin-top:6px;background:transparent;color:#78350f;border:1px dashed #d4a574;border-radius:12px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.15s;letter-spacing:0.3px}
 .cmb-regen:hover{background:#fdf9f1;border-style:solid}
+
+
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ Sub-tabs Navigation (Tasks / Channels)                 ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.promo-subnav{display:flex;gap:8px;padding:6px;background:linear-gradient(135deg,#faf7f2,#f5ede0);border:1px solid #e8dcc8;border-radius:16px;margin-bottom:20px;box-shadow:inset 0 1px 3px rgba(120,83,15,0.04)}
+.promo-subnav-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 14px;background:transparent;border:none;border-radius:11px;color:#78350f;font-size:13px;font-weight:600;cursor:pointer;font-family:Georgia,serif;transition:all 0.2s ease;letter-spacing:0.2px;position:relative}
+.promo-subnav-btn:hover:not(.on){background:rgba(255,255,255,0.5)}
+.promo-subnav-btn.on{background:linear-gradient(135deg,#1a1a1a,#2d1b2e);color:#d4a574;box-shadow:0 4px 12px rgba(26,26,26,0.2)}
+.promo-subnav-ico{font-size:16px;line-height:1}
+.promo-subnav-lbl{letter-spacing:0.3px}
+.promo-subnav-badge{background:rgba(212,165,116,0.25);color:#78350f;border:1px solid rgba(212,165,116,0.4);padding:2px 8px;border-radius:10px;font-size:10.5px;font-weight:800;font-variant-numeric:tabular-nums;font-family:inherit;letter-spacing:0}
+.promo-subnav-btn.on .promo-subnav-badge{background:rgba(212,165,116,0.25);color:#d4a574;border-color:rgba(212,165,116,0.4)}
+.promo-subnav-badge.done{background:#10b981;color:white;border-color:#10b981}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ Luxury Tasks Header Refresh Button                     ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.lux-tasks-hdr-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.lux-tasks-refresh{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#fdf9f1,#fef3d7);border:1px solid #d4a574;color:#78350f;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s ease;padding:0;flex-shrink:0;box-shadow:0 2px 6px rgba(184,145,95,0.15)}
+.lux-tasks-refresh:hover{background:linear-gradient(135deg,#d4a574,#b8915f);color:white;transform:rotate(-90deg);box-shadow:0 4px 12px rgba(184,145,95,0.3)}
+.lux-tasks-refresh svg{width:17px;height:17px}
+.lux-tasks-refresh.spinning svg{animation:spin 0.8s linear infinite}
+.lux-tasks-refreshing-banner{display:flex;align-items:center;gap:10px;padding:10px 14px;margin-bottom:12px;background:linear-gradient(135deg,#fdf9f1,#fef3d7);border:1px solid #d4a574;border-radius:12px}
+.lux-tasks-refreshing-txt{font-size:12px;color:#78350f;font-weight:600;font-family:Georgia,serif;font-style:italic;letter-spacing:0.2px}
+
+/* ═══ TASK CARD — Colorful, Luxurious per-type design        ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.tsk-card{background:white;border:1px solid #e8dcc8;border-radius:18px;overflow:hidden;margin-bottom:14px;transition:transform 0.25s ease,box-shadow 0.25s ease,border-color 0.2s ease;box-shadow:0 2px 8px rgba(0,0,0,0.04);position:relative}
+.tsk-card:hover{transform:translateY(-2px);border-color:var(--tsk-accent);box-shadow:0 8px 20px var(--tsk-glow)}
+.tsk-done{opacity:0.55}
+.tsk-done .tsk-name,.tsk-done .tsk-title{text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:var(--tsk-accent)}
+
+/* Color banner at top of card */
+.tsk-banner{position:relative;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,0,0,0.06)}
+.tsk-banner-badge{font-size:11px;font-weight:700;color:var(--tsk-accent-dark);letter-spacing:1.8px;text-transform:uppercase;font-family:Georgia,serif;text-shadow:0 1px 0 rgba(255,255,255,0.5)}
+
+.tsk-check{width:26px;height:26px;border-radius:50%;border:2px solid var(--tsk-accent-dark);background:rgba(255,255,255,0.7);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;padding:0;color:white;flex-shrink:0;backdrop-filter:blur(4px);box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.tsk-check:hover{background:white;transform:scale(1.1)}
+.tsk-done .tsk-check{background:var(--tsk-accent);border-color:var(--tsk-accent)}
+.tsk-check svg{width:14px;height:14px}
+
+/* Body */
+.tsk-body{padding:16px 18px 14px;background:linear-gradient(180deg,white 0%,var(--tsk-bg-light) 100%)}
+
+/* Client header with avatar */
+.tsk-client-head{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+.tsk-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--tsk-accent),var(--tsk-accent-dark));color:white;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;flex-shrink:0;font-family:Georgia,serif;letter-spacing:-0.3px;box-shadow:0 3px 8px var(--tsk-glow)}
+.tsk-client-info{flex:1;min-width:0}
+.tsk-name{font-size:18px;font-weight:400;color:var(--tsk-text);letter-spacing:-0.3px;line-height:1.2;margin-bottom:3px;font-family:Georgia,'Times New Roman',serif}
+.tsk-meta{font-size:11.5px;color:#6b6b6b;font-weight:500;line-height:1.5;letter-spacing:0.1px}
+
+/* Generic task header (no client) */
+.tsk-generic-head{margin-bottom:10px}
+.tsk-title{font-size:17px;font-weight:400;color:var(--tsk-text);letter-spacing:-0.3px;line-height:1.2;margin-bottom:4px;font-family:Georgia,'Times New Roman',serif}
+
+/* AI hint tip */
+.tsk-hint{display:flex;gap:8px;padding:10px 12px;margin:10px 0;background:rgba(255,255,255,0.7);border:1px solid var(--tsk-accent);border-right:3px solid var(--tsk-accent);border-radius:10px;font-size:12px;color:var(--tsk-text);font-weight:500;line-height:1.55;letter-spacing:0.1px;font-family:inherit;backdrop-filter:blur(8px)}
+.tsk-hint-ico{color:var(--tsk-accent);font-size:13px;flex-shrink:0;line-height:1.5}
+
+/* Footer with contacts + CTA */
+.tsk-footer{display:flex;gap:8px;margin-top:12px;align-items:center;flex-wrap:wrap}
+.tsk-contacts{display:flex;gap:6px;flex:1;min-width:0}
+.tsk-phone-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 12px;background:white;border:1.5px solid var(--tsk-accent);color:var(--tsk-text);border-radius:11px;font-size:12px;font-weight:700;text-decoration:none;transition:all 0.15s;font-variant-numeric:tabular-nums;letter-spacing:0.2px}
+.tsk-phone-btn:hover{background:var(--tsk-accent);color:white}
+.tsk-phone-btn svg{width:13px;height:13px}
+
+.tsk-cta-btn{padding:11px 18px;background:linear-gradient(135deg,var(--tsk-accent),var(--tsk-accent-dark));color:white;border:none;border-radius:11px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:0.3px;transition:all 0.2s;box-shadow:0 3px 10px var(--tsk-glow);white-space:nowrap;flex-shrink:0}
+.tsk-cta-btn:hover{transform:translateY(-1px);box-shadow:0 5px 14px var(--tsk-glow)}
+.tsk-cta-btn:active{transform:scale(0.97)}
+
+/* Luxury typography upgrades for headers */
+.lux-tasks-title{font-family:Georgia,'Times New Roman',serif!important;font-weight:300!important;font-size:22px!important;letter-spacing:-0.4px!important}
+.lux-tasks-date{font-family:Georgia,serif!important;font-style:italic!important;color:#a97b3c!important;font-size:10.5px!important;letter-spacing:2.2px!important}
+.lux-tasks-sub{font-size:11.5px!important;color:#8b8b8b!important;letter-spacing:0.3px!important;font-family:inherit!important}
+
+@media(max-width:380px){
+  .tsk-banner-badge{font-size:10px;letter-spacing:1.5px}
+  .tsk-avatar{width:40px;height:40px;font-size:13px}
+  .tsk-name,.tsk-title{font-size:16px}
+  .tsk-cta-btn{padding:10px 14px;font-size:12px}
+  .tsk-phone-btn{padding:8px 10px;font-size:11.5px}
+}
+
+
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ v60 Tasks — Integrated with Diary Design System         ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+
+/* Container */
+.tsk-wrap{margin-bottom:20px}
+
+/* Section Header — matches diary day headers */
+.tsk-section-hdr{display:flex;justify-content:space-between;align-items:flex-end;padding:0 2px 12px;margin-bottom:14px;border-bottom:1px solid #f3e8d8;position:relative}
+.tsk-section-hdr::before{content:'';position:absolute;bottom:-1px;right:0;width:64px;height:2px;background:linear-gradient(to left,#d4a574,#b8915f);border-radius:2px}
+.tsk-section-left{flex:1;min-width:0}
+.tsk-section-date{font-size:10px;font-weight:700;color:#a97b3c;letter-spacing:2.2px;text-transform:uppercase;margin-bottom:4px;font-family:Georgia,serif;font-style:italic}
+.tsk-section-title{font-size:22px;font-weight:300;color:#1a1a1a;letter-spacing:-0.4px;line-height:1;font-family:Georgia,'Times New Roman',serif}
+.tsk-section-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.tsk-section-count{display:flex;flex-direction:column;align-items:center;padding:6px 10px;background:linear-gradient(135deg,#fdf9f1,#fef3d7);border:1px solid #e8dcc8;border-radius:10px;line-height:1.1;flex-shrink:0}
+.tsk-section-count.all-done{background:linear-gradient(135deg,#d1fae5,#a7f3d0);border-color:#6ee7b7}
+.tsk-section-count-num{font-size:14px;font-weight:800;color:#78350f;font-variant-numeric:tabular-nums;font-family:Georgia,serif;letter-spacing:-0.3px}
+.tsk-section-count.all-done .tsk-section-count-num{color:#065f46}
+.tsk-section-count-lbl{font-size:8.5px;font-weight:700;color:#a97b3c;letter-spacing:0.8px;text-transform:uppercase;margin-top:1px}
+.tsk-section-count.all-done .tsk-section-count-lbl{color:#065f46}
+.tsk-section-refresh{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#fdf9f1,#fef3d7);border:1px solid #e8dcc8;color:#78350f;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .22s;padding:0;flex-shrink:0}
+.tsk-section-refresh:hover{background:linear-gradient(135deg,#d4a574,#b8915f);color:white;transform:rotate(-90deg);border-color:#b8915f}
+.tsk-section-refresh.spinning svg{animation:tskspin .8s linear infinite}
+@keyframes tskspin{to{transform:rotate(-360deg)}}
+
+/* Refreshing banner */
+.tsk-refreshing{display:flex;align-items:center;gap:10px;padding:12px 14px;margin-bottom:10px;background:linear-gradient(90deg,#fdf9f1,#fffdf8);border:1px solid #e8dcc8;border-right:3px solid #d4a574;border-radius:12px;font-size:12px;color:#78350f;font-weight:600;font-family:Georgia,serif;font-style:italic;letter-spacing:0.2px}
+.tsk-refreshing-dot{width:6px;height:6px;background:#d4a574;border-radius:50%;animation:tskdot 1s ease-in-out infinite}
+.tsk-refreshing-dot:nth-child(2){animation-delay:0.15s}
+.tsk-refreshing-dot:nth-child(3){animation-delay:0.3s}
+@keyframes tskdot{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1.2);opacity:1}}
+
+/* List */
+.tsk-list{display:flex;flex-direction:column;gap:10px}
+
+/* ═══ TASK CARD — styled like appointment card (.apt2 family) ═══ */
+.tsk{display:flex;background:white;border:1px solid #e8dcc8;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(120,83,15,0.04);transition:transform .2s,box-shadow .2s,border-color .2s;position:relative}
+.tsk:hover{transform:translateY(-1px);border-color:var(--t-accent);box-shadow:0 6px 14px var(--t-glow)}
+.tsk-is-done{opacity:0.5}
+.tsk-is-done .tsk-name,.tsk-is-done .tsk-title{text-decoration:line-through;text-decoration-color:var(--t-accent)}
+
+/* Left STRIP (colored, like time-col on appointment cards) */
+.tsk-strip{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:13px 10px;min-width:56px;background:var(--t-grad);border-left:1px solid rgba(0,0,0,0.05);gap:10px;flex-shrink:0}
+.tsk-strip-ico{font-size:22px;line-height:1;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.08))}
+.tsk-strip-check{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.85);background:rgba(255,255,255,0.3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;padding:0;color:white;backdrop-filter:blur(4px);box-shadow:0 1px 3px rgba(0,0,0,0.1);flex-shrink:0}
+.tsk-strip-check:hover{background:white;border-color:white;transform:scale(1.1)}
+.tsk-is-done .tsk-strip-check{background:var(--t-dark);border-color:var(--t-dark)}
+
+/* Right CONTENT (main body) */
+.tsk-content{flex:1;min-width:0;padding:11px 13px 11px;display:flex;flex-direction:column;gap:6px}
+
+.tsk-label{font-size:9.5px;font-weight:700;color:var(--t-dark);letter-spacing:1.5px;text-transform:uppercase;font-family:Georgia,serif;font-style:italic;opacity:0.85}
+
+/* Client head (with avatar) */
+.tsk-head{display:flex;gap:10px;align-items:center}
+.tsk-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--t-accent),var(--t-dark));color:white;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600;flex-shrink:0;font-family:Georgia,serif;letter-spacing:-0.3px;box-shadow:0 2px 6px var(--t-glow)}
+.tsk-head-info{flex:1;min-width:0}
+.tsk-name{font-size:16px;font-weight:400;color:var(--t-text);letter-spacing:-0.3px;line-height:1.15;margin-bottom:2px;font-family:Georgia,'Times New Roman',serif}
+.tsk-meta{font-size:11px;color:#6b6b6b;font-weight:500;line-height:1.4;letter-spacing:0.1px}
+
+/* Generic (no client) task head */
+.tsk-title{font-size:15px;font-weight:500;color:var(--t-text);letter-spacing:-0.2px;line-height:1.2;font-family:Georgia,'Times New Roman',serif}
+.tsk-desc{font-size:11.5px;color:#6b6b6b;font-weight:500;line-height:1.45;letter-spacing:0.1px}
+
+/* Action hint — small colored tip */
+.tsk-action-hint{padding:7px 10px;background:var(--t-bg);border-right:2px solid var(--t-accent);border-radius:6px;font-size:11px;color:var(--t-text);font-weight:500;line-height:1.45;font-family:inherit;letter-spacing:0.1px}
+
+/* Bottom row with actions */
+.tsk-bottom{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding-top:4px}
+.tsk-phone{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;background:white;border:1px solid var(--t-accent);color:var(--t-text);border-radius:8px;font-size:11px;font-weight:700;text-decoration:none;transition:all .15s;font-variant-numeric:tabular-nums;letter-spacing:0.2px}
+.tsk-phone:hover{background:var(--t-accent);color:white}
+
+.tsk-cta{padding:8px 14px;background:linear-gradient(135deg,var(--t-accent),var(--t-dark));color:white;border:none;border-radius:8px;font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:0.3px;transition:all .2s;box-shadow:0 2px 6px var(--t-glow);white-space:nowrap;flex-shrink:0;margin-right:auto}
+.tsk-cta:hover{transform:translateY(-1px);box-shadow:0 4px 10px var(--t-glow)}
+.tsk-cta:active{transform:scale(0.97)}
+
+/* Celebration when all done */
+.tsk-celebration{margin-top:12px;padding:14px;background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:1px solid #6ee7b7;border-radius:14px;text-align:center;display:flex;align-items:center;justify-content:center;gap:10px}
+.tsk-celebration-ico{font-size:18px;color:#047857}
+.tsk-celebration-txt{font-size:13px;color:#065f46;font-weight:600;letter-spacing:0.3px;font-family:Georgia,serif}
+
+/* Small screen tweaks */
+@media(max-width:380px){
+  .tsk-strip{min-width:48px;padding:11px 8px}
+  .tsk-strip-ico{font-size:20px}
+  .tsk-content{padding:10px 11px}
+  .tsk-avatar{width:34px;height:34px;font-size:11.5px}
+  .tsk-name{font-size:15px}
+  .tsk-cta{padding:7px 11px;font-size:11px}
+  .tsk-phone{padding:5px 8px;font-size:10.5px}
+  .tsk-section-title{font-size:20px}
+}
+
+/* Disable old progress circle (bug fix) */
+.lux-tasks-prog{display:none!important}
+.lux-tasks-hdr-right{display:none!important}
+
+
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ v61 Tasks — Clean Cards + Luxury Fullscreen Modal       ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Container ─── */
+.mt-wrap{margin-bottom:20px}
+
+/* ─── Section Header ─── */
+.mt-section-hdr{display:flex;justify-content:space-between;align-items:flex-end;padding:0 2px 12px;margin-bottom:14px;border-bottom:1px solid #f3e8d8;position:relative}
+.mt-section-hdr::before{content:'';position:absolute;bottom:-1px;right:0;width:64px;height:2px;background:linear-gradient(to left,#d4a574,#b8915f);border-radius:2px}
+.mt-section-left{flex:1;min-width:0}
+.mt-section-date{font-size:10px;font-weight:700;color:#a97b3c;letter-spacing:2.2px;text-transform:uppercase;margin-bottom:4px;font-family:Georgia,serif;font-style:italic}
+.mt-section-title{font-size:22px;font-weight:300;color:#1a1a1a;letter-spacing:-0.4px;line-height:1;font-family:Georgia,'Times New Roman',serif}
+.mt-section-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.mt-section-count{display:flex;flex-direction:column;align-items:center;padding:5px 9px;background:linear-gradient(135deg,#fdf9f1,#fef3d7);border:1px solid #e8dcc8;border-radius:9px;line-height:1.05;flex-shrink:0}
+.mt-section-count.all-done{background:linear-gradient(135deg,#d1fae5,#a7f3d0);border-color:#6ee7b7}
+.mt-count-num{font-size:13px;font-weight:800;color:#78350f;font-variant-numeric:tabular-nums;font-family:Georgia,serif;letter-spacing:-0.3px}
+.mt-section-count.all-done .mt-count-num{color:#065f46}
+.mt-count-lbl{font-size:8px;font-weight:700;color:#a97b3c;letter-spacing:0.7px;text-transform:uppercase;margin-top:1px}
+.mt-section-count.all-done .mt-count-lbl{color:#065f46}
+.mt-refresh{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#fdf9f1,#fef3d7);border:1px solid #e8dcc8;color:#78350f;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .22s;padding:0;flex-shrink:0}
+.mt-refresh:hover{background:linear-gradient(135deg,#d4a574,#b8915f);color:white;transform:rotate(-90deg);border-color:#b8915f}
+.mt-refresh.spinning svg{animation:mtspin .8s linear infinite}
+@keyframes mtspin{to{transform:rotate(-360deg)}}
+
+.mt-refreshing{display:flex;align-items:center;gap:8px;padding:10px 14px;margin-bottom:10px;background:linear-gradient(90deg,#fdf9f1,#fffdf8);border:1px solid #e8dcc8;border-right:3px solid #d4a574;border-radius:12px;font-size:12px;color:#78350f;font-weight:600;font-family:Georgia,serif;font-style:italic}
+.mt-dot{width:6px;height:6px;background:#d4a574;border-radius:50%;animation:mtdot 1s ease-in-out infinite}
+.mt-dot:nth-child(2){animation-delay:0.15s}
+.mt-dot:nth-child(3){animation-delay:0.3s}
+@keyframes mtdot{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1.2);opacity:1}}
+
+/* ─── Task Card (simple, clickable) ─── */
+.mt-list{display:flex;flex-direction:column;gap:10px}
+.mt-card{position:relative;border:1px solid #e8dcc8;border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .25s,border-color .2s;box-shadow:0 1px 3px rgba(120,83,15,0.05)}
+.mt-card:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,0.08);border-color:#d4a574}
+.mt-card:active{transform:translateY(-1px) scale(0.995)}
+.mt-done{opacity:0.55}
+.mt-done .mt-card-title{text-decoration:line-through}
+
+.mt-card-accent{position:absolute;top:0;right:0;bottom:0;width:6px;pointer-events:none}
+.mt-card-row{display:flex;align-items:flex-start;gap:12px;padding:14px 20px 12px 14px}
+.mt-icon-wrap{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+.mt-icon{font-size:22px;line-height:1;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.1))}
+.mt-card-body{flex:1;min-width:0}
+.mt-type-label{font-size:9.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:3px;font-family:Georgia,serif;font-style:italic;opacity:0.85}
+.mt-card-title{font-size:17px;font-weight:400;letter-spacing:-0.3px;line-height:1.2;margin-bottom:4px;font-family:Georgia,'Times New Roman',serif}
+.mt-card-meta{font-size:11.5px;color:#6b6b6b;font-weight:500;line-height:1.4;letter-spacing:0.1px}
+.mt-check{width:24px;height:24px;border-radius:50%;border:2px solid var(--c);background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;padding:0;color:white;flex-shrink:0;margin-top:2px}
+.mt-check:hover{transform:scale(1.1)}
+.mt-done .mt-check{background:var(--c)}
+
+.mt-card-open{display:flex;align-items:center;justify-content:space-between;padding:8px 20px 10px 14px;border-top:1px dashed #e8dcc8;font-size:10.5px;font-weight:700;color:#8b8b8b;letter-spacing:0.5px}
+.mt-arrow{font-size:16px;font-weight:400}
+.mt-card:hover .mt-card-open{color:#1a1a1a}
+
+.mt-celebration{margin-top:12px;padding:14px;background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:1px solid #6ee7b7;border-radius:14px;text-align:center;font-size:13px;color:#065f46;font-weight:600;letter-spacing:0.3px;font-family:Georgia,serif}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ FULLSCREEN LUXURY TASK MODAL                             ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.task-modal-ov{position:fixed;inset:0;background:#000;z-index:9800;opacity:0;transition:opacity .35s ease;pointer-events:none;overflow:hidden}
+.task-modal-ov.on{opacity:1;pointer-events:auto}
+
+.task-modal{position:absolute;inset:0;background:radial-gradient(ellipse 140% 90% at 50% -20%,rgba(212,165,116,0.18),transparent 55%),linear-gradient(180deg,#0a0a0a 0%,#1a1612 50%,#0a0806 100%);color:#fdfbf8;direction:rtl;font-family:inherit;overflow:hidden;display:flex;flex-direction:column;transform:scale(0.96);opacity:0;transition:transform .4s cubic-bezier(.34,1.3,.5,1),opacity .3s ease}
+.task-modal-ov.on .task-modal{transform:scale(1);opacity:1}
+
+/* Sparkle background */
+.tm-sparkle-bg{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1px 1px at 13% 22%,rgba(212,165,116,0.6),transparent),radial-gradient(1px 1px at 47% 38%,rgba(212,165,116,0.4),transparent),radial-gradient(1.5px 1.5px at 76% 14%,rgba(212,165,116,0.7),transparent),radial-gradient(1px 1px at 91% 46%,rgba(212,165,116,0.3),transparent),radial-gradient(1px 1px at 21% 71%,rgba(212,165,116,0.5),transparent),radial-gradient(1.5px 1.5px at 58% 82%,rgba(212,165,116,0.6),transparent),radial-gradient(1px 1px at 83% 91%,rgba(212,165,116,0.4),transparent),radial-gradient(1px 1px at 9% 55%,rgba(212,165,116,0.3),transparent),radial-gradient(2px 2px at 37% 7%,rgba(212,165,116,0.5),transparent);background-size:100% 100%;opacity:0.6;animation:tmSparkle 6s ease-in-out infinite alternate}
+@keyframes tmSparkle{from{opacity:0.4}to{opacity:0.75}}
+
+.tm-close{position:absolute;top:18px;left:18px;width:40px;height:40px;border-radius:50%;background:rgba(212,165,116,0.15);border:1px solid rgba(212,165,116,0.3);color:#d4a574;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:10;backdrop-filter:blur(8px)}
+.tm-close:hover{background:rgba(212,165,116,0.3);border-color:#d4a574}
+
+.tm-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:60px 24px 40px;position:relative;z-index:2}
+
+/* Hero section */
+.tm-hero{text-align:center;margin-bottom:32px;padding-top:10px}
+.tm-icon-circle{width:110px;height:110px;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(212,165,116,0.3),inset 0 1px 0 rgba(255,255,255,0.2);position:relative}
+.tm-icon-circle::before{content:'';position:absolute;inset:-4px;border:1px solid rgba(212,165,116,0.4);border-radius:50%;pointer-events:none}
+.tm-icon-big{font-size:52px;line-height:1;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.2))}
+
+.tm-sparkles{display:flex;justify-content:center;gap:12px;margin-bottom:18px;color:#d4a574;font-size:16px;line-height:1}
+.tm-sparkle-1{animation:tmSparkleA 2s ease-in-out infinite}
+.tm-sparkle-2{font-size:22px;animation:tmSparkleA 2s ease-in-out infinite .3s}
+.tm-sparkle-3{animation:tmSparkleA 2s ease-in-out infinite .6s}
+@keyframes tmSparkleA{0%,100%{opacity:0.5;transform:scale(0.9)}50%{opacity:1;transform:scale(1.15)}}
+
+.tm-type{font-size:11px;font-weight:600;color:#d4a574;letter-spacing:4px;text-transform:uppercase;margin-bottom:12px;font-family:Georgia,serif;font-style:italic;opacity:0.9}
+.tm-main-title{font-size:42px;font-weight:300;letter-spacing:-1.2px;line-height:1.05;color:#fdfbf8;font-family:Georgia,'Times New Roman',serif;margin-bottom:24px;padding:0 12px;text-shadow:0 2px 12px rgba(212,165,116,0.2)}
+
+.tm-divider{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:18px}
+.tm-divider-line{width:60px;height:1px;background:linear-gradient(to left,transparent,#d4a574);opacity:0.7}
+.tm-divider-line:last-child{background:linear-gradient(to right,transparent,#d4a574)}
+.tm-divider-sym{color:#d4a574;font-size:12px;letter-spacing:1px}
+
+.tm-tagline{font-size:15px;color:rgba(253,251,248,0.7);font-weight:300;line-height:1.6;letter-spacing:0.3px;padding:0 16px;max-width:440px;margin:0 auto;font-family:Georgia,serif;font-style:italic}
+
+/* Sections */
+.tm-section{max-width:500px;margin:0 auto 26px;position:relative}
+.tm-sec-label{font-size:10.5px;font-weight:700;color:#d4a574;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px;text-align:center;font-family:Georgia,serif;font-style:italic;opacity:0.85}
+
+/* Client card */
+.tm-client-card{background:linear-gradient(135deg,rgba(212,165,116,0.08),rgba(212,165,116,0.03));border:1px solid rgba(212,165,116,0.25);border-radius:18px;padding:18px;display:flex;align-items:center;gap:14px;margin-bottom:14px;backdrop-filter:blur(8px)}
+.tm-client-avatar{width:54px;height:54px;border-radius:50%;background:var(--m-grad);color:white;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;font-family:Georgia,serif;letter-spacing:-0.4px;flex-shrink:0;box-shadow:0 4px 14px var(--m-glow)}
+.tm-client-name-wrap{flex:1;min-width:0}
+.tm-client-name{font-size:20px;font-weight:400;color:#fdfbf8;letter-spacing:-0.3px;font-family:Georgia,serif;line-height:1.1;margin-bottom:3px}
+.tm-client-phone{font-size:12.5px;color:#d4a574;font-weight:600;letter-spacing:0.5px;font-variant-numeric:tabular-nums;direction:ltr;text-align:right}
+
+/* Facts grid */
+.tm-facts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.tm-fact{background:rgba(212,165,116,0.06);border:1px solid rgba(212,165,116,0.15);border-radius:12px;padding:10px 12px;backdrop-filter:blur(8px)}
+.tm-fact-lbl{font-size:9.5px;color:rgba(212,165,116,0.75);font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:3px;font-family:Georgia,serif}
+.tm-fact-val{font-size:13px;color:#fdfbf8;font-weight:500;letter-spacing:-0.1px;line-height:1.2;font-variant-numeric:tabular-nums}
+
+/* Action hint box (like the quote box in screenshot 2) */
+.tm-action-box{background:rgba(255,255,255,0.04);border:1px solid rgba(212,165,116,0.25);border-radius:16px;padding:18px 18px 18px 22px;position:relative;backdrop-filter:blur(8px)}
+.tm-action-box::before{content:'';position:absolute;top:0;bottom:0;right:0;width:3px;background:linear-gradient(180deg,#d4a574,transparent);border-radius:3px 0 0 3px}
+.tm-action-icon{color:#d4a574;font-size:18px;margin-bottom:10px;line-height:1}
+.tm-action-text{font-size:14px;color:rgba(253,251,248,0.92);line-height:1.75;font-weight:400;letter-spacing:0.2px;font-family:Georgia,serif;font-style:italic}
+
+/* Actions */
+.tm-actions{max-width:500px;margin:30px auto 20px;display:flex;flex-direction:column;gap:10px;padding:0 4px}
+.tm-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:16px 20px;border-radius:14px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:all .25s;letter-spacing:0.4px;text-decoration:none;border:1px solid transparent}
+.tm-btn-call{background:transparent;color:#fdfbf8;border-color:rgba(212,165,116,0.4)}
+.tm-btn-call:hover{background:rgba(212,165,116,0.1);border-color:#d4a574}
+.tm-btn-wa{background:linear-gradient(135deg,#25d366,#128c7e);color:white;box-shadow:0 4px 14px rgba(37,211,102,0.3)}
+.tm-btn-wa:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(37,211,102,0.4)}
+.tm-btn-ai{background:linear-gradient(135deg,#d4a574,#b8915f);color:#1a1a1a;border-color:#d4a574;box-shadow:0 4px 14px rgba(212,165,116,0.3);font-weight:700}
+.tm-btn-ai:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(212,165,116,0.45);background:linear-gradient(135deg,#e5b88a,#c9a16f)}
+.tm-btn:active{transform:scale(0.98)}
+
+.tm-bottom-ornament{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:30px;opacity:0.5}
+.tm-orn-line{width:40px;height:1px;background:linear-gradient(to left,transparent,#d4a574)}
+.tm-orn-line:last-child{background:linear-gradient(to right,transparent,#d4a574)}
+.tm-orn-sym{color:#d4a574;font-size:10px}
+
+/* Mobile adjustments */
+@media(max-width:480px){
+  .tm-scroll{padding:56px 18px 30px}
+  .tm-icon-circle{width:92px;height:92px}
+  .tm-icon-big{font-size:42px}
+  .tm-main-title{font-size:34px;letter-spacing:-0.8px}
+  .tm-tagline{font-size:14px;padding:0 8px}
+  .tm-facts{grid-template-columns:1fr 1fr}
+  .tm-fact-val{font-size:12px}
+  .tm-client-avatar{width:48px;height:48px;font-size:14px}
+  .tm-client-name{font-size:18px}
+}
+@media(max-width:340px){
+  .tm-main-title{font-size:28px}
+  .tm-facts{grid-template-columns:1fr}
+}
+
+/* Hide old conflicting tsk-* classes */
+.tsk-wrap,.tsk-section-hdr,.tsk-list,.tsk{display:none!important}
+
+
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ v62 — Each task is a LUXURY BLACK CARD                  ═══ */
+/* ═══ Like "מרכז הכתר" — dark bg, gold, sparkles, serif       ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+
+/* Kill conflicting old CSS */
+.mt-wrap,.mt-section-hdr,.mt-list,.mt-card,.tsk-wrap,.tsk-section-hdr,.tsk-list,.tsk{display:none!important}
+
+/* ─── Wrap ─── */
+.lx-wrap{margin-bottom:20px;max-width:100%}
+
+/* ─── Top Bar (date + count + refresh) ─── */
+.lx-top-bar{display:flex;justify-content:space-between;align-items:flex-end;padding:0 4px 12px;margin-bottom:14px;border-bottom:1px solid #f3e8d8;position:relative}
+.lx-top-bar::before{content:'';position:absolute;bottom:-1px;right:0;width:64px;height:2px;background:linear-gradient(to left,#d4a574,#b8915f);border-radius:2px}
+.lx-top-left{flex:1;min-width:0}
+.lx-top-date{font-size:10px;font-weight:700;color:#a97b3c;letter-spacing:2.2px;text-transform:uppercase;margin-bottom:4px;font-family:Georgia,serif;font-style:italic}
+.lx-top-title{font-size:22px;font-weight:300;color:#1a1a1a;letter-spacing:-0.4px;line-height:1;font-family:Georgia,'Times New Roman',serif}
+.lx-top-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.lx-count{display:flex;flex-direction:column;align-items:center;padding:5px 9px;background:linear-gradient(135deg,#fdf9f1,#fef3d7);border:1px solid #e8dcc8;border-radius:9px;line-height:1.05}
+.lx-count.all-done{background:linear-gradient(135deg,#d1fae5,#a7f3d0);border-color:#6ee7b7}
+.lx-count-num{font-size:13px;font-weight:800;color:#78350f;font-variant-numeric:tabular-nums;font-family:Georgia,serif;letter-spacing:-0.3px}
+.lx-count.all-done .lx-count-num{color:#065f46}
+.lx-count-lbl{font-size:8px;font-weight:700;color:#a97b3c;letter-spacing:0.7px;text-transform:uppercase;margin-top:1px}
+.lx-count.all-done .lx-count-lbl{color:#065f46}
+.lx-refresh{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#fdf9f1,#fef3d7);border:1px solid #e8dcc8;color:#78350f;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .22s;padding:0;flex-shrink:0}
+.lx-refresh:hover{background:linear-gradient(135deg,#d4a574,#b8915f);color:white;transform:rotate(-90deg);border-color:#b8915f}
+.lx-refresh.spinning svg{animation:lxspin .8s linear infinite}
+@keyframes lxspin{to{transform:rotate(-360deg)}}
+
+.lx-refreshing{display:flex;align-items:center;gap:8px;padding:10px 14px;margin-bottom:10px;background:linear-gradient(90deg,#fdf9f1,#fffdf8);border:1px solid #e8dcc8;border-right:3px solid #d4a574;border-radius:12px;font-size:12px;color:#78350f;font-weight:600;font-family:Georgia,serif;font-style:italic}
+.lx-dot{width:6px;height:6px;background:#d4a574;border-radius:50%;animation:lxdot 1s ease-in-out infinite}
+.lx-dot:nth-child(2){animation-delay:0.15s}
+.lx-dot:nth-child(3){animation-delay:0.3s}
+@keyframes lxdot{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1.2);opacity:1}}
+
+/* ─── Stack of cards ─── */
+.lx-stack{display:flex;flex-direction:column;gap:16px}
+
+/* ─── LUXURY BLACK CARD ─── */
+.lx-card{position:relative;border-radius:24px;overflow:hidden;background:radial-gradient(ellipse 120% 70% at 50% 0%,rgba(212,165,116,0.14),transparent 55%),linear-gradient(180deg,#0a0805 0%,#14100a 30%,#0d0a06 65%,#050403 100%);color:#fdfbf8;box-shadow:0 18px 44px -10px rgba(0,0,0,0.6),0 0 0 1px rgba(212,165,116,0.18),inset 0 1px 0 rgba(212,165,116,0.12);min-height:500px;transition:transform .28s,box-shadow .28s}
+.lx-card:hover{transform:translateY(-2px);box-shadow:0 24px 52px -10px rgba(0,0,0,0.7),0 0 0 1px rgba(212,165,116,0.3),inset 0 1px 0 rgba(212,165,116,0.18)}
+.lx-card.is-done{opacity:0.55}
+.lx-card.is-done .lx-title{text-decoration:line-through;text-decoration-color:rgba(212,165,116,0.4)}
+
+/* Sparkle background pattern */
+.lx-card-sparkles{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1px 1px at 13% 22%,rgba(212,165,116,0.7),transparent),radial-gradient(1px 1px at 47% 38%,rgba(212,165,116,0.4),transparent),radial-gradient(1.5px 1.5px at 76% 14%,rgba(212,165,116,0.8),transparent),radial-gradient(1px 1px at 91% 46%,rgba(212,165,116,0.3),transparent),radial-gradient(1px 1px at 21% 71%,rgba(212,165,116,0.5),transparent),radial-gradient(1.5px 1.5px at 58% 82%,rgba(212,165,116,0.6),transparent),radial-gradient(1px 1px at 83% 91%,rgba(212,165,116,0.4),transparent),radial-gradient(1px 1px at 9% 55%,rgba(212,165,116,0.35),transparent),radial-gradient(2px 2px at 37% 7%,rgba(212,165,116,0.55),transparent),radial-gradient(1px 1px at 67% 63%,rgba(212,165,116,0.4),transparent);background-size:100% 100%;opacity:0.65;animation:lxTwinkle 5s ease-in-out infinite alternate}
+@keyframes lxTwinkle{from{opacity:0.5}to{opacity:0.85}}
+
+/* Top glow tied to task accent color */
+.lx-card-bg{position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:140%;height:80%;background:radial-gradient(ellipse 60% 100% at 50% 100%,var(--lx-glow),transparent 60%);pointer-events:none;opacity:0.6}
+
+/* Inner content — more spacious "מרכז הכתר" style */
+.lx-card-inner{position:relative;z-index:2;padding:46px 22px 32px;text-align:center;display:flex;flex-direction:column;align-items:center}
+
+/* Check button (top-left corner of card, like X in reference) */
+.lx-check-wrap{position:absolute;top:16px;left:16px;z-index:3}
+.lx-check{width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(212,165,116,0.4);background:rgba(212,165,116,0.08);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;padding:0;color:#d4a574;backdrop-filter:blur(8px)}
+.lx-check:hover{background:rgba(212,165,116,0.2);border-color:#d4a574;transform:scale(1.08)}
+.lx-card.is-done .lx-check{background:#d4a574;border-color:#d4a574;color:#1a1a1a}
+
+/* Icon circle — "מרכז הכתר" style: transparent with gold ring */
+.lx-icon-circle{width:98px;height:98px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:22px;position:relative;box-shadow:0 10px 40px var(--lx-glow),inset 0 0 24px rgba(212,165,116,0.08);border:1.5px solid rgba(212,165,116,0.55)}
+.lx-icon-circle::before{content:'';position:absolute;inset:-7px;border:1px solid rgba(212,165,116,0.25);border-radius:50%;pointer-events:none}
+.lx-icon-circle::after{content:'';position:absolute;inset:-13px;border:0.5px solid rgba(212,165,116,0.12);border-radius:50%;pointer-events:none}
+.lx-icon-big{font-size:44px;line-height:1;filter:drop-shadow(0 2px 8px rgba(212,165,116,0.3));color:#d4a574}
+
+/* Sparkles row */
+.lx-sparkles-row{display:flex;justify-content:center;gap:12px;margin-bottom:14px;color:#d4a574;line-height:1}
+.lx-spark{display:inline-block}
+.lx-spark-1{font-size:14px;animation:lxSpark 2.2s ease-in-out infinite}
+.lx-spark-2{font-size:20px;animation:lxSpark 2.2s ease-in-out infinite .3s}
+.lx-spark-3{font-size:14px;animation:lxSpark 2.2s ease-in-out infinite .6s}
+@keyframes lxSpark{0%,100%{opacity:0.5;transform:scale(0.85)}50%{opacity:1;transform:scale(1.15)}}
+
+/* Kicker (type label) */
+.lx-kicker{font-size:10.5px;font-weight:500;color:rgba(212,165,116,0.85);letter-spacing:4.5px;text-transform:uppercase;margin-bottom:12px;font-family:'Cormorant Garamond','Georgia',serif;font-style:italic;opacity:0.95}
+
+/* Main title — BIG serif, GOLD like "מרכז הכתר" */
+.lx-title{font-size:34px;font-weight:400;letter-spacing:-0.5px;line-height:1.08;color:#e5c395;font-family:'Cormorant Garamond','Georgia','Times New Roman',serif;margin-bottom:18px;padding:0 8px;text-shadow:0 2px 14px rgba(212,165,116,0.25)}
+
+/* Gold divider — longer elegant line like "מרכז הכתר" */
+.lx-gold-div{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:18px;width:100%;max-width:280px}
+.lx-gold-line{flex:1;height:1px;background:linear-gradient(to left,transparent,rgba(212,165,116,0.6));opacity:0.85}
+.lx-gold-line:last-child{background:linear-gradient(to right,transparent,rgba(212,165,116,0.6))}
+.lx-gold-sym{color:#d4a574;font-size:11px;letter-spacing:1px;opacity:0.9}
+
+/* Tagline — poetic subtitle like "חיבור לנשמה ולתכלית" */
+.lx-tagline{font-size:14px;color:rgba(212,165,116,0.72);font-weight:300;line-height:1.65;letter-spacing:0.5px;padding:0 14px;margin-bottom:26px;font-family:'Cormorant Garamond','Georgia',serif;font-style:italic;max-width:360px}
+
+/* Facts grid */
+.lx-facts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;width:100%;max-width:360px;margin-bottom:18px}
+.lx-fact{background:rgba(212,165,116,0.06);border:1px solid rgba(212,165,116,0.18);border-radius:12px;padding:9px 11px;backdrop-filter:blur(6px)}
+.lx-fact-lbl{font-size:9px;color:rgba(212,165,116,0.75);font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:2px;font-family:Georgia,serif;text-align:center}
+.lx-fact-val{font-size:13px;color:#fdfbf8;font-weight:500;letter-spacing:-0.1px;line-height:1.2;font-variant-numeric:tabular-nums;text-align:center;font-family:Georgia,serif}
+
+/* Quote box (like the quote in reference image) */
+.lx-quote{background:rgba(255,255,255,0.03);border:1px solid rgba(212,165,116,0.22);border-radius:14px;padding:16px 16px 16px 20px;position:relative;width:100%;max-width:360px;margin-bottom:20px;text-align:right;backdrop-filter:blur(6px)}
+.lx-quote::before{content:'';position:absolute;top:0;bottom:0;right:0;width:3px;background:linear-gradient(180deg,#d4a574,rgba(212,165,116,0.3));border-radius:3px 0 0 3px}
+.lx-quote-mark{color:#d4a574;font-size:16px;margin-bottom:8px;line-height:1;text-align:right}
+.lx-quote-text{font-size:13px;color:rgba(253,251,248,0.88);line-height:1.65;font-weight:400;letter-spacing:0.15px;font-family:Georgia,serif;font-style:italic}
+
+/* Actions */
+.lx-actions{display:flex;flex-direction:column;gap:8px;width:100%;max-width:360px;margin-bottom:18px}
+.lx-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border-radius:11px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:0.3px;text-decoration:none;border:1px solid transparent;line-height:1}
+.lx-btn-ghost{background:transparent;color:#fdfbf8;border-color:rgba(212,165,116,0.4)}
+.lx-btn-ghost:hover{background:rgba(212,165,116,0.12);border-color:#d4a574}
+.lx-btn-wa{background:linear-gradient(135deg,#25d366,#128c7e);color:white;box-shadow:0 3px 10px rgba(37,211,102,0.25)}
+.lx-btn-wa:hover{transform:translateY(-1px);box-shadow:0 5px 15px rgba(37,211,102,0.35)}
+.lx-btn-gold{background:linear-gradient(135deg,#d4a574,#b8915f);color:#1a1a1a;border-color:#d4a574;box-shadow:0 3px 12px rgba(212,165,116,0.3);font-weight:700}
+.lx-btn-gold:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(212,165,116,0.42);background:linear-gradient(135deg,#e5b88a,#c9a16f)}
+.lx-btn:active{transform:scale(0.97)}
+
+/* Bottom ornament */
+.lx-bot-orn{display:flex;align-items:center;justify-content:center;gap:12px;opacity:0.4;margin-top:4px}
+.lx-bot-line{width:36px;height:1px;background:linear-gradient(to left,transparent,#d4a574)}
+.lx-bot-line:last-child{background:linear-gradient(to right,transparent,#d4a574)}
+.lx-bot-sym{color:#d4a574;font-size:9px}
+
+.lx-all-done{margin-top:16px;padding:14px;background:linear-gradient(135deg,#0f0c08,#1a1510);border:1px solid rgba(212,165,116,0.3);border-radius:14px;text-align:center;font-size:13px;color:#d4a574;font-weight:600;letter-spacing:2px;font-family:Georgia,serif;font-style:italic}
+
+/* Responsive */
+@media(max-width:380px){
+  .lx-card{min-height:460px}
+  .lx-card-inner{padding:30px 18px 22px}
+  .lx-icon-circle{width:82px;height:82px}
+  .lx-icon-big{font-size:36px}
+  .lx-title{font-size:27px;letter-spacing:-0.5px}
+  .lx-tagline{font-size:12.5px;padding:0 4px}
+  .lx-facts{grid-template-columns:1fr 1fr}
+  .lx-fact-val{font-size:12px}
+}
 
 </style>
 <scr`+`ipt data-webedit-tag="1">

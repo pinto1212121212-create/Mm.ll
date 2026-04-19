@@ -8812,6 +8812,125 @@ function webInjectEditor(html){
   
   /* Text highlight while selecting */
   body.__webedit ::selection{background:rgba(124,58,237,.35);color:#1e1b4b}
+
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ PRO EDITOR PANEL — Figma-like inspector                 ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.wt-btn.wt-btn-pro{background:linear-gradient(135deg,#7c3aed,#5b21b6)!important;color:white!important;border-color:#7c3aed!important;box-shadow:0 2px 8px rgba(124,58,237,.3)}
+.wt-btn.wt-btn-pro:hover{background:linear-gradient(135deg,#6d28d9,#4c1d95)!important;box-shadow:0 4px 12px rgba(124,58,237,.4)}
+
+/* Panel container */
+.pro-ed-ov{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:9500;display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .22s ease;pointer-events:none}
+.pro-ed-ov.on{opacity:1;pointer-events:auto}
+.pro-ed{background:#fafafa;width:100%;max-width:560px;max-height:85vh;border-radius:20px 20px 0 0;transform:translateY(100%);transition:transform .32s cubic-bezier(.34,1.3,.5,1);direction:rtl;font-family:inherit;overflow:hidden;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom,0)}
+.pro-ed-ov.on .pro-ed{transform:translateY(0)}
+@media(min-width:768px){.pro-ed-ov{align-items:center;padding:16px}.pro-ed{border-radius:20px;max-height:80vh}}
+
+/* Header */
+.pro-ed-hdr{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;padding:14px 16px;display:flex;align-items:center;gap:10px;position:relative;flex-shrink:0}
+.pro-ed-hdr-ico{width:36px;height:36px;background:rgba(255,255,255,.18);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.pro-ed-hdr-body{flex:1;min-width:0}
+.pro-ed-hdr-title{font-size:15px;font-weight:900;letter-spacing:-.2px;line-height:1.1}
+.pro-ed-hdr-sub{font-size:11px;font-weight:600;opacity:.85;margin-top:2px;letter-spacing:.3px}
+.pro-ed-close{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.2);border:none;color:white;font-size:15px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}
+.pro-ed-close:hover{background:rgba(255,255,255,.32)}
+
+/* Tabs */
+.pro-ed-tabs{display:flex;background:#f3f4f6;border-bottom:1px solid #e5e7eb;padding:6px;gap:2px;overflow-x:auto;flex-shrink:0}
+.pro-ed-tab{padding:9px 14px;background:transparent;border:none;border-radius:8px;color:#6b7280;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:5px;flex-shrink:0}
+.pro-ed-tab:hover:not(.active){color:#1f2937;background:rgba(255,255,255,.6)}
+.pro-ed-tab.active{background:white;color:#7c3aed;box-shadow:0 2px 6px rgba(0,0,0,.06);border:1px solid #e5e7eb}
+.pro-ed-tab-ico{font-size:14px}
+
+/* Body - scrollable */
+.pro-ed-body{flex:1;overflow-y:auto;padding:14px 16px 20px;-webkit-overflow-scrolling:touch}
+
+/* Sections */
+.pro-sec{margin-bottom:18px}
+.pro-sec:last-child{margin-bottom:4px}
+.pro-sec-ttl{font-size:11px;font-weight:800;color:#6b7280;letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;padding-right:2px;display:flex;align-items:center;gap:5px}
+.pro-sec-ttl-ico{font-size:12px;opacity:.8}
+
+/* Row with label + control */
+.pro-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;background:white;border:1px solid #e5e7eb;border-radius:10px;padding:8px 12px;transition:border-color .15s}
+.pro-row:hover{border-color:#c4b5fd}
+.pro-row-lbl{font-size:12px;font-weight:700;color:#374151;min-width:62px;flex-shrink:0}
+.pro-row-ctrl{flex:1;display:flex;align-items:center;gap:8px;min-width:0}
+.pro-row-val{font-size:11px;font-weight:800;color:#7c3aed;min-width:40px;text-align:center;font-variant-numeric:tabular-nums;background:#f3e8ff;padding:3px 7px;border-radius:6px}
+
+/* Slider */
+.pro-slider{flex:1;-webkit-appearance:none;appearance:none;height:6px;background:linear-gradient(to left,#ddd6fe,#7c3aed);border-radius:3px;outline:none;cursor:pointer;min-width:80px}
+.pro-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;background:white;border:2.5px solid #7c3aed;border-radius:50%;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.12);transition:transform .15s}
+.pro-slider::-webkit-slider-thumb:hover{transform:scale(1.15)}
+.pro-slider::-moz-range-thumb{width:20px;height:20px;background:white;border:2.5px solid #7c3aed;border-radius:50%;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+
+/* Input */
+.pro-inp{flex:1;padding:7px 10px;border:1.5px solid #d1d5db;border-radius:8px;font-size:12px;font-family:inherit;font-weight:600;color:#1f2937;-webkit-user-select:text;user-select:text;transition:border-color .15s;outline:none;min-width:0}
+.pro-inp:focus{border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.12)}
+.pro-inp-sm{max-width:70px}
+.pro-inp-tiny{max-width:50px;padding:5px 6px;text-align:center;font-variant-numeric:tabular-nums}
+
+/* Unit selector */
+.pro-unit{display:flex;gap:2px;background:#f3f4f6;border-radius:6px;padding:2px;flex-shrink:0}
+.pro-unit-btn{padding:3px 7px;background:transparent;border:none;border-radius:4px;font-size:10px;font-weight:700;color:#6b7280;cursor:pointer;font-family:inherit;transition:all .12s}
+.pro-unit-btn.on{background:white;color:#7c3aed;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+
+/* Button grid (for options like align, weight) */
+.pro-btn-grid{display:flex;gap:4px;flex:1;background:#f3f4f6;border-radius:8px;padding:3px}
+.pro-btn-opt{flex:1;padding:7px 6px;background:transparent;border:none;border-radius:6px;font-size:12px;font-weight:700;color:#6b7280;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:4px;min-width:0}
+.pro-btn-opt:hover:not(.on){color:#1f2937}
+.pro-btn-opt.on{background:white;color:#7c3aed;box-shadow:0 2px 5px rgba(0,0,0,.08);border:1px solid #e5e7eb}
+
+/* Color swatches */
+.pro-swatches{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;margin-top:8px;padding:8px;background:white;border:1px solid #e5e7eb;border-radius:10px}
+.pro-swatch{width:100%;aspect-ratio:1;border-radius:6px;cursor:pointer;border:2px solid #f3f4f6;transition:transform .12s,border-color .12s;position:relative}
+.pro-swatch:hover{transform:scale(1.12);border-color:#7c3aed}
+.pro-swatch.transparent{background:repeating-conic-gradient(#e5e7eb 0% 25%,white 0% 50%) 50%/10px 10px}
+.pro-swatch.transparent::after{content:'∅';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#9ca3af;font-weight:900}
+
+/* Color picker row */
+.pro-color-row{display:flex;gap:8px;align-items:center}
+.pro-color-picker{width:36px;height:36px;border:none;border-radius:8px;cursor:pointer;padding:0;overflow:hidden;flex-shrink:0;background:transparent}
+.pro-color-picker::-webkit-color-swatch-wrapper{padding:0;border-radius:8px;overflow:hidden}
+.pro-color-picker::-webkit-color-swatch{border:2px solid #e5e7eb;border-radius:8px}
+
+/* 4-side controls (padding/margin) */
+.pro-sides{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-areas:'. top .' 'right center left' '. bottom .';gap:4px;max-width:180px;margin:0 auto}
+.pro-side-t{grid-area:top}
+.pro-side-r{grid-area:right}
+.pro-side-b{grid-area:bottom}
+.pro-side-l{grid-area:left}
+.pro-side-center{grid-area:center;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;background:#f3f4f6;border-radius:6px}
+
+/* Shadow presets */
+.pro-shadow-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pro-shadow-opt{aspect-ratio:1;background:white;border:1.5px solid #e5e7eb;border-radius:10px;cursor:pointer;padding:10px;display:flex;align-items:center;justify-content:center;transition:all .15s;position:relative}
+.pro-shadow-opt:hover{border-color:#7c3aed}
+.pro-shadow-opt.on{border-color:#7c3aed;background:#faf5ff}
+.pro-shadow-sample{width:60%;height:60%;background:linear-gradient(135deg,#a78bfa,#7c3aed);border-radius:6px}
+.pro-shadow-lbl{position:absolute;bottom:3px;right:0;left:0;text-align:center;font-size:9px;font-weight:800;color:#6b7280;letter-spacing:.4px;text-transform:uppercase}
+
+/* Radius visual */
+.pro-radius-vis{width:32px;height:32px;border:2px solid #7c3aed;background:#faf5ff;flex-shrink:0;transition:border-radius .2s}
+
+/* Helper text */
+.pro-hint{font-size:10.5px;color:#9ca3af;font-weight:600;padding:4px 4px 0;line-height:1.4}
+
+/* Quick preset buttons row */
+.pro-presets{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.pro-preset{padding:6px 11px;background:white;border:1.5px solid #e5e7eb;border-radius:14px;font-size:11px;font-weight:700;color:#6b7280;cursor:pointer;font-family:inherit;transition:all .15s}
+.pro-preset:hover{border-color:#7c3aed;color:#7c3aed;background:#faf5ff}
+.pro-preset.on{background:#7c3aed;color:white;border-color:#7c3aed}
+
+/* Footer */
+.pro-ed-ftr{background:white;border-top:1px solid #e5e7eb;padding:10px 16px;display:flex;gap:8px;flex-shrink:0}
+.pro-ed-btn{flex:1;padding:11px;border-radius:10px;border:1.5px solid #e5e7eb;background:white;color:#374151;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s;letter-spacing:.2px}
+.pro-ed-btn:hover{border-color:#7c3aed;color:#7c3aed}
+.pro-ed-btn.primary{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;border-color:#7c3aed;box-shadow:0 2px 8px rgba(124,58,237,.25)}
+.pro-ed-btn.primary:hover{background:linear-gradient(135deg,#6d28d9,#4c1d95);box-shadow:0 4px 14px rgba(124,58,237,.35)}
+
 </style>
 <scr`+`ipt data-webedit-tag="1">
 (function(){
@@ -9430,6 +9549,17 @@ function webInjectEditor(html){
         case 'align':setAlign(d.value);break;
         case 'block':setBlockTag(d.value);break;
         case 'clearFormat':clearFormatting();break;
+        case 'style':applyStyle(d.prop,d.value);break;
+        case 'elStyle':
+          // Apply style directly to the last focused element (not the selection)
+          if(_lastFocusedEditable){
+            if(d.value===''||d.value===null||d.value==='unset'){
+              _lastFocusedEditable.style.removeProperty(d.prop);
+            }else{
+              _lastFocusedEditable.style.setProperty(d.prop,d.value);
+            }
+          }
+          break;
         case 'insertHTML':insertHTMLSmart(d.html);break;
         case 'insertAtPoint':insertAtPendingPoint(d.html);break;
         case 'clearInsertPoint':_pendingInsertAfter=null;document.querySelectorAll('.__w-insert.active').forEach(el=>el.classList.remove('active'));break;
@@ -9618,6 +9748,482 @@ function wtSend(cmd,extras){
   ifr.contentWindow.postMessage(Object.assign({type:'__wt-cmd',cmd:cmd},extras||{}),'*');
 }
 
+// ═══════════════════════════════════════════════════════════════
+// ═══ PRO EDITOR — Figma-like property inspector             ═══
+// ═══════════════════════════════════════════════════════════════
+
+let _proTab='layout';
+// Stored current values (so sliders remember positions)
+let _proVals={
+  fontSize:16,fontWeight:400,lineHeight:1.5,letterSpacing:0,textAlign:'',
+  color:'#1f2937',bgcolor:'',
+  padding:16,margin:0,paddingTop:null,paddingRight:null,paddingBottom:null,paddingLeft:null,
+  marginTop:null,marginRight:null,marginBottom:null,marginLeft:null,
+  width:'',height:'',
+  borderRadius:0,borderWidth:0,borderColor:'#7c3aed',borderStyle:'solid',
+  shadow:'none',opacity:1
+};
+
+// Color palette for pickers
+const PRO_COLORS=[
+  '#1f2937','#374151','#6b7280','#9ca3af','#d1d5db','#e5e7eb','#f3f4f6','#ffffff',
+  '#7c3aed','#a855f7','#c084fc','#ddd6fe','#ef4444','#f97316','#f59e0b','#eab308',
+  '#10b981','#22c55e','#06b6d4','#3b82f6','#6366f1','#8b5cf6','#ec4899','#f43f5e'
+];
+
+// Typography presets
+const FONT_WEIGHT_OPTS=[
+  {v:300,l:'דק'},{v:400,l:'רגיל'},{v:500,l:'בינוני'},{v:600,l:'חצי מודגש'},
+  {v:700,l:'מודגש'},{v:800,l:'מודגש כבד'},{v:900,l:'שחור'}
+];
+
+function wtOpenProEditor(){
+  // Close the small popup if open
+  wtClosePop();
+  // Render the panel
+  renderProEditor();
+}
+
+function wtCloseProEditor(){
+  const ov=document.getElementById('pro-ed-ov');
+  if(ov){ov.classList.remove('on');setTimeout(()=>ov.remove(),300)}
+}
+
+function renderProEditor(){
+  let ov=document.getElementById('pro-ed-ov');
+  if(!ov){
+    ov=document.createElement('div');
+    ov.id='pro-ed-ov';
+    ov.className='pro-ed-ov';
+    ov.onclick=function(e){if(e.target===ov)wtCloseProEditor();};
+    document.body.appendChild(ov);
+  }
+  ov.innerHTML=`<div class="pro-ed">
+    <div class="pro-ed-hdr">
+      <div class="pro-ed-hdr-ico">⚡</div>
+      <div class="pro-ed-hdr-body">
+        <div class="pro-ed-hdr-title">כלים מקצועיים</div>
+        <div class="pro-ed-hdr-sub">שליטה מלאה על העיצוב</div>
+      </div>
+      <button class="pro-ed-close" onclick="wtCloseProEditor()" aria-label="סגור">✕</button>
+    </div>
+    <div class="pro-ed-tabs">
+      <button class="pro-ed-tab ${_proTab==='layout'?'active':''}" onclick="wtProTab('layout')"><span class="pro-ed-tab-ico">📐</span> גודל וריווח</button>
+      <button class="pro-ed-tab ${_proTab==='design'?'active':''}" onclick="wtProTab('design')"><span class="pro-ed-tab-ico">🎨</span> עיצוב</button>
+      <button class="pro-ed-tab ${_proTab==='typo'?'active':''}" onclick="wtProTab('typo')"><span class="pro-ed-tab-ico">✍️</span> טיפוגרפיה</button>
+      <button class="pro-ed-tab ${_proTab==='effects'?'active':''}" onclick="wtProTab('effects')"><span class="pro-ed-tab-ico">✨</span> אפקטים</button>
+    </div>
+    <div class="pro-ed-body" id="pro-ed-body">
+      ${renderProTabContent()}
+    </div>
+    <div class="pro-ed-ftr">
+      <button class="pro-ed-btn" onclick="wtProReset()">↺ אפס</button>
+      <button class="pro-ed-btn primary" onclick="wtCloseProEditor()">✓ סיום</button>
+    </div>
+  </div>`;
+  setTimeout(()=>ov.classList.add('on'),20);
+}
+
+function wtProTab(tab){
+  _proTab=tab;
+  // Re-render tabs & body only
+  const tabs=document.querySelectorAll('.pro-ed-tab');
+  tabs.forEach(t=>t.classList.remove('active'));
+  const activeTab=Array.from(tabs).find(t=>t.textContent.includes(
+    tab==='layout'?'גודל':tab==='design'?'עיצוב':tab==='typo'?'טיפוגרפיה':'אפקטים'
+  ));
+  if(activeTab)activeTab.classList.add('active');
+  const body=document.getElementById('pro-ed-body');
+  if(body)body.innerHTML=renderProTabContent();
+}
+
+function renderProTabContent(){
+  if(_proTab==='layout')return renderProLayout();
+  if(_proTab==='design')return renderProDesign();
+  if(_proTab==='typo')return renderProTypo();
+  if(_proTab==='effects')return renderProEffects();
+  return '';
+}
+
+// ── LAYOUT TAB ──
+function renderProLayout(){
+  const v=_proVals;
+  return `
+    <div class="pro-sec">
+      <div class="pro-sec-ttl"><span class="pro-sec-ttl-ico">↔️</span> רוחב וגובה</div>
+      <div class="pro-row">
+        <div class="pro-row-lbl">רוחב</div>
+        <div class="pro-row-ctrl">
+          <input type="text" class="pro-inp" placeholder="auto / 100% / 300px" value="${v.width||''}" oninput="wtProSet('width',this.value)">
+        </div>
+      </div>
+      <div class="pro-row">
+        <div class="pro-row-lbl">גובה</div>
+        <div class="pro-row-ctrl">
+          <input type="text" class="pro-inp" placeholder="auto / 200px" value="${v.height||''}" oninput="wtProSet('height',this.value)">
+        </div>
+      </div>
+      <div class="pro-hint">דוגמאות: 100%, 300px, auto, fit-content, 50vh</div>
+    </div>
+    
+    <div class="pro-sec">
+      <div class="pro-sec-ttl"><span class="pro-sec-ttl-ico">📦</span> ריווח פנימי (Padding)</div>
+      <div class="pro-row">
+        <div class="pro-row-lbl">אחיד</div>
+        <div class="pro-row-ctrl">
+          <input type="range" class="pro-slider" min="0" max="80" value="${v.padding}" oninput="wtProSlider('padding',this.value,'px');document.getElementById('pro-pad-val').textContent=this.value+'px'">
+          <span class="pro-row-val" id="pro-pad-val">${v.padding}px</span>
+        </div>
+      </div>
+      <div class="pro-presets">
+        <button class="pro-preset" onclick="wtProSetPadding(0)">0</button>
+        <button class="pro-preset" onclick="wtProSetPadding(8)">8</button>
+        <button class="pro-preset" onclick="wtProSetPadding(12)">12</button>
+        <button class="pro-preset" onclick="wtProSetPadding(16)">16</button>
+        <button class="pro-preset" onclick="wtProSetPadding(24)">24</button>
+        <button class="pro-preset" onclick="wtProSetPadding(32)">32</button>
+        <button class="pro-preset" onclick="wtProSetPadding(48)">48</button>
+      </div>
+      <div class="pro-sides">
+        <div class="pro-side-t"><input type="number" class="pro-inp pro-inp-tiny" placeholder="T" value="${v.paddingTop===null?'':v.paddingTop}" oninput="wtProSide('padding','top',this.value)"></div>
+        <div class="pro-side-r"><input type="number" class="pro-inp pro-inp-tiny" placeholder="R" value="${v.paddingRight===null?'':v.paddingRight}" oninput="wtProSide('padding','right',this.value)"></div>
+        <div class="pro-side-center">PAD</div>
+        <div class="pro-side-l"><input type="number" class="pro-inp pro-inp-tiny" placeholder="L" value="${v.paddingLeft===null?'':v.paddingLeft}" oninput="wtProSide('padding','left',this.value)"></div>
+        <div class="pro-side-b"><input type="number" class="pro-inp pro-inp-tiny" placeholder="B" value="${v.paddingBottom===null?'':v.paddingBottom}" oninput="wtProSide('padding','bottom',this.value)"></div>
+      </div>
+    </div>
+    
+    <div class="pro-sec">
+      <div class="pro-sec-ttl"><span class="pro-sec-ttl-ico">📏</span> ריווח חיצוני (Margin)</div>
+      <div class="pro-row">
+        <div class="pro-row-lbl">אחיד</div>
+        <div class="pro-row-ctrl">
+          <input type="range" class="pro-slider" min="0" max="80" value="${v.margin}" oninput="wtProSlider('margin',this.value,'px');document.getElementById('pro-mar-val').textContent=this.value+'px'">
+          <span class="pro-row-val" id="pro-mar-val">${v.margin}px</span>
+        </div>
+      </div>
+      <div class="pro-presets">
+        <button class="pro-preset" onclick="wtProSetMargin(0)">0</button>
+        <button class="pro-preset" onclick="wtProSetMargin(8)">8</button>
+        <button class="pro-preset" onclick="wtProSetMargin(16)">16</button>
+        <button class="pro-preset" onclick="wtProSetMargin(24)">24</button>
+        <button class="pro-preset" onclick="wtProSetMargin('auto')">אוטו (מרכוז)</button>
+      </div>
+      <div class="pro-sides">
+        <div class="pro-side-t"><input type="number" class="pro-inp pro-inp-tiny" placeholder="T" value="${v.marginTop===null?'':v.marginTop}" oninput="wtProSide('margin','top',this.value)"></div>
+        <div class="pro-side-r"><input type="number" class="pro-inp pro-inp-tiny" placeholder="R" value="${v.marginRight===null?'':v.marginRight}" oninput="wtProSide('margin','right',this.value)"></div>
+        <div class="pro-side-center">MAR</div>
+        <div class="pro-side-l"><input type="number" class="pro-inp pro-inp-tiny" placeholder="L" value="${v.marginLeft===null?'':v.marginLeft}" oninput="wtProSide('margin','left',this.value)"></div>
+        <div class="pro-side-b"><input type="number" class="pro-inp pro-inp-tiny" placeholder="B" value="${v.marginBottom===null?'':v.marginBottom}" oninput="wtProSide('margin','bottom',this.value)"></div>
+      </div>
+    </div>`;
+}
+
+// ── DESIGN TAB ──
+function renderProDesign(){
+  const v=_proVals;
+  return `
+    <div class="pro-sec">
+      <div class="pro-sec-ttl"><span class="pro-sec-ttl-ico">🎨</span> צבע טקסט</div>
+      <div class="pro-row">
+        <div class="pro-row-ctrl">
+          <input type="color" class="pro-color-picker" value="${v.color||'#1f2937'}" oninput="wtProSet('color',this.value)">
+          <input type="text" class="pro-inp pro-inp-sm" placeholder="#000000" value="${v.color||''}" oninput="wtProSet('color',this.value)">
+        </div>
+      </div>
+      <div class="pro-swatches">
+        ${PRO_COLORS.map(c=>`<div class="pro-swatch" style="background:${c}" onclick="wtProSet('color','${c}');wtProUpdate()" title="${c}"></div>`).join('')}
+      </div>
+    </div>
+    
+    <div class="pro-sec">
+      <div class="pro-sec-ttl"><span class="pro-sec-ttl-ico">🖌</span> צבע רקע</div>
+      <div class="pro-row">
+        <div class="pro-row-ctrl">
+          <input type="color" class="pro-color-picker" value="${v.bgcolor||'#ffffff'}" oninput="wtProSet('background-color',this.value)">
+          <input type="text" class="pro-inp pro-inp-sm" placeholder="#ffffff" value="${v.bgcolor||''}" oninput="wtProSet('background-color',this.value)">
+          <button class="pro-preset" onclick="wtProSet('background-color','transparent')">ללא</button>
+        </div>
+      </div>
+      <div class="pro-swatches">
+        <div class="pro-swatch transparent" onclick="wtProSet('background-color','transparent');wtProUpdate()"></div>
+        ${PRO_COLORS.slice(0,23).map(c=>`<div class="pro-swatch" style="background:${c}" onclick="wtProSet('background-color','${c}');wtProUpdate()" title="${c}"></div>`).join('')}
+      </div>
+    </div>
+    
+    <div class="pro-sec">
+      <div class="pro-sec-ttl"><span class="pro-sec-ttl-ico">▭</span> עיגול פינות (Radius)</div>
+      <div class="pro-row">
+        <div class="pro-row-lbl">רדיוס</div>
+        <div class="pro-row-ctrl">
+          <input type="range" class="pro-slider" min="0" max="100" value="${v.borderRadius}" oninput="wtProSet('border-radius',this.value+'px');document.getElementById('pro-rad-val').textContent=this.value+'px';document.getElementById('pro-rad-vis').style.borderRadius=(this.value*0.32)+'px'">
+          <span class="pro-row-val" id="pro-rad-val">${v.borderRadius}px</span>
+        </div>
+        <div class="pro-radius-vis" id="pro-rad-vis" style="border-radius:${v.borderRadius*0.32}px"></div>
+      </div>
+      <div class="pro-presets">
+        <button class="pro-preset" onclick="wtProSet('border-radius','0');wtProUpdate()">חד</button>
+        <button class="pro-preset" onclick="wtProSet('border-radius','4px');wtProUpdate()">4</button>
+        <button class="pro-preset" onclick="wtProSet('border-radius','8px');wtProUpdate()">8</button>
+        <button class="pro-preset" onclick="wtProSet('border-radius','12px');wtProUpdate()">12</button>
+        <button class="pro-preset" onclick="wtProSet('border-radius','16px');wtProUpdate()">16</button>
+        <button class="pro-preset" onclick="wtProSet('border-radius','24px');wtProUpdate()">24</button>
+        <button class="pro-preset" onclick="wtProSet('border-radius','50%');wtProUpdate()">עיגול</button>
+      </div>
+    </div>
+    
+    <div class="pro-sec">
+      <div class="pro-sec-ttl"><span class="pro-sec-ttl-ico">⬜</span> מסגרת (Border)</div>
+      <div class="pro-row">
+        <div class="pro-row-lbl">עובי</div>
+        <div class="pro-row-ctrl">
+          <input type="range" class="pro-slider" min="0" max="10" value="${v.borderWidth}" oninput="wtProSetBorder('width',this.value);document.getElementById('pro-bw-val').textContent=this.value+'px'">
+          <span class="pro-row-val" id="pro-bw-val">${v.borderWidth}px</span>
+        </div>
+      </div>
+      <div class="pro-row">
+        <div class="pro-row-lbl">סוג</div>
+        <div class="pro-row-ctrl">
+          <div class="pro-btn-grid">
+            <button class="pro-btn-opt ${v.borderStyle==='solid'?'on':''}" onclick="wtProSetBorder('style','solid')">מלא</button>
+            <button class="pro-btn-opt ${v.borderStyle==='dashed'?'on':''}" onclick="wtProSetBorder('style','dashed')">מקווקו</button>
+            <button class="pro-btn-opt ${v.borderStyle==='dotted'?'on':''}" onclick="wtProSetBorder('style','dotted')">נקודות</button>
+          </div>
+        </div>
+      </div>
+      <div class="pro-row">
+        <div class="pro-row-lbl">צבע</div>
+        <div class="pro-row-ctrl">
+          <input type="color" class="pro-color-picker" value="${v.borderColor}" oninput="wtProSetBorder('color',this.value)">
+          <input type="text" class="pro-inp pro-inp-sm" value="${v.borderColor}" oninput="wtProSetBorder('color',this.value)">
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── TYPOGRAPHY TAB ──
+function renderProTypo(){
+  const v=_proVals;
+  return `
+    <div class="pro-sec">
+      <div class="pro-sec-ttl"><span class="pro-sec-ttl-ico">📝</span> גודל טקסט</div>
+      <div class="pro-row">
+        <div class="pro-row-lbl">גודל</div>
+        <div class="pro-row-ctrl">
+          <input type="range" class="pro-slider" min="8" max="96" value="${v.fontSize}" oninput="wtProSet('font-size',this.value+'px');document.getElementById('pro-fs-val').textContent=this.value+'px'">
+          <span class="pro-row-val" id="pro-fs-val">${v.fontSize}px</span>
+        </div>
+      </div>
+      <div class="pro-presets">
+        <button class="pro-preset" onclick="wtProSet('font-size','11px');wtProUpdate()">11</button>
+        <button class="pro-preset" onclick="wtProSet('font-size','13px');wtProUpdate()">13</button>
+        <button class="pro-preset" onclick="wtProSet('font-size','15px');wtProUpdate()">15</button>
+        <button class="pro-preset" onclick="wtProSet('font-size','17px');wtProUpdate()">17</button>
+        <button class="pro-preset" onclick="wtProSet('font-size','20px');wtProUpdate()">20</button>
+        <button class="pro-preset" onclick="wtProSet('font-size','26px');wtProUpdate()">26</button>
+        <button class="pro-preset" onclick="wtProSet('font-size','32px');wtProUpdate()">32</button>
+        <button class="pro-preset" onclick="wtProSet('font-size','40px');wtProUpdate()">40</button>
+        <button class="pro-preset" onclick="wtProSet('font-size','52px');wtProUpdate()">52</button>
+      </div>
+    </div>
+    
+    <div class="pro-sec">
+      <div class="pro-sec-ttl"><span class="pro-sec-ttl-ico">💪</span> משקל (Weight)</div>
+      <div class="pro-row">
+        <div class="pro-row-ctrl">
+          <div class="pro-btn-grid" style="flex-wrap:wrap;gap:3px">
+            ${FONT_WEIGHT_OPTS.map(o=>`<button class="pro-btn-opt ${v.fontWeight===o.v?'on':''}" onclick="wtProSet('font-weight','${o.v}');wtProUpdate()">${o.v}</button>`).join('')}
+          </div>
+        </div>
+      </div>
+      <div class="pro-hint">${FONT_WEIGHT_OPTS.map(o=>o.v+'='+o.l).join(' · ')}</div>
+    </div>
+    
+    <div class="pro-sec">
+      <div class="pro-sec-ttl"><span class="pro-sec-ttl-ico">↕</span> גובה שורה (Line Height)</div>
+      <div class="pro-row">
+        <div class="pro-row-lbl">גובה</div>
+        <div class="pro-row-ctrl">
+          <input type="range" class="pro-slider" min="80" max="250" value="${v.lineHeight*100}" oninput="const val=(this.value/100).toFixed(2);wtProSet('line-height',val);document.getElementById('pro-lh-val').textContent=val">
+          <span class="pro-row-val" id="pro-lh-val">${v.lineHeight.toFixed(2)}</span>
+        </div>
+      </div>
+      <div class="pro-presets">
+        <button class="pro-preset" onclick="wtProSet('line-height','1');wtProUpdate()">1.0</button>
+        <button class="pro-preset" onclick="wtProSet('line-height','1.25');wtProUpdate()">1.25</button>
+        <button class="pro-preset" onclick="wtProSet('line-height','1.5');wtProUpdate()">1.5 ★</button>
+        <button class="pro-preset" onclick="wtProSet('line-height','1.75');wtProUpdate()">1.75</button>
+        <button class="pro-preset" onclick="wtProSet('line-height','2');wtProUpdate()">2.0</button>
+      </div>
+    </div>
+    
+    <div class="pro-sec">
+      <div class="pro-sec-ttl"><span class="pro-sec-ttl-ico">↔</span> מרווח אותיות (Letter Spacing)</div>
+      <div class="pro-row">
+        <div class="pro-row-lbl">מרווח</div>
+        <div class="pro-row-ctrl">
+          <input type="range" class="pro-slider" min="-5" max="20" value="${v.letterSpacing}" oninput="wtProSet('letter-spacing',this.value+'px');document.getElementById('pro-ls-val').textContent=this.value+'px'">
+          <span class="pro-row-val" id="pro-ls-val">${v.letterSpacing}px</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="pro-sec">
+      <div class="pro-sec-ttl"><span class="pro-sec-ttl-ico">↲</span> יישור (Align)</div>
+      <div class="pro-row">
+        <div class="pro-row-ctrl">
+          <div class="pro-btn-grid">
+            <button class="pro-btn-opt ${v.textAlign==='right'?'on':''}" onclick="wtSend('align',{value:'right'});wtProVal('textAlign','right')">⇥ ימין</button>
+            <button class="pro-btn-opt ${v.textAlign==='center'?'on':''}" onclick="wtSend('align',{value:'center'});wtProVal('textAlign','center')">≡ מרכז</button>
+            <button class="pro-btn-opt ${v.textAlign==='left'?'on':''}" onclick="wtSend('align',{value:'left'});wtProVal('textAlign','left')">⇤ שמאל</button>
+            <button class="pro-btn-opt ${v.textAlign==='justify'?'on':''}" onclick="wtSend('align',{value:'justify'});wtProVal('textAlign','justify')">☰ מפוזר</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── EFFECTS TAB ──
+function renderProEffects(){
+  const v=_proVals;
+  const shadows=[
+    {k:'none',l:'ללא',css:'none'},
+    {k:'sm',l:'קטן',css:'0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05)'},
+    {k:'md',l:'בינוני',css:'0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.05)'},
+    {k:'lg',l:'גדול',css:'0 10px 25px rgba(0,0,0,0.12), 0 4px 10px rgba(0,0,0,0.06)'},
+    {k:'xl',l:'ענק',css:'0 20px 40px rgba(0,0,0,0.15), 0 8px 20px rgba(0,0,0,0.08)'},
+    {k:'glow',l:'זוהר',css:'0 0 24px rgba(124,58,237,0.5), 0 0 48px rgba(124,58,237,0.3)'},
+    {k:'colored',l:'צבעוני',css:'0 8px 24px rgba(124,58,237,0.35)'},
+    {k:'inset',l:'פנימי',css:'inset 0 2px 4px rgba(0,0,0,0.1)'}
+  ];
+  return `
+    <div class="pro-sec">
+      <div class="pro-sec-ttl"><span class="pro-sec-ttl-ico">💫</span> צל (Shadow)</div>
+      <div class="pro-shadow-grid">
+        ${shadows.map(s=>`
+          <div class="pro-shadow-opt ${v.shadow===s.k?'on':''}" onclick="wtProSet('box-shadow','${s.css}');wtProVal('shadow','${s.k}');wtProUpdate()">
+            <div class="pro-shadow-sample" style="${s.css!=='none'?'box-shadow:'+s.css:'background:#e5e7eb'}"></div>
+            <div class="pro-shadow-lbl">${s.l}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    
+    <div class="pro-sec">
+      <div class="pro-sec-ttl"><span class="pro-sec-ttl-ico">🌫</span> שקיפות (Opacity)</div>
+      <div class="pro-row">
+        <div class="pro-row-lbl">שקיפות</div>
+        <div class="pro-row-ctrl">
+          <input type="range" class="pro-slider" min="0" max="100" value="${v.opacity*100}" oninput="const val=(this.value/100).toFixed(2);wtProSet('opacity',val);document.getElementById('pro-op-val').textContent=Math.round(val*100)+'%'">
+          <span class="pro-row-val" id="pro-op-val">${Math.round(v.opacity*100)}%</span>
+        </div>
+      </div>
+      <div class="pro-presets">
+        <button class="pro-preset" onclick="wtProSet('opacity','0.1');wtProUpdate()">10%</button>
+        <button class="pro-preset" onclick="wtProSet('opacity','0.25');wtProUpdate()">25%</button>
+        <button class="pro-preset" onclick="wtProSet('opacity','0.5');wtProUpdate()">50%</button>
+        <button class="pro-preset" onclick="wtProSet('opacity','0.75');wtProUpdate()">75%</button>
+        <button class="pro-preset" onclick="wtProSet('opacity','1');wtProUpdate()">100%</button>
+      </div>
+    </div>
+    
+    <div class="pro-sec">
+      <div class="pro-sec-ttl"><span class="pro-sec-ttl-ico">⚡</span> גרדיאנטים מוכנים</div>
+      <div class="pro-presets" style="gap:6px">
+        <button class="pro-preset" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;border-color:transparent" onclick="wtProSet('background','linear-gradient(135deg,#7c3aed,#5b21b6)');wtProUpdate()">סגול כהה</button>
+        <button class="pro-preset" style="background:linear-gradient(135deg,#ec4899,#be185d);color:white;border-color:transparent" onclick="wtProSet('background','linear-gradient(135deg,#ec4899,#be185d)');wtProUpdate()">ורוד</button>
+        <button class="pro-preset" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:white;border-color:transparent" onclick="wtProSet('background','linear-gradient(135deg,#3b82f6,#1d4ed8)');wtProUpdate()">כחול</button>
+        <button class="pro-preset" style="background:linear-gradient(135deg,#10b981,#047857);color:white;border-color:transparent" onclick="wtProSet('background','linear-gradient(135deg,#10b981,#047857)');wtProUpdate()">ירוק</button>
+        <button class="pro-preset" style="background:linear-gradient(135deg,#f59e0b,#b45309);color:white;border-color:transparent" onclick="wtProSet('background','linear-gradient(135deg,#f59e0b,#b45309)');wtProUpdate()">זהב</button>
+        <button class="pro-preset" style="background:linear-gradient(135deg,#ef4444,#991b1b);color:white;border-color:transparent" onclick="wtProSet('background','linear-gradient(135deg,#ef4444,#991b1b)');wtProUpdate()">אדום</button>
+        <button class="pro-preset" style="background:linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6);color:white;border-color:transparent" onclick="wtProSet('background','linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)');wtProUpdate()">שקיעה</button>
+        <button class="pro-preset" style="background:linear-gradient(135deg,#06b6d4,#3b82f6,#8b5cf6);color:white;border-color:transparent" onclick="wtProSet('background','linear-gradient(135deg,#06b6d4,#3b82f6,#8b5cf6)');wtProUpdate()">אוקיינוס</button>
+      </div>
+    </div>`;
+}
+
+// ── Actions ──
+
+// Set a CSS property (uses elStyle for element-level properties)
+function wtProSet(prop,value){
+  // Store the value
+  const key=prop.replace(/-([a-z])/g,(m,c)=>c.toUpperCase());
+  if(key in _proVals){_proVals[key]=value;}
+  // Send command — for text properties use 'style' (wraps in span), for layout use 'elStyle'
+  const textProps=['color','font-size','font-weight','font-style','line-height','letter-spacing','text-decoration','background-color','font-family'];
+  const cmd=textProps.indexOf(prop)>=0?'style':'elStyle';
+  wtSend(cmd,{prop:prop,value:value});
+}
+
+// Store a local value without sending
+function wtProVal(key,value){
+  _proVals[key]=value;
+}
+
+// Slider handler (with unit)
+function wtProSlider(prop,value,unit){
+  wtProSet(prop,value+unit);
+}
+
+// Set all sides of padding/margin
+function wtProSetPadding(val){
+  _proVals.padding=val;
+  _proVals.paddingTop=_proVals.paddingRight=_proVals.paddingBottom=_proVals.paddingLeft=null;
+  wtProSet('padding',val==='auto'?'auto':val+'px');
+  wtProUpdate();
+}
+
+function wtProSetMargin(val){
+  _proVals.margin=val;
+  _proVals.marginTop=_proVals.marginRight=_proVals.marginBottom=_proVals.marginLeft=null;
+  wtProSet('margin',val==='auto'?'0 auto':val+'px');
+  wtProUpdate();
+}
+
+// Set one side of padding/margin
+function wtProSide(type,side,value){
+  const key=type+side.charAt(0).toUpperCase()+side.slice(1);
+  _proVals[key]=value===''?null:Number(value);
+  const prop=type+'-'+side;
+  wtProSet(prop,(value===''?'0':value)+'px');
+}
+
+// Border helpers (border = width + style + color combined)
+function wtProSetBorder(part,value){
+  if(part==='width')_proVals.borderWidth=Number(value);
+  if(part==='style')_proVals.borderStyle=value;
+  if(part==='color')_proVals.borderColor=value;
+  const {borderWidth,borderStyle,borderColor}=_proVals;
+  const css=borderWidth+'px '+borderStyle+' '+borderColor;
+  wtSend('elStyle',{prop:'border',value:css});
+  if(part==='style')wtProUpdate();
+}
+
+// Re-render the panel (after preset changes)
+function wtProUpdate(){
+  const body=document.getElementById('pro-ed-body');
+  if(body)body.innerHTML=renderProTabContent();
+}
+
+// Reset all to defaults
+function wtProReset(){
+  if(!confirm('לאפס את כל העיצוב שלחצת עליו?'))return;
+  // Reset local state
+  _proVals={
+    fontSize:16,fontWeight:400,lineHeight:1.5,letterSpacing:0,textAlign:'',
+    color:'#1f2937',bgcolor:'',
+    padding:16,margin:0,paddingTop:null,paddingRight:null,paddingBottom:null,paddingLeft:null,
+    marginTop:null,marginRight:null,marginBottom:null,marginLeft:null,
+    width:'',height:'',
+    borderRadius:0,borderWidth:0,borderColor:'#7c3aed',borderStyle:'solid',
+    shadow:'none',opacity:1
+  };
+  // Clear format on the iframe side
+  wtSend('clearFormat');
+  // Re-render
+  wtProUpdate();
+}
+
 // Insert HTML — smart routing: if user clicked "+" insert point, use it;
 // otherwise insert at cursor
 function wtInsertSmart(html){
@@ -9667,6 +10273,8 @@ function wtUpdateContextual(){
       <button class="wt-btn" onclick="wtSend('align',{value:'right'})" title="ימין">⇥</button>
       <button class="wt-btn" onclick="wtSend('align',{value:'center'})" title="מרכז">≡</button>
       <button class="wt-btn" onclick="wtSend('align',{value:'left'})" title="שמאל">⇤</button>
+      <div class="wt-sep"></div>
+      <button class="wt-btn wt-btn-pro" onclick="wtOpenProEditor()" title="כלים מקצועיים"><span class="wt-btn-ico">⚡</span><span class="wt-btn-txt">מקצועי</span></button>
       <div class="wt-sep"></div>
       <button class="wt-btn" onclick="wtSend('clearFormat')" title="נקה עיצוב"><span class="wt-btn-ico">✖</span><span class="wt-btn-txt">נקה</span></button>
     `;

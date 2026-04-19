@@ -182,6 +182,52 @@ button,input{font-family:inherit}
 .dc-cta .dc-arrow{display:inline-block;transition:transform .2s}
 .card-diary:active .dc-cta .dc-arrow{transform:translateX(-4px)}
 .home-ftr{text-align:center;margin-top:10px;padding:6px;font-size:10.5px;color:#a78bfa;font-weight:600;letter-spacing:.5px;animation:fadeUp .7s ease}
+/* ═══ Install Pill — always-visible install button ═══ */
+.install-pill{display:flex;align-items:center;gap:12px;width:100%;background:linear-gradient(135deg,#ffffff,#faf5ff);color:#4c1d95;border:1.5px solid #ddd6fe;border-radius:18px;padding:14px 16px;margin-top:12px;cursor:pointer;font-family:inherit;box-shadow:0 6px 24px rgba(124,58,237,.12);transition:all .25s;position:relative;overflow:hidden;animation:installPulse 3s ease-in-out infinite}
+@keyframes installPulse{0%,100%{box-shadow:0 6px 24px rgba(124,58,237,.12),0 0 0 0 rgba(124,58,237,.4)}50%{box-shadow:0 8px 28px rgba(124,58,237,.2),0 0 0 12px rgba(124,58,237,0)}}
+.install-pill::before{content:'';position:absolute;top:-20px;left:-20px;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(168,85,247,.15),transparent 65%);pointer-events:none}
+.install-pill:hover{transform:translateY(-2px);border-color:#a78bfa;background:linear-gradient(135deg,#faf5ff,#f3e8ff)}
+.install-pill:active{transform:scale(.98)}
+.install-pill-ico{width:44px;height:44px;background:linear-gradient(135deg,#a855f7,#7c3aed);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 4px 12px rgba(124,58,237,.3);position:relative;z-index:1}
+.install-pill-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;text-align:right;position:relative;z-index:1}
+.install-pill-title{font-size:14px;font-weight:900;color:#4c1d95;line-height:1.2}
+.install-pill-sub{font-size:11px;font-weight:600;color:#7c3aed;opacity:.85;line-height:1.3}
+.install-pill-arrow{font-size:16px;color:#7c3aed;font-weight:800;transition:transform .2s;position:relative;z-index:1}
+.install-pill:hover .install-pill-arrow{transform:translateX(-4px)}
+/* Hide when app is already installed */
+@media all and (display-mode:standalone){.install-pill{display:none!important}}
+/* ═══ Install Instructions Popup ═══ */
+.instr-ov{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:800;display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .25s ease;padding:0}
+.instr-ov.on{opacity:1}
+.instr-sheet{background:#fafaf9;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;border-radius:28px 28px 0 0;transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.56,.64,1);font-family:inherit;direction:rtl;padding-bottom:env(safe-area-inset-bottom,0)}
+.instr-ov.on .instr-sheet{transform:translateY(0)}
+@media(min-width:768px){.instr-ov{align-items:center;padding:16px}.instr-sheet{border-radius:28px;max-height:86vh}}
+.instr-hdr{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;padding:20px;display:flex;align-items:center;gap:12px;position:relative;overflow:hidden}
+.instr-hdr::before{content:'';position:absolute;top:-60px;left:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.08)}
+.instr-hdr::after{content:'';position:absolute;bottom:-80px;right:-50px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05)}
+.instr-hdr-ico{width:48px;height:48px;background:rgba(255,255,255,.2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;position:relative;z-index:1;backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.instr-hdr-body{flex:1;min-width:0;position:relative;z-index:1}
+.instr-hdr-title{font-size:17px;font-weight:900;letter-spacing:.2px}
+.instr-hdr-sub{font-size:12px;font-weight:600;opacity:.9;margin-top:3px}
+.instr-close{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.2);border:none;color:white;font-size:16px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;transition:background .15s}
+.instr-close:hover{background:rgba(255,255,255,.3)}
+.instr-body{padding:18px}
+.instr-note{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1.5px solid #fcd34d;border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#78350f;font-weight:600;line-height:1.55;margin-bottom:16px}
+.instr-note-ico{font-size:18px;flex-shrink:0}
+.instr-steps{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.instr-step{display:flex;gap:12px;align-items:flex-start;background:white;padding:14px 14px;border-radius:14px;border:1px solid #e5e7eb;box-shadow:0 2px 6px rgba(0,0,0,.03)}
+.instr-step-num{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#7c3aed);color:white;font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 3px 8px rgba(124,58,237,.3)}
+.instr-step-txt{flex:1;min-width:0;font-size:13px;color:#374151;line-height:1.6;font-weight:600;padding-top:3px}
+.instr-step-txt b{color:#4c1d95;font-weight:900}
+.instr-benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.instr-benefit{background:linear-gradient(135deg,#f0fdf4,#d1fae5);border:1px solid #86efac;border-radius:12px;padding:10px 6px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px}
+.instr-benefit span:first-child{font-size:20px}
+.instr-benefit span:last-child{font-size:10.5px;font-weight:800;color:#065f46}
+.instr-ok-btn{width:100%;padding:14px;border-radius:14px;border:none;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;box-shadow:0 6px 18px rgba(124,58,237,.35);transition:all .15s;letter-spacing:.3px}
+.instr-ok-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(124,58,237,.5)}
+.instr-ok-btn:active{transform:scale(.98)}
+
+
 .home-ftr .divider{display:inline-block;margin:0 8px;opacity:.5}
 
 /* ── HEADER ── */
@@ -1864,6 +1910,14 @@ function render(){
           <div class="dc-feat" onclick="event.stopPropagation();goFeat('website')"><div class="dc-feat-ico">🌐</div><div class="dc-feat-lbl">האתר</div></div>
         </div>
         <div class="dc-cta">פתח את היומן <span class="dc-arrow">←</span></div>
+      </button>
+      <button class="install-pill" id="install-pill" onclick="installPWA()">
+        <span class="install-pill-ico">📲</span>
+        <span class="install-pill-txt">
+          <span class="install-pill-title">התקיני כאפליקציה</span>
+          <span class="install-pill-sub">שמרי במסך הבית · פתיחה מהירה</span>
+        </span>
+        <span class="install-pill-arrow">←</span>
       </button>
       <div class="home-ftr">פרטי <span class="divider">·</span> מאובטח <span class="divider">·</span> מסונכרן</div>
     </div>`;
@@ -9721,14 +9775,16 @@ function closeHistPanel(){
 
 
 // ═══════════════════════════════════════════════════════
-// ═══ 📱 PWA System — Install Prompt + Icon            ═══
+// ═══ 📱 PWA System — Clean, works without Service Worker ═══
 // ═══════════════════════════════════════════════════════
-// Note: We don't register a Service Worker because:
-// 1. GitHub Pages hosts this as a single HTML file (no separate .js allowed)
-// 2. Blob URL registration isn't supported by browsers (security)
-// 3. Rinat always has internet — offline caching isn't critical
-// The PWA still installs perfectly: icon, full-screen, manifest all work.
-// If offline is needed later, deploy a separate service-worker.js file.
+// Chrome's automatic "Install App" banner requires a Service Worker.
+// Since we can't host a separate .js file on GitHub Pages and Blob URL
+// registration is blocked on most mobile browsers, we rely on:
+//
+// 1. Manifest + Apple Touch Icon → installation IS possible via
+//    Chrome menu (⋮) → "Add to Home screen"
+// 2. Our "Install Pill" button tells the user exactly what to do
+// 3. Once installed, the app runs in standalone mode (no browser UI)
 
 // ── Install Prompt System (Android/Chrome) ──
 let _deferredPrompt=null;
@@ -9809,6 +9865,7 @@ function hideInstallBanner(){
 }
 
 function installPWA(){
+  // Try native install prompt first (Android Chrome)
   if(_deferredPrompt){
     _deferredPrompt.prompt();
     _deferredPrompt.userChoice.then((choice)=>{
@@ -9817,14 +9874,97 @@ function installPWA(){
       }
       _deferredPrompt=null;
     });
-  }else{
-    const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
-    if(isIOS){
-      alert('📱 להתקנה באייפון:\n\n1. לחצי על כפתור השיתוף ⬆ בתחתית ספארי\n2. גללי למטה ובחרי "הוסף למסך הבית"\n3. לחצי "הוסף"\n\nהאפליקציה תופיע במסך הבית שלך.');
-    }else{
-      alert('📱 להתקנה:\n\nכרום (אנדרואיד):\n• לחצי על תפריט 3 הנקודות ⋮\n• בחרי "התקן אפליקציה" או "הוסף למסך הבית"\n\nאם לא מופיע — פתחי את הדף שוב בעוד כמה שניות.');
-    }
+    return;
   }
+  // Show beautiful instructions overlay
+  showInstallInstructions();
+}
+
+function showInstallInstructions(){
+  const existing=document.getElementById('install-instructions-ov');
+  if(existing)existing.remove();
+  
+  const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const isSamsung=/SamsungBrowser/.test(navigator.userAgent);
+  const isChrome=/Chrome/.test(navigator.userAgent) && !/Edge|OPR/.test(navigator.userAgent);
+  
+  let steps;
+  let browserName;
+  let browserIcon;
+  
+  if(isIOS){
+    browserName='Safari';
+    browserIcon='🧭';
+    steps=[
+      {n:1,t:'לחצי על כפתור <b>השיתוף</b> בתחתית המסך (ריבוע עם חץ ⬆)'},
+      {n:2,t:'גללי למטה בתפריט שקופץ'},
+      {n:3,t:'בחרי <b>"הוסף למסך הבית"</b>'},
+      {n:4,t:'לחצי <b>"הוסף"</b> בפינה הימנית העליונה'},
+      {n:5,t:'האייקון יופיע במסך הבית — לחיצה עליו פותחת אפליקציה'}
+    ];
+  }else if(isSamsung){
+    browserName='Samsung Internet';
+    browserIcon='📱';
+    steps=[
+      {n:1,t:'לחצי על <b>תפריט הפסים ≡</b> בתחתית המסך'},
+      {n:2,t:'בחרי <b>"הוסף דף ל..."</b>'},
+      {n:3,t:'לחצי <b>"מסך הבית"</b>'},
+      {n:4,t:'אשרי בחלון שקופץ'},
+      {n:5,t:'האייקון יופיע במסך הבית'}
+    ];
+  }else{
+    browserName='Chrome';
+    browserIcon='🌐';
+    steps=[
+      {n:1,t:'לחצי על <b>3 הנקודות ⋮</b> בפינה הימנית למעלה'},
+      {n:2,t:'חפשי <b>"התקן אפליקציה"</b> או <b>"הוסף למסך הבית"</b>'},
+      {n:3,t:'לחצי על האופציה הזו'},
+      {n:4,t:'אשרי בחלון שקופץ — <b>"התקן"</b>'},
+      {n:5,t:'האפליקציה תופיע במסך הבית כמו כל אפליקציה'}
+    ];
+  }
+  
+  const ov=document.createElement('div');
+  ov.id='install-instructions-ov';
+  ov.className='instr-ov';
+  ov.onclick=function(e){if(e.target===ov)closeInstallInstructions();};
+  
+  ov.innerHTML=`<div class="instr-sheet">
+    <div class="instr-hdr">
+      <div class="instr-hdr-ico">📲</div>
+      <div class="instr-hdr-body">
+        <div class="instr-hdr-title">התקיני כאפליקציה</div>
+        <div class="instr-hdr-sub">${browserIcon} ${browserName} · 5 שלבים פשוטים</div>
+      </div>
+      <button class="instr-close" onclick="closeInstallInstructions()">✕</button>
+    </div>
+    <div class="instr-body">
+      <div class="instr-note">
+        <span class="instr-note-ico">💡</span>
+        <span>הכל ידני — אבל לוקח רק 20 שניות. אחרי זה האפליקציה תיפתח מהמסך הראשי כמו כל אפליקציה אחרת!</span>
+      </div>
+      <div class="instr-steps">
+        ${steps.map(s=>`<div class="instr-step">
+          <div class="instr-step-num">${s.n}</div>
+          <div class="instr-step-txt">${s.t}</div>
+        </div>`).join('')}
+      </div>
+      <div class="instr-benefits">
+        <div class="instr-benefit"><span>⚡</span><span>פתיחה מהירה</span></div>
+        <div class="instr-benefit"><span>🎯</span><span>בלי דפדפן</span></div>
+        <div class="instr-benefit"><span>📱</span><span>כמו אפליקציה</span></div>
+      </div>
+      <button class="instr-ok-btn" onclick="closeInstallInstructions()">הבנתי, אנסה</button>
+    </div>
+  </div>`;
+  
+  document.body.appendChild(ov);
+  setTimeout(()=>ov.classList.add('on'),20);
+}
+
+function closeInstallInstructions(){
+  const ov=document.getElementById('install-instructions-ov');
+  if(ov){ov.classList.remove('on');setTimeout(()=>ov.remove(),250);}
 }
 // ── Init ──────────────────────────────────────────────
 (async()=>{

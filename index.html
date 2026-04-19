@@ -2646,13 +2646,420 @@ textarea:focus-visible,
 .hist-tab-badge.green{background:var(--success-100);color:var(--success-700)}
 .hist-tab.active .hist-tab-badge.green{background:var(--success-600);color:white}
 /* ═══════════════════════════════════════════════════════════════ */
-/* ═══ LUXURY DARK OVERRIDE — Quick Action cards (4 gold tones)  ═══ */
+/* ═══ LUXURY DARK OVERRIDE — Upcoming Appointments (תורים tab)   ═══ */
 /* ═══════════════════════════════════════════════════════════════ */
-/* Transforms .lux-card from white → dark luxury like .lux-hero  */
-/* Each of the 4 cards gets its own gold tint (amber/rose/champagne/bronze) */
+/* Transforms the big countdown hero + individual appointment cards */
+/* Matches the "מרכז הכתר" aesthetic */
+
+
+/* Fix appt time column — was white, now matches dark gold card */
+.hist-content .apt2 .apt2-time-col{
+  background:linear-gradient(180deg,rgba(212,165,116,0.06),rgba(212,165,116,0.02))!important;
+  border-left:1px solid rgba(212,165,116,0.18)!important;
+}
+.hist-content .apt2.apt2-next .apt2-time-col{
+  background:linear-gradient(180deg,rgba(240,208,146,0.12),rgba(212,165,116,0.04))!important;
+  border-left-color:rgba(240,208,146,0.28)!important;
+}
+.hist-content .apt2.apt2-today .apt2-time-col{
+  background:linear-gradient(180deg,rgba(247,228,180,0.14),rgba(229,195,149,0.04))!important;
+  border-left-color:rgba(229,195,149,0.28)!important;
+}
+.hist-content .apt2.apt2-next .apt2-time{color:#f0d092!important}
+.hist-content .apt2.apt2-today .apt2-time{color:#f7e4b4!important}
+
+/* ─── Day-group header (e.g. "יום ש׳ · עוד 6 ימים · 25 אפר") ─── */
+.hist-content .apt2-day-group{
+  margin-bottom:22px;
+}
+.hist-content .apt2-day-header{
+  border-bottom:1px solid rgba(212,165,116,0.25)!important;
+  padding-bottom:10px!important;
+  margin-bottom:12px!important;
+  position:relative;
+}
+.hist-content .apt2-day-header::after{
+  content:'';
+  position:absolute;
+  bottom:-1px;right:0;
+  width:80px;height:2px;
+  background:linear-gradient(to left,rgba(240,208,146,0.8),transparent);
+  border-radius:2px;
+}
+.hist-content .apt2-day-main{
+  color:#f7e4b4!important;
+  font-family:'Cormorant Garamond','Georgia',serif!important;
+  font-weight:600!important;
+  font-size:24px!important;
+  letter-spacing:-0.3px!important;
+  text-shadow:0 1px 10px rgba(240,208,146,0.20);
+}
+.hist-content .apt2-day-main.today{color:#f7e4b4!important}
+.hist-content .apt2-day-sub{
+  color:#c9a16f!important;
+  font-family:'Georgia',serif!important;
+  font-weight:500!important;
+  font-size:13px!important;
+  margin-right:8px!important;
+}
+.hist-content .apt2-day-count{
+  background:rgba(212,165,116,0.12)!important;
+  color:#e5c395!important;
+  border:1px solid rgba(212,165,116,0.35)!important;
+  font-family:'Georgia',serif!important;
+  font-weight:600!important;
+  font-size:12px!important;
+  padding:4px 11px!important;
+  border-radius:10px!important;
+}
+.hist-content .apt2-day-total{
+  background:linear-gradient(135deg,rgba(240,208,146,0.18),rgba(212,165,116,0.10))!important;
+  color:#f7e4b4!important;
+  border:1px solid rgba(240,208,146,0.42)!important;
+  font-family:'Georgia',serif!important;
+  font-weight:700!important;
+  font-size:12.5px!important;
+  padding:4px 11px!important;
+  border-radius:10px!important;
+}
+
+/* ─── Individual appointment card (.apt2) ─── */
+.hist-content .apt2{
+  background:radial-gradient(ellipse 130% 80% at 50% 0%,rgba(212,165,116,0.12),transparent 60%),linear-gradient(180deg,#110a04 0%,#080402 100%)!important;
+  border:1px solid rgba(212,165,116,0.22)!important;
+  border-radius:16px!important;
+  padding:14px 16px!important;
+  margin-bottom:10px!important;
+  box-shadow:0 8px 24px -8px rgba(0,0,0,0.6),inset 0 1px 0 rgba(212,165,116,0.08)!important;
+  position:relative;
+  overflow:hidden;
+  transition:transform .22s,border-color .22s,box-shadow .22s;
+}
+.hist-content .apt2:hover{
+  transform:translateY(-2px);
+  border-color:rgba(212,165,116,0.45)!important;
+}
+.hist-content .apt2.apt2-next{
+  background:radial-gradient(ellipse 140% 90% at 50% 0%,rgba(247,228,180,0.22),rgba(212,165,116,0.12) 35%,transparent 70%),linear-gradient(180deg,#140c05 0%,#0a0503 100%)!important;
+  border:1.5px solid rgba(240,208,146,0.55)!important;
+  box-shadow:0 12px 34px -8px rgba(0,0,0,0.7),0 0 24px rgba(212,165,116,0.15),inset 0 1px 0 rgba(247,228,180,0.22)!important;
+}
+.hist-content .apt2.apt2-today{
+  border-color:rgba(229,195,149,0.45)!important;
+}
+
+/* Time column */
+.hist-content .apt2 .apt2-time{
+  color:#f7e4b4!important;
+  font-family:'Georgia',serif!important;
+  font-weight:700!important;
+  font-size:22px!important;
+  letter-spacing:-0.3px!important;
+  font-variant-numeric:tabular-nums;
+  text-shadow:0 1px 10px rgba(240,208,146,0.25);
+}
+.hist-content .apt2 .apt2-duration{
+  color:#c9a16f!important;
+  font-family:'Georgia',serif!important;
+  font-weight:500!important;
+  font-size:11.5px!important;
+}
+
+/* Name & type */
+.hist-content .apt2 .apt2-name{
+  color:#f7e4b4!important;
+  font-family:'Cormorant Garamond','Georgia','Times New Roman',serif!important;
+  font-weight:600!important;
+  font-size:20px!important;
+  letter-spacing:-0.1px!important;
+  text-shadow:0 1px 10px rgba(240,208,146,0.25);
+}
+.hist-content .apt2 .apt2-type{
+  color:#d4a574!important;
+  font-family:'Georgia',serif!important;
+  font-weight:500!important;
+  font-size:13px!important;
+  letter-spacing:0.3px!important;
+}
+
+/* Price */
+.hist-content .apt2 .apt2-price{
+  background:rgba(212,165,116,0.12)!important;
+  color:#e5c395!important;
+  border:1px solid rgba(212,165,116,0.38)!important;
+  font-family:'Georgia',serif!important;
+  font-weight:700!important;
+  padding:5px 12px!important;
+  border-radius:10px!important;
+  font-size:14px!important;
+}
+.hist-content .apt2 .apt2-price.paid{
+  background:linear-gradient(135deg,rgba(240,208,146,0.14),rgba(212,165,116,0.08))!important;
+  color:#f0d092!important;
+  border-color:rgba(240,208,146,0.45)!important;
+}
+
+/* Badges (new client, debt, note) */
+.hist-content .apt2 .apt2-badge{
+  background:rgba(212,165,116,0.12)!important;
+  color:#e5c395!important;
+  border:1px solid rgba(212,165,116,0.35)!important;
+  font-family:'Georgia',serif!important;
+  font-weight:600!important;
+  font-size:12px!important;
+  padding:4px 11px!important;
+  border-radius:10px!important;
+  letter-spacing:0.3px!important;
+}
+.hist-content .apt2 .apt2-badge.new{
+  background:linear-gradient(135deg,rgba(247,228,180,0.14),rgba(240,208,146,0.08))!important;
+  color:#f0d092!important;
+  border-color:rgba(240,208,146,0.40)!important;
+}
+.hist-content .apt2 .apt2-badge.debt{
+  background:rgba(201,161,111,0.12)!important;
+  color:#c9a16f!important;
+  border-color:rgba(201,161,111,0.45)!important;
+}
+.hist-content .apt2 .apt2-badge.note{
+  background:rgba(184,145,95,0.08)!important;
+  color:#b8915f!important;
+  border-color:rgba(184,145,95,0.30)!important;
+}
+
+/* Action buttons (delete, reminder, contact icons) */
+.hist-content .apt2 .apt2-action-btn,
+.hist-content .apt2 .rem-btn,
+.hist-content .apt2 .contact-icon-btn{
+  color:rgba(212,165,116,0.5)!important;
+  background:rgba(212,165,116,0.05)!important;
+  border:1px solid rgba(212,165,116,0.18)!important;
+  border-radius:9px!important;
+  padding:5px 8px!important;
+  transition:all .2s;
+}
+.hist-content .apt2 .apt2-action-btn:hover,
+.hist-content .apt2 .rem-btn:hover,
+.hist-content .apt2 .contact-icon-btn:hover{
+  color:#d4a574!important;
+  background:rgba(212,165,116,0.12)!important;
+  border-color:rgba(212,165,116,0.35)!important;
+}
+.hist-content .apt2 .rem-btn.active{
+  color:#f0d092!important;
+  background:linear-gradient(135deg,rgba(247,228,180,0.18),rgba(212,165,116,0.10))!important;
+  border-color:rgba(240,208,146,0.5)!important;
+}
+
+/* "⚡" bolt next to the next appointment name */
+.hist-content .apt2 .apt2-next-bolt{
+  color:#f0d092!important;
+  filter:drop-shadow(0 2px 6px rgba(240,208,146,0.4));
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ LUXURY DARK OVERRIDE — CRM Client Cards (gold on black)    ═══ */
+/* ═══════════════════════════════════════════════════════════════ */
+/* Transforms client cards in the לקוחות tab into luxury gold-on-black */
+/* Matches the "מרכז הכתר" aesthetic — dark base, gold accents, serif */
+
+.hist-content .client-card{
+  background:radial-gradient(ellipse 140% 90% at 50% 0%,rgba(240,208,146,0.28),rgba(212,165,116,0.12) 35%,transparent 70%),radial-gradient(ellipse 180% 100% at 50% 120%,rgba(184,145,95,0.15),transparent 55%),linear-gradient(180deg,#110a04 0%,#0a0603 50%,#060402 100%)!important;
+  border:1px solid rgba(212,165,116,0.22)!important;
+  border-radius:18px!important;
+  padding:16px 18px!important;
+  margin-bottom:12px!important;
+  box-shadow:0 10px 28px -8px rgba(0,0,0,0.7),inset 0 1px 0 rgba(212,165,116,0.10)!important;
+  position:relative;
+  overflow:hidden;
+  transition:transform .22s,box-shadow .22s,border-color .22s;
+}
+.hist-content .client-card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%,rgba(212,165,116,0.4),transparent),
+    radial-gradient(1px 1px at 78% 22%,rgba(212,165,116,0.5),transparent),
+    radial-gradient(1.5px 1.5px at 42% 68%,rgba(212,165,116,0.3),transparent),
+    radial-gradient(1px 1px at 88% 78%,rgba(212,165,116,0.35),transparent);
+  pointer-events:none;
+  opacity:0.5;
+}
+.hist-content .client-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(212,165,116,0.45)!important;
+  box-shadow:0 14px 36px -8px rgba(0,0,0,0.65),inset 0 1px 0 rgba(212,165,116,0.18)!important;
+}
+.hist-content .client-card:active{transform:translateY(-1px) scale(0.995)!important}
+
+/* ─── Avatar — transparent with gold ring (like "מרכז הכתר" infinity symbol) ─── */
+.hist-content .client-card .client-avatar{
+  background:linear-gradient(135deg,rgba(240,208,146,0.22),rgba(184,145,95,0.08))!important;
+  border:1.5px solid rgba(240,208,146,0.65)!important;
+  color:#f7e4b4!important;
+  font-family:'Georgia',serif!important;
+  font-weight:700!important;
+  font-size:20px!important;
+  letter-spacing:0.3px!important;
+  box-shadow:0 6px 20px rgba(212,165,116,0.18),inset 0 0 16px rgba(212,165,116,0.06)!important;
+  width:52px!important;
+  height:52px!important;
+  position:relative;
+  z-index:1;
+}
+.hist-content .client-card .client-avatar::before{
+  content:'';
+  position:absolute;
+  inset:-4px;
+  border:1px solid rgba(212,165,116,0.22);
+  border-radius:50%;
+  pointer-events:none;
+}
+
+/* ─── Name — gold serif like a nameplate ─── */
+.hist-content .client-card .client-name{
+  color:#f7e4b4!important;
+  font-family:'Cormorant Garamond','Georgia','Times New Roman',serif!important;
+  font-size:21px!important;
+  font-weight:600!important;
+  letter-spacing:-0.1px!important;
+  text-shadow:0 1px 12px rgba(240,208,146,0.25);
+  position:relative;
+  z-index:1;
+}
+.hist-content .client-card .client-phone{
+  color:#d4a574!important;
+  font-size:13.5px!important;
+  font-family:'Georgia',serif!important;
+  font-weight:500!important;
+  letter-spacing:0.5px!important;
+  margin-top:4px!important;
+  direction:ltr;
+  text-align:right;
+  position:relative;
+  z-index:1;
+}
+
+/* ─── Tags — dark with gold border ─── */
+.hist-content .client-card .client-tag{
+  background:rgba(212,165,116,0.10)!important;
+  color:#e5c395!important;
+  border:1px solid rgba(212,165,116,0.35)!important;
+  font-family:'Georgia',serif!important;
+  font-weight:600!important;
+  font-size:11.5px!important;
+  padding:4px 10px!important;
+  border-radius:10px!important;
+  letter-spacing:0.3px!important;
+  position:relative;
+  z-index:1;
+}
+.hist-content .client-card .client-tag.red{
+  background:rgba(184,145,95,0.12)!important;
+  color:#c9a16f!important;
+  border:1px solid rgba(201,161,111,0.35)!important;
+}
+
+/* ─── Sub-tags (payhist, hasnotes, new, vip, debt etc) ─── */
+.hist-content .client-card .ctag{
+  background:rgba(212,165,116,0.10)!important;
+  color:#e5c395!important;
+  border:1px solid rgba(212,165,116,0.30)!important;
+  font-family:'Georgia',serif!important;
+  font-weight:600!important;
+  font-size:11.5px!important;
+  padding:4px 11px!important;
+  border-radius:10px!important;
+  letter-spacing:0.3px!important;
+  position:relative;
+  z-index:1;
+}
+.hist-content .client-card .ctag.new{
+  background:rgba(240,208,146,0.10)!important;
+  color:#f0d092!important;
+  border:1px solid rgba(240,208,146,0.30)!important;
+}
+.hist-content .client-card .ctag.vip{
+  background:linear-gradient(135deg,rgba(247,228,180,0.15),rgba(212,165,116,0.10))!important;
+  color:#f7e4b4!important;
+  border:1px solid rgba(247,228,180,0.40)!important;
+}
+.hist-content .client-card .ctag.debt{
+  background:rgba(201,161,111,0.12)!important;
+  color:#c9a16f!important;
+  border:1px solid rgba(201,161,111,0.40)!important;
+  animation:none!important;
+}
+.hist-content .client-card .ctag.problematic,
+.hist-content .client-card .ctag.nopay{
+  background:rgba(184,145,95,0.10)!important;
+  color:#b8915f!important;
+  border:1px solid rgba(184,145,95,0.35)!important;
+}
+.hist-content .client-card .ctag.returning{
+  background:rgba(212,165,116,0.10)!important;
+  color:#d4a574!important;
+  border:1px solid rgba(212,165,116,0.30)!important;
+}
+.hist-content .client-card .ctag.payhist{
+  background:rgba(212,165,116,0.08)!important;
+  color:#e5c395!important;
+  border:1px solid rgba(229,195,149,0.30)!important;
+}
+.hist-content .client-card .ctag.hasnotes{
+  background:rgba(184,145,95,0.06)!important;
+  color:#c9a16f!important;
+  border:1px solid rgba(201,161,111,0.25)!important;
+}
+
+/* ─── Total box — gold reward badge ─── */
+.hist-content .client-card .client-total{
+  background:linear-gradient(135deg,rgba(240,208,146,0.14),rgba(212,165,116,0.06))!important;
+  border:1px solid rgba(212,165,116,0.35)!important;
+  border-radius:12px!important;
+  padding:8px 12px!important;
+  box-shadow:inset 0 1px 0 rgba(247,228,180,0.12),0 4px 14px rgba(212,165,116,0.10);
+  position:relative;
+  z-index:1;
+}
+.hist-content .client-card .client-total-val{
+  color:#f7e4b4!important;
+  font-family:'Georgia',serif!important;
+  font-weight:700!important;
+  font-size:17px!important;
+  letter-spacing:-0.3px!important;
+  text-shadow:0 1px 8px rgba(240,208,146,0.35);
+}
+.hist-content .client-card .client-total-lbl{
+  color:#d4a574!important;
+  font-size:9.5px!important;
+  font-weight:700!important;
+  letter-spacing:2px!important;
+  text-transform:uppercase!important;
+  font-family:'Georgia',serif!important;
+  margin-top:3px!important;
+}
+
+/* ─── Contact icons (phone button etc) — gold tinted ─── */
+.hist-content .client-card .client-total ~ *,
+.hist-content .client-card a[href^="tel:"],
+.hist-content .client-card a[href^="https://wa.me"],
+.hist-content .client-card a[href^="sms:"]{
+  filter:sepia(0.3) saturate(1.4) hue-rotate(-15deg) brightness(1.05);
+  opacity:0.75;
+  transition:opacity .2s;
+  position:relative;
+  z-index:1;
+}
+.hist-content .client-card a[href^="tel:"]:hover,
+.hist-content .client-card a[href^="https://wa.me"]:hover{opacity:1}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══ LUXURY DARK OVERRIDE — Quick Action cards (4 gold tones)  ═══ */
 
 .lux-grid .lux-card{
-  background:linear-gradient(180deg,#14100a 0%,#0a0805 100%)!important;
+  background:radial-gradient(ellipse 130% 80% at 50% 0%,rgba(240,208,146,0.22),rgba(212,165,116,0.10) 35%,transparent 70%),linear-gradient(180deg,#110a04 0%,#0a0603 100%)!important;
   border:1px solid rgba(212,165,116,0.18)!important;
   box-shadow:0 10px 28px -8px rgba(0,0,0,0.5),inset 0 1px 0 rgba(212,165,116,0.08)!important;
   aspect-ratio:1/1.1;
@@ -2750,28 +3157,28 @@ textarea:focus-visible,
 
 /* Card 1 — Review (amber champagne) */
 .lux-grid .lux-card:nth-child(1){
-  background:linear-gradient(180deg,#1a1410 0%,#0a0805 100%)!important;
+  background:radial-gradient(ellipse 130% 80% at 50% 0%,rgba(247,228,180,0.26),rgba(229,195,149,0.10) 35%,transparent 70%),linear-gradient(180deg,#130b05 0%,#0a0603 100%)!important;
 }
 .lux-grid .lux-card:nth-child(1) .lux-card-title{color:#f0d092!important}
 .lux-grid .lux-card:nth-child(1):hover{border-color:rgba(240,208,146,0.45)!important}
 
 /* Card 2 — Winback (rose gold) */
 .lux-grid .lux-card:nth-child(2){
-  background:linear-gradient(180deg,#181110 0%,#0a0605 100%)!important;
+  background:radial-gradient(ellipse 130% 80% at 50% 0%,rgba(229,179,142,0.26),rgba(201,161,111,0.10) 35%,transparent 70%),linear-gradient(180deg,#120903 0%,#0a0503 100%)!important;
 }
 .lux-grid .lux-card:nth-child(2) .lux-card-title{color:#e5b38e!important}
 .lux-grid .lux-card:nth-child(2):hover{border-color:rgba(229,179,142,0.45)!important}
 
 /* Card 3 — Birthday (deep champagne) */
 .lux-grid .lux-card:nth-child(3){
-  background:linear-gradient(180deg,#141210 0%,#070605 100%)!important;
+  background:radial-gradient(ellipse 130% 80% at 50% 0%,rgba(212,165,116,0.26),rgba(184,145,95,0.10) 35%,transparent 70%),linear-gradient(180deg,#100902 0%,#090502 100%)!important;
 }
 .lux-grid .lux-card:nth-child(3) .lux-card-title{color:#d4a574!important}
 .lux-grid .lux-card:nth-child(3):hover{border-color:rgba(212,165,116,0.45)!important}
 
 /* Card 4 — Story Ideas (bronze olive) */
 .lux-grid .lux-card:nth-child(4){
-  background:linear-gradient(180deg,#131410 0%,#070805 100%)!important;
+  background:radial-gradient(ellipse 130% 80% at 50% 0%,rgba(201,161,111,0.24),rgba(184,145,95,0.10) 35%,transparent 70%),linear-gradient(180deg,#100a05 0%,#080502 100%)!important;
 }
 .lux-grid .lux-card:nth-child(4) .lux-card-title{color:#c9a16f!important}
 .lux-grid .lux-card:nth-child(4):hover{border-color:rgba(201,161,111,0.45)!important}
@@ -2829,7 +3236,7 @@ textarea:focus-visible,
 .lux-tasks-celebration-txt{font-size:13px;color:#78350f;font-weight:500;letter-spacing:0.3px;font-family:Georgia,serif}
 
 /* ─── LUXURY HERO — AI Post Generator ─── */
-.lux-hero{width:100%;background:linear-gradient(135deg,#1a1a1a 0%,#2d1b2e 50%,#1a1a1a 100%);color:#fdfbf8;border:1px solid #3a2a1a;border-radius:24px;padding:36px 24px;margin-bottom:24px;cursor:pointer;font-family:inherit;text-align:center;position:relative;overflow:hidden;transition:transform 0.3s ease,box-shadow 0.3s ease;box-shadow:0 10px 30px -8px rgba(0,0,0,0.4)}
+.lux-hero{width:100%;background:radial-gradient(ellipse 130% 90% at 50% 0%,rgba(240,208,146,0.30),rgba(212,165,116,0.12) 40%,transparent 70%),linear-gradient(180deg,#130b05 0%,#0a0603 100%);color:#fdfbf8;border:1px solid rgba(212,165,116,0.30);border-radius:24px;padding:36px 24px;margin-bottom:24px;cursor:pointer;font-family:inherit;text-align:center;position:relative;overflow:hidden;transition:transform 0.3s ease,box-shadow 0.3s ease;box-shadow:0 10px 30px -8px rgba(0,0,0,0.4)}
 .lux-hero:hover{transform:translateY(-2px);box-shadow:0 16px 40px -8px rgba(0,0,0,0.5)}
 .lux-hero:active{transform:translateY(-1px) scale(0.995)}
 
@@ -3376,8 +3783,8 @@ textarea:focus-visible,
 .lx-stack{display:flex;flex-direction:column;gap:16px}
 
 /* ─── LUXURY BLACK CARD ─── */
-.lx-card{position:relative;border-radius:24px;overflow:hidden;background:radial-gradient(ellipse 120% 70% at 50% 0%,rgba(212,165,116,0.14),transparent 55%),linear-gradient(180deg,#0a0805 0%,#14100a 30%,#0d0a06 65%,#050403 100%);color:#fdfbf8;box-shadow:0 18px 44px -10px rgba(0,0,0,0.6),0 0 0 1px rgba(212,165,116,0.18),inset 0 1px 0 rgba(212,165,116,0.12);min-height:500px;transition:transform .28s,box-shadow .28s}
-.lx-card:hover{transform:translateY(-2px);box-shadow:0 24px 52px -10px rgba(0,0,0,0.7),0 0 0 1px rgba(212,165,116,0.3),inset 0 1px 0 rgba(212,165,116,0.18)}
+.lx-card{position:relative;border-radius:24px;overflow:hidden;background:radial-gradient(ellipse 140% 90% at 50% 0%,rgba(240,208,146,0.30),rgba(212,165,116,0.14) 35%,transparent 70%),radial-gradient(ellipse 180% 100% at 50% 120%,rgba(184,145,95,0.18),transparent 55%),linear-gradient(180deg,#110a04 0%,#0a0603 50%,#060402 100%);color:#fdfbf8;box-shadow:0 18px 44px -10px rgba(0,0,0,0.7),0 0 0 1px rgba(212,165,116,0.22),inset 0 1px 0 rgba(240,208,146,0.15);min-height:500px;transition:transform .28s,box-shadow .28s}
+.lx-card:hover{transform:translateY(-2px);box-shadow:0 24px 52px -10px rgba(0,0,0,0.8),0 0 0 1px rgba(212,165,116,0.3),inset 0 1px 0 rgba(212,165,116,0.18)}
 .lx-card.is-done{opacity:0.55}
 .lx-card.is-done .lx-title{text-decoration:line-through;text-decoration-color:rgba(212,165,116,0.4)}
 
@@ -3455,7 +3862,7 @@ textarea:focus-visible,
 .lx-bot-line:last-child{background:linear-gradient(to right,transparent,#d4a574)}
 .lx-bot-sym{color:#d4a574;font-size:9px}
 
-.lx-all-done{margin-top:16px;padding:14px;background:linear-gradient(135deg,#0f0c08,#1a1510);border:1px solid rgba(212,165,116,0.3);border-radius:14px;text-align:center;font-size:13px;color:#d4a574;font-weight:600;letter-spacing:2px;font-family:Georgia,serif;font-style:italic}
+.lx-all-done{margin-top:16px;padding:14px;background:#000000;border:1px solid rgba(212,165,116,0.3);border-radius:14px;text-align:center;font-size:13px;color:#d4a574;font-weight:600;letter-spacing:2px;font-family:Georgia,serif;font-style:italic}
 
 /* Responsive */
 @media(max-width:380px){
@@ -11615,7 +12022,7 @@ function webInjectEditor(html){
 .lux-tasks-celebration-txt{font-size:13px;color:#78350f;font-weight:500;letter-spacing:0.3px;font-family:Georgia,serif}
 
 /* ─── LUXURY HERO — AI Post Generator ─── */
-.lux-hero{width:100%;background:linear-gradient(135deg,#1a1a1a 0%,#2d1b2e 50%,#1a1a1a 100%);color:#fdfbf8;border:1px solid #3a2a1a;border-radius:24px;padding:36px 24px;margin-bottom:24px;cursor:pointer;font-family:inherit;text-align:center;position:relative;overflow:hidden;transition:transform 0.3s ease,box-shadow 0.3s ease;box-shadow:0 10px 30px -8px rgba(0,0,0,0.4)}
+.lux-hero{width:100%;background:radial-gradient(ellipse 130% 90% at 50% 0%,rgba(240,208,146,0.30),rgba(212,165,116,0.12) 40%,transparent 70%),linear-gradient(180deg,#130b05 0%,#0a0603 100%);color:#fdfbf8;border:1px solid rgba(212,165,116,0.30);border-radius:24px;padding:36px 24px;margin-bottom:24px;cursor:pointer;font-family:inherit;text-align:center;position:relative;overflow:hidden;transition:transform 0.3s ease,box-shadow 0.3s ease;box-shadow:0 10px 30px -8px rgba(0,0,0,0.4)}
 .lux-hero:hover{transform:translateY(-2px);box-shadow:0 16px 40px -8px rgba(0,0,0,0.5)}
 .lux-hero:active{transform:translateY(-1px) scale(0.995)}
 
@@ -12157,8 +12564,8 @@ function webInjectEditor(html){
 .lx-stack{display:flex;flex-direction:column;gap:16px}
 
 /* ─── LUXURY BLACK CARD ─── */
-.lx-card{position:relative;border-radius:24px;overflow:hidden;background:radial-gradient(ellipse 120% 70% at 50% 0%,rgba(212,165,116,0.14),transparent 55%),linear-gradient(180deg,#0a0805 0%,#14100a 30%,#0d0a06 65%,#050403 100%);color:#fdfbf8;box-shadow:0 18px 44px -10px rgba(0,0,0,0.6),0 0 0 1px rgba(212,165,116,0.18),inset 0 1px 0 rgba(212,165,116,0.12);min-height:500px;transition:transform .28s,box-shadow .28s}
-.lx-card:hover{transform:translateY(-2px);box-shadow:0 24px 52px -10px rgba(0,0,0,0.7),0 0 0 1px rgba(212,165,116,0.3),inset 0 1px 0 rgba(212,165,116,0.18)}
+.lx-card{position:relative;border-radius:24px;overflow:hidden;background:radial-gradient(ellipse 140% 90% at 50% 0%,rgba(240,208,146,0.30),rgba(212,165,116,0.14) 35%,transparent 70%),radial-gradient(ellipse 180% 100% at 50% 120%,rgba(184,145,95,0.18),transparent 55%),linear-gradient(180deg,#110a04 0%,#0a0603 50%,#060402 100%);color:#fdfbf8;box-shadow:0 18px 44px -10px rgba(0,0,0,0.7),0 0 0 1px rgba(212,165,116,0.22),inset 0 1px 0 rgba(240,208,146,0.15);min-height:500px;transition:transform .28s,box-shadow .28s}
+.lx-card:hover{transform:translateY(-2px);box-shadow:0 24px 52px -10px rgba(0,0,0,0.8),0 0 0 1px rgba(212,165,116,0.3),inset 0 1px 0 rgba(212,165,116,0.18)}
 .lx-card.is-done{opacity:0.55}
 .lx-card.is-done .lx-title{text-decoration:line-through;text-decoration-color:rgba(212,165,116,0.4)}
 
@@ -12236,7 +12643,7 @@ function webInjectEditor(html){
 .lx-bot-line:last-child{background:linear-gradient(to right,transparent,#d4a574)}
 .lx-bot-sym{color:#d4a574;font-size:9px}
 
-.lx-all-done{margin-top:16px;padding:14px;background:linear-gradient(135deg,#0f0c08,#1a1510);border:1px solid rgba(212,165,116,0.3);border-radius:14px;text-align:center;font-size:13px;color:#d4a574;font-weight:600;letter-spacing:2px;font-family:Georgia,serif;font-style:italic}
+.lx-all-done{margin-top:16px;padding:14px;background:#000000;border:1px solid rgba(212,165,116,0.3);border-radius:14px;text-align:center;font-size:13px;color:#d4a574;font-weight:600;letter-spacing:2px;font-family:Georgia,serif;font-style:italic}
 
 /* Responsive */
 @media(max-width:380px){

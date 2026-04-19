@@ -2063,6 +2063,28 @@ function showCancModal(slot){
   modal.innerHTML=`<div class="canc-sheet"><div class="canc-title">❌ ביטול תור</div><div class="canc-sub">${x(d.name||slot)} — ${S.lSel} ${slot}</div><div class="canc-reason-grid"><button class="canc-reason-btn" onclick="recordCancellation('${slot}','client');document.getElementById('canc-modal').remove()">😞 ביטל הלקוח</button><button class="canc-reason-btn orange" onclick="recordCancellation('${slot}','noshow');document.getElementById('canc-modal').remove()">🚫 לא הגיע</button><button class="canc-reason-btn purple" onclick="recordCancellation('${slot}','me');document.getElementById('canc-modal').remove()">👤 ביטלתי אני</button><button class="canc-reason-btn gray" onclick="recordCancellation('${slot}','other');document.getElementById('canc-modal').remove()">📝 סיבה אחרת</button></div><button onclick="document.getElementById('canc-modal').remove()" style="width:100%;padding:12px;background:#f3f4f6;border:none;border-radius:14px;font-weight:700;cursor:pointer;font-family:inherit;color:#374151">ביטול</button></div>`;
   document.body.appendChild(modal);
 }
+// ── מחיקת תור מטאב "תורים קרובים" — עם רישום לביטולים ──
+function recordCancellationByDate(date,slot,reason){
+  if(!S.A[date]||!S.A[date][slot])return;
+  const d=S.A[date][slot];
+  const id='c_'+Date.now();
+  if(!S.CANC)S.CANC={};
+  S.CANC[id]={date:date,time:slot,name:d.name||'',phone:d.phone||'',type:d.type||'',price:d.price||'',duration:d.duration||'',reason,created:new Date().toISOString()};
+  delete S.A[date][slot];
+  if(!Object.keys(S.A[date]||{}).length)delete S.A[date];
+  store.set('appts',S.A);
+  store.set('cancellations',S.CANC);
+  const m=document.getElementById('canc-modal-up');if(m)m.remove();
+  hRender&&hRender();
+}
+function showCancModalFromUpcoming(date,slot){
+  const d=(S.A[date]||{})[slot]||{};
+  const modal=document.createElement('div');
+  modal.className='canc-modal';
+  modal.id='canc-modal-up';
+  modal.innerHTML=`<div class="canc-sheet"><div class="canc-title">❌ ביטול תור</div><div class="canc-sub">${x(d.name||slot)} — ${date} ${slot}</div><div class="canc-reason-grid"><button class="canc-reason-btn" onclick="recordCancellationByDate('${date}','${slot}','client')">😞 ביטל הלקוח</button><button class="canc-reason-btn orange" onclick="recordCancellationByDate('${date}','${slot}','noshow')">🚫 לא הגיע</button><button class="canc-reason-btn purple" onclick="recordCancellationByDate('${date}','${slot}','me')">👤 ביטלתי אני</button><button class="canc-reason-btn gray" onclick="recordCancellationByDate('${date}','${slot}','other')">📝 סיבה אחרת</button></div><button onclick="document.getElementById('canc-modal-up').remove()" style="width:100%;padding:12px;background:#f3f4f6;border:none;border-radius:14px;font-weight:700;cursor:pointer;font-family:inherit;color:#374151">סגור</button></div>`;
+  document.body.appendChild(modal);
+}
 function daConfirm(s){
   if(confirm('למחוק את התור של '+((S.A[S.lSel]||{})[s]||{}).name+'?')){
     da(s);
@@ -3627,6 +3649,7 @@ function buildUpcoming(upcoming){
               ${a.d.paid?'<span style="font-size:10px;font-weight:700;color:#059669;background:#f0fdf4;padding:2px 6px;border-radius:8px">✓ שולם</span>':''}
               ${reminderBtn(a)}
               ${contactBtns(a.d.phone,a.d.name,a.date+' '+a.time)}
+              <button onclick="event.stopPropagation();showCancModalFromUpcoming('${a.date}','${a.time}')" title="בטל / מחק תור" style="background:#fef2f2;border:1.5px solid #fecaca;color:#b91c1c;width:32px;height:32px;border-radius:10px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;padding:0;font-family:inherit">🗑</button>
             </div>
             <div style="text-align:right">
               <div class="appt-card-name">${x(a.d.name)}${isNext?' ⚡':''}</div>

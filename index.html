@@ -2651,11 +2651,90 @@ textarea:focus-visible,
 <div id="a11y-alert-region" class="live-region" role="alert" aria-live="assertive" aria-atomic="true"></div>
 <div id="app" role="main" aria-label="היומן שלנו - אפליקציית ניהול קליניקה"><div class="loader" role="status" aria-live="polite"><div class="spinner" aria-hidden="true"></div><div style="color:#6d28d9;font-weight:bold;font-size:16px">טוען...</div></div></div>
 <script>
-// ── Firebase REST ─────────────────────────────────────
+// ── Firebase REST + Anonymous Auth ──────────────────
+// כל בקשה ל-Firebase חתומה עם idToken של משתמש אנונימי.
+// ה-token מתרענן אוטומטית לפני שהוא פג (תקף שעה).
 const FB='https://diary-daniel-rinat-default-rtdb.firebaseio.com/diary';
+const FB_API_KEY='AIzaSyCsh6qM-WgbWn1LHx2FTVio35ZPvMQ0aG4';
+
+const auth={
+  _cached:null,
+  _pending:null,
+  async getToken(){
+    // שימוש חוזר ב-token פעיל (עם שוליים של 5 דקות)
+    if(this._cached && this._cached.exp > Date.now()+300000) return this._cached.token;
+    // אם כבר יש קריאה בתהליך — מחכים לה במקום לפתוח עוד אחת
+    if(this._pending) return this._pending;
+    this._pending = this._fetchToken().finally(()=>{this._pending=null;});
+    return this._pending;
+  },
+  async _fetchToken(){
+    // 1) ניסיון מ-localStorage
+    try{
+      const saved=JSON.parse(localStorage.getItem('fb_auth')||'null');
+      if(saved && saved.exp > Date.now()+300000){
+        this._cached=saved;
+        return saved.token;
+      }
+      // 2) אם יש refresh token — מרעננים
+      if(saved && saved.refresh){
+        try{
+          const r=await fetch('https://securetoken.googleapis.com/v1/token?key='+FB_API_KEY,{
+            method:'POST',
+            headers:{'Content-Type':'application/x-www-form-urlencoded'},
+            body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(saved.refresh)
+          });
+          if(r.ok){
+            const d=await r.json();
+            const fresh={token:d.id_token,refresh:d.refresh_token,exp:Date.now()+(parseInt(d.expires_in)*1000)};
+            localStorage.setItem('fb_auth',JSON.stringify(fresh));
+            this._cached=fresh;
+            return fresh.token;
+          }
+        }catch(e){}
+      }
+    }catch(e){}
+    // 3) signup אנונימי חדש (פעם ראשונה או שהרענון נכשל)
+    try{
+      const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key='+FB_API_KEY,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({returnSecureToken:true})
+      });
+      if(r.ok){
+        const d=await r.json();
+        const fresh={token:d.idToken,refresh:d.refreshToken,exp:Date.now()+(parseInt(d.expiresIn)*1000)};
+        localStorage.setItem('fb_auth',JSON.stringify(fresh));
+        this._cached=fresh;
+        return fresh.token;
+      }
+    }catch(e){}
+    return null;
+  }
+};
+
+// הפעלה מוקדמת — מתחילים auth כבר עכשיו, ברקע, בלי לחסום את ה-UI
+auth.getToken();
+
 const store={
-  get:async(k)=>{try{const r=await fetch(FB+'/'+k+'.json');if(r.ok){const d=await r.json();if(d!==null)return d;}}catch(e){}try{const v=localStorage.getItem('dr_'+k);if(v)return JSON.parse(v);}catch(e){}return null;},
-  set:async(k,v)=>{try{localStorage.setItem('dr_'+k,JSON.stringify(v));}catch(e){}try{fetch(FB+'/'+k+'.json',{method:'PUT',body:JSON.stringify(v)});}catch(e){}}
+  get:async(k)=>{
+    try{
+      const token=await auth.getToken();
+      const url=FB+'/'+k+'.json'+(token?'?auth='+encodeURIComponent(token):'');
+      const r=await fetch(url);
+      if(r.ok){const d=await r.json();if(d!==null)return d;}
+    }catch(e){}
+    try{const v=localStorage.getItem('dr_'+k);if(v)return JSON.parse(v);}catch(e){}
+    return null;
+  },
+  set:async(k,v)=>{
+    try{localStorage.setItem('dr_'+k,JSON.stringify(v));}catch(e){}
+    try{
+      const token=await auth.getToken();
+      const url=FB+'/'+k+'.json'+(token?'?auth='+encodeURIComponent(token):'');
+      fetch(url,{method:'PUT',body:JSON.stringify(v)});
+    }catch(e){}
+  }
 };
 const localStore={
   get:(k)=>{try{const v=localStorage.getItem('local_'+k);return v?JSON.parse(v):null;}catch(e){return null;}},

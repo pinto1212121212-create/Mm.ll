@@ -2651,76 +2651,376 @@ textarea:focus-visible,
 <div id="a11y-alert-region" class="live-region" role="alert" aria-live="assertive" aria-atomic="true"></div>
 <div id="app" role="main" aria-label="היומן שלנו - אפליקציית ניהול קליניקה"><div class="loader" role="status" aria-live="polite"><div class="spinner" aria-hidden="true"></div><div style="color:#6d28d9;font-weight:bold;font-size:16px">טוען...</div></div></div>
 <script>
-// ── Firebase REST + Anonymous Auth ──────────────────
-// כל בקשה ל-Firebase חתומה עם idToken של משתמש אנונימי.
-// ה-token מתרענן אוטומטית לפני שהוא פג (תקף שעה).
+// ── Firebase Auth — Email/Password + Login UI ─────────
+// כל משתמש (אוריאל/דניאל/רינת) מתחבר עם email+סיסמה משלו.
+// רישום חדש חסום מאחורי קוד הזמנה. ה-token מתחדש אוטומטית.
 const FB='https://diary-daniel-rinat-default-rtdb.firebaseio.com/diary';
 const FB_API_KEY='AIzaSyCsh6qM-WgbWn1LHx2FTVio35ZPvMQ0aG4';
+const INVITE_CODE='PINTORD5997@';
 
 const auth={
   _cached:null,
   _pending:null,
+  user:null, // {uid, email, name}
+  
   async getToken(){
-    // שימוש חוזר ב-token פעיל (עם שוליים של 5 דקות)
     if(this._cached && this._cached.exp > Date.now()+300000) return this._cached.token;
-    // אם כבר יש קריאה בתהליך — מחכים לה במקום לפתוח עוד אחת
     if(this._pending) return this._pending;
-    this._pending = this._fetchToken().finally(()=>{this._pending=null;});
+    this._pending = this._refreshToken().finally(()=>{this._pending=null;});
     return this._pending;
   },
-  async _fetchToken(){
-    // 1) ניסיון מ-localStorage
+  
+  async _refreshToken(){
     try{
       const saved=JSON.parse(localStorage.getItem('fb_auth')||'null');
-      if(saved && saved.exp > Date.now()+300000){
+      if(!saved || !saved.refresh) return null;
+      if(saved.exp > Date.now()+300000){
         this._cached=saved;
+        this.user={uid:saved.uid,email:saved.email,name:saved.name||saved.email};
         return saved.token;
       }
-      // 2) אם יש refresh token — מרעננים
-      if(saved && saved.refresh){
-        try{
-          const r=await fetch('https://securetoken.googleapis.com/v1/token?key='+FB_API_KEY,{
-            method:'POST',
-            headers:{'Content-Type':'application/x-www-form-urlencoded'},
-            body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(saved.refresh)
-          });
-          if(r.ok){
-            const d=await r.json();
-            const fresh={token:d.id_token,refresh:d.refresh_token,exp:Date.now()+(parseInt(d.expires_in)*1000)};
-            localStorage.setItem('fb_auth',JSON.stringify(fresh));
-            this._cached=fresh;
-            return fresh.token;
-          }
-        }catch(e){}
-      }
-    }catch(e){}
-    // 3) signup אנונימי חדש (פעם ראשונה או שהרענון נכשל)
-    try{
-      const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key='+FB_API_KEY,{
+      const r=await fetch('https://securetoken.googleapis.com/v1/token?key='+FB_API_KEY,{
         method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({returnSecureToken:true})
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(saved.refresh)
       });
       if(r.ok){
         const d=await r.json();
-        const fresh={token:d.idToken,refresh:d.refreshToken,exp:Date.now()+(parseInt(d.expiresIn)*1000)};
+        const fresh={
+          token:d.id_token,
+          refresh:d.refresh_token,
+          exp:Date.now()+(parseInt(d.expires_in)*1000),
+          uid:saved.uid,
+          email:saved.email,
+          name:saved.name
+        };
         localStorage.setItem('fb_auth',JSON.stringify(fresh));
         this._cached=fresh;
+        this.user={uid:fresh.uid,email:fresh.email,name:fresh.name||fresh.email};
         return fresh.token;
       }
     }catch(e){}
     return null;
+  },
+  
+  async signIn(email,password){
+    const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+FB_API_KEY,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email,password,returnSecureToken:true})
+    });
+    if(!r.ok){
+      const err=await r.json();
+      throw new Error(this._errMsg(err));
+    }
+    const d=await r.json();
+    // קבלת שם המשתמש מ-DB
+    let name=d.email;
+    try{
+      const nr=await fetch(FB+'/users/'+d.localId+'/name.json?auth='+encodeURIComponent(d.idToken));
+      if(nr.ok){const n=await nr.json();if(n)name=n;}
+    }catch(e){}
+    const fresh={
+      token:d.idToken,
+      refresh:d.refreshToken,
+      exp:Date.now()+(parseInt(d.expiresIn)*1000),
+      uid:d.localId,
+      email:d.email,
+      name:name
+    };
+    localStorage.setItem('fb_auth',JSON.stringify(fresh));
+    this._cached=fresh;
+    this.user={uid:fresh.uid,email:fresh.email,name:fresh.name};
+    this._audit('login');
+    return fresh;
+  },
+  
+  async signUp(email,password,name,inviteCode){
+    if(inviteCode!==INVITE_CODE) throw new Error('קוד הזמנה לא נכון');
+    if(!name||name.trim().length<2) throw new Error('חובה למלא שם');
+    const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key='+FB_API_KEY,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email,password,returnSecureToken:true})
+    });
+    if(!r.ok){
+      const err=await r.json();
+      throw new Error(this._errMsg(err));
+    }
+    const d=await r.json();
+    // שמירת השם ב-DB
+    try{
+      await fetch(FB+'/users/'+d.localId+'/name.json?auth='+encodeURIComponent(d.idToken),{
+        method:'PUT',body:JSON.stringify(name.trim())
+      });
+      await fetch(FB+'/users/'+d.localId+'/email.json?auth='+encodeURIComponent(d.idToken),{
+        method:'PUT',body:JSON.stringify(email)
+      });
+      await fetch(FB+'/users/'+d.localId+'/createdAt.json?auth='+encodeURIComponent(d.idToken),{
+        method:'PUT',body:JSON.stringify(new Date().toISOString())
+      });
+    }catch(e){}
+    const fresh={
+      token:d.idToken,
+      refresh:d.refreshToken,
+      exp:Date.now()+(parseInt(d.expiresIn)*1000),
+      uid:d.localId,
+      email:d.email,
+      name:name.trim()
+    };
+    localStorage.setItem('fb_auth',JSON.stringify(fresh));
+    this._cached=fresh;
+    this.user={uid:fresh.uid,email:fresh.email,name:fresh.name};
+    this._audit('signup');
+    return fresh;
+  },
+  
+  async changePassword(newPassword){
+    const token=await this.getToken();
+    if(!token) throw new Error('לא מחובר');
+    const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:update?key='+FB_API_KEY,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({idToken:token,password:newPassword,returnSecureToken:true})
+    });
+    if(!r.ok){const err=await r.json();throw new Error(this._errMsg(err));}
+    const d=await r.json();
+    const saved=JSON.parse(localStorage.getItem('fb_auth')||'{}');
+    saved.token=d.idToken;
+    saved.refresh=d.refreshToken;
+    saved.exp=Date.now()+(parseInt(d.expiresIn)*1000);
+    localStorage.setItem('fb_auth',JSON.stringify(saved));
+    this._cached=saved;
+    this._audit('password_change');
+  },
+  
+  async resetPassword(email){
+    const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key='+FB_API_KEY,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({requestType:'PASSWORD_RESET',email})
+    });
+    if(!r.ok){const err=await r.json();throw new Error(this._errMsg(err));}
+  },
+  
+  async deleteAccount(){
+    const token=await this.getToken();
+    if(!token) throw new Error('לא מחובר');
+    this._audit('account_deleted');
+    const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:delete?key='+FB_API_KEY,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({idToken:token})
+    });
+    if(!r.ok){const err=await r.json();throw new Error(this._errMsg(err));}
+    this.signOut();
+  },
+  
+  signOut(){
+    if(this.user)this._audit('logout');
+    localStorage.removeItem('fb_auth');
+    this._cached=null;
+    this.user=null;
+    location.reload();
+  },
+  
+  async _audit(action){
+    try{
+      if(!this.user||!this._cached)return;
+      const entry={
+        action,
+        uid:this.user.uid,
+        name:this.user.name,
+        email:this.user.email,
+        at:new Date().toISOString()
+      };
+      const key=Date.now()+'_'+Math.random().toString(36).substr(2,6);
+      fetch(FB+'/audit_log/'+key+'.json?auth='+encodeURIComponent(this._cached.token),{
+        method:'PUT',body:JSON.stringify(entry)
+      });
+    }catch(e){}
+  },
+  
+  _errMsg(err){
+    const m=(err.error&&err.error.message)||'';
+    const map={
+      'EMAIL_EXISTS':'האימייל כבר רשום',
+      'OPERATION_NOT_ALLOWED':'רישום כבוי',
+      'TOO_MANY_ATTEMPTS_TRY_LATER':'יותר מדי ניסיונות — נסה שוב בעוד כמה דקות',
+      'EMAIL_NOT_FOUND':'אימייל לא נמצא',
+      'INVALID_PASSWORD':'סיסמה לא נכונה',
+      'INVALID_LOGIN_CREDENTIALS':'אימייל או סיסמה לא נכונים',
+      'USER_DISABLED':'החשבון הושבת',
+      'WEAK_PASSWORD : Password should be at least 6 characters':'הסיסמה קצרה מדי (לפחות 6 תווים)',
+      'INVALID_EMAIL':'כתובת אימייל לא תקינה'
+    };
+    for(const k in map)if(m.indexOf(k)===0)return map[k];
+    return m||'שגיאה';
   }
 };
 
-// הפעלה מוקדמת — מתחילים auth כבר עכשיו, ברקע, בלי לחסום את ה-UI
-auth.getToken();
+// ── Login UI ─────────────────────────────────────────
+const LOGIN_CSS=`
+<style id="login-css">
+#login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#1a1410 0%,#0a0805 100%);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;font-family:system-ui,-apple-system,sans-serif;direction:rtl}
+.login-box{background:linear-gradient(180deg,rgba(26,20,16,0.95),rgba(10,8,5,0.98));border:1px solid rgba(251,171,32,0.25);border-radius:20px;padding:32px 24px;max-width:400px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.5),inset 0 1px 0 rgba(251,171,32,0.15)}
+.login-title{text-align:center;font-size:26px;font-weight:800;background:linear-gradient(135deg,#fbab20,#fdb849);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.login-sub{text-align:center;color:rgba(255,255,255,0.55);font-size:14px;margin-bottom:24px}
+.login-field{margin-bottom:14px}
+.login-field label{display:block;color:rgba(251,171,32,0.85);font-size:13px;margin-bottom:6px;font-weight:600}
+.login-field input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(251,171,32,0.2);border-radius:10px;padding:12px 14px;color:#fff;font-size:16px;font-family:inherit;direction:ltr;text-align:right}
+.login-field input:focus{outline:none;border-color:#fbab20;background:rgba(255,255,255,0.06)}
+.login-field input[type=text][data-rtl]{direction:rtl;text-align:right}
+.login-btn{width:100%;background:linear-gradient(135deg,#fbab20,#fdb849);color:#0a0805;border:none;padding:14px;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;margin-top:8px;font-family:inherit;box-shadow:0 8px 24px rgba(251,171,32,0.3)}
+.login-btn:active{transform:scale(0.98)}
+.login-btn:disabled{opacity:0.5;cursor:not-allowed}
+.login-switch{text-align:center;margin-top:18px;color:rgba(255,255,255,0.55);font-size:13px}
+.login-switch a{color:#fbab20;text-decoration:none;font-weight:700;cursor:pointer}
+.login-err{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);color:#fca5a5;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:14px;text-align:center}
+.login-ok{background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.35);color:#86efac;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:14px;text-align:center}
+</style>`;
 
+function showLogin(mode='signin'){
+  document.body.insertAdjacentHTML('beforeend',LOGIN_CSS);
+  const box=document.createElement('div');
+  box.id='login-screen';
+  box.innerHTML=renderLogin(mode);
+  document.body.appendChild(box);
+}
+
+function renderLogin(mode){
+  if(mode==='signup'){
+    return `<div class="login-box">
+      <div class="login-title">✍️ רישום חדש</div>
+      <div class="login-sub">היומן שלנו • הירשם כדי להתחיל</div>
+      <div id="login-msg"></div>
+      <div class="login-field"><label>שם מלא</label><input id="lg-name" type="text" data-rtl autocomplete="name"></div>
+      <div class="login-field"><label>Email</label><input id="lg-email" type="email" autocomplete="email"></div>
+      <div class="login-field"><label>סיסמה (לפחות 6 תווים)</label><input id="lg-pass" type="password" autocomplete="new-password"></div>
+      <div class="login-field"><label>🎟️ קוד הזמנה</label><input id="lg-code" type="text" autocomplete="off"></div>
+      <button class="login-btn" onclick="doSignup()">🚀 הירשם</button>
+      <div class="login-switch">כבר רשום? <a onclick="switchLogin('signin')">התחבר</a></div>
+    </div>`;
+  }
+  if(mode==='reset'){
+    return `<div class="login-box">
+      <div class="login-title">🔄 שחזור סיסמה</div>
+      <div class="login-sub">נשלח לך קישור באימייל</div>
+      <div id="login-msg"></div>
+      <div class="login-field"><label>Email</label><input id="lg-email" type="email" autocomplete="email"></div>
+      <button class="login-btn" onclick="doReset()">📧 שלח קישור</button>
+      <div class="login-switch"><a onclick="switchLogin('signin')">← חזרה לכניסה</a></div>
+    </div>`;
+  }
+  return `<div class="login-box">
+    <div class="login-title">💙 היומן שלנו</div>
+    <div class="login-sub">התחבר כדי להיכנס</div>
+    <div id="login-msg"></div>
+    <div class="login-field"><label>Email</label><input id="lg-email" type="email" autocomplete="email" onkeydown="if(event.key==='Enter')document.getElementById('lg-pass').focus()"></div>
+    <div class="login-field"><label>סיסמה</label><input id="lg-pass" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="login-btn" onclick="doLogin()">🔓 כניסה</button>
+    <div class="login-switch">עדיין לא רשום? <a onclick="switchLogin('signup')">הירשם</a></div>
+    <div class="login-switch" style="margin-top:8px"><a onclick="switchLogin('reset')">שכחתי סיסמה</a></div>
+  </div>`;
+}
+
+function switchLogin(mode){
+  document.getElementById('login-screen').innerHTML=renderLogin(mode);
+}
+
+function _lgMsg(html,type){
+  const el=document.getElementById('login-msg');
+  if(el)el.innerHTML=html?`<div class="login-${type||'err'}">${html}</div>`:'';
+}
+
+async function doLogin(){
+  const email=document.getElementById('lg-email').value.trim();
+  const pass=document.getElementById('lg-pass').value;
+  if(!email||!pass){_lgMsg('מלא את כל השדות');return;}
+  _lgMsg('⏳ מתחבר...','ok');
+  try{
+    await auth.signIn(email,pass);
+    location.reload();
+  }catch(e){_lgMsg(e.message||'שגיאה');}
+}
+
+async function doSignup(){
+  const name=document.getElementById('lg-name').value.trim();
+  const email=document.getElementById('lg-email').value.trim();
+  const pass=document.getElementById('lg-pass').value;
+  const code=document.getElementById('lg-code').value.trim();
+  if(!name||!email||!pass||!code){_lgMsg('מלא את כל השדות');return;}
+  if(pass.length<6){_lgMsg('הסיסמה חייבת להיות לפחות 6 תווים');return;}
+  _lgMsg('⏳ רושם...','ok');
+  try{
+    await auth.signUp(email,pass,name,code);
+    location.reload();
+  }catch(e){_lgMsg(e.message||'שגיאה');}
+}
+
+async function doReset(){
+  const email=document.getElementById('lg-email').value.trim();
+  if(!email){_lgMsg('הכנס אימייל');return;}
+  _lgMsg('⏳ שולח...','ok');
+  try{
+    await auth.resetPassword(email);
+    _lgMsg('✅ נשלח! בדוק את האימייל שלך','ok');
+  }catch(e){_lgMsg(e.message||'שגיאה');}
+}
+
+// ── Account Management ───────────────────────────────
+async function openMyAccount(){
+  document.body.insertAdjacentHTML('beforeend',LOGIN_CSS);
+  const box=document.createElement('div');
+  box.id='login-screen';
+  const u=auth.user||{};
+  box.innerHTML=`<div class="login-box">
+    <div class="login-title">👤 החשבון שלי</div>
+    <div class="login-sub">${u.name||''}<br><span style="font-size:12px;opacity:0.7">${u.email||''}</span></div>
+    <div id="login-msg"></div>
+    <div class="login-field"><label>🔑 סיסמה חדשה (אופציונלי)</label><input id="ma-pass" type="password" placeholder="השאר ריק אם לא משנה"></div>
+    <button class="login-btn" onclick="doChangePassword()">שמור סיסמה חדשה</button>
+    <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(251,171,32,0.15)"></div>
+    <button class="login-btn" style="background:linear-gradient(135deg,#64748b,#475569);color:#fff" onclick="auth.signOut()">🚪 התנתק</button>
+    <div style="margin-top:14px"></div>
+    <button class="login-btn" style="background:linear-gradient(135deg,#dc2626,#991b1b);color:#fff" onclick="doDeleteAccount()">🗑️ מחק את החשבון שלי</button>
+    <div class="login-switch" style="margin-top:16px"><a onclick="closeMyAccount()">← חזרה ליומן</a></div>
+  </div>`;
+  document.body.appendChild(box);
+}
+
+function closeMyAccount(){
+  const s=document.getElementById('login-screen');if(s)s.remove();
+  const c=document.getElementById('login-css');if(c)c.remove();
+}
+
+async function doChangePassword(){
+  const pass=document.getElementById('ma-pass').value;
+  if(!pass){_lgMsg('הכנס סיסמה חדשה');return;}
+  if(pass.length<6){_lgMsg('הסיסמה חייבת להיות לפחות 6 תווים');return;}
+  _lgMsg('⏳ משנה...','ok');
+  try{
+    await auth.changePassword(pass);
+    _lgMsg('✅ הסיסמה שונתה','ok');
+    setTimeout(()=>{document.getElementById('ma-pass').value='';_lgMsg('');},2500);
+  }catch(e){_lgMsg(e.message||'שגיאה');}
+}
+
+async function doDeleteAccount(){
+  if(!confirm('בטוח?? פעולה זו אינה הפיכה — החשבון שלך יימחק לצמיתות'))return;
+  if(!confirm('אישור אחרון — למחוק לצמיתות?'))return;
+  try{
+    await auth.deleteAccount();
+  }catch(e){alert('שגיאה: '+(e.message||''));}
+}
+
+// ── Store — עם Auth ──────────────────────────────────
 const store={
   get:async(k)=>{
     try{
       const token=await auth.getToken();
-      const url=FB+'/'+k+'.json'+(token?'?auth='+encodeURIComponent(token):'');
+      if(!token) return null;
+      const url=FB+'/'+k+'.json?auth='+encodeURIComponent(token);
       const r=await fetch(url);
       if(r.ok){const d=await r.json();if(d!==null)return d;}
     }catch(e){}
@@ -2731,7 +3031,8 @@ const store={
     try{localStorage.setItem('dr_'+k,JSON.stringify(v));}catch(e){}
     try{
       const token=await auth.getToken();
-      const url=FB+'/'+k+'.json'+(token?'?auth='+encodeURIComponent(token):'');
+      if(!token) return;
+      const url=FB+'/'+k+'.json?auth='+encodeURIComponent(token);
       fetch(url,{method:'PUT',body:JSON.stringify(v)});
     }catch(e){}
   }
@@ -3103,12 +3404,53 @@ function deployToGitHub(){
   inp.click();
 }
 
+// ── Backup: הורדת גיבוי מלא של כל הנתונים ────────────
+async function backupAllData(){
+  const btn=document.getElementById('backup-btn');
+  if(btn){btn.textContent='⏳';btn.disabled=true;}
+  try{
+    // מוריד טריים מ-Firebase (לא מה-cache)
+    const keys=['appts','tasks','goals','bgoals','clients','cancellations','packages','expenses','website'];
+    const backup={
+      version:1,
+      app:'rinat-diary',
+      createdAt:new Date().toISOString(),
+      data:{}
+    };
+    for(const k of keys){
+      try{
+        const token=await auth.getToken();
+        const url=FB+'/'+k+'.json'+(token?'?auth='+encodeURIComponent(token):'');
+        const r=await fetch(url);
+        backup.data[k]=r.ok?(await r.json()):null;
+      }catch(e){backup.data[k]=null;}
+    }
+    // יצירת קובץ JSON והורדה
+    const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    const d=new Date();
+    const pad=n=>String(n).padStart(2,'0');
+    const stamp=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
+    a.download=`rinat-backup-${stamp}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    if(btn){btn.textContent='✅';btn.style.background='#059669';}
+    setTimeout(()=>{if(btn){btn.textContent='💾';btn.disabled=false;btn.style.background='';}},2500);
+  }catch(e){
+    console.error('Backup failed:',e);
+    if(btn){btn.textContent='❌';btn.disabled=false;}
+    setTimeout(()=>{if(btn){btn.textContent='💾';}},2500);
+  }
+}
+
 // ── Main Render ───────────────────────────────────────
 function render(){
   let h='';
   if(S.screen==='home'){
     h=`<div class="home" id="main-content">
-      ${S._devTaps>=5?`<div style="position:fixed;top:12px;left:12px;z-index:999"><button id="deploy-btn" onclick="deployToGitHub()" aria-label="פרסם גרסה חדשה ל-GitHub" style="background:rgba(124,58,237,0.15);color:#a78bfa;border:1px solid rgba(167,139,250,0.3);border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0">🚀</button></div>`:''}<button id="pwa-install-btn" class="pwa-btn" onclick="installPWA()" aria-label="התקן את האפליקציה במסך הבית">📲 הוסף למסך הבית</button>
+      ${S._devTaps>=5?`<div style="position:fixed;top:12px;left:12px;z-index:999;display:flex;gap:8px"><button id="deploy-btn" onclick="deployToGitHub()" aria-label="פרסם גרסה חדשה ל-GitHub" style="background:rgba(124,58,237,0.15);color:#a78bfa;border:1px solid rgba(167,139,250,0.3);border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0">🚀</button><button id="backup-btn" onclick="backupAllData()" aria-label="הורד גיבוי מלא של כל הנתונים" title="גיבוי מלא" style="background:rgba(251,171,32,0.15);color:#fbab20;border:1px solid rgba(251,171,32,0.35);border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0">💾</button></div>`:''}<button onclick="openMyAccount()" aria-label="החשבון שלי" title="${auth.user?auth.user.name:''}" style="position:fixed;top:12px;right:12px;z-index:999;background:rgba(251,171,32,0.12);color:#fbab20;border:1px solid rgba(251,171,32,0.3);border-radius:50%;width:36px;height:36px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;font-family:inherit">👤</button><button id="pwa-install-btn" class="pwa-btn" onclick="installPWA()" aria-label="התקן את האפליקציה במסך הבית">📲 הוסף למסך הבית</button>
       <header class="home-title" role="banner">
         <h1 onclick="S._devTaps=(S._devTaps||0)+1;if(S._devTaps>=5)render()"><span>היומן שלנו</span><span class="book-ico" aria-hidden="true">📖</span></h1>
         <p>דניאל <span class="heart" aria-hidden="true">♡</span> רינת</p>
@@ -14384,6 +14726,14 @@ if(typeof window !== 'undefined'){
 
 // ── Init ──────────────────────────────────────────────
 (async()=>{
+  // בדיקה אם יש משתמש מחובר
+  const token=await auth.getToken();
+  if(!token||!auth.user){
+    // לא מחובר — מציגים מסך login
+    showLogin('signin');
+    return;
+  }
+  // מחובר — טוען את היומן כרגיל
   const [a,t,g,bg,cl,canc,pkgs,exp,web]=await Promise.all([store.get('appts'),store.get('tasks'),store.get('goals'),store.get('bgoals'),store.get('clients'),store.get('cancellations'),store.get('packages'),store.get('expenses'),store.get('website')]);
   const dt=localStore.get('dt'),rt=localStore.get('rt');
   if(a&&typeof a==='object')S.A=a;

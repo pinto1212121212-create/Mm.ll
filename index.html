@@ -2658,18 +2658,6 @@ textarea:focus-visible,
 <div id="a11y-alert-region" class="live-region" role="alert" aria-live="assertive" aria-atomic="true"></div>
 <div id="app" role="main" aria-label="היומן שלנו - אפליקציית ניהול קליניקה"><div class="loader" role="status" aria-live="polite"><div class="spinner" aria-hidden="true"></div><div style="color:#6d28d9;font-weight:bold;font-size:16px">טוען...</div></div></div>
 <script>
-// ═══════════════ V100-DEBUG — אבחון איפוס סיסמה ═══════════════
-// תופסים כל שגיאת JS שיכולה להרוג את הסקריפט לפני ה-init
-window.addEventListener('error',function(e){
-  try{alert('❌ V100 JS ERROR\n'+(e.message||'?')+'\nfile: '+((e.filename||'').split('/').pop()||'?')+'\nline: '+(e.lineno||'?'));}catch(_){}
-});
-window.addEventListener('unhandledrejection',function(e){
-  try{alert('❌ V100 PROMISE REJECT\n'+((e.reason&&(e.reason.message||e.reason))||'?'));}catch(_){}
-});
-// מראה שהסקריפט התחיל ומה יש ב-URL ברגע הטעינה
-try{alert('🟢 V100 SCRIPT START\nsearch="'+location.search+'"\nhash="'+location.hash+'"\nhref="'+location.href.substring(0,80)+'..."');}catch(_){}
-// ═══════════════ סוף DEBUG HEADER ═══════════════
-
 // ── Firebase Auth — Email/Password + Login UI ─────────
 // כל משתמש (אוריאל/דניאל/רינת) מתחבר עם email+סיסמה משלו.
 // רישום חדש חסום מאחורי קוד הזמנה. ה-token מתחדש אוטומטית.
@@ -3178,6 +3166,131 @@ ${isNewDevice?'⚠️ זה לא אתה? מומלץ לשנות סיסמה מיד!
   }
 };
 
+// ── שכבה 9: WebAuthn — כניסה מהירה עם טביעת אצבע / FaceID ──
+// משתמש ב-API רשמי של הדפדפן. ה-refreshToken של Firebase נשמר מוצפן
+// ב-secureStorage (AES-GCM) ומופק רק לאחר אימות ביומטרי מוצלח.
+// אם המכשיר לא תומך או שהאימות נכשל — חזרה אוטומטית למסך סיסמה.
+const bioAuth={
+  _KEY:'bio_v1',
+  
+  // האם הדפדפן תומך ב-WebAuthn
+  isSupported(){return !!(window.PublicKeyCredential && navigator.credentials);},
+  
+  // האם קיים platform authenticator זמין (טביעת אצבע/FaceID של המכשיר עצמו)
+  async isAvailable(){
+    if(!this.isSupported())return false;
+    try{return await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();}
+    catch(e){return false;}
+  },
+  
+  async _getStored(){return await secureStorage.getItem(this._KEY);},
+  
+  // האם יש רישום פעיל למכשיר הזה
+  async isRegistered(){
+    const s=await this._getStored();
+    return !!(s && s.credentialId && s.refresh && s.email);
+  },
+  
+  async getEmail(){
+    const s=await this._getStored();
+    return s?.email||null;
+  },
+  
+  async clear(){
+    try{localStorage.removeItem(this._KEY);}catch(e){}
+  },
+  
+  // רישום — מקבל את נתוני Firebase auth לאחר signIn מוצלח
+  async register(authData){
+    if(!await this.isAvailable())throw new Error('המכשיר לא תומך בטביעת אצבע');
+    if(!authData||!authData.refresh||!authData.email)throw new Error('חסרים נתוני התחברות');
+    
+    const challenge=crypto.getRandomValues(new Uint8Array(32));
+    const userId=crypto.getRandomValues(new Uint8Array(16));
+    
+    const cred=await navigator.credentials.create({
+      publicKey:{
+        challenge,
+        rp:{name:'היומן שלנו'},
+        user:{
+          id:userId,
+          name:authData.email,
+          displayName:authData.name||authData.email.split('@')[0]
+        },
+        pubKeyCredParams:[
+          {alg:-7,type:'public-key'},
+          {alg:-257,type:'public-key'}
+        ],
+        authenticatorSelection:{
+          authenticatorAttachment:'platform',
+          userVerification:'required',
+          residentKey:'preferred'
+        },
+        timeout:60000,
+        attestation:'none'
+      }
+    });
+    
+    if(!cred)throw new Error('רישום בוטל');
+    
+    await secureStorage.setItem(this._KEY,{
+      credentialId:this._b64(new Uint8Array(cred.rawId)),
+      email:authData.email,
+      name:authData.name||authData.email,
+      uid:authData.uid,
+      refresh:authData.refresh,
+      createdAt:Date.now()
+    });
+    return true;
+  },
+  
+  // אימות — מחזיר true אם הצליח, וגם משחזר את ה-session
+  async authenticate(){
+    const s=await this._getStored();
+    if(!s)throw new Error('אין רישום');
+    
+    const challenge=crypto.getRandomValues(new Uint8Array(32));
+    const cred=await navigator.credentials.get({
+      publicKey:{
+        challenge,
+        allowCredentials:[{id:this._unb64(s.credentialId),type:'public-key'}],
+        userVerification:'required',
+        timeout:60000
+      }
+    });
+    
+    if(!cred)throw new Error('אימות בוטל');
+    
+    // שיחזור session ב-localStorage (exp=0 → getToken יבצע רענון)
+    localStorage.setItem('fb_auth',JSON.stringify({
+      token:'',
+      refresh:s.refresh,
+      exp:0,
+      uid:s.uid,
+      email:s.email,
+      name:s.name
+    }));
+    
+    auth._cached=null;
+    const newToken=await auth.getToken();
+    if(!newToken){
+      // refreshToken פג תוקף (כנראה הסיסמה שונתה) — נקה ובקש התחברות עם סיסמה
+      await this.clear();
+      localStorage.removeItem('fb_auth');
+      throw new Error('הסיסמה השתנתה — התחבר עם סיסמה');
+    }
+    return true;
+  },
+  
+  _b64(bytes){return btoa(String.fromCharCode(...bytes));},
+  _unb64(str){
+    const bin=atob(str);
+    const arr=new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);
+    return arr;
+  }
+};
+
 // ── Login UI ─────────────────────────────────────────
 const LOGIN_CSS=`
 <style id="login-css">
@@ -3205,6 +3318,7 @@ function showLogin(mode='signin'){
   box.id='login-screen';
   box.innerHTML=renderLogin(mode);
   document.body.appendChild(box);
+  if(mode==='signin')_initBioButton();
 }
 
 function renderLogin(mode){
@@ -3237,7 +3351,7 @@ function renderLogin(mode){
   }
   if(mode==='reset'){
     return `<div class="login-box">
-      <div class="login-title">🔄 שחזור סיסמה V99</div>
+      <div class="login-title">🔄 שחזור סיסמה</div>
       <div class="login-sub">נשלח אליך קישור לאימייל שלך 🎯</div>
       <div id="login-msg"></div>
       <div class="login-field"><label>Email</label><input id="lg-email" type="email" autocomplete="email"></div>
@@ -3249,6 +3363,7 @@ function renderLogin(mode){
     <div class="login-title">💙 היומן שלנו</div>
     <div class="login-sub">התחבר כדי להיכנס</div>
     <div id="login-msg"></div>
+    <div id="bio-login-wrap" style="display:none"></div>
     <div class="login-field"><label>Email</label><input id="lg-email" type="email" autocomplete="email" onkeydown="if(event.key==='Enter')document.getElementById('lg-pass').focus()"></div>
     <div class="login-field"><label>סיסמה</label><input id="lg-pass" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
     <button class="login-btn" onclick="doLogin()">🔓 כניסה</button>
@@ -3382,9 +3497,98 @@ async function doLogin(){
   if(!email||!pass){_lgMsg('מלא את כל השדות');return;}
   _lgMsg('⏳ מתחבר...','ok');
   try{
-    await auth.signIn(email,pass);
-    location.reload();
+    const freshAuth=await auth.signIn(email,pass);
+    // הצעת הפעלת טביעת אצבע אם נתמך ועדיין לא רשום
+    if(await bioAuth.isAvailable() && !await bioAuth.isRegistered()){
+      _lgMsg('✅ מחובר!','ok');
+      setTimeout(()=>_offerBioRegistration(freshAuth),400);
+    }else{
+      location.reload();
+    }
   }catch(e){_lgMsg(e.message||'שגיאה');}
+}
+
+// ── Biometric Login UI ──
+async function _initBioButton(){
+  try{
+    if(!await bioAuth.isAvailable())return;
+    if(!await bioAuth.isRegistered())return;
+    const email=await bioAuth.getEmail();
+    const wrap=document.getElementById('bio-login-wrap');
+    if(!wrap)return;
+    wrap.innerHTML=`
+      <button class="login-btn" onclick="doBioLogin()" style="background:linear-gradient(135deg,#6366f1,#4f46e5);margin-bottom:10px;box-shadow:0 8px 24px rgba(99,102,241,0.3)">
+        🔒 כנס עם טביעת אצבע
+        <div style="font-size:11px;opacity:0.85;font-weight:400;margin-top:3px">${email}</div>
+      </button>
+      <div style="text-align:center;color:rgba(255,255,255,0.35);font-size:12px;margin:14px 0 6px">— או עם סיסמה —</div>
+    `;
+    wrap.style.display='block';
+  }catch(e){}
+}
+
+async function doBioLogin(){
+  _lgMsg('⏳ מאמת...','ok');
+  try{
+    await bioAuth.authenticate();
+    _lgMsg('✅ התחברת!','ok');
+    setTimeout(()=>location.reload(),400);
+  }catch(e){
+    const msg=e.message||'אימות נכשל';
+    _lgMsg(msg);
+    if(msg.indexOf('הסיסמה השתנתה')>-1){
+      setTimeout(()=>switchLogin('signin'),1800);
+    }
+  }
+}
+
+function _offerBioRegistration(authData){
+  if(document.getElementById('bio-offer-modal'))return;
+  window._bioPendingAuth=authData;
+  const modal=document.createElement('div');
+  modal.id='bio-offer-modal';
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:100000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);direction:rtl;font-family:system-ui,-apple-system,sans-serif';
+  modal.innerHTML=`
+    <div id="bio-offer-inner" style="background:linear-gradient(180deg,rgba(26,20,16,0.98),rgba(10,8,5,1));border:1px solid rgba(251,171,32,0.3);border-radius:20px;padding:28px 24px;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.6)">
+      <div style="font-size:48px;margin-bottom:14px">🔒</div>
+      <div style="color:#fbab20;font-size:20px;font-weight:800;margin-bottom:8px">כניסה מהירה</div>
+      <div style="color:rgba(255,255,255,0.7);font-size:14px;margin-bottom:22px;line-height:1.6">
+        רוצה להפעיל כניסה עם טביעת אצבע?<br>בפעם הבאה לא תצטרך להקליד סיסמה.
+      </div>
+      <button id="bio-offer-yes" onclick="_doBioRegister()" style="width:100%;background:linear-gradient(135deg,#fbab20,#fdb849);border:none;padding:14px;border-radius:12px;color:#0a0805;font-weight:800;font-size:15px;cursor:pointer;font-family:inherit;margin-bottom:10px">
+        ✅ הפעל טביעת אצבע
+      </button>
+      <button onclick="_skipBioRegister()" style="width:100%;background:transparent;border:1px solid rgba(255,255,255,0.2);padding:12px;border-radius:12px;color:rgba(255,255,255,0.6);font-size:14px;cursor:pointer;font-family:inherit">
+        אולי אחר-כך
+      </button>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+async function _doBioRegister(){
+  const authData=window._bioPendingAuth;
+  const yesBtn=document.getElementById('bio-offer-yes');
+  if(yesBtn){yesBtn.disabled=true;yesBtn.textContent='⏳ מזהה טביעה...';}
+  try{
+    await bioAuth.register(authData);
+    const inner=document.getElementById('bio-offer-inner');
+    if(inner)inner.innerHTML=`
+      <div style="font-size:48px;margin-bottom:12px">✅</div>
+      <div style="color:#22c55e;font-size:20px;font-weight:800;margin-bottom:8px">הופעל בהצלחה!</div>
+      <div style="color:rgba(255,255,255,0.55);font-size:13px">בפעם הבאה תוכל להיכנס עם טביעת אצבע</div>
+    `;
+    setTimeout(()=>location.reload(),1500);
+  }catch(e){
+    alert('שגיאה: '+(e.message||'רישום נכשל'));
+    _skipBioRegister();
+  }
+}
+
+function _skipBioRegister(){
+  const modal=document.getElementById('bio-offer-modal');
+  if(modal)modal.remove();
+  delete window._bioPendingAuth;
+  location.reload();
 }
 
 async function doSignup(){
@@ -15211,21 +15415,15 @@ if(typeof window !== 'undefined'){
 
 // ── Init ──────────────────────────────────────────────
 (async()=>{
-  // V100-DEBUG: מוכיחים שה-init רץ בכלל
-  try{alert('🟡 V100 INIT RUNNING\nsearch="'+location.search+'"');}catch(_){}
   // בדיקה אם זה לינק איפוס סיסמה מהמייל (?mode=resetPassword&oobCode=...)
   const urlParams=new URLSearchParams(location.search);
   const mode=urlParams.get('mode');
   const oobCode=urlParams.get('oobCode');
-  // V100-DEBUG: מראים מה נקרא מה-URL
-  try{alert('🔵 V100 PARSED\nmode="'+mode+'"\noobCode='+(oobCode?oobCode.substring(0,12)+'...':'NULL')+'\ntypeof initResetConfirm='+typeof initResetConfirm);}catch(_){}
   if(mode==='resetPassword' && oobCode){
-    try{alert('🟢 V100 → קורא ל-initResetConfirm');}catch(_){}
     // מציג מסך איפוס סיסמה מותאם
     initResetConfirm(oobCode);
     return;
   }
-  try{alert('⚠️ V100 → הולך לזרימה רגילה (אין reset link)');}catch(_){}
   
   // שכבה 5: בדיקת Tamper — אם ה-token הושחת/שונה → מחיקה
   await tamperCheck.verify();

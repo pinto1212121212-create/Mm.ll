@@ -3166,6 +3166,131 @@ ${isNewDevice?'⚠️ זה לא אתה? מומלץ לשנות סיסמה מיד!
   }
 };
 
+// ── שכבה 9: WebAuthn — כניסה מהירה עם טביעת אצבע / FaceID ──
+// משתמש ב-API רשמי של הדפדפן. ה-refreshToken של Firebase נשמר מוצפן
+// ב-secureStorage (AES-GCM) ומופק רק לאחר אימות ביומטרי מוצלח.
+// אם המכשיר לא תומך או שהאימות נכשל — חזרה אוטומטית למסך סיסמה.
+const bioAuth={
+  _KEY:'bio_v1',
+  
+  // האם הדפדפן תומך ב-WebAuthn
+  isSupported(){return !!(window.PublicKeyCredential && navigator.credentials);},
+  
+  // האם קיים platform authenticator זמין (טביעת אצבע/FaceID של המכשיר עצמו)
+  async isAvailable(){
+    if(!this.isSupported())return false;
+    try{return await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();}
+    catch(e){return false;}
+  },
+  
+  async _getStored(){return await secureStorage.getItem(this._KEY);},
+  
+  // האם יש רישום פעיל למכשיר הזה
+  async isRegistered(){
+    const s=await this._getStored();
+    return !!(s && s.credentialId && s.refresh && s.email);
+  },
+  
+  async getEmail(){
+    const s=await this._getStored();
+    return s?.email||null;
+  },
+  
+  async clear(){
+    try{localStorage.removeItem(this._KEY);}catch(e){}
+  },
+  
+  // רישום — מקבל את נתוני Firebase auth לאחר signIn מוצלח
+  async register(authData){
+    if(!await this.isAvailable())throw new Error('המכשיר לא תומך בטביעת אצבע');
+    if(!authData||!authData.refresh||!authData.email)throw new Error('חסרים נתוני התחברות');
+    
+    const challenge=crypto.getRandomValues(new Uint8Array(32));
+    const userId=crypto.getRandomValues(new Uint8Array(16));
+    
+    const cred=await navigator.credentials.create({
+      publicKey:{
+        challenge,
+        rp:{name:'היומן שלנו'},
+        user:{
+          id:userId,
+          name:authData.email,
+          displayName:authData.name||authData.email.split('@')[0]
+        },
+        pubKeyCredParams:[
+          {alg:-7,type:'public-key'},
+          {alg:-257,type:'public-key'}
+        ],
+        authenticatorSelection:{
+          authenticatorAttachment:'platform',
+          userVerification:'required',
+          residentKey:'preferred'
+        },
+        timeout:60000,
+        attestation:'none'
+      }
+    });
+    
+    if(!cred)throw new Error('רישום בוטל');
+    
+    await secureStorage.setItem(this._KEY,{
+      credentialId:this._b64(new Uint8Array(cred.rawId)),
+      email:authData.email,
+      name:authData.name||authData.email,
+      uid:authData.uid,
+      refresh:authData.refresh,
+      createdAt:Date.now()
+    });
+    return true;
+  },
+  
+  // אימות — מחזיר true אם הצליח, וגם משחזר את ה-session
+  async authenticate(){
+    const s=await this._getStored();
+    if(!s)throw new Error('אין רישום');
+    
+    const challenge=crypto.getRandomValues(new Uint8Array(32));
+    const cred=await navigator.credentials.get({
+      publicKey:{
+        challenge,
+        allowCredentials:[{id:this._unb64(s.credentialId),type:'public-key'}],
+        userVerification:'required',
+        timeout:60000
+      }
+    });
+    
+    if(!cred)throw new Error('אימות בוטל');
+    
+    // שיחזור session ב-localStorage (exp=0 → getToken יבצע רענון)
+    localStorage.setItem('fb_auth',JSON.stringify({
+      token:'',
+      refresh:s.refresh,
+      exp:0,
+      uid:s.uid,
+      email:s.email,
+      name:s.name
+    }));
+    
+    auth._cached=null;
+    const newToken=await auth.getToken();
+    if(!newToken){
+      // refreshToken פג תוקף (כנראה הסיסמה שונתה) — נקה ובקש התחברות עם סיסמה
+      await this.clear();
+      localStorage.removeItem('fb_auth');
+      throw new Error('הסיסמה השתנתה — התחבר עם סיסמה');
+    }
+    return true;
+  },
+  
+  _b64(bytes){return btoa(String.fromCharCode(...bytes));},
+  _unb64(str){
+    const bin=atob(str);
+    const arr=new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);
+    return arr;
+  }
+};
+
 // ── Login UI ─────────────────────────────────────────
 const LOGIN_CSS=`
 <style id="login-css">
@@ -3193,6 +3318,7 @@ function showLogin(mode='signin'){
   box.id='login-screen';
   box.innerHTML=renderLogin(mode);
   document.body.appendChild(box);
+  if(mode==='signin')_initBioButton();
 }
 
 function renderLogin(mode){
@@ -3226,7 +3352,7 @@ function renderLogin(mode){
   if(mode==='reset'){
     return `<div class="login-box">
       <div class="login-title">🔄 שחזור סיסמה</div>
-      <div class="login-sub">נשלח לך קישור באימייל</div>
+      <div class="login-sub">נשלח אליך קישור לאימייל שלך 🎯</div>
       <div id="login-msg"></div>
       <div class="login-field"><label>Email</label><input id="lg-email" type="email" autocomplete="email"></div>
       <button class="login-btn" onclick="doReset()">📧 שלח קישור</button>
@@ -3237,6 +3363,7 @@ function renderLogin(mode){
     <div class="login-title">💙 היומן שלנו</div>
     <div class="login-sub">התחבר כדי להיכנס</div>
     <div id="login-msg"></div>
+    <div id="bio-login-wrap" style="display:none"></div>
     <div class="login-field"><label>Email</label><input id="lg-email" type="email" autocomplete="email" onkeydown="if(event.key==='Enter')document.getElementById('lg-pass').focus()"></div>
     <div class="login-field"><label>סיסמה</label><input id="lg-pass" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
     <button class="login-btn" onclick="doLogin()">🔓 כניסה</button>
@@ -3334,8 +3461,10 @@ async function initResetConfirm(oobCode){
     document.getElementById('reset-fields-wrap').style.display='block';
     document.getElementById('rc-btn').style.display='flex';
   }catch(e){
-    _lgMsg('❌ '+e.message+'<br><br>הקישור כבר לא תקף. בקש איפוס חדש מחדש.');
-    document.getElementById('reset-email').innerHTML='❌ קישור לא תקף';
+    // ניקוי URL + הצגת הודעה ברורה
+    window.history.replaceState({},'',location.pathname);
+    document.getElementById('reset-email').innerHTML='⚠️ קישור פג תוקף או כבר בשימוש';
+    _lgMsg('<b>הקישור הזה כבר לא תקף.</b><br><br>זה קורה אם:<br>• לחצת עליו כבר פעם אחת<br>• חלפה שעה מאז שהתקבל<br>• Gmail סרק אותו אוטומטית<br><br><b>פתרון:</b> לחץ "חזרה לכניסה" ובקש איפוס חדש. תפתח את המייל החדש תוך דקה.');
   }
 }
 
@@ -3368,9 +3497,127 @@ async function doLogin(){
   if(!email||!pass){_lgMsg('מלא את כל השדות');return;}
   _lgMsg('⏳ מתחבר...','ok');
   try{
-    await auth.signIn(email,pass);
-    location.reload();
+    const freshAuth=await auth.signIn(email,pass);
+    // הצעת הפעלת טביעת אצבע רק אם:
+    // 1. המכשיר תומך
+    // 2. עדיין לא רשום
+    // 3. המשתמש לא דחה הצעה בעבר (או שעברו 30 יום מהדחיה האחרונה)
+    const declinedAt=Number(localStorage.getItem('bio_declined_at')||0);
+    const THIRTY_DAYS=30*24*60*60*1000;
+    const recentlyDeclined=declinedAt && (Date.now()-declinedAt < THIRTY_DAYS);
+    if(!recentlyDeclined && await bioAuth.isAvailable() && !await bioAuth.isRegistered()){
+      _lgMsg('✅ מחובר!','ok');
+      setTimeout(()=>_offerBioRegistration(freshAuth),400);
+    }else{
+      location.reload();
+    }
   }catch(e){_lgMsg(e.message||'שגיאה');}
+}
+
+// ── Biometric Login UI ──
+async function _initBioButton(){
+  try{
+    if(!await bioAuth.isAvailable())return;
+    if(!await bioAuth.isRegistered())return;
+    const email=await bioAuth.getEmail();
+    const wrap=document.getElementById('bio-login-wrap');
+    if(!wrap)return;
+    wrap.innerHTML=`
+      <button class="login-btn" onclick="doBioLogin()" style="background:linear-gradient(135deg,#6366f1,#4f46e5);margin-bottom:10px;box-shadow:0 8px 24px rgba(99,102,241,0.3)">
+        🔒 כנס עם טביעת אצבע
+        <div style="font-size:11px;opacity:0.85;font-weight:400;margin-top:3px">${email}</div>
+      </button>
+      <div style="text-align:center;color:rgba(255,255,255,0.35);font-size:12px;margin:14px 0 6px">— או עם סיסמה —</div>
+    `;
+    wrap.style.display='block';
+  }catch(e){}
+}
+
+async function doBioLogin(){
+  _lgMsg('⏳ מאמת...','ok');
+  try{
+    await bioAuth.authenticate();
+    _lgMsg('✅ התחברת!','ok');
+    setTimeout(()=>location.reload(),400);
+  }catch(e){
+    const msg=e.message||'אימות נכשל';
+    _lgMsg(msg);
+    if(msg.indexOf('הסיסמה השתנתה')>-1){
+      setTimeout(()=>switchLogin('signin'),1800);
+    }
+  }
+}
+
+function _offerBioRegistration(authData){
+  if(document.getElementById('bio-offer-modal'))return;
+  window._bioPendingAuth=authData;
+  const modal=document.createElement('div');
+  modal.id='bio-offer-modal';
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:100000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);direction:rtl;font-family:system-ui,-apple-system,sans-serif';
+  modal.innerHTML=`
+    <div id="bio-offer-inner" style="background:linear-gradient(180deg,rgba(26,20,16,0.98),rgba(10,8,5,1));border:1px solid rgba(251,171,32,0.3);border-radius:20px;padding:28px 24px;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.6)">
+      <div style="font-size:48px;margin-bottom:14px">🔒</div>
+      <div style="color:#fbab20;font-size:20px;font-weight:800;margin-bottom:8px">כניסה מהירה</div>
+      <div style="color:rgba(255,255,255,0.7);font-size:14px;margin-bottom:22px;line-height:1.6">
+        רוצה להפעיל כניסה עם טביעת אצבע?<br>בפעם הבאה לא תצטרך להקליד סיסמה.
+      </div>
+      <button id="bio-offer-yes" onclick="_doBioRegister()" style="width:100%;background:linear-gradient(135deg,#fbab20,#fdb849);border:none;padding:14px;border-radius:12px;color:#0a0805;font-weight:800;font-size:15px;cursor:pointer;font-family:inherit;margin-bottom:10px">
+        ✅ הפעל טביעת אצבע
+      </button>
+      <button onclick="_skipBioRegister()" style="width:100%;background:transparent;border:1px solid rgba(255,255,255,0.2);padding:12px;border-radius:12px;color:rgba(255,255,255,0.6);font-size:14px;cursor:pointer;font-family:inherit">
+        אולי אחר-כך
+      </button>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+async function _doBioRegister(){
+  const authData=window._bioPendingAuth;
+  const yesBtn=document.getElementById('bio-offer-yes');
+  if(yesBtn){yesBtn.disabled=true;yesBtn.textContent='⏳ מזהה טביעה...';}
+  try{
+    await bioAuth.register(authData);
+    // מנקה דחיה קודמת (אם הייתה)
+    localStorage.removeItem('bio_declined_at');
+    const inner=document.getElementById('bio-offer-inner');
+    if(inner)inner.innerHTML=`
+      <div style="font-size:48px;margin-bottom:12px">✅</div>
+      <div style="color:#22c55e;font-size:20px;font-weight:800;margin-bottom:8px">הופעל בהצלחה!</div>
+      <div style="color:rgba(255,255,255,0.55);font-size:13px">בפעם הבאה תוכל להיכנס עם טביעת אצבע</div>
+    `;
+    setTimeout(()=>location.reload(),1500);
+  }catch(e){
+    try{webToast('שגיאה: '+(e.message||'רישום נכשל'),true);}catch(_){}
+    _skipBioRegister();
+  }
+}
+
+function _skipBioRegister(){
+  const modal=document.getElementById('bio-offer-modal');
+  if(modal)modal.remove();
+  delete window._bioPendingAuth;
+  // שומרים את זמן הדחיה כדי לא להציע שוב ב-30 יום הקרובים
+  try{localStorage.setItem('bio_declined_at',String(Date.now()));}catch(e){}
+  location.reload();
+}
+// פונקציה לביטול רישום bio מתוך הגדרות החשבון
+async function disableBiometric(){
+  if(!confirm('לבטל את הכניסה עם טביעת אצבע?'))return;
+  await bioAuth.clear();
+  try{webToast('✅ הכניסה המהירה בוטלה');}catch(_){}
+  try{openMyAccount();}catch(e){}
+}
+// פונקציה להפעלת bio מתוך הגדרות (אם המשתמש דחה קודם)
+async function enableBiometric(){
+  if(!await bioAuth.isAvailable()){try{webToast('המכשיר לא תומך בטביעת אצבע',true);}catch(_){}return;}
+  const saved=JSON.parse(localStorage.getItem('fb_auth')||'null');
+  if(!saved||!saved.refresh){try{webToast('חסרים נתוני התחברות. התחבר מחדש עם סיסמה',true);}catch(_){}return;}
+  try{
+    await bioAuth.register({email:saved.email,name:saved.name||saved.email,uid:saved.uid,refresh:saved.refresh});
+    localStorage.removeItem('bio_declined_at');
+    try{webToast('✅ טביעת אצבע הופעלה');}catch(_){}
+    try{openMyAccount();}catch(e){}
+  }catch(e){try{webToast('שגיאה: '+(e.message||'רישום נכשל'),true);}catch(_){}}
 }
 
 async function doSignup(){
@@ -3412,6 +3659,7 @@ async function openMyAccount(){
     <div class="login-field"><label>🔑 סיסמה חדשה (אופציונלי)</label><input id="ma-pass" type="password" placeholder="לפחות 8 תווים, אותיות ומספרים" oninput="updatePwStrengthMA()"><div id="ma-strength" style="height:4px;border-radius:2px;background:rgba(255,255,255,0.1);margin-top:6px;overflow:hidden"><div id="ma-bar" style="height:100%;width:0;background:#ef4444;transition:width .3s,background .3s"></div></div><div id="ma-hint" style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px"></div></div>
     <div class="login-field"><label>🔒 אימות סיסמה חדשה</label><input id="ma-pass2" type="password" placeholder="הקלד שוב לאימות"></div>
     <button class="login-btn" onclick="doChangePassword()">שמור סיסמה חדשה</button>
+    <div id="ma-bio-wrap" style="display:none;margin-top:14px"></div>
     <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(251,171,32,0.15)"></div>
     <button class="login-btn" style="background:linear-gradient(135deg,#334155,#1e293b);color:#fff" onclick="showAuditLog()">📋 יומן פעילות</button>
     <div style="margin-top:14px"></div>
@@ -3421,6 +3669,21 @@ async function openMyAccount(){
     <div class="login-switch" style="margin-top:16px"><a onclick="closeMyAccount()">← חזרה ליומן</a></div>
   </div>`;
   document.body.appendChild(box);
+  // מילוי אזור bio (אסינכרוני — לא חוסם)
+  try{
+    if(await bioAuth.isAvailable()){
+      const wrap=document.getElementById('ma-bio-wrap');
+      if(wrap){
+        const isReg=await bioAuth.isRegistered();
+        if(isReg){
+          wrap.innerHTML=`<button class="login-btn" style="background:linear-gradient(135deg,#059669,#047857);color:#fff" onclick="disableBiometric()">🔒 בטל כניסה מהירה</button>`;
+        }else{
+          wrap.innerHTML=`<button class="login-btn" style="background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff" onclick="enableBiometric()">🔒 הפעל כניסה עם טביעת אצבע</button>`;
+        }
+        wrap.style.display='block';
+      }
+    }
+  }catch(e){}
 }
 
 async function showAuditLog(){
@@ -3567,6 +3830,10 @@ const now=new Date(), TD=now.getFullYear()+'-'+String(now.getMonth()+1).padStart
 const tk=(y,m,d)=>y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');
 const hd=(y,m,d)=>{try{return new Date(y,m-1,d).toLocaleDateString('he-IL-u-ca-hebrew',{day:'numeric'});}catch(e){return '';}};
 const x=(s)=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+// jsa: escape for use as JS string literal inside HTML attribute (e.g. onclick="f('${jsa(v)}')")
+// Different from x() — uses JS backslash-escaping for apostrophes/quotes so that
+// client names like "O'Brien" or values with newlines don't break inline handlers.
+const jsa=(s)=>String(s||'').replace(/\\/g,'\\\\').replace(/\n/g,'\\n').replace(/\r/g,'\\r').replace(/'/g,"\\'").replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
 // ── State ─────────────────────────────────────────────
 const S={
@@ -4072,7 +4339,7 @@ function nc(color,d,y,m){
 // Laser actions
 function ss(t){S.lSlot=t;S.lF={};modalRender();}
 function sva(){const n=(document.getElementById('fn')||{}).value||'';if(!n.trim()){alert('נא להזין שם לקוח');return;}const paid=(document.getElementById('fpaid')||{}).checked||false;const disc2=Number((document.getElementById('fdisc')||{}).value||0);const basePrice2=(document.getElementById('fr')||{}).value||'';const finalPrice2=disc2>0&&basePrice2?String(Math.round(Number(basePrice2)*(1-disc2/100))):basePrice2;if(!S.A[S.lSel])S.A[S.lSel]={};S.A[S.lSel][S.lSlot]={name:n,phone:(document.getElementById('fp')||{}).value||'',type:(document.getElementById('ft')||{}).value||'',price:finalPrice2,originalPrice:disc2>0?basePrice2:'',discount:disc2||0,duration:(document.getElementById('fd')||{}).value||'',paid};store.set('appts',S.A);S.lModal=null;diaryRender();}
-function da(s){if(!S.A[S.lSel])return;delete S.A[S.lSel][s];store.set('appts',S.A);diaryRender();}
+function da(s){if(!S.A||!S.A[S.lSel])return;delete S.A[S.lSel][s];store.set('appts',S.A);diaryRender();}
 function openMove(slot){
   S.moveSlot=slot;
   S.moveY=now.getFullYear();
@@ -5786,8 +6053,8 @@ function saveExpense(){
 }
 function deleteExpense(key){
   if(!confirm('למחוק את ההוצאה?'))return;
-  delete S.EXP[key];
-  store.set('expenses',S.EXP);
+  if(S.EXP&&S.EXP[key])delete S.EXP[key];
+  store.set('expenses',S.EXP||{});
   S.editExpKey=null;
   hRender();
 }
@@ -6086,19 +6353,19 @@ function renderCRM(){
   if(!displayClients.length){h+=`<div class="empty-state"><span class="empty-icon">👥</span>${S.crmFilter!=='all'?'אין לקוחות בקטגוריה זו':q?'לא נמצאו':'אין לקוחות עדיין'}</div>`;}
   else{h+=displayClients.map(([k,c])=>{const last=c.visits.sort((a,b)=>b.date.localeCompare(a.date))[0];const ini=c.name.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase();const hasSens=(S.CL?.[k]?.sens||[]).length>0;return`<div class="client-card" style="flex-direction:column;align-items:stretch;gap:10px">
   <div style="display:flex;gap:12px;align-items:center">
-    <div class="client-avatar" onclick="openClientProfile('${x(k)}')">${ini||'👤'}</div>
-    <div class="client-info" onclick="openClientProfile('${x(k)}')" style="flex:1">
-      <div class="client-name">${x(c.name)}</div>
+    <div class="client-avatar" onclick="openClientProfile('${jsa(k)}')">${ini||'👤'}</div>
+    <div class="client-info" onclick="openClientProfile('${jsa(k)}')" style="flex:1">
+      <div class="client-name">${jsa(c.name)}</div>
       <div class="client-phone">${x(c.phone||'')}</div>
       <div class="client-tags">${last?`<span class="client-tag">📅 ${last.date}</span>`:''}${hasSens?`<span class="client-tag red">⚠️ רגישות</span>`:''}</div>
       ${clientTagsHTML(c.name,c.phone)}
       <div style="display:flex;gap:5px;margin-top:5px;flex-wrap:wrap;justify-content:flex-end">
-        <span class="ctag payhist" onclick="event.stopPropagation();openClientMini('${x(c.name)}','${x(c.phone||'')}','pay')">💰 תשלומים (${c.visits.filter(v=>v.price&&Number(v.price)>0).length})</span>
-        <span class="ctag hasnotes" onclick="event.stopPropagation();openClientMini('${x(c.name)}','${x(c.phone||'')}','notes')">${(S.CL?.[k]?.notes)?'📝 יש הערה':'📝 הערות'}</span>
+        <span class="ctag payhist" onclick="event.stopPropagation();openClientMini('${jsa(c.name)}','${jsa(c.phone||'')}','pay')">💰 תשלומים (${c.visits.filter(v=>v.price&&Number(v.price)>0).length})</span>
+        <span class="ctag hasnotes" onclick="event.stopPropagation();openClientMini('${jsa(c.name)}','${jsa(c.phone||'')}','notes')">${(S.CL?.[k]?.notes)?'📝 יש הערה':'📝 הערות'}</span>
       </div>
     </div>
     <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-      <div class="client-total" onclick="openClientProfile('${x(k)}')"><div class="client-total-val">${c.visits.length}</div><div class="client-total-lbl">טיפולים</div></div>
+      <div class="client-total" onclick="openClientProfile('${jsa(k)}')"><div class="client-total-val">${c.visits.length}</div><div class="client-total-lbl">טיפולים</div></div>
       ${c.phone?contactBtns(c.phone,c.name,''):''}
     </div>
   </div>
@@ -6113,13 +6380,13 @@ function renderCRM(){
     const sensArr=cd.sens||[];
     h+=`<div class="profile-sheet"><div class="profile-hdr"><div class="profile-hdr-row"><button class="profile-back" onclick="S.openClient=null;S.editClient=false;crmRender()">←</button><div class="profile-avatar-lg">${ini||'👤'}</div><div><div class="profile-name">${x(c.name)}</div><div class="profile-phone">${x(c.phone||'ללא טלפון')}</div></div></div><div class="profile-stats-row"><div class="psr"><div class="psr-val">${visits.length}</div><div class="psr-lbl">טיפולים</div></div><div class="psr"><div class="psr-val">₪${c.total.toLocaleString()}</div><div class="psr-lbl">סה"כ</div></div><div class="psr"><div class="psr-val">${visits[0]?.date||'-'}</div><div class="psr-lbl">אחרון</div></div></div></div><div class="profile-body">`;
     if(S.editClient){
-      h+=`<div class="profile-sec-title">פרטים</div><input class="profile-inp" id="cl-n" placeholder="שם מלא" value="${x(c.name||'')}"><input class="profile-inp" id="cl-p" placeholder="טלפון" type="tel" value="${x(c.phone||'')}"><input class="profile-inp" id="cl-e" placeholder="אימייל" value="${x(cd.email||'')}"><input class="profile-inp" id="cl-b" placeholder="תאריך לידה" value="${x(cd.bday||'')}"><div class="profile-sec-title">💆 אזורי טיפול</div><div class="areas-wrap">${TREAT_AREAS.map(a=>`<button class="area-bubble ${(cd.areas||[]).includes(a.id)?'on':'off'}${a.full?' full':''}" onclick="toggleArea('${x(k)}','${a.id}')">${a.label}</button>`).join('')}</div>
+      h+=`<div class="profile-sec-title">פרטים</div><input class="profile-inp" id="cl-n" placeholder="שם מלא" value="${x(c.name||'')}"><input class="profile-inp" id="cl-p" placeholder="טלפון" type="tel" value="${x(c.phone||'')}"><input class="profile-inp" id="cl-e" placeholder="אימייל" value="${x(cd.email||'')}"><input class="profile-inp" id="cl-b" placeholder="תאריך לידה" value="${x(cd.bday||'')}"><div class="profile-sec-title">💆 אזורי טיפול</div><div class="areas-wrap">${TREAT_AREAS.map(a=>`<button class="area-bubble ${(cd.areas||[]).includes(a.id)?'on':'off'}${a.full?' full':''}" onclick="toggleArea('${jsa(k)}','${a.id}')">${a.label}</button>`).join('')}</div>
 <div class="profile-sec-title" style="margin-top:14px">🏷️ תיוג לקוח</div>
 <div class="tag-picker">
-  ${[['vip','👑 VIP'],['problematic','⚠️ בעייתי'],['nopay','💳 לא משלם']].map(([id,lbl])=>`<button class="tag-pick-btn ${(cd.tags||[]).includes(id)?'on-'+id:'off-'+id}" onclick="toggleClientTag('${x(k)}','${id}')">${lbl}</button>`).join('')}
+  ${[['vip','👑 VIP'],['problematic','⚠️ בעייתי'],['nopay','💳 לא משלם']].map(([id,lbl])=>`<button class="tag-pick-btn ${(cd.tags||[]).includes(id)?'on-'+id:'off-'+id}" onclick="toggleClientTag('${jsa(k)}','${id}')">${lbl}</button>`).join('')}
 </div>
-<div class="profile-sec-title" style="margin-top:14px">⚠️ רגישויות</div><div class="sens-tags">${SENS.map(s=>`<button class="sens-tag ${sensArr.includes(s)?'on':'off'}" onclick="toggleSens('${x(k)}','${s}')">${s}</button>`).join('')}</div><div class="profile-sec-title">הערות</div><textarea class="profile-textarea" id="cl-nt" placeholder="הערות חשובות...">${x(cd.notes||'')}</textarea><button class="profile-save-btn" onclick="saveClient('${x(k)}')">💾 שמור</button><button onclick="S.editClient=false;crmRender()" style="width:100%;padding:11px;background:#f3f4f6;color:#374151;border:none;border-radius:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px">ביטול</button>
-<button onclick="deleteClient('${x(k)}')" style="width:100%;padding:11px;background:#fef2f2;color:#dc2626;border:1.5px solid #fecaca;border-radius:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px">🗑 מחק לקוח</button>`;
+<div class="profile-sec-title" style="margin-top:14px">⚠️ רגישויות</div><div class="sens-tags">${SENS.map(s=>`<button class="sens-tag ${sensArr.includes(s)?'on':'off'}" onclick="toggleSens('${jsa(k)}','${s}')">${s}</button>`).join('')}</div><div class="profile-sec-title">הערות</div><textarea class="profile-textarea" id="cl-nt" placeholder="הערות חשובות...">${x(cd.notes||'')}</textarea><button class="profile-save-btn" onclick="saveClient('${jsa(k)}')">💾 שמור</button><button onclick="S.editClient=false;crmRender()" style="width:100%;padding:11px;background:#f3f4f6;color:#374151;border:none;border-radius:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px">ביטול</button>
+<button onclick="deleteClient('${jsa(k)}')" style="width:100%;padding:11px;background:#fef2f2;color:#dc2626;border:1.5px solid #fecaca;border-radius:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px">🗑 מחק לקוח</button>`;
     } else {
       h+=`${clientTagsHTML(c.name,c.phone)?`<div style="margin-bottom:12px">${clientTagsHTML(c.name,c.phone)}</div>`:''}
 ${debtAlertHTML(c.name)}
@@ -6152,7 +6419,7 @@ window.filterCrmOnly=function(val){
   if(S.crmFilter==='returning')display=display.filter(([,c])=>c.visits.length>=2);
   else if(S.crmFilter==='problematic')display=display.filter(([k,c])=>{const cd2=S.CL?.[k]||{};const tags2=cd2.tags||[];const hasDebt2=c.visits.some(v=>v.price&&Number(v.price)>0&&!v.paid&&new Date(v.date+'T'+v.time)<=new Date());return tags2.includes('problematic')||tags2.includes('nopay')||hasDebt2;});
   if(!display.length){el.innerHTML=`<div class="empty-state"><span class="empty-icon">👥</span>${q?'לא נמצאו תוצאות':'אין לקוחות'}</div>`;return;}
-  el.innerHTML=display.map(([k,c])=>{const last=c.visits.sort((a,b)=>b.date.localeCompare(a.date))[0];const ini=c.name.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase();return`<div class="client-card" onclick="openClientProfile('${x(k)}')" style="flex-direction:row;gap:12px;align-items:center"><div class="client-avatar">${ini||'👤'}</div><div class="client-info" style="flex:1"><div class="client-name">${x(c.name)}</div><div class="client-phone">${x(c.phone||'')}</div><div class="client-tags">${last?`<span class="client-tag">📅 ${last.date}</span>`:''}</div></div><div style="display:flex;align-items:center;gap:8px">${c.phone?`<button class="contact-icon-btn" onclick="event.stopPropagation();openContactSheet('${x(c.phone)}','${x(c.name)}','')" style="background:#f3f0ff;color:#7c3aed;border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px">📞</button>`:''}<div class="client-total"><div class="client-total-val">${c.visits.length}</div><div class="client-total-lbl">טיפולים</div></div></div></div>`;}).join('');
+  el.innerHTML=display.map(([k,c])=>{const last=c.visits.sort((a,b)=>b.date.localeCompare(a.date))[0];const ini=c.name.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase();return`<div class="client-card" onclick="openClientProfile('${jsa(k)}')" style="flex-direction:row;gap:12px;align-items:center"><div class="client-avatar">${ini||'👤'}</div><div class="client-info" style="flex:1"><div class="client-name">${x(c.name)}</div><div class="client-phone">${x(c.phone||'')}</div><div class="client-tags">${last?`<span class="client-tag">📅 ${last.date}</span>`:''}</div></div><div style="display:flex;align-items:center;gap:8px">${c.phone?`<button class="contact-icon-btn" onclick="event.stopPropagation();openContactSheet('${jsa(c.phone)}','${jsa(c.name)}','')" style="background:#f3f0ff;color:#7c3aed;border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px">📞</button>`:''}<div class="client-total"><div class="client-total-val">${c.visits.length}</div><div class="client-total-lbl">טיפולים</div></div></div></div>`;}).join('');
   const clearBtn=document.querySelector('.crm-clear-btn');
   if(val&&!clearBtn){const inp=document.getElementById('crm-search-input');if(inp){const btn=document.createElement('button');btn.className='crm-clear-btn';btn.textContent='✕';btn.onclick=()=>{filterCrmOnly('');inp.value='';};inp.parentNode.insertBefore(btn,inp.nextSibling);}}
   else if(!val&&clearBtn)clearBtn.remove();
@@ -6198,7 +6465,7 @@ function deleteClient(k){
   crmRender();
 }
 function saveBGoal(){const t=(document.getElementById('gi-t')||{}).value||'',v=(document.getElementById('gi-v')||{}).value||'';if(!t.trim()||!v)return;if(!S.BG)S.BG={};const id='bg_'+Date.now();S.BG[id]={title:t,target:v,period:S.newGoal.period,type:S.newGoal.type};store.set('bgoals',S.BG);S.showAddGoal=false;S.newGoal={title:'',target:'',period:'month',type:'revenue'};hRender();}
-function deleteBGoal(id){if(!confirm('למחוק יעד זה?'))return;delete S.BG[id];store.set('bgoals',S.BG);hRender();}
+function deleteBGoal(id){if(!confirm('למחוק יעד זה?'))return;if(S.BG&&S.BG[id])delete S.BG[id];store.set('bgoals',S.BG||{});hRender();}
 function exportXLS(){
   const all2=allAppts();
   const now=new Date();
@@ -7617,8 +7884,8 @@ function savePayment(date,time){
 }
 function deletePayment(date,time){
   if(!confirm('למחוק תשלום זה לצמיתות?'))return;
-  if(S.A[date]&&S.A[date][time])delete S.A[date][time];
-  store.set('appts',S.A);
+  if(S.A&&S.A[date]&&S.A[date][time])delete S.A[date][time];
+  store.set('appts',S.A||{});
   S.editPayKey=null;
   hRender();
 }
@@ -7933,8 +8200,8 @@ function updatePkg(id){
 }
 function deletePkg(id){
   if(!confirm('למחוק חבילה זו?'))return;
-  delete S.PKGS[id];
-  store.set('packages',S.PKGS);
+  if(S.PKGS&&S.PKGS[id])delete S.PKGS[id];
+  store.set('packages',S.PKGS||{});
   S.editPkgKey=null;
   hRender();
 }
@@ -8450,7 +8717,7 @@ function openClientMini(name,phone,tab){
   const notesTab=`<div>
     <div style="font-size:11px;font-weight:800;color:#a78bfa;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">הערות</div>
     <textarea class="notes-area" id="mini-notes" placeholder="הוסף הערה על הלקוח...">${x(cd.notes||'')}</textarea>
-    <button class="notes-save-btn" onclick="saveMiniNote('${x(key)}')">💾 שמור הערה</button>
+    <button class="notes-save-btn" onclick="saveMiniNote('${jsa(key)}')">💾 שמור הערה</button>
   </div>`;
 
   const payTab=summaryBar+payRows;
@@ -8498,7 +8765,7 @@ function switchMiniTab(tab){
     payBtn.style.borderBottomColor='transparent';payBtn.style.color='#9ca3af';
     const key=el.dataset.notesTabKey,nm=el.dataset.notesTabName;
     const cd=S.CL?.[key]||{};
-    body.innerHTML=`<div><div style="font-size:11px;font-weight:800;color:#a78bfa;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">הערות</div><textarea class="notes-area" id="mini-notes" placeholder="הוסף הערה על הלקוח...">${x(cd.notes||'')}</textarea><button class="notes-save-btn" onclick="saveMiniNote('${x(key)}')">💾 שמור הערה</button></div>`;
+    body.innerHTML=`<div><div style="font-size:11px;font-weight:800;color:#a78bfa;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">הערות</div><textarea class="notes-area" id="mini-notes" placeholder="הוסף הערה על הלקוח...">${x(cd.notes||'')}</textarea><button class="notes-save-btn" onclick="saveMiniNote('${jsa(key)}')">💾 שמור הערה</button></div>`;
   }
 }
 function saveMiniNote(key){
@@ -10297,13 +10564,13 @@ function renderTaskModal(idx,task){
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
       <span>התקשרי</span>
     </a>`);
-    actionBtns.push(`<button class="tm-btn tm-btn-wa" onclick="openWhatsAppWith('${x(phone)}','היי ${x(task.client.name)} 💜')">
+    actionBtns.push(`<button class="tm-btn tm-btn-wa" onclick="openWhatsAppWith('${jsa(phone)}','היי ${jsa(task.client.name)} 💜')">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.39c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2M12.05 20.15c-1.48 0-2.93-.4-4.2-1.15l-.3-.18l-3.12.82l.83-3.04l-.2-.32c-.82-1.31-1.25-2.82-1.25-4.38c0-4.54 3.7-8.24 8.24-8.24c2.2 0 4.27.86 5.82 2.42a8.183 8.183 0 0 1 2.41 5.83c.02 4.54-3.68 8.24-8.23 8.24m4.52-6.16c-.25-.12-1.47-.72-1.69-.81c-.23-.08-.39-.12-.56.12c-.17.25-.64.81-.78.97c-.14.17-.29.19-.54.06c-.25-.12-1.05-.39-1.99-1.23c-.74-.66-1.23-1.47-1.38-1.72c-.14-.25-.02-.38.11-.51c.11-.11.25-.29.37-.43s.17-.25.25-.41c.08-.17.04-.31-.02-.43c-.06-.12-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43c-.14 0-.31-.02-.48-.02c-.17 0-.45.06-.68.31c-.23.25-.88.86-.88 2.1c0 1.24.9 2.43 1.02 2.6c.12.17 1.75 2.67 4.23 3.74c.59.26 1.05.41 1.41.52c.59.19 1.13.16 1.56.1c.48-.07 1.47-.6 1.67-1.18c.21-.58.21-1.07.14-1.18s-.22-.16-.47-.28"/></svg>
       <span>WhatsApp</span>
     </button>`);
   }
   if(task.actionType==='generate_post'){
-    actionBtns.push(`<button class="tm-btn tm-btn-ai" onclick="closeTaskModal();setTimeout(()=>generatePostFor('${x(task.genType||'instagram_tip')}','${x(task.t).replace(/'/g,"\\\\'")}'),300)">
+    actionBtns.push(`<button class="tm-btn tm-btn-ai" onclick="closeTaskModal();setTimeout(()=>generatePostFor('${jsa(task.genType||'instagram_tip')}','${jsa(task.t)}'),300)">
       <span>✦</span><span>צרי פוסט AI</span>
     </button>`);
   } else if(task.actionType==='open_url'&&task.url){
@@ -15280,5 +15547,48 @@ async function quickDeploy(){
   }catch(e){btn.textContent='❌ שגיאה';btn.disabled=false;setTimeout(()=>{btn.textContent='🚀 פרסם לאתר';},3000);}
 }
 </script>
+
+<!-- ── Service Worker registration + auto-update banner ── -->
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./service-worker.js').then(reg=>{
+      // האזנה לעדכונים
+      reg.addEventListener('updatefound',()=>{
+        const newSW=reg.installing;
+        if(!newSW)return;
+        newSW.addEventListener('statechange',()=>{
+          if(newSW.state==='installed' && navigator.serviceWorker.controller){
+            // יש גרסה חדשה זמינה
+            _showUpdateBanner(newSW);
+          }
+        });
+      });
+    }).catch(e=>{/* SW רישום נכשל — לא נורא, האתר עובד בלעדיו */});
+    
+    // reload אוטומטי כשה-SW החדש תופס שליטה
+    let _reloaded=false;
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{
+      if(_reloaded)return;
+      _reloaded=true;
+      location.reload();
+    });
+  });
+}
+
+function _showUpdateBanner(newSW){
+  if(document.getElementById('sw-update-banner'))return;
+  const b=document.createElement('div');
+  b.id='sw-update-banner';
+  b.style.cssText='position:fixed;top:12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;padding:10px 18px;border-radius:14px;font-size:14px;font-weight:700;box-shadow:0 8px 24px rgba(124,58,237,0.5);z-index:99998;cursor:pointer;font-family:inherit;direction:rtl;display:flex;align-items:center;gap:10px';
+  b.innerHTML='✨ גרסה חדשה זמינה — לחץ לרענון';
+  b.onclick=()=>{
+    newSW.postMessage({type:'SKIP_WAITING'});
+    // ה-controllerchange יגרום ל-reload
+  };
+  document.body.appendChild(b);
+}
+</script>
+
 </body>
 </html>

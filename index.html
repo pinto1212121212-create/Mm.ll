@@ -3334,8 +3334,10 @@ async function initResetConfirm(oobCode){
     document.getElementById('reset-fields-wrap').style.display='block';
     document.getElementById('rc-btn').style.display='flex';
   }catch(e){
-    _lgMsg('❌ '+e.message+'<br><br>הקישור כבר לא תקף. בקש איפוס חדש מחדש.');
-    document.getElementById('reset-email').innerHTML='❌ קישור לא תקף';
+    // ניקוי URL + הצגת הודעה ברורה
+    window.history.replaceState({},'',location.pathname);
+    document.getElementById('reset-email').innerHTML='⚠️ קישור פג תוקף או כבר בשימוש';
+    _lgMsg('<b>הקישור הזה כבר לא תקף.</b><br><br>זה קורה אם:<br>• לחצת עליו כבר פעם אחת<br>• חלפה שעה מאז שהתקבל<br>• Gmail סרק אותו אוטומטית<br><br><b>פתרון:</b> לחץ "חזרה לכניסה" ובקש איפוס חדש. תפתח את המייל החדש תוך דקה.');
   }
 }
 

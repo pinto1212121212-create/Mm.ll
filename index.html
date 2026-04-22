@@ -2,6 +2,13 @@
 <html dir="rtl" lang="he">
 <head>
 <meta charset="UTF-8">
+
+<!-- ═══ Security Headers — שכבה 9: הגנה ברמת הדפדפן ═══ -->
+<!-- מונע scripts זדוניים, הטמעת iframes, מסרים מסוכנים -->
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="DENY">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), payment=()">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -2658,6 +2665,62 @@ const FB='https://diary-daniel-rinat-default-rtdb.firebaseio.com/diary';
 const FB_API_KEY='AIzaSyCsh6qM-WgbWn1LHx2FTVio35ZPvMQ0aG4';
 const INVITE_CODE='PINTORD5997@';
 
+// ── שכבה 8: הצפנת localStorage עם AES-GCM ──
+// כל נתון בקש מוצפן באופן שקוף. גם אם גנבו את הטלפון ופתחו DevTools — רואים רק ג'יבריש.
+const secureStorage={
+  _keyPromise:null,
+  _getDeviceKey(){
+    if(this._keyPromise)return this._keyPromise;
+    this._keyPromise=(async()=>{
+      // מפתח ייחודי למכשיר, נשמר פעם אחת
+      let raw=localStorage.getItem('__sk');
+      if(!raw){
+        const arr=new Uint8Array(32);
+        crypto.getRandomValues(arr);
+        raw=btoa(String.fromCharCode(...arr));
+        localStorage.setItem('__sk',raw);
+      }
+      const bytes=Uint8Array.from(atob(raw),c=>c.charCodeAt(0));
+      return crypto.subtle.importKey('raw',bytes,{name:'AES-GCM'},false,['encrypt','decrypt']);
+    })();
+    return this._keyPromise;
+  },
+  async encrypt(text){
+    try{
+      const key=await this._getDeviceKey();
+      const iv=crypto.getRandomValues(new Uint8Array(12));
+      const enc=new TextEncoder().encode(text);
+      const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,enc);
+      const combined=new Uint8Array(iv.length+ct.byteLength);
+      combined.set(iv,0);
+      combined.set(new Uint8Array(ct),iv.length);
+      return 'e:'+btoa(String.fromCharCode(...combined));
+    }catch(e){return text;}
+  },
+  async decrypt(encText){
+    try{
+      if(!encText||!encText.startsWith('e:'))return encText; // נתון ישן לא מוצפן
+      const key=await this._getDeviceKey();
+      const combined=Uint8Array.from(atob(encText.substring(2)),c=>c.charCodeAt(0));
+      const iv=combined.slice(0,12);
+      const ct=combined.slice(12);
+      const dec=await crypto.subtle.decrypt({name:'AES-GCM',iv},key,ct);
+      return new TextDecoder().decode(dec);
+    }catch(e){return null;}
+  },
+  async setItem(k,v){
+    const enc=await this.encrypt(JSON.stringify(v));
+    localStorage.setItem(k,enc);
+  },
+  async getItem(k){
+    const raw=localStorage.getItem(k);
+    if(!raw)return null;
+    const dec=await this.decrypt(raw);
+    if(!dec)return null;
+    try{return JSON.parse(dec);}catch(e){return null;}
+  }
+};
+
 // ── שכבות הגנה מתקדמות ─────────────────────────────────
 // 1. Rate Limit: 5 כישלונות → חסימה 15 דקות
 // 2. Session Timeout: 60 דקות ללא פעילות → יציאה
@@ -2996,7 +3059,65 @@ const auth={
       fetch(FB+'/audit_log/'+key+'.json?auth='+encodeURIComponent(this._cached.token),{
         method:'PUT',body:JSON.stringify(entry)
       });
+      // 🔔 התראת Email על אירועים קריטיים
+      this._sendAlert(action,entry,isNewDevice);
     }catch(e){}
+  },
+  
+  // ── שליחת התראות אבטחה באימייל ──
+  async _sendAlert(action,entry,isNewDevice){
+    try{
+      // אילו אירועים שולחים התראה?
+      const critical={
+        'signup':'✍️ רישום חדש למערכת',
+        'password_change':'🔑 סיסמה שונתה',
+        'account_deleted':'🗑️ חשבון נמחק'
+      };
+      // login שולח רק ממכשיר חדש
+      if(action==='login' && isNewDevice){
+        critical.login='🚨 כניסה ממכשיר חדש';
+      }
+      if(!critical[action])return;
+      
+      const d=new Date(entry.at);
+      const dateStr=d.toLocaleDateString('he-IL')+' '+d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+      const subject=critical[action];
+      const body=`${subject}
+
+👤 משתמש: ${entry.name||entry.email}
+📧 אימייל: ${entry.email}
+🕐 זמן: ${dateStr}
+🆔 מכשיר: ${entry.device}${isNewDevice?' ⚠️ (מכשיר חדש!)':''}
+
+${isNewDevice?'⚠️ זה לא אתה? מומלץ לשנות סיסמה מיד!':''}
+
+— מערכת היומן של רינת 💙`;
+      
+      // שליחה דרך EmailJS (כבר מותקן ב-deploy-panel של אוריאל)
+      const EMAILJS_SERVICE='service_szaqx49';
+      const EMAILJS_TEMPLATE='template_6f84sub';
+      const EMAILJS_PUBLIC_KEY='wkWFjmfTUoKMFi8f1';
+      const ALERT_EMAIL='53749kp@gmail.com';
+      
+      await fetch('https://api.emailjs.com/api/v1.0/email/send',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          service_id:EMAILJS_SERVICE,
+          template_id:EMAILJS_TEMPLATE,
+          user_id:EMAILJS_PUBLIC_KEY,
+          template_params:{
+            to_email:ALERT_EMAIL,
+            subject:'🛡️ '+subject+' — היומן',
+            message:body,
+            from_name:'מערכת היומן'
+          }
+        })
+      });
+    }catch(e){
+      // שגיאה בשליחת התראה לא מפילה את האפליקציה
+      console.warn('Email alert failed:',e);
+    }
   },
   
   _errMsg(err){

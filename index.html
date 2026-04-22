@@ -3007,9 +3007,37 @@ const auth={
     const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key='+FB_API_KEY,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({requestType:'PASSWORD_RESET',email})
+      body:JSON.stringify({
+        requestType:'PASSWORD_RESET',
+        email,
+        continueUrl:location.origin+location.pathname
+      })
     });
     if(!r.ok){const err=await r.json();throw new Error(this._errMsg(err));}
+  },
+  
+  // טיפול ב-oobCode שמגיע מ-URL (איפוס סיסמה דרך לינק במייל)
+  async confirmPasswordReset(oobCode,newPassword){
+    const pwCheck=passwordPolicy.check(newPassword);
+    if(!pwCheck.ok) throw new Error(pwCheck.msg);
+    const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key='+FB_API_KEY,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({oobCode,newPassword})
+    });
+    if(!r.ok){const err=await r.json();throw new Error(this._errMsg(err));}
+    return await r.json();
+  },
+  
+  // בדיקת תקפות oobCode
+  async verifyOobCode(oobCode){
+    const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key='+FB_API_KEY,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({oobCode})
+    });
+    if(!r.ok){const err=await r.json();throw new Error(this._errMsg(err));}
+    return await r.json();
   },
   
   async deleteAccount(){
@@ -3097,7 +3125,7 @@ ${isNewDevice?'⚠️ זה לא אתה? מומלץ לשנות סיסמה מיד!
       const EMAILJS_SERVICE='service_szaqx49';
       const EMAILJS_TEMPLATE='template_6f84sub';
       const EMAILJS_PUBLIC_KEY='wkWFjmfTUoKMFi8f1';
-      const ALERT_EMAIL='53749kp@gmail.com';
+      const ALERT_EMAIL='pinto1212121212@gmail.com';
       
       await fetch('https://api.emailjs.com/api/v1.0/email/send',{
         method:'POST',
@@ -3168,6 +3196,19 @@ function showLogin(mode='signin'){
 }
 
 function renderLogin(mode){
+  if(mode==='resetConfirm'){
+    return `<div class="login-box">
+      <div class="login-title">🔐 סיסמה חדשה</div>
+      <div class="login-sub" id="reset-email">מאמת קישור...</div>
+      <div id="login-msg"></div>
+      <div class="login-field" style="display:none" id="reset-fields-wrap">
+        <div class="login-field"><label>🔑 סיסמה חדשה</label><input id="rc-pass" type="password" autocomplete="new-password" oninput="updatePwStrengthRC()"><div id="rc-strength" style="height:4px;border-radius:2px;background:rgba(255,255,255,0.1);margin-top:6px;overflow:hidden"><div id="rc-bar" style="height:100%;width:0;background:#ef4444;transition:width .3s,background .3s"></div></div><div id="rc-hint" style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px"></div></div>
+        <div class="login-field"><label>🔒 אימות סיסמה</label><input id="rc-pass2" type="password" autocomplete="new-password" placeholder="הקלד שוב"></div>
+      </div>
+      <button class="login-btn" id="rc-btn" onclick="doConfirmReset()" style="display:none">💾 שמור סיסמה חדשה</button>
+      <div class="login-switch"><a onclick="switchLogin('signin')">← חזרה לכניסה</a></div>
+    </div>`;
+  }
   if(mode==='signup'){
     return `<div class="login-box">
       <div class="login-title">✍️ רישום חדש</div>
@@ -3254,6 +3295,66 @@ function updatePwStrengthMA(){
   bar.style.background=colors[s]||'#22c55e';
   hint.textContent='🔒 סיסמה '+labels[s];
   hint.style.color=colors[s]||'#22c55e';
+}
+
+function updatePwStrengthRC(){
+  const pw=document.getElementById('rc-pass');
+  const bar=document.getElementById('rc-bar');
+  const hint=document.getElementById('rc-hint');
+  if(!pw||!bar||!hint)return;
+  const v=pw.value;
+  if(!v){bar.style.width='0';hint.textContent='';return;}
+  const check=passwordPolicy.check(v);
+  if(!check.ok){
+    bar.style.width='25%';
+    bar.style.background='#ef4444';
+    hint.textContent=check.msg;
+    hint.style.color='#fca5a5';
+    return;
+  }
+  const s=check.strength||0;
+  const colors=['#f97316','#eab308','#84cc16','#22c55e','#10b981'];
+  const labels=['חלשה','בסדר','טובה','חזקה','מצוינת'];
+  bar.style.width=((s+1)*20)+'%';
+  bar.style.background=colors[s]||'#22c55e';
+  hint.textContent='🔒 סיסמה '+labels[s];
+  hint.style.color=colors[s]||'#22c55e';
+}
+
+// ── Password Reset Confirmation — מסך איפוס סיסמה מותאם ──
+let _currentOobCode=null;
+
+async function initResetConfirm(oobCode){
+  _currentOobCode=oobCode;
+  showLogin('resetConfirm');
+  // בדיקת תקפות הקוד
+  try{
+    const data=await auth.verifyOobCode(oobCode);
+    document.getElementById('reset-email').innerHTML='איפוס סיסמה עבור:<br><b style="color:#fbab20">'+data.email+'</b>';
+    document.getElementById('reset-fields-wrap').style.display='block';
+    document.getElementById('rc-btn').style.display='flex';
+  }catch(e){
+    _lgMsg('❌ '+e.message+'<br><br>הקישור כבר לא תקף. בקש איפוס חדש מחדש.');
+    document.getElementById('reset-email').innerHTML='❌ קישור לא תקף';
+  }
+}
+
+async function doConfirmReset(){
+  const pass=document.getElementById('rc-pass').value;
+  const pass2=document.getElementById('rc-pass2').value;
+  if(!pass){_lgMsg('הכנס סיסמה חדשה');return;}
+  if(pass.length<6){_lgMsg('הסיסמה חייבת להיות לפחות 8 תווים');return;}
+  if(pass!==pass2){_lgMsg('הסיסמאות לא תואמות — בדוק שוב');return;}
+  _lgMsg('⏳ שומר...','ok');
+  try{
+    await auth.confirmPasswordReset(_currentOobCode,pass);
+    _lgMsg('✅ הסיסמה שונתה! עובר לכניסה...','ok');
+    setTimeout(()=>{
+      // ניקוי ה-URL מה-params
+      window.history.replaceState({},'',location.pathname);
+      location.reload();
+    },2000);
+  }catch(e){_lgMsg('שגיאה: '+(e.message||''));}
 }
 
 function _lgMsg(html,type){
@@ -15096,6 +15197,16 @@ if(typeof window !== 'undefined'){
 
 // ── Init ──────────────────────────────────────────────
 (async()=>{
+  // בדיקה אם זה לינק איפוס סיסמה מהמייל (?mode=resetPassword&oobCode=...)
+  const urlParams=new URLSearchParams(location.search);
+  const mode=urlParams.get('mode');
+  const oobCode=urlParams.get('oobCode');
+  if(mode==='resetPassword' && oobCode){
+    // מציג מסך איפוס סיסמה מותאם
+    initResetConfirm(oobCode);
+    return;
+  }
+  
   // שכבה 5: בדיקת Tamper — אם ה-token הושחת/שונה → מחיקה
   await tamperCheck.verify();
   // בדיקה אם יש משתמש מחובר

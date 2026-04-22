@@ -3225,12 +3225,17 @@ function renderLogin(mode){
   }
   if(mode==='reset'){
     return `<div class="login-box">
-      <div class="login-title">🔄 שחזור סיסמה V99</div>
-      <div class="login-sub">נשלח אליך קישור לאימייל שלך 🎯</div>
+      <div class="login-title">🔑 איפוס סיסמה</div>
+      <div class="login-sub">מלא פרטים, והבקשה תישלח לאוריאל</div>
       <div id="login-msg"></div>
-      <div class="login-field"><label>Email</label><input id="lg-email" type="email" autocomplete="email"></div>
-      <button class="login-btn" onclick="doReset()">📧 שלח קישור</button>
-      <div class="login-switch"><a onclick="switchLogin('signin')">← חזרה לכניסה</a></div>
+      <div class="login-field"><label>👤 שם מלא</label><input id="rs-name" type="text" placeholder="הכנס שם מלא"></div>
+      <div class="login-field"><label>📧 Email</label><input id="rs-email" type="email" autocomplete="email" placeholder="example@gmail.com"></div>
+      <div class="login-field"><label>📱 טלפון ליצירת קשר</label><input id="rs-phone" type="tel" placeholder="050-1234567"></div>
+      <button class="login-btn" onclick="doHelpRequest()">📤 שלח בקשה</button>
+      <div style="margin-top:14px;padding:12px;background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.25);border-radius:10px;font-size:12px;color:rgba(255,255,255,0.75);line-height:1.7;text-align:center">
+        💡 אוריאל יצור איתך קשר תוך זמן קצר<br>לוודא את זהותך ולאפס את הסיסמה
+      </div>
+      <div class="login-switch" style="margin-top:14px"><a onclick="switchLogin('signin')">← חזרה לכניסה</a></div>
     </div>`;
   }
   return `<div class="login-box">
@@ -3399,6 +3404,82 @@ async function doReset(){
     await auth.resetPassword(email);
     _lgMsg('✅ נשלח! בדוק את האימייל שלך','ok');
   }catch(e){_lgMsg(e.message||'שגיאה');}
+}
+
+// ── בקשת עזרה לאיפוס סיסמה — דרך וואטסאפ + מייל ──
+async function doHelpRequest(){
+  const name=document.getElementById('rs-name').value.trim();
+  const email=document.getElementById('rs-email').value.trim();
+  const phone=document.getElementById('rs-phone').value.trim();
+  
+  if(!name){_lgMsg('הכנס שם מלא');return;}
+  if(!email||!email.includes('@')){_lgMsg('הכנס אימייל תקין');return;}
+  if(!phone||phone.length<9){_lgMsg('הכנס מספר טלפון תקין');return;}
+  
+  _lgMsg('⏳ שולח בקשה...','ok');
+  
+  const now=new Date();
+  const dateStr=now.toLocaleDateString('he-IL')+' '+now.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+  
+  // 1. שליחת מייל אוטומטי לאוריאל
+  try{
+    const body=`🔑 בקשת איפוס סיסמה חדשה
+
+👤 שם: ${name}
+📧 Email: ${email}
+📱 טלפון: ${phone}
+🕐 זמן: ${dateStr}
+
+📋 פעולות נדרשות:
+1. ודא את זהות המבקש דרך WhatsApp (${phone})
+2. היכנס ל-Firebase Console
+3. אפס את הסיסמה או מחק את המשתמש
+4. שלח לו את הסיסמה החדשה בוואטסאפ
+
+🔗 Firebase: https://console.firebase.google.com/project/diary-daniel-rinat/authentication/users
+
+— מערכת היומן של רינת`;
+    
+    await fetch('https://api.emailjs.com/api/v1.0/email/send',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        service_id:'service_szaqx49',
+        template_id:'template_6f84sub',
+        user_id:'wkWFjmfTUoKMFi8f1',
+        template_params:{
+          to_email:'pinto1212121212@gmail.com',
+          subject:'🔑 בקשת איפוס סיסמה — '+name,
+          message:body,
+          from_name:'מערכת היומן'
+        }
+      })
+    });
+  }catch(e){
+    console.warn('Email failed, continuing to WhatsApp',e);
+  }
+  
+  // 2. פתיחת וואטסאפ אוטומטית עם הודעה מוכנה לאוריאל
+  const whatsappMsg=encodeURIComponent(
+    `היי אוריאל 👋\n\n`+
+    `שכחתי את הסיסמה ליומן.\n`+
+    `אפשר בבקשה לאפס לי?\n\n`+
+    `👤 שם: ${name}\n`+
+    `📧 Email: ${email}\n`+
+    `🕐 זמן: ${dateStr}\n\n`+
+    `תודה! 🙏`
+  );
+  
+  // המספר של אוריאל — 0585702218 (הקיים במערכת)
+  // ללא 0 בהתחלה, עם קידומת 972
+  const ORIEL_PHONE='972585702218';
+  
+  _lgMsg('✅ הבקשה נשלחה! פותח WhatsApp...','ok');
+  
+  setTimeout(()=>{
+    window.open(`https://wa.me/${ORIEL_PHONE}?text=${whatsappMsg}`,'_blank');
+    _lgMsg(`✅ <b>הבקשה נשלחה בהצלחה!</b><br><br>אוריאל יצור איתך קשר בקרוב לאפס את הסיסמה שלך.<br><br>💡 אם WhatsApp לא נפתח, תוכל ליצור קשר ישירות:<br>📱 058-570-2218`,'ok');
+  },500);
 }
 
 // ── Account Management ───────────────────────────────
@@ -15199,14 +15280,41 @@ if(typeof window !== 'undefined'){
 
 // ── Init ──────────────────────────────────────────────
 (async()=>{
-  // בדיקה אם זה לינק איפוס סיסמה מהמייל (?mode=resetPassword&oobCode=...)
-  const urlParams=new URLSearchParams(location.search);
-  const mode=urlParams.get('mode');
-  const oobCode=urlParams.get('oobCode');
+  // בדיקה אם זה לינק איפוס סיסמה מהמייל
+  // Firebase יכול לשלוח את ה-params ב-search (?) או ב-hash (#)
+  function extractParams(){
+    const out={};
+    // Search params: ?mode=...&oobCode=...
+    new URLSearchParams(location.search).forEach((v,k)=>out[k]=v);
+    // Hash params: #mode=...&oobCode=... או #/?mode=...
+    let hash=location.hash.replace(/^#\/?/,'').replace(/^\?/,'');
+    if(hash){
+      new URLSearchParams(hash).forEach((v,k)=>{if(!out[k])out[k]=v;});
+    }
+    return out;
+  }
+  const params=extractParams();
+  const mode=params.mode;
+  const oobCode=params.oobCode;
+  
+  // DEBUG: הצגת פרטי ה-URL אם יש params חשודים
+  if(location.search || location.hash){
+    console.log('🔍 URL params detected:',{mode,oobCode,all:params,search:location.search,hash:location.hash});
+  }
+  
   if(mode==='resetPassword' && oobCode){
     // מציג מסך איפוס סיסמה מותאם
     initResetConfirm(oobCode);
     return;
+  }
+  
+  // אם יש oobCode או continueUrl אבל לא זיהינו — כנראה קישור Firebase לא סטנדרטי
+  if(oobCode || params.continueUrl || params.apiKey){
+    // ניסיון אחרון — אם יש oobCode, נפתח איפוס גם בלי mode
+    if(oobCode){
+      initResetConfirm(oobCode);
+      return;
+    }
   }
   
   // שכבה 5: בדיקת Tamper — אם ה-token הושחת/שונה → מחיקה

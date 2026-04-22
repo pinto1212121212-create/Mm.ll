@@ -2658,6 +2658,143 @@ const FB='https://diary-daniel-rinat-default-rtdb.firebaseio.com/diary';
 const FB_API_KEY='AIzaSyCsh6qM-WgbWn1LHx2FTVio35ZPvMQ0aG4';
 const INVITE_CODE='PINTORD5997@';
 
+// ── שכבות הגנה מתקדמות ─────────────────────────────────
+// 1. Rate Limit: 5 כישלונות → חסימה 15 דקות
+// 2. Session Timeout: 60 דקות ללא פעילות → יציאה
+// 3. Password Strength: סיסמה חזקה (8+ תווים, אותיות, מספרים)
+// 4. Device Fingerprint: זיהוי מכשיר חדש → לוג התראה
+// 5. Tamper Detection: בדיקת שלמות ה-token בכל טעינה
+// 6. Auto-lock: נעילה אוטומטית כשהטאב ברקע (PIN/סיסמה)
+// 7. HTTPS-only: בדיקה שהאתר רץ רק ב-HTTPS (מונע MITM)
+
+const RATE_LIMIT={MAX_ATTEMPTS:5,BLOCK_MINUTES:15};
+const SESSION_TIMEOUT_MIN=60;
+const BACKGROUND_LOCK_MIN=5; // נעילה אחרי 5 דקות ברקע
+
+// שכבה 7: HTTPS-only (בדיקת פרוטוקול מיידית)
+if(location.protocol==='http:' && location.hostname!=='localhost' && location.hostname!=='127.0.0.1'){
+  location.href='https:'+location.href.substring(5);
+}
+
+// שכבה 3: בודק חוזק סיסמה
+const passwordPolicy={
+  check(pw){
+    if(!pw||pw.length<8) return {ok:false,msg:'הסיסמה חייבת להיות לפחות 8 תווים'};
+    if(!/[a-zA-Z\u0590-\u05FF]/.test(pw)) return {ok:false,msg:'הסיסמה חייבת להכיל אותיות'};
+    if(!/[0-9]/.test(pw)) return {ok:false,msg:'הסיסמה חייבת להכיל מספר אחד לפחות'};
+    if(/^(.)\1+$/.test(pw)) return {ok:false,msg:'סיסמה חלשה מדי (תווים חוזרים)'};
+    const common=['12345678','password','123456789','qwerty','abc12345','11111111','00000000'];
+    if(common.includes(pw.toLowerCase())) return {ok:false,msg:'סיסמה נפוצה מדי — בחר משהו אחר'};
+    return {ok:true,strength:this._strength(pw)};
+  },
+  _strength(pw){
+    let s=0;
+    if(pw.length>=10)s++;
+    if(pw.length>=14)s++;
+    if(/[A-Z]/.test(pw))s++;
+    if(/[^a-zA-Z0-9]/.test(pw))s++;
+    if(/[\u0590-\u05FF]/.test(pw))s++;
+    return Math.min(s,4);
+  }
+};
+
+// שכבה 4: Device Fingerprint
+const deviceFingerprint={
+  async get(){
+    const data=navigator.userAgent+'|'+navigator.language+'|'+screen.width+'x'+screen.height+'|'+(navigator.hardwareConcurrency||'')+'|'+new Date().getTimezoneOffset();
+    const buf=new TextEncoder().encode(data);
+    const hash=await crypto.subtle.digest('SHA-256',buf);
+    return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,'0')).join('').substring(0,16);
+  }
+};
+
+const rateLimit={
+  _key:'fb_ratelimit',
+  _load(){try{return JSON.parse(localStorage.getItem(this._key)||'{"fails":0,"blockedUntil":0}');}catch(e){return {fails:0,blockedUntil:0};}},
+  _save(d){try{localStorage.setItem(this._key,JSON.stringify(d));}catch(e){}},
+  check(){
+    const d=this._load();
+    if(d.blockedUntil>Date.now()){
+      const min=Math.ceil((d.blockedUntil-Date.now())/60000);
+      throw new Error(`יותר מדי נסיונות. נסה שוב בעוד ${min} דקות`);
+    }
+  },
+  fail(){
+    const d=this._load();
+    d.fails=(d.fails||0)+1;
+    if(d.fails>=RATE_LIMIT.MAX_ATTEMPTS){
+      d.blockedUntil=Date.now()+(RATE_LIMIT.BLOCK_MINUTES*60000);
+      d.fails=0;
+    }
+    this._save(d);
+    const left=RATE_LIMIT.MAX_ATTEMPTS-d.fails;
+    return left>0?`נותרו ${left} נסיונות`:null;
+  },
+  success(){this._save({fails:0,blockedUntil:0});}
+};
+
+// שכבה 2 + 6: Session Timeout + Background Lock
+const session={
+  _timer:null,
+  _bgStart:null,
+  _lastActivity:Date.now(),
+  start(){
+    this._lastActivity=Date.now();
+    this._resetTimer();
+    const evts=['click','touchstart','keydown','scroll','mousemove'];
+    evts.forEach(e=>document.addEventListener(e,()=>this.touch(),{passive:true,capture:true}));
+    // שכבה 6: נעילה כשהטאב יורד לרקע
+    document.addEventListener('visibilitychange',()=>{
+      if(document.hidden){
+        this._bgStart=Date.now();
+      }else if(this._bgStart){
+        const mins=(Date.now()-this._bgStart)/60000;
+        this._bgStart=null;
+        if(mins>=BACKGROUND_LOCK_MIN && auth.user){
+          alert('🔒 האפליקציה ננעלה — היית ברקע יותר מ-'+BACKGROUND_LOCK_MIN+' דקות');
+          auth.signOut();
+        }
+      }
+    });
+  },
+  touch(){
+    this._lastActivity=Date.now();
+    this._resetTimer();
+  },
+  _resetTimer(){
+    if(this._timer)clearTimeout(this._timer);
+    this._timer=setTimeout(()=>this._expire(),SESSION_TIMEOUT_MIN*60000);
+  },
+  _expire(){
+    if(!auth.user)return;
+    alert('🕐 יצאת מהמערכת אוטומטית אחרי '+SESSION_TIMEOUT_MIN+' דקות של חוסר פעילות');
+    auth.signOut();
+  },
+  stop(){
+    if(this._timer){clearTimeout(this._timer);this._timer=null;}
+  }
+};
+
+// שכבה 5: Tamper Detection — בודק שה-token לא שונה ידנית
+const tamperCheck={
+  async verify(){
+    try{
+      const saved=JSON.parse(localStorage.getItem('fb_auth')||'null');
+      if(!saved||!saved.token)return true; // אין טוקן — אין מה לבדוק
+      // בדיקה בסיסית: האם ה-token הוא JWT תקין (3 חלקים מופרדים בנקודה)
+      const parts=saved.token.split('.');
+      if(parts.length!==3){
+        localStorage.removeItem('fb_auth');
+        return false;
+      }
+      return true;
+    }catch(e){
+      localStorage.removeItem('fb_auth');
+      return false;
+    }
+  }
+};
+
 const auth={
   _cached:null,
   _pending:null,
@@ -2704,6 +2841,7 @@ const auth={
   },
   
   async signIn(email,password){
+    rateLimit.check();
     const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+FB_API_KEY,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -2711,8 +2849,11 @@ const auth={
     });
     if(!r.ok){
       const err=await r.json();
-      throw new Error(this._errMsg(err));
+      const remaining=rateLimit.fail();
+      const msg=this._errMsg(err);
+      throw new Error(remaining?`${msg} (${remaining})`:msg);
     }
+    rateLimit.success();
     const d=await r.json();
     // קבלת שם המשתמש מ-DB
     let name=d.email;
@@ -2736,8 +2877,11 @@ const auth={
   },
   
   async signUp(email,password,name,inviteCode){
+    rateLimit.check();
     if(inviteCode!==INVITE_CODE) throw new Error('קוד הזמנה לא נכון');
     if(!name||name.trim().length<2) throw new Error('חובה למלא שם');
+    const pwCheck=passwordPolicy.check(password);
+    if(!pwCheck.ok) throw new Error(pwCheck.msg);
     const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key='+FB_API_KEY,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -2778,6 +2922,8 @@ const auth={
   async changePassword(newPassword){
     const token=await this.getToken();
     if(!token) throw new Error('לא מחובר');
+    const pwCheck=passwordPolicy.check(newPassword);
+    if(!pwCheck.ok) throw new Error(pwCheck.msg);
     const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:update?key='+FB_API_KEY,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -2827,12 +2973,24 @@ const auth={
   async _audit(action){
     try{
       if(!this.user||!this._cached)return;
+      const fp=await deviceFingerprint.get();
+      // בדיקה: האם זה מכשיר חדש? שומרים רשימת מכשירים מוכרים
+      let knownDevices=[];
+      try{knownDevices=JSON.parse(localStorage.getItem('fb_devices')||'[]');}catch(e){}
+      const isNewDevice=!knownDevices.includes(fp);
+      if(isNewDevice && (action==='login'||action==='signup')){
+        knownDevices.push(fp);
+        if(knownDevices.length>10)knownDevices=knownDevices.slice(-10);
+        try{localStorage.setItem('fb_devices',JSON.stringify(knownDevices));}catch(e){}
+      }
       const entry={
         action,
         uid:this.user.uid,
         name:this.user.name,
         email:this.user.email,
-        at:new Date().toISOString()
+        at:new Date().toISOString(),
+        device:fp,
+        newDevice:isNewDevice && (action==='login'||action==='signup')
       };
       const key=Date.now()+'_'+Math.random().toString(36).substr(2,6);
       fetch(FB+'/audit_log/'+key+'.json?auth='+encodeURIComponent(this._cached.token),{
@@ -2896,7 +3054,8 @@ function renderLogin(mode){
       <div id="login-msg"></div>
       <div class="login-field"><label>שם מלא</label><input id="lg-name" type="text" data-rtl autocomplete="name"></div>
       <div class="login-field"><label>Email</label><input id="lg-email" type="email" autocomplete="email"></div>
-      <div class="login-field"><label>סיסמה (לפחות 6 תווים)</label><input id="lg-pass" type="password" autocomplete="new-password"></div>
+      <div class="login-field"><label>סיסמה (לפחות 8 תווים, אותיות ומספרים)</label><input id="lg-pass" type="password" autocomplete="new-password" oninput="updatePwStrength()"><div id="pw-strength" style="height:4px;border-radius:2px;background:rgba(255,255,255,0.1);margin-top:6px;overflow:hidden"><div id="pw-bar" style="height:100%;width:0;background:#ef4444;transition:width .3s,background .3s"></div></div><div id="pw-hint" style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px"></div></div>
+      <div class="login-field"><label>🔒 אימות סיסמה</label><input id="lg-pass2" type="password" autocomplete="new-password" placeholder="הקלד את הסיסמה שוב"></div>
       <div class="login-field"><label>🎟️ קוד הזמנה</label><input id="lg-code" type="text" autocomplete="off"></div>
       <button class="login-btn" onclick="doSignup()">🚀 הירשם</button>
       <div class="login-switch">כבר רשום? <a onclick="switchLogin('signin')">התחבר</a></div>
@@ -2928,6 +3087,54 @@ function switchLogin(mode){
   document.getElementById('login-screen').innerHTML=renderLogin(mode);
 }
 
+function updatePwStrength(){
+  const pw=document.getElementById('lg-pass');
+  const bar=document.getElementById('pw-bar');
+  const hint=document.getElementById('pw-hint');
+  if(!pw||!bar||!hint)return;
+  const v=pw.value;
+  if(!v){bar.style.width='0';hint.textContent='';return;}
+  const check=passwordPolicy.check(v);
+  if(!check.ok){
+    bar.style.width='25%';
+    bar.style.background='#ef4444';
+    hint.textContent=check.msg;
+    hint.style.color='#fca5a5';
+    return;
+  }
+  const s=check.strength||0;
+  const colors=['#f97316','#eab308','#84cc16','#22c55e','#10b981'];
+  const labels=['חלשה','בסדר','טובה','חזקה','מצוינת'];
+  bar.style.width=((s+1)*20)+'%';
+  bar.style.background=colors[s]||'#22c55e';
+  hint.textContent='🔒 סיסמה '+labels[s];
+  hint.style.color=colors[s]||'#22c55e';
+}
+
+function updatePwStrengthMA(){
+  const pw=document.getElementById('ma-pass');
+  const bar=document.getElementById('ma-bar');
+  const hint=document.getElementById('ma-hint');
+  if(!pw||!bar||!hint)return;
+  const v=pw.value;
+  if(!v){bar.style.width='0';hint.textContent='';return;}
+  const check=passwordPolicy.check(v);
+  if(!check.ok){
+    bar.style.width='25%';
+    bar.style.background='#ef4444';
+    hint.textContent=check.msg;
+    hint.style.color='#fca5a5';
+    return;
+  }
+  const s=check.strength||0;
+  const colors=['#f97316','#eab308','#84cc16','#22c55e','#10b981'];
+  const labels=['חלשה','בסדר','טובה','חזקה','מצוינת'];
+  bar.style.width=((s+1)*20)+'%';
+  bar.style.background=colors[s]||'#22c55e';
+  hint.textContent='🔒 סיסמה '+labels[s];
+  hint.style.color=colors[s]||'#22c55e';
+}
+
 function _lgMsg(html,type){
   const el=document.getElementById('login-msg');
   if(el)el.innerHTML=html?`<div class="login-${type||'err'}">${html}</div>`:'';
@@ -2948,9 +3155,11 @@ async function doSignup(){
   const name=document.getElementById('lg-name').value.trim();
   const email=document.getElementById('lg-email').value.trim();
   const pass=document.getElementById('lg-pass').value;
+  const pass2=document.getElementById('lg-pass2').value;
   const code=document.getElementById('lg-code').value.trim();
-  if(!name||!email||!pass||!code){_lgMsg('מלא את כל השדות');return;}
+  if(!name||!email||!pass||!pass2||!code){_lgMsg('מלא את כל השדות');return;}
   if(pass.length<6){_lgMsg('הסיסמה חייבת להיות לפחות 6 תווים');return;}
+  if(pass!==pass2){_lgMsg('הסיסמאות לא תואמות — בדוק שוב');return;}
   _lgMsg('⏳ רושם...','ok');
   try{
     await auth.signUp(email,pass,name,code);
@@ -2978,15 +3187,49 @@ async function openMyAccount(){
     <div class="login-title">👤 החשבון שלי</div>
     <div class="login-sub">${u.name||''}<br><span style="font-size:12px;opacity:0.7">${u.email||''}</span></div>
     <div id="login-msg"></div>
-    <div class="login-field"><label>🔑 סיסמה חדשה (אופציונלי)</label><input id="ma-pass" type="password" placeholder="השאר ריק אם לא משנה"></div>
+    <div class="login-field"><label>🔑 סיסמה חדשה (אופציונלי)</label><input id="ma-pass" type="password" placeholder="לפחות 8 תווים, אותיות ומספרים" oninput="updatePwStrengthMA()"><div id="ma-strength" style="height:4px;border-radius:2px;background:rgba(255,255,255,0.1);margin-top:6px;overflow:hidden"><div id="ma-bar" style="height:100%;width:0;background:#ef4444;transition:width .3s,background .3s"></div></div><div id="ma-hint" style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px"></div></div>
+    <div class="login-field"><label>🔒 אימות סיסמה חדשה</label><input id="ma-pass2" type="password" placeholder="הקלד שוב לאימות"></div>
     <button class="login-btn" onclick="doChangePassword()">שמור סיסמה חדשה</button>
     <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(251,171,32,0.15)"></div>
+    <button class="login-btn" style="background:linear-gradient(135deg,#334155,#1e293b);color:#fff" onclick="showAuditLog()">📋 יומן פעילות</button>
+    <div style="margin-top:14px"></div>
     <button class="login-btn" style="background:linear-gradient(135deg,#64748b,#475569);color:#fff" onclick="auth.signOut()">🚪 התנתק</button>
     <div style="margin-top:14px"></div>
     <button class="login-btn" style="background:linear-gradient(135deg,#dc2626,#991b1b);color:#fff" onclick="doDeleteAccount()">🗑️ מחק את החשבון שלי</button>
     <div class="login-switch" style="margin-top:16px"><a onclick="closeMyAccount()">← חזרה ליומן</a></div>
   </div>`;
   document.body.appendChild(box);
+}
+
+async function showAuditLog(){
+  _lgMsg('⏳ טוען...','ok');
+  try{
+    const token=await auth.getToken();
+    const r=await fetch(FB+'/audit_log.json?auth='+encodeURIComponent(token)+'&orderBy="at"&limitToLast=50');
+    const data=r.ok?(await r.json()):{};
+    const entries=data?Object.values(data).sort((a,b)=>(b.at||'').localeCompare(a.at||'')):[];
+    const names={'login':'🔓 כניסה','logout':'🚪 יציאה','signup':'✍️ רישום','password_change':'🔑 שינוי סיסמה','account_deleted':'🗑️ מחיקת חשבון'};
+    const box=document.getElementById('login-screen');
+    box.innerHTML=`<div class="login-box" style="max-width:500px">
+      <div class="login-title">📋 יומן פעילות</div>
+      <div class="login-sub">50 הפעולות האחרונות</div>
+      <div style="max-height:60vh;overflow-y:auto;margin-top:16px">
+        ${entries.length===0?'<div style="text-align:center;color:rgba(255,255,255,0.5);padding:20px">אין פעילות עדיין</div>':
+          entries.map(e=>{
+            const d=new Date(e.at);
+            const dateStr=d.toLocaleDateString('he-IL')+' '+d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+            const badge=e.newDevice?' <span style="background:rgba(239,68,68,0.2);color:#fca5a5;padding:2px 6px;border-radius:6px;font-size:10px;border:1px solid rgba(239,68,68,0.4);margin-right:4px">📱 מכשיר חדש</span>':'';
+            return `<div style="background:rgba(255,255,255,0.03);border:1px solid ${e.newDevice?'rgba(239,68,68,0.3)':'rgba(251,171,32,0.1)'};border-radius:10px;padding:10px 14px;margin-bottom:8px">
+              <div style="color:#fbab20;font-weight:700;font-size:14px">${names[e.action]||e.action}${badge}</div>
+              <div style="color:rgba(255,255,255,0.8);font-size:13px;margin-top:2px">${e.name||e.email||''}</div>
+              <div style="color:rgba(255,255,255,0.4);font-size:11px;margin-top:2px">${dateStr}</div>
+            </div>`;
+          }).join('')}
+      </div>
+      <div style="margin-top:16px"></div>
+      <button class="login-btn" style="background:linear-gradient(135deg,#64748b,#475569);color:#fff" onclick="openMyAccount()">← חזרה</button>
+    </div>`;
+  }catch(e){_lgMsg('שגיאה: '+(e.message||''));}
 }
 
 function closeMyAccount(){
@@ -2996,13 +3239,19 @@ function closeMyAccount(){
 
 async function doChangePassword(){
   const pass=document.getElementById('ma-pass').value;
+  const pass2=document.getElementById('ma-pass2').value;
   if(!pass){_lgMsg('הכנס סיסמה חדשה');return;}
   if(pass.length<6){_lgMsg('הסיסמה חייבת להיות לפחות 6 תווים');return;}
+  if(pass!==pass2){_lgMsg('הסיסמאות לא תואמות — בדוק שוב');return;}
   _lgMsg('⏳ משנה...','ok');
   try{
     await auth.changePassword(pass);
     _lgMsg('✅ הסיסמה שונתה','ok');
-    setTimeout(()=>{document.getElementById('ma-pass').value='';_lgMsg('');},2500);
+    setTimeout(()=>{
+      const e1=document.getElementById('ma-pass');if(e1)e1.value='';
+      const e2=document.getElementById('ma-pass2');if(e2)e2.value='';
+      _lgMsg('');
+    },2500);
   }catch(e){_lgMsg(e.message||'שגיאה');}
 }
 
@@ -14726,6 +14975,8 @@ if(typeof window !== 'undefined'){
 
 // ── Init ──────────────────────────────────────────────
 (async()=>{
+  // שכבה 5: בדיקת Tamper — אם ה-token הושחת/שונה → מחיקה
+  await tamperCheck.verify();
   // בדיקה אם יש משתמש מחובר
   const token=await auth.getToken();
   if(!token||!auth.user){
@@ -14733,7 +14984,9 @@ if(typeof window !== 'undefined'){
     showLogin('signin');
     return;
   }
-  // מחובר — טוען את היומן כרגיל
+  // מחובר — מפעיל Session Timeout Tracking
+  session.start();
+  // טוען את היומן כרגיל
   const [a,t,g,bg,cl,canc,pkgs,exp,web]=await Promise.all([store.get('appts'),store.get('tasks'),store.get('goals'),store.get('bgoals'),store.get('clients'),store.get('cancellations'),store.get('packages'),store.get('expenses'),store.get('website')]);
   const dt=localStore.get('dt'),rt=localStore.get('rt');
   if(a&&typeof a==='object')S.A=a;

@@ -6516,7 +6516,7 @@ async function deleteClient(k){
       }
       // 4. שמירה ל-Firebase ו-localStorage
       await store.set('clients',S.CL||{});
-      await store.set('appointments',S.A||{});
+      await store.set('appts',S.A||{});
       // 5. ניקוי UI
       S.openClient=null;S.editClient=false;
       crmRender();

@@ -6497,12 +6497,11 @@ async function deleteClient(k){
     try{
       // 1. מחק מ-S.CL
       if(S.CL&&S.CL[k])delete S.CL[k];
-      // 2. מחק גם לקוחות עם מפתח של טלפון או שם (תאימות לאחור)
       if(S.CL){
         if(phone&&S.CL[phone])delete S.CL[phone];
         if(name&&S.CL[name])delete S.CL[name];
       }
-      // 3. מחק תורים שקשורים ללקוח
+      // 2. מחק תורים שקשורים ללקוח
       if(S.A){
         for(const date of Object.keys(S.A)){
           for(const time of Object.keys(S.A[date]||{})){
@@ -6514,15 +6513,28 @@ async function deleteClient(k){
           if(Object.keys(S.A[date]||{}).length===0)delete S.A[date];
         }
       }
-      // 4. שמירה ל-Firebase ו-localStorage
-      await store.set('clients',S.CL||{});
-      await store.set('appts',S.A||{});
-      // 5. ניקוי UI
+      // 3. שמירה SYNCRONIC אמיתית ל-Firebase (לא דרך store.set שלא מחכה)
+      const token=await auth.getToken();
+      if(!token){webToast('❌ אין חיבור ל-Firebase',true);return;}
+      // localStorage
+      try{localStorage.setItem('dr_clients',JSON.stringify(S.CL||{}));}catch(e){}
+      try{localStorage.setItem('dr_appts',JSON.stringify(S.A||{}));}catch(e){}
+      // Firebase — PUT עם await אמיתי
+      const putOptions={method:'PUT',headers:{'Content-Type':'application/json'}};
+      const [r1,r2]=await Promise.all([
+        fetch(FB+'/clients.json?auth='+encodeURIComponent(token),{...putOptions,body:JSON.stringify(S.CL||{})}),
+        fetch(FB+'/appts.json?auth='+encodeURIComponent(token),{...putOptions,body:JSON.stringify(S.A||{})})
+      ]);
+      if(!r1.ok||!r2.ok){
+        webToast('⚠️ שגיאת שמירה — נסה שוב',true);
+        return;
+      }
+      // 4. ניקוי UI
       S.openClient=null;S.editClient=false;
       crmRender();
-      webToast('✅ הלקוח נמחק');
+      webToast('✅ הלקוח נמחק לצמיתות');
     }catch(e){
-      webToast('❌ שגיאה במחיקה: '+(e.message||e),true);
+      webToast('❌ שגיאה: '+(e.message||e),true);
     }
   });
 }

@@ -6457,12 +6457,74 @@ function toggleArea(k,id){
   crmRender();
 }
 function saveClient(k){if(!S.CL)S.CL={};if(!S.CL[k])S.CL[k]={sens:[]};const n2=(document.getElementById('cl-n')||{}).value||'',p2=(document.getElementById('cl-p')||{}).value||'',e2=(document.getElementById('cl-e')||{}).value||'',b2=(document.getElementById('cl-b')||{}).value||'',nt2=(document.getElementById('cl-nt')||{}).value||'';S.CL[k]={...S.CL[k],name:n2,phone:p2,email:e2,bday:b2,notes:nt2,areas:S.CL[k].areas||[],sens:S.CL[k].sens||[]};store.set('clients',S.CL);S.editClient=false;crmRender();}
-function deleteClient(k){
-  if(!confirm('למחוק את הלקוח?\nלא ניתן לבטל פעולה זו.'))return;
-  if(S.CL&&S.CL[k])delete S.CL[k];
-  store.set('clients',S.CL);
-  S.openClient=null;S.editClient=false;
-  crmRender();
+function webConfirm(msg,onOk){
+  document.querySelectorAll('.web-confirm-backdrop').forEach(e=>e.remove());
+  const bd=document.createElement('div');
+  bd.className='web-confirm-backdrop';
+  bd.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:999999;display:flex;align-items:center;justify-content:center;padding:20px;font-family:inherit';
+  const box=document.createElement('div');
+  box.style.cssText='background:#fff;border-radius:18px;padding:22px;max-width:340px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.3);direction:rtl;text-align:right';
+  box.innerHTML=`<div style="font-size:16px;font-weight:700;color:#1f2937;margin-bottom:8px;line-height:1.5">${msg.replace(/\n/g,'<br>')}</div>
+    <div style="display:flex;gap:8px;margin-top:16px">
+      <button id="wc-cancel" style="flex:1;padding:12px;background:#f3f4f6;color:#374151;border:none;border-radius:12px;font-weight:700;cursor:pointer;font-family:inherit;font-size:14px">ביטול</button>
+      <button id="wc-ok" style="flex:1;padding:12px;background:#dc2626;color:#fff;border:none;border-radius:12px;font-weight:700;cursor:pointer;font-family:inherit;font-size:14px">🗑 מחק</button>
+    </div>`;
+  bd.appendChild(box);
+  document.body.appendChild(bd);
+  const close=()=>bd.remove();
+  bd.querySelector('#wc-cancel').onclick=close;
+  bd.querySelector('#wc-ok').onclick=()=>{close();onOk&&onOk();};
+  bd.onclick=(e)=>{if(e.target===bd)close();};
+}
+async function deleteClient(k){
+  if(!k){webToast('שגיאה: מזהה לקוח חסר',true);return;}
+  const cd=(S.CL&&S.CL[k])||{};
+  // נסה למצוא שם/טלפון גם דרך התורים אם אין ב-CL
+  let name=cd.name||'';
+  let phone=cd.phone||'';
+  if(!name && S.A){
+    outer:for(const date in S.A){
+      for(const time in (S.A[date]||{})){
+        const d=S.A[date][time];
+        if(!d)continue;
+        const dKey=d.phone||d.name;
+        if(dKey===k){name=d.name||name;phone=d.phone||phone;break outer;}
+      }
+    }
+  }
+  const displayName=name||k||'לקוח זה';
+  webConfirm(`למחוק את "${displayName}"?\nכל התורים וההיסטוריה יימחקו.\nלא ניתן לבטל.`,async()=>{
+    try{
+      // 1. מחק מ-S.CL
+      if(S.CL&&S.CL[k])delete S.CL[k];
+      // 2. מחק גם לקוחות עם מפתח של טלפון או שם (תאימות לאחור)
+      if(S.CL){
+        if(phone&&S.CL[phone])delete S.CL[phone];
+        if(name&&S.CL[name])delete S.CL[name];
+      }
+      // 3. מחק תורים שקשורים ללקוח
+      if(S.A){
+        for(const date of Object.keys(S.A)){
+          for(const time of Object.keys(S.A[date]||{})){
+            const d=S.A[date][time];
+            if(!d)continue;
+            const match=(phone&&d.phone===phone)||(name&&d.name===name)||(d.phone===k)||(d.name===k);
+            if(match)delete S.A[date][time];
+          }
+          if(Object.keys(S.A[date]||{}).length===0)delete S.A[date];
+        }
+      }
+      // 4. שמירה ל-Firebase ו-localStorage
+      await store.set('clients',S.CL||{});
+      await store.set('appointments',S.A||{});
+      // 5. ניקוי UI
+      S.openClient=null;S.editClient=false;
+      crmRender();
+      webToast('✅ הלקוח נמחק');
+    }catch(e){
+      webToast('❌ שגיאה במחיקה: '+(e.message||e),true);
+    }
+  });
 }
 function saveBGoal(){const t=(document.getElementById('gi-t')||{}).value||'',v=(document.getElementById('gi-v')||{}).value||'';if(!t.trim()||!v)return;if(!S.BG)S.BG={};const id='bg_'+Date.now();S.BG[id]={title:t,target:v,period:S.newGoal.period,type:S.newGoal.type};store.set('bgoals',S.BG);S.showAddGoal=false;S.newGoal={title:'',target:'',period:'month',type:'revenue'};hRender();}
 function deleteBGoal(id){if(!confirm('למחוק יעד זה?'))return;if(S.BG&&S.BG[id])delete S.BG[id];store.set('bgoals',S.BG||{});hRender();}

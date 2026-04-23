@@ -9,7 +9,7 @@
  * Versioning: כשמשנים את CACHE_VERSION, כל ה-cache הישן נמחק אוטומטית
  */
 
-const CACHE_VERSION = 'diary-rinat-v23';
+const CACHE_VERSION = 'diary-rinat-v24';
 const RUNTIME_CACHE = CACHE_VERSION + '-runtime';
 
 // התקנה: פותח cache חדש

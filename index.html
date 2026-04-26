@@ -2659,11 +2659,18 @@ textarea:focus-visible,
 <div id="app" role="main" aria-label="היומן שלנו - אפליקציית ניהול קליניקה"><div class="loader" role="status" aria-live="polite"><div class="spinner" aria-hidden="true"></div><div style="color:#6d28d9;font-weight:bold;font-size:16px">טוען...</div></div></div>
 <script>
 // ── Firebase Auth — Email/Password + Login UI ─────────
-// כל משתמש (אוריאל/דניאל/רינת) מתחבר עם email+סיסמה משלו.
-// רישום חדש חסום מאחורי קוד הזמנה. ה-token מתחדש אוטומטית.
+// גישה מוגבלת ל-3 משתמשים בלבד (allowlist). רישום חדש חסום לחלוטין.
+// ה-token מתחדש אוטומטית. אכיפה משולבת: קליינט + Firebase Database Rules.
 const FB='https://diary-daniel-rinat-default-rtdb.firebaseio.com/diary';
 const FB_API_KEY='AIzaSyCsh6qM-WgbWn1LHx2FTVio35ZPvMQ0aG4';
-const INVITE_CODE='PINTORD5997@';
+
+// רשימת המייל המורשים — אסור להוסיף בלי גם לעדכן את Firebase Database Rules
+const ALLOWED_EMAILS=[
+  'pinto1212121212@gmail.com',
+  '__ALLOWED_EMAIL_DANIEL__@example.com',
+  '__ALLOWED_EMAIL_RINAT__@example.com'
+].map(e=>e.toLowerCase());
+function _isAllowedEmail(e){return !!e && ALLOWED_EMAILS.includes(String(e).toLowerCase());}
 
 // ── שכבה 8: הצפנת localStorage עם AES-GCM ──
 // כל נתון בקש מוצפן באופן שקוף. גם אם גנבו את הטלפון ופתחו DevTools — רואים רק ג'יבריש.
@@ -2874,6 +2881,12 @@ const auth={
     try{
       const saved=JSON.parse(localStorage.getItem('fb_auth')||'null');
       if(!saved || !saved.refresh) return null;
+      // שכבת הגנה: אם המייל ב-token השמור לא ברשימת המורשים — מנקה הכל
+      if(!_isAllowedEmail(saved.email)){
+        localStorage.removeItem('fb_auth');
+        this._cached=null;this.user=null;
+        return null;
+      }
       if(saved.exp > Date.now()+300000){
         this._cached=saved;
         this.user={uid:saved.uid,email:saved.email,name:saved.name||saved.email};
@@ -2905,6 +2918,11 @@ const auth={
   
   async signIn(email,password){
     rateLimit.check();
+    // שכבת הגנה לפני קריאת ה-API: חוסכים round-trip ולא נותנים אינדיקציה לתוקפים אם המייל קיים ב-Firebase
+    if(!_isAllowedEmail(email)){
+      rateLimit.fail();
+      throw new Error('גישה לא מאושרת — נא לפנות לבעל המערכת');
+    }
     const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+FB_API_KEY,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -2918,6 +2936,10 @@ const auth={
     }
     rateLimit.success();
     const d=await r.json();
+    // הגנה כפולה: גם אם איכשהו עברנו את הבדיקה הראשונה (טוקן ישיר וכו'), בודקים גם את התשובה מ-Firebase
+    if(!_isAllowedEmail(d.email)){
+      throw new Error('גישה לא מאושרת — נא לפנות לבעל המערכת');
+    }
     // קבלת שם המשתמש מ-DB
     let name=d.email;
     try{
@@ -2939,47 +2961,10 @@ const auth={
     return fresh;
   },
   
-  async signUp(email,password,name,inviteCode){
-    rateLimit.check();
-    if(inviteCode!==INVITE_CODE) throw new Error('קוד הזמנה לא נכון');
-    if(!name||name.trim().length<2) throw new Error('חובה למלא שם');
-    const pwCheck=passwordPolicy.check(password);
-    if(!pwCheck.ok) throw new Error(pwCheck.msg);
-    const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key='+FB_API_KEY,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({email,password,returnSecureToken:true})
-    });
-    if(!r.ok){
-      const err=await r.json();
-      throw new Error(this._errMsg(err));
-    }
-    const d=await r.json();
-    // שמירת השם ב-DB
-    try{
-      await fetch(FB+'/users/'+d.localId+'/name.json?auth='+encodeURIComponent(d.idToken),{
-        method:'PUT',body:JSON.stringify(name.trim())
-      });
-      await fetch(FB+'/users/'+d.localId+'/email.json?auth='+encodeURIComponent(d.idToken),{
-        method:'PUT',body:JSON.stringify(email)
-      });
-      await fetch(FB+'/users/'+d.localId+'/createdAt.json?auth='+encodeURIComponent(d.idToken),{
-        method:'PUT',body:JSON.stringify(new Date().toISOString())
-      });
-    }catch(e){}
-    const fresh={
-      token:d.idToken,
-      refresh:d.refreshToken,
-      exp:Date.now()+(parseInt(d.expiresIn)*1000),
-      uid:d.localId,
-      email:d.email,
-      name:name.trim()
-    };
-    localStorage.setItem('fb_auth',JSON.stringify(fresh));
-    this._cached=fresh;
-    this.user={uid:fresh.uid,email:fresh.email,name:fresh.name};
-    this._audit('signup');
-    return fresh;
+  async signUp(){
+    // רישום חסום לחלוטין — האפליקציה מוגבלת ל-3 משתמשים שכבר רשומים.
+    // לקבלת גישה — פנה לבעל המערכת. ההרשמה מבוטלת גם ב-Firebase Console (שכבה 3).
+    throw new Error('הרשמה סגורה — לקבלת גישה פנה לבעל המערכת');
   },
   
   async changePassword(newPassword){
@@ -3004,6 +2989,11 @@ const auth={
   },
   
   async resetPassword(email){
+    // שכבת הגנה: לא מאפשרים לתוקף להציף משתמש מורשה במיילי איפוס,
+    // וגם לא נותנים אינדיקציה אם המייל קיים אצלנו או לא.
+    if(!_isAllowedEmail(email)){
+      throw new Error('אם המייל רשום במערכת, ישלח אליו קישור איפוס');
+    }
     const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key='+FB_API_KEY,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -3336,17 +3326,11 @@ function renderLogin(mode){
     </div>`;
   }
   if(mode==='signup'){
+    // רישום חסום — מציג הודעה במקום הטופס
     return `<div class="login-box">
-      <div class="login-title">✍️ רישום חדש</div>
-      <div class="login-sub">היומן שלנו • הירשם כדי להתחיל</div>
-      <div id="login-msg"></div>
-      <div class="login-field"><label>שם מלא</label><input id="lg-name" type="text" data-rtl autocomplete="name"></div>
-      <div class="login-field"><label>Email</label><input id="lg-email" type="email" autocomplete="email"></div>
-      <div class="login-field"><label>סיסמה (לפחות 8 תווים, אותיות ומספרים)</label><input id="lg-pass" type="password" autocomplete="new-password" oninput="updatePwStrength()"><div id="pw-strength" style="height:4px;border-radius:2px;background:rgba(255,255,255,0.1);margin-top:6px;overflow:hidden"><div id="pw-bar" style="height:100%;width:0;background:#ef4444;transition:width .3s,background .3s"></div></div><div id="pw-hint" style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px"></div></div>
-      <div class="login-field"><label>🔒 אימות סיסמה</label><input id="lg-pass2" type="password" autocomplete="new-password" placeholder="הקלד את הסיסמה שוב"></div>
-      <div class="login-field"><label>🎟️ קוד הזמנה</label><input id="lg-code" type="text" autocomplete="off"></div>
-      <button class="login-btn" onclick="doSignup()">🚀 הירשם</button>
-      <div class="login-switch">כבר רשום? <a onclick="switchLogin('signin')">התחבר</a></div>
+      <div class="login-title">🔒 רישום סגור</div>
+      <div class="login-sub">המערכת פרטית • לקבלת גישה פנה לבעל המערכת</div>
+      <div class="login-switch"><a onclick="switchLogin('signin')">← חזרה לכניסה</a></div>
     </div>`;
   }
   if(mode==='reset'){
@@ -3367,7 +3351,6 @@ function renderLogin(mode){
     <div class="login-field"><label>Email</label><input id="lg-email" type="email" autocomplete="email" onkeydown="if(event.key==='Enter')document.getElementById('lg-pass').focus()"></div>
     <div class="login-field"><label>סיסמה</label><input id="lg-pass" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
     <button class="login-btn" onclick="doLogin()">🔓 כניסה</button>
-    <div class="login-switch">עדיין לא רשום? <a onclick="switchLogin('signup')">הירשם</a></div>
     <div class="login-switch" style="margin-top:8px"><a onclick="switchLogin('reset')">שכחתי סיסמה</a></div>
   </div>`;
 }
@@ -3621,19 +3604,8 @@ async function enableBiometric(){
 }
 
 async function doSignup(){
-  const name=document.getElementById('lg-name').value.trim();
-  const email=document.getElementById('lg-email').value.trim();
-  const pass=document.getElementById('lg-pass').value;
-  const pass2=document.getElementById('lg-pass2').value;
-  const code=document.getElementById('lg-code').value.trim();
-  if(!name||!email||!pass||!pass2||!code){_lgMsg('מלא את כל השדות');return;}
-  if(pass.length<6){_lgMsg('הסיסמה חייבת להיות לפחות 6 תווים');return;}
-  if(pass!==pass2){_lgMsg('הסיסמאות לא תואמות — בדוק שוב');return;}
-  _lgMsg('⏳ רושם...','ok');
-  try{
-    await auth.signUp(email,pass,name,code);
-    location.reload();
-  }catch(e){_lgMsg(e.message||'שגיאה');}
+  // רישום חסום — מציג הודעה במקום
+  _lgMsg('הרשמה סגורה — לקבלת גישה פנה לבעל המערכת');
 }
 
 async function doReset(){

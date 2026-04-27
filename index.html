@@ -4155,6 +4155,68 @@ async function backupAllData(){
   }
 }
 
+// ── Auto-Backup: גיבוי יומי אוטומטי ב-Firebase ────────
+// בכל login בודק אם עבר 24 שעות מהגיבוי האחרון. אם כן — שומר snapshot
+// תחת /backups/{YYYY-MM-DD}.json. שומר 30 ימים אחרונים, מנקה ישנים אוטומטית.
+const _BACKUP_INTERVAL_MS=24*60*60*1000;
+const _BACKUP_RETENTION_DAYS=30;
+const _BACKUP_KEYS=['appts','tasks','goals','bgoals','clients','cancellations','packages','expenses','website'];
+
+async function dailyBackupCheck(){
+  try{
+    const last=parseInt(localStorage.getItem('last_backup_at')||'0');
+    if(Date.now()-last<_BACKUP_INTERVAL_MS)return;
+    const ok=await performDailyBackup();
+    if(ok){
+      localStorage.setItem('last_backup_at',String(Date.now()));
+      cleanupOldBackups().catch(()=>{});
+    }
+  }catch(e){console.warn('[backup] daily check failed:',e);}
+}
+
+async function performDailyBackup(){
+  const token=await auth.getToken();
+  if(!token)return false;
+  const data={};
+  for(const k of _BACKUP_KEYS){
+    try{
+      const r=await fetch(FB+'/'+k+'.json?auth='+encodeURIComponent(token));
+      data[k]=r.ok?await r.json():null;
+    }catch(e){data[k]=null;}
+  }
+  const dateKey=new Date().toISOString().slice(0,10);
+  const body={
+    version:1,
+    app:'rinat-diary',
+    createdAt:new Date().toISOString(),
+    createdBy:(auth.user&&auth.user.email)||'unknown',
+    data
+  };
+  const r=await fetch(FB+'/backups/'+dateKey+'.json?auth='+encodeURIComponent(token),{
+    method:'PUT',
+    body:JSON.stringify(body)
+  });
+  return r.ok;
+}
+
+async function cleanupOldBackups(){
+  const token=await auth.getToken();
+  if(!token)return;
+  const r=await fetch(FB+'/backups.json?auth='+encodeURIComponent(token)+'&shallow=true');
+  if(!r.ok)return;
+  const keys=Object.keys(await r.json()||{});
+  const cutoff=new Date();
+  cutoff.setDate(cutoff.getDate()-_BACKUP_RETENTION_DAYS);
+  const cutoffKey=cutoff.toISOString().slice(0,10);
+  for(const k of keys){
+    if(k<cutoffKey){
+      try{
+        await fetch(FB+'/backups/'+k+'.json?auth='+encodeURIComponent(token),{method:'DELETE'});
+      }catch(e){}
+    }
+  }
+}
+
 // ── Main Render ───────────────────────────────────────
 function render(){
   let h='';
@@ -15546,6 +15608,8 @@ if(typeof window !== 'undefined'){
   if(dt&&typeof dt==='object')S.DT=dt;
   if(rt&&typeof rt==='object')S.RT=rt;
   render();
+  // גיבוי יומי אוטומטי — רץ ברקע, לא חוסם את ה-UI
+  dailyBackupCheck().catch(()=>{});
 })();
 </script>
 

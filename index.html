@@ -3636,7 +3636,8 @@ async function openMyAccount(){
     <div style="font-size:14px;color:rgba(255,255,255,0.85);font-weight:700;margin-bottom:6px">💾 גיבוי וייצוא</div>
     <div id="backup-info" style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:10px;line-height:1.6"></div>
     <button class="login-btn" style="background:linear-gradient(135deg,#0d9488,#0f766e);color:#fff;margin-bottom:8px" onclick="backupAllData()">📥 הורד גיבוי עכשיו</button>
-    <button class="login-btn" style="background:linear-gradient(135deg,#16a34a,#15803d);color:#fff" onclick="shareBackupNow()">📤 שלח (וואטסאפ / מייל / Drive)</button>
+    <button class="login-btn" style="background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;margin-bottom:8px" onclick="shareBackupNow()">📤 שלח (וואטסאפ / מייל / Drive)</button>
+    <button class="login-btn" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff" onclick="showRestoreSheet()">↩️ שחזר מגיבוי</button>
     <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(251,171,32,0.15)"></div>
     <button class="login-btn" style="background:linear-gradient(135deg,#334155,#1e293b);color:#fff" onclick="showAuditLog()">📋 יומן פעילות</button>
     <div style="margin-top:14px"></div>
@@ -4178,6 +4179,62 @@ async function backupAllData(){
     if(btn){btn.textContent='❌';btn.disabled=false;}
     setTimeout(()=>{if(btn){btn.textContent='💾';}},2500);
   }
+}
+
+// ── Restore: שחזור נתונים מגיבוי ב-Firebase ────────────
+async function showRestoreSheet(){
+  try{
+    const token=await auth.getToken();
+    if(!token)return;
+    const r=await fetch(FB+'/backups.json?auth='+encodeURIComponent(token)+'&shallow=true');
+    const backups=r.ok?(await r.json()||{}):{};
+    const dateKeys=Object.keys(backups).sort().reverse();
+    const box=document.getElementById('login-screen');
+    if(!box)return;
+    if(dateKeys.length===0){
+      box.innerHTML=`<div class="login-box">
+        <div class="login-title">↩️ שחזור מגיבוי</div>
+        <div class="login-sub" style="color:#fca5a5;margin-top:14px">אין גיבויים זמינים עדיין.<br>הגיבוי האוטומטי הראשון ייווצר בכניסה הבאה.</div>
+        <div style="margin-top:14px"></div>
+        <button class="login-btn" style="background:linear-gradient(135deg,#64748b,#475569);color:#fff" onclick="openMyAccount()">← חזרה</button>
+      </div>`;
+      return;
+    }
+    const list=dateKeys.map(k=>
+      `<button class="login-btn" style="background:rgba(124,58,237,0.15);color:#fbab20;border:1px solid rgba(167,139,250,0.3);text-align:right;margin-bottom:6px;font-size:14px" onclick="restoreFromBackup('${k}')">📅 ${k}</button>`
+    ).join('');
+    box.innerHTML=`<div class="login-box">
+      <div class="login-title">↩️ שחזור מגיבוי</div>
+      <div class="login-sub">בחר תאריך לשחזור</div>
+      <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:10px;margin:14px 0;font-size:12px;color:#fca5a5;line-height:1.5">⚠️ <b>אזהרה:</b> השחזור ידרוס את כל הנתונים הנוכחיים. רצוי לעשות "📥 הורד גיבוי עכשיו" קודם, כדי לשמור את המצב הנוכחי כגיבוי גם הוא.</div>
+      <div style="max-height:50vh;overflow-y:auto;margin-top:10px">${list}</div>
+      <div style="margin-top:14px"></div>
+      <button class="login-btn" style="background:linear-gradient(135deg,#64748b,#475569);color:#fff" onclick="openMyAccount()">← חזרה</button>
+    </div>`;
+  }catch(e){alert('שגיאה: '+(e.message||''));}
+}
+
+async function restoreFromBackup(dateKey){
+  if(!confirm(`לשחזר נתונים מ-${dateKey}?\n\nכל הנתונים הנוכחיים יוחלפו!\nאם לא עשית גיבוי של המצב הנוכחי — חזור ועשה לפני!\n\nלהמשיך?`))return;
+  try{
+    const token=await auth.getToken();
+    if(!token)throw new Error('לא מחובר');
+    const r=await fetch(FB+'/backups/'+dateKey+'.json?auth='+encodeURIComponent(token));
+    if(!r.ok)throw new Error('שגיאה בטעינת הגיבוי');
+    const backup=await r.json();
+    if(!backup||!backup.data)throw new Error('גיבוי ריק או לא תקין');
+    for(const k of _BACKUP_KEYS){
+      const value=backup.data[k];
+      if(value!==undefined){
+        await fetch(FB+'/'+k+'.json?auth='+encodeURIComponent(token),{
+          method:'PUT',
+          body:JSON.stringify(value)
+        });
+      }
+    }
+    alert('✅ השחזור הושלם! האפליקציה תיטען מחדש.');
+    location.reload();
+  }catch(e){alert('❌ שגיאה בשחזור: '+(e.message||''));}
 }
 
 // ── Share Backup: שיתוף גיבוי דרך Web Share API (וואטסאפ/מייל/Drive) ──

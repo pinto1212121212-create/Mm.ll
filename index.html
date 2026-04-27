@@ -3633,6 +3633,11 @@ async function openMyAccount(){
     <button class="login-btn" onclick="doChangePassword()">שמור סיסמה חדשה</button>
     <div id="ma-bio-wrap" style="display:none;margin-top:14px"></div>
     <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(251,171,32,0.15)"></div>
+    <div style="font-size:14px;color:rgba(255,255,255,0.85);font-weight:700;margin-bottom:6px">💾 גיבוי וייצוא</div>
+    <div id="backup-info" style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:10px;line-height:1.6"></div>
+    <button class="login-btn" style="background:linear-gradient(135deg,#0d9488,#0f766e);color:#fff;margin-bottom:8px" onclick="backupAllData()">📥 הורד גיבוי עכשיו</button>
+    <button class="login-btn" style="background:linear-gradient(135deg,#16a34a,#15803d);color:#fff" onclick="shareBackupNow()">📤 שלח (וואטסאפ / מייל / Drive)</button>
+    <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(251,171,32,0.15)"></div>
     <button class="login-btn" style="background:linear-gradient(135deg,#334155,#1e293b);color:#fff" onclick="showAuditLog()">📋 יומן פעילות</button>
     <div style="margin-top:14px"></div>
     <button class="login-btn" style="background:linear-gradient(135deg,#64748b,#475569);color:#fff" onclick="auth.signOut()">🚪 התנתק</button>
@@ -3641,7 +3646,27 @@ async function openMyAccount(){
     <div class="login-switch" style="margin-top:16px"><a onclick="closeMyAccount()">← חזרה ליומן</a></div>
   </div>`;
   document.body.appendChild(box);
-  // מילוי אזור bio (אסינכרוני — לא חוסם)
+  // מילוי info של גיבוי (תאריך אחרון של כל אחד מהגיבויים האוטומטיים)
+  try{
+    const fbLast=parseInt(localStorage.getItem('last_backup_at')||'0');
+    const ghLast=parseInt(localStorage.getItem('last_gh_backup_at')||'0');
+    const fmt=ts=>{
+      if(!ts)return 'עוד לא בוצע';
+      const d=new Date(ts);
+      const diff=Date.now()-ts;
+      const hr=Math.floor(diff/(1000*60*60));
+      if(hr<1)return 'לפני פחות משעה';
+      if(hr<24)return `לפני ${hr} שעות`;
+      const days=Math.floor(hr/24);
+      return `לפני ${days} ימים (${d.toLocaleDateString('he-IL')})`;
+    };
+    const info=document.getElementById('backup-info');
+    if(info){
+      info.innerHTML=
+        `<div>• אוטומטי יומי (Firebase): ${fmt(fbLast)}</div>`+
+        `<div>• אוטומטי שבועי (GitHub): ${fmt(ghLast)}</div>`;
+    }
+  }catch(e){}
   try{
     if(await bioAuth.isAvailable()){
       const wrap=document.getElementById('ma-bio-wrap');
@@ -4152,6 +4177,59 @@ async function backupAllData(){
     console.error('Backup failed:',e);
     if(btn){btn.textContent='❌';btn.disabled=false;}
     setTimeout(()=>{if(btn){btn.textContent='💾';}},2500);
+  }
+}
+
+// ── Share Backup: שיתוף גיבוי דרך Web Share API (וואטסאפ/מייל/Drive) ──
+async function shareBackupNow(){
+  try{
+    const keys=['appts','tasks','goals','bgoals','clients','cancellations','packages','expenses','website'];
+    const backup={
+      version:1,
+      app:'rinat-diary',
+      createdAt:new Date().toISOString(),
+      data:{}
+    };
+    const token=await auth.getToken();
+    for(const k of keys){
+      try{
+        const url=FB+'/'+k+'.json'+(token?'?auth='+encodeURIComponent(token):'');
+        const r=await fetch(url);
+        backup.data[k]=r.ok?(await r.json()):null;
+      }catch(e){backup.data[k]=null;}
+    }
+    const json=JSON.stringify(backup,null,2);
+    const d=new Date();
+    const pad=n=>String(n).padStart(2,'0');
+    const stamp=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
+    const filename=`rinat-backup-${stamp}.json`;
+    const blob=new Blob([json],{type:'application/json'});
+    const file=new File([blob],filename,{type:'application/json'});
+    // Web Share API — פותח חלונית שיתוף של מערכת ההפעלה (וואטסאפ, מייל, Drive...)
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      try{
+        await navigator.share({
+          title:'גיבוי היומן',
+          text:`גיבוי מ-${d.toLocaleString('he-IL')}`,
+          files:[file]
+        });
+        return;
+      }catch(e){
+        if(e.name==='AbortError')return; // המשתמש סגר
+        console.warn('share failed, falling back to download:',e);
+      }
+    }
+    // Fallback: הורדה רגילה אם המכשיר לא תומך ב-Web Share API עם files
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download=filename;
+    a.click();
+    URL.revokeObjectURL(url);
+    alert('המכשיר שלך לא תומך בשיתוף ישיר. הקובץ הורד — תוכל לשלוח אותו ידנית.');
+  }catch(e){
+    console.error('share backup failed:',e);
+    alert('שגיאה ביצירת הגיבוי: '+(e.message||''));
   }
 }
 

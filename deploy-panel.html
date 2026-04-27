@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🚀 לוח פרסום</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#0f172a;min-height:100vh;padding:20px;color:white}
+h1{text-align:center;font-size:22px;margin-bottom:4px;color:#5eead4}
+.sub{text-align:center;font-size:13px;color:#475569;margin-bottom:20px}
+.token-row{display:flex;gap:8px;margin-bottom:6px}
+.token-inp{flex:1;background:#1e293b;border:1px solid #334155;border-radius:12px;padding:11px 14px;color:white;font-size:14px;outline:none;text-align:right;font-family:inherit}
+.token-inp:focus{border-color:#5eead4}
+.token-btn{background:#0d9488;border:none;border-radius:12px;padding:11px 16px;color:white;font-weight:700;cursor:pointer;font-size:13px;white-space:nowrap;font-family:inherit}
+.token-status{font-size:12px;text-align:center;margin-bottom:16px;min-height:18px}
+.sites-grid{display:flex;flex-direction:column;gap:12px;margin-bottom:12px}
+.site-card{background:#1e293b;border-radius:16px;padding:16px;border:1px solid #334155}
+.site-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.site-name{font-size:15px;font-weight:800;color:white}
+.site-repo{font-size:11px;color:#475569;margin-top:2px}
+.site-link{font-size:11px;color:#5eead4;text-decoration:none;display:inline-block;margin-top:3px}
+.card-actions{display:flex;gap:6px;flex-shrink:0}
+.edit-btn{background:#1e3a5f;border:1px solid #334155;border-radius:8px;padding:6px 10px;color:#7dd3fc;cursor:pointer;font-size:11px;font-family:inherit}
+.copy-btn{background:#134e4a;border:1px solid #0d9488;border-radius:8px;padding:6px 10px;color:#5eead4;cursor:pointer;font-size:11px;font-family:inherit;transition:all .2s}
+.copy-btn.done{background:#059669;color:white;border-color:#10b981}
+.del-btn{background:#7f1d1d;border:none;border-radius:8px;padding:6px 10px;color:#fca5a5;cursor:pointer;font-size:11px;font-family:inherit}
+.deploy-btn{background:linear-gradient(135deg,#0d9488,#0f766e);border:none;border-radius:10px;padding:11px 16px;color:white;font-weight:700;cursor:pointer;font-size:13px;font-family:inherit;width:100%}
+.deploy-btn:disabled{opacity:.5}
+.self-btn{background:linear-gradient(135deg,#7c3aed,#5b21b6);border:none;border-radius:10px;padding:10px 16px;color:white;font-weight:700;cursor:pointer;font-size:12px;font-family:inherit;width:100%;margin-top:8px}
+.self-btn:disabled{opacity:.5}
+.prog{background:#0f172a;border-radius:8px;overflow:hidden;margin-top:8px;height:5px;display:none}
+.prog-bar{height:100%;background:linear-gradient(90deg,#0d9488,#5eead4);border-radius:8px;transition:width .4s}
+.card-status{font-size:12px;color:#5eead4;margin-top:6px;min-height:16px;text-align:center}
+.card-status.err{color:#f87171}
+.add-btn{background:linear-gradient(135deg,#7c3aed,#5b21b6);border:none;border-radius:16px;padding:16px;text-align:center;color:white;font-size:14px;font-weight:700;font-family:inherit;width:100%;cursor:pointer}
+.add-form{background:#1e293b;border-radius:16px;padding:16px;border:1px solid #7c3aed;margin-top:10px;display:none}
+.add-form.show{display:block}
+.add-inp{width:100%;background:#0f172a;border:1px solid #334155;border-radius:10px;padding:10px 14px;color:white;font-size:14px;outline:none;text-align:right;font-family:inherit;margin-bottom:8px}
+.add-inp:focus{border-color:#5eead4}
+.add-btns{display:flex;gap:8px;margin-top:8px}
+.btn-purple{flex:2;background:#7c3aed;border:none;border-radius:10px;padding:12px;color:white;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-gray{flex:1;background:#334155;border:none;border-radius:10px;padding:12px;color:white;font-weight:700;cursor:pointer;font-family:inherit}
+.file-lbl{font-size:12px;color:#5eead4;text-align:center;min-height:16px;margin:4px 0}
+.new-step{font-size:11px;color:#64748b;text-align:center;min-height:16px;margin-top:4px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0d9488;color:white;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:600;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.toast.err{background:#dc2626}
+.toast.show{opacity:1}
+.edit-overlay{position:fixed;inset:0;background:#0f172a;z-index:998;display:flex;flex-direction:column;padding:14px}
+.edit-overlay.hidden{display:none}
+.edit-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.edit-title{flex:1;font-size:15px;font-weight:700;color:#5eead4}
+.edit-textarea{flex:1;background:#1e293b;border:1px solid #334155;border-radius:12px;color:#e2e8f0;font-size:12px;font-family:'Courier New',monospace;padding:12px;resize:none;outline:none;direction:ltr;text-align:left;line-height:1.6}
+.edit-btns{display:flex;gap:8px;margin-top:10px}
+.edit-save{flex:2;background:linear-gradient(135deg,#0d9488,#0f766e);border:none;border-radius:10px;padding:13px;color:white;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
+.edit-cancel{flex:1;background:#334155;border:none;border-radius:10px;padding:13px;color:white;font-weight:700;cursor:pointer;font-family:inherit}
+.edit-status{font-size:12px;color:#5eead4;text-align:center;min-height:16px;margin-top:6px}
+</style>
+</head>
+<body>
+
+<h1>🚀 לוח פרסום</h1>
+<p class="sub">עדכן כל אתר בלחיצה אחת</p>
+
+<div class="token-row">
+  <input class="token-inp" id="gh-token" type="password" placeholder="GitHub Token שלך..." dir="ltr">
+  <button class="token-btn" onclick="saveToken()">💾 שמור</button>
+</div>
+<div class="token-status" id="token-status"></div>
+
+<div class="sites-grid" id="sites-grid"></div>
+
+<button class="add-btn" onclick="toggleAddForm()">✨ הוסף אתר חדש — הכל אוטומטי</button>
+
+<div class="add-form" id="add-form">
+  <div style="font-size:12px;color:#5eead4;margin-bottom:12px;text-align:center">ריפו נוצר + Pages מופעל אוטומטית 🎉</div>
+  <input class="add-inp" id="new-name" placeholder="שם האתר (למשל: אתר רינת)">
+  <input class="add-inp" id="new-repo" placeholder="שם ריפו (למשל: rinat-site)" dir="ltr">
+  <input class="add-inp" id="new-owner" placeholder="שם משתמש גיטהאב" dir="ltr" value="pinto1212121212-create">
+  <input type="file" accept=".html" id="new-file" style="display:none" onchange="document.getElementById('new-file-lbl').textContent=this.files[0]?'📄 '+this.files[0].name:''">
+  <button class="deploy-btn" onclick="document.getElementById('new-file').click()" style="margin-bottom:4px">📁 בחר קובץ HTML</button>
+  <div class="file-lbl" id="new-file-lbl"></div>
+  <div class="prog" id="new-prog"><div class="prog-bar" id="new-progbar" style="width:0%"></div></div>
+  <div class="new-step" id="new-step"></div>
+  <div class="add-btns">
+    <button class="btn-gray" onclick="toggleAddForm()">ביטול</button>
+    <button class="btn-purple" id="btn-create" onclick="createAndDeploy()">🚀 צור ופרסם!</button>
+  </div>
+</div>
+
+<div class="edit-overlay hidden" id="edit-overlay">
+  <div class="edit-top">
+    <div class="edit-title" id="edit-title">✏️ עריכה</div>
+    <button class="edit-cancel" onclick="closeEditor()" style="padding:7px 14px;font-size:13px">✕ סגור</button>
+  </div>
+  <textarea class="edit-textarea" id="edit-textarea" spellcheck="false"></textarea>
+  <div class="edit-status" id="edit-status"></div>
+  <div class="edit-btns">
+    <button class="edit-cancel" onclick="closeEditor()">ביטול</button>
+    <button class="edit-cancel" onclick="downloadEdit()" style="background:#1e3a5f;color:#7dd3fc;border:1px solid #334155">⬇️ הורד</button>
+    <button class="edit-save" id="edit-save-btn" onclick="saveEdit()">💾 שמור ופרסם</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div id="del-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;align-items:center;justify-content:center">
+  <div style="background:#1e293b;border-radius:16px;padding:24px;margin:20px;border:1px solid #f87171;text-align:center">
+    <div style="font-size:32px;margin-bottom:8px">🗑</div>
+    <div id="del-modal-name" style="font-size:16px;font-weight:700;margin-bottom:6px"></div>
+    <div style="font-size:13px;color:#94a3b8;margin-bottom:20px">למחוק מהרשימה?</div>
+    <div style="display:flex;gap:10px">
+      <button onclick="closeDelModal()" style="flex:1;background:#334155;border:none;border-radius:10px;padding:12px;color:white;font-weight:700;cursor:pointer;font-size:14px;font-family:inherit">ביטול</button>
+      <button onclick="doDelete()" style="flex:1;background:#dc2626;border:none;border-radius:10px;padding:12px;color:white;font-weight:700;cursor:pointer;font-size:14px;font-family:inherit">מחק</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DEFAULT_SITES=[
+  {id:'panel',    name:'🚀 לוח פרסום',                 repo:'deploy-panel',   owner:'pinto1212121212-create'},
+  {id:'hodaya',   name:'💙 היומן שלי — הודיה',         repo:'therapy-hodaya', owner:'pinto1212121212-create'},
+  {id:'rinat',    name:'📖 היומן שלנו — רינת ודניאל',  repo:'diary-rinat',    owner:'pinto1212121212-create'},
+  {id:'laser',    name:'💎 RB Pro Laser',               repo:'rb-prolaser',    owner:'pinto1212121212-create'},
+  {id:'laregesh', name:'🌸 בית לרגש',                  repo:'beit-laregesh',  owner:'pinto1212121212-create'},
+];
+
+function getDeletedIds(){
+  try{return JSON.parse(localStorage.getItem('deleted_ids')||'[]');}catch(e){return [];}
+}
+function getSites(){
+  try{
+    const s=localStorage.getItem('deploy_sites');
+    const deleted=getDeletedIds();
+    if(s===null){
+      // פעם ראשונה — שומר DEFAULT בלי המחוקים
+      const initial=DEFAULT_SITES.filter(x=>!deleted.includes(x.id));
+      localStorage.setItem('deploy_sites',JSON.stringify(initial));
+      return initial;
+    }
+    return (JSON.parse(s)||[]).filter(x=>!deleted.includes(x.id));
+  }catch(e){return DEFAULT_SITES;}
+}
+function saveSites(s){localStorage.setItem('deploy_sites',JSON.stringify(s));}
+function getToken(){return localStorage.getItem('gh_deploy_token')||'';}
+
+let _toastTimer;
+function toast(msg,isErr=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast'+(isErr?' err':'')+' show';
+  clearTimeout(_toastTimer);_toastTimer=setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+function saveToken(){
+  const t=document.getElementById('gh-token').value.trim();
+  if(!t)return;
+  localStorage.setItem('gh_deploy_token',t);
+  document.getElementById('gh-token').value='';
+  showTokenStatus();toast('✅ Token נשמר!');
+}
+function clearToken(){
+  localStorage.removeItem('gh_deploy_token');showTokenStatus();toast('🗑 Token נמחק');
+}
+function showTokenStatus(){
+  const el=document.getElementById('token-status');
+  el.innerHTML=getToken()
+    ?'<span style="color:#4ade80">✅ Token מחובר</span> &nbsp;·&nbsp; <span style="color:#475569;cursor:pointer;text-decoration:underline" onclick="clearToken()">נקה</span>'
+    :'<span style="color:#f87171">⚠️ Token לא הוגדר</span>';
+}
+
+function renderSites(){
+  document.getElementById('sites-grid').innerHTML=getSites().map(s=>{
+    const url=`https://${s.owner}.github.io/${s.repo}`;
+    const isSelf=(s.repo==='deploy-panel');
+    return`<div class="site-card">
+      <div class="site-card-top">
+        <div>
+          <div class="site-name">${s.name}</div>
+          <div class="site-repo">${s.owner}/${s.repo}</div>
+          <a class="site-link" href="${url}" target="_blank">🌐 פתח אתר</a>
+        </div>
+        <div class="card-actions">
+          <button class="edit-btn" onclick="moveSite('${s.id}',-1)" style="padding:6px 8px">▲</button>
+          <button class="edit-btn" onclick="moveSite('${s.id}',1)" style="padding:6px 8px">▼</button>
+          <button class="copy-btn" id="copy-${s.id}" onclick="copyLink('${s.id}','${url}')">🔗</button>
+          <button class="edit-btn" onclick="openEditor('${s.repo}','${s.owner}','${s.name}')">✏️</button>
+          <button class="del-btn" onclick="confirmDelete('${s.id}','${s.name}')">🗑</button>
+        </div>
+      </div>
+      <input type="file" accept=".html" id="file-${s.id}" style="display:none" onchange="doUpload('${s.id}','${s.repo}','${s.owner}',this)">
+      <button class="deploy-btn" id="btn-${s.id}" onclick="document.getElementById('file-${s.id}').click()">🚀 בחר קובץ ופרסם</button>
+      ${isSelf?`<button class="self-btn" id="self-btn-${s.id}" onclick="deploySelf('${s.id}','${s.repo}','${s.owner}')">♻️ עדכן את הצינור עצמו (מהיר)</button>`:''}
+      <div class="prog" id="prog-${s.id}"><div class="prog-bar" id="progbar-${s.id}" style="width:0%"></div></div>
+      <div class="card-status" id="status-${s.id}"></div>
+    </div>`;
+  }).join('');
+}
+
+// העלאה עצמית — לוקחת את ה-HTML של הדף הנוכחי ומעלה לגיטהאב
+async function deploySelf(id,repo,owner){
+  const token=getToken();if(!token){toast('⚠️ נא להכניס Token קודם',true);return;}
+  const btn=document.getElementById('self-btn-'+id),st=document.getElementById('status-'+id);
+  const prog=document.getElementById('prog-'+id),pb=document.getElementById('progbar-'+id);
+  if(!confirm('♻️ לעדכן את הצינור עצמו לגיטהאב?\n\nהגרסה שרצה עכשיו בדפדפן תעלה ותחליף את זו שבגיטהאב.'))return;
+  btn.disabled=true;btn.textContent='⏳ מעלה...';prog.style.display='block';pb.style.width='20%';
+  st.textContent='אוסף HTML נוכחי...';st.className='card-status';
+  try{
+    // שליפת ה-HTML המלא של הדף הנוכחי
+    const content='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+    const encoded=btoa(unescape(encodeURIComponent(content)));
+    pb.style.width='50%';st.textContent='מעלה לגיטהאב...';
+    const apiUrl=`https://api.github.com/repos/${owner}/${repo}/contents/index.html`;
+    const chk=await (await fetch(apiUrl+`?t=${Date.now()}`,{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Cache-Control':'no-cache'}})).json();
+    const body={message:'Self-update via deploy panel',content:encoded};if(chk.sha)body.sha=chk.sha;
+    pb.style.width='80%';
+    const d=await (await fetch(apiUrl,{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)})).json();
+    if(!d.content)throw new Error(d.message||'שגיאה בהעלאה');
+    pb.style.width='100%';
+    btn.textContent='✅ עלה! מרענן...';btn.style.background='#059669';
+    st.innerHTML=`✅ <a href="https://${owner}.github.io/${repo}" target="_blank" style="color:#5eead4;text-decoration:underline;font-weight:700">פתח אתר עכשיו ←</a>`;
+    toast('✅ הצינור עודכן בהצלחה!');
+    setTimeout(()=>location.reload(),4000);
+  }catch(e){
+    btn.textContent='❌ שגיאה';btn.disabled=false;st.textContent=e.message;st.className='card-status err';
+    toast('❌ '+e.message,true);
+    setTimeout(()=>{btn.textContent='♻️ עדכן את הצינור עצמו (מהיר)';prog.style.display='none';pb.style.width='0%';},3000);
+  }
+}
+
+async function enablePages(owner,repo,token){
+  try{await fetch(`https://api.github.com/repos/${owner}/${repo}/pages`,{method:'POST',
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify({source:{branch:'main',path:'/'}})});}catch(e){}
+}
+
+async function doUpload(id,repo,owner,input){
+  const file=input.files[0];if(!file)return;
+  const token=getToken();if(!token){toast('⚠️ נא להכניס Token קודם',true);return;}
+  const btn=document.getElementById('btn-'+id),st=document.getElementById('status-'+id);
+  const prog=document.getElementById('prog-'+id),pb=document.getElementById('progbar-'+id);
+  btn.disabled=true;btn.textContent='⏳ מעלה...';prog.style.display='block';pb.style.width='20%';
+  st.textContent='קורא קובץ...';st.className='card-status';
+  try{
+    const content=await new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=rej;r.readAsText(file);});
+    const encoded=btoa(unescape(encodeURIComponent(content)));
+    pb.style.width='50%';st.textContent='מעלה לגיטהאב...';
+    const apiUrl=`https://api.github.com/repos/${owner}/${repo}/contents/index.html`;
+    const chk=await (await fetch(apiUrl,{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}})).json();
+    const body={message:'Update via deploy panel',content:encoded};if(chk.sha)body.sha=chk.sha;
+    pb.style.width='75%';
+    const d=await (await fetch(apiUrl,{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)})).json();
+    if(!d.content)throw new Error(d.message||'שגיאה בהעלאה');
+    pb.style.width='90%';st.textContent='מפעיל Pages...';
+    await enablePages(owner,repo,token);
+    pb.style.width='100%';
+    btn.textContent='✅ עלה!';btn.style.background='#059669';
+    st.innerHTML=`✅ <a href="https://${owner}.github.io/${repo}" target="_blank" style="color:#5eead4;text-decoration:underline;font-weight:700">פתח אתר עכשיו ←</a>`;
+    toast('✅ '+repo+' עלה בהצלחה!');
+    // אם עדכנו את הצינור עצמו — נרענן אחרי 4 שניות
+    if(repo==='deploy-panel'){
+      st.textContent='מרענן...';
+      setTimeout(()=>location.reload(),4000);
+      return;
+    }
+    setTimeout(()=>{btn.textContent='🚀 בחר קובץ ופרסם';btn.disabled=false;btn.style.background='';st.textContent='';st.innerHTML='';prog.style.display='none';pb.style.width='0%';input.value='';},10000);
+  }catch(e){
+    btn.textContent='❌ שגיאה';btn.disabled=false;st.textContent=e.message;st.className='card-status err';
+    toast('❌ '+e.message,true);
+    setTimeout(()=>{btn.textContent='🚀 בחר קובץ ופרסם';prog.style.display='none';pb.style.width='0%';},3000);
+  }
+}
+
+async function createAndDeploy(){
+  const name=document.getElementById('new-name').value.trim();
+  const repo=document.getElementById('new-repo').value.trim();
+  const owner=document.getElementById('new-owner').value.trim();
+  const file=document.getElementById('new-file').files[0];
+  const token=getToken();
+  if(!name||!repo){toast('⚠️ נא למלא שם ושם ריפו',true);return;}
+  if(!file){toast('⚠️ נא לבחור קובץ HTML',true);return;}
+  if(!token){toast('⚠️ נא להכניס Token קודם',true);return;}
+  const btn=document.getElementById('btn-create');
+  const prog=document.getElementById('new-prog'),pb=document.getElementById('new-progbar'),step=document.getElementById('new-step');
+  btn.disabled=true;prog.style.display='block';
+  try{
+    step.textContent='📄 קורא קובץ...';pb.style.width='10%';
+    const content=await new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=rej;r.readAsText(file);});
+    const encoded=btoa(unescape(encodeURIComponent(content)));
+    step.textContent='🏗️ יוצר ריפו...';pb.style.width='25%';
+    const cr=await (await fetch('https://api.github.com/user/repos',{method:'POST',
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify({name:repo,private:false,auto_init:false})})).json();
+    const exists=cr.message?.toLowerCase().includes('already exist');
+    if(cr.errors&&!exists)throw new Error(cr.message);
+    if(!exists)await new Promise(r=>setTimeout(r,1500));
+    step.textContent='⬆️ מעלה קובץ...';pb.style.width='55%';
+    const apiUrl=`https://api.github.com/repos/${owner}/${repo}/contents/index.html`;
+    const chk=await (await fetch(apiUrl,{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}})).json();
+    const body={message:'Initial deploy',content:encoded};if(chk.sha)body.sha=chk.sha;
+    const up=await (await fetch(apiUrl,{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)})).json();
+    if(!up.content)throw new Error(up.message||'שגיאה בהעלאה');
+    step.textContent='🌐 מפעיל Pages...';pb.style.width='85%';
+    await enablePages(owner,repo,token);
+    pb.style.width='100%';step.textContent='';
+    const sites=getSites();sites.push({id:'site_'+Date.now(),name,repo,owner});saveSites(sites);
+    ['new-name','new-repo'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('new-file-lbl').textContent='';document.getElementById('new-file').value='';
+    document.getElementById('add-form').classList.remove('show');
+    btn.disabled=false;prog.style.display='none';pb.style.width='0%';
+    renderSites();toast('✅ '+repo+' נוצר! יהיה זמין תוך דקה');
+  }catch(e){
+    step.textContent='❌ '+e.message;btn.disabled=false;toast('❌ '+e.message,true);
+    setTimeout(()=>{step.textContent='';prog.style.display='none';pb.style.width='0%';},4000);
+  }
+}
+
+function toggleAddForm(){document.getElementById('add-form').classList.toggle('show');}
+
+// העתקת קישור של אתר ללוח — עם fallback לדפדפנים ישנים
+async function copyLink(id,url){
+  const btn=document.getElementById('copy-'+id);
+  const original=btn.textContent;
+  try{
+    // שיטה מודרנית — navigator.clipboard (דורש HTTPS)
+    if(navigator.clipboard&&window.isSecureContext){
+      await navigator.clipboard.writeText(url);
+    }else{
+      // fallback ידני — עובד בכל דפדפן
+      const ta=document.createElement('textarea');
+      ta.value=url;ta.style.position='fixed';ta.style.left='-9999px';ta.style.top='0';
+      document.body.appendChild(ta);ta.focus();ta.select();
+      const ok=document.execCommand('copy');
+      document.body.removeChild(ta);
+      if(!ok)throw new Error('fallback failed');
+    }
+    // משוב ויזואלי
+    btn.textContent='✅';btn.classList.add('done');
+    toast('📋 הקישור הועתק!');
+    setTimeout(()=>{btn.textContent=original;btn.classList.remove('done');},1500);
+  }catch(e){
+    toast('❌ לא הצלחתי להעתיק',true);
+  }
+}
+function moveSite(id,dir){
+  const sites=getSites();
+  const i=sites.findIndex(s=>s.id===id);
+  const j=i+dir;
+  if(j<0||j>=sites.length)return;
+  [sites[i],sites[j]]=[sites[j],sites[i]];
+  saveSites(sites);renderSites();
+}
+let _delId='';
+function confirmDelete(id,name){
+  _delId=id;
+  document.getElementById('del-modal-name').textContent=name;
+  document.getElementById('del-modal').style.display='flex';
+}
+function closeDelModal(){document.getElementById('del-modal').style.display='none';_delId='';}
+function doDelete(){
+  if(!_delId)return;
+  const deleted=getDeletedIds();
+  if(!deleted.includes(_delId))deleted.push(_delId);
+  localStorage.setItem('deleted_ids',JSON.stringify(deleted));
+  saveSites(getSites().filter(s=>s.id!==_delId));
+  closeDelModal();renderSites();
+  toast('🗑 נמחק');
+}
+function downloadEdit(){
+  const content=document.getElementById('edit-textarea').value;
+  if(!content)return;
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(content);
+  a.download=(editCtx.repo||'site')+'.html';
+  a.click();
+}
+let editCtx={repo:'',owner:'',sha:''};
+async function openEditor(repo,owner,name){
+  const token=getToken();if(!token){toast('⚠️ נא להכניס Token קודם',true);return;}
+  document.getElementById('edit-title').textContent='✏️ '+name;
+  document.getElementById('edit-textarea').value='';
+  document.getElementById('edit-overlay').classList.remove('hidden');
+  const st=document.getElementById('edit-status');st.textContent='⏳ טוען קובץ...';st.style.color='#5eead4';
+  try{
+    const r=await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/index.html`,
+      {headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}});
+    const d=await r.json();
+    if(!d.content)throw new Error(d.message||'קובץ לא נמצא');
+    editCtx={repo,owner,sha:d.sha};
+    document.getElementById('edit-textarea').value=decodeURIComponent(escape(atob(d.content.replace(/\n/g,''))));
+    st.textContent='';
+  }catch(e){st.textContent='❌ '+e.message;st.style.color='#f87171';}
+}
+function closeEditor(){
+  document.getElementById('edit-overlay').classList.add('hidden');
+  document.getElementById('edit-textarea').value='';
+  document.getElementById('edit-status').textContent='';
+  const btn=document.getElementById('edit-save-btn');
+  btn.textContent='💾 שמור ופרסם';btn.disabled=false;btn.style.background='';
+  editCtx={repo:'',owner:'',sha:''};
+}
+async function saveEdit(){
+  const token=getToken();if(!token){toast('⚠️ אין Token',true);return;}
+  const content=document.getElementById('edit-textarea').value;
+  const st=document.getElementById('edit-status'),btn=document.getElementById('edit-save-btn');
+  btn.disabled=true;btn.textContent='⏳ שומר...';st.textContent='מעלה...';st.style.color='#5eead4';
+  try{
+    const encoded=btoa(unescape(encodeURIComponent(content)));
+    const body={message:'Edit via deploy panel',content:encoded,sha:editCtx.sha};
+    const r=await fetch(`https://api.github.com/repos/${editCtx.owner}/${editCtx.repo}/contents/index.html`,
+      {method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+    const d=await r.json();
+    if(!d.content)throw new Error(d.message||'שגיאה');
+    st.textContent='✅ נשמר! מתעדכן תוך דקה';btn.textContent='✅ נשמר!';btn.style.background='#059669';
+    toast('✅ '+editCtx.repo+' נשמר!');
+    setTimeout(()=>closeEditor(),2500);
+  }catch(e){
+    st.textContent='❌ '+e.message;st.style.color='#f87171';
+    btn.disabled=false;btn.textContent='💾 שמור ופרסם';btn.style.background='';
+    toast('❌ '+e.message,true);
+  }
+}
+
+window.onload=()=>{showTokenStatus();renderSites();};
+</script>
+</body>
+</html>

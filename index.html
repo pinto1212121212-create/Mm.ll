@@ -4217,6 +4217,67 @@ async function cleanupOldBackups(){
   }
 }
 
+// ── Off-platform Backup: גיבוי שבועי ל-GitHub פרטי ────
+// פעם בשבוע, אוטומטית, מעלה snapshot מלא לריפו פרטי ב-GitHub.
+// משתמש ב-Token של הצינור (gh_deploy_token, נשמר באותו origin של GitHub Pages).
+// היסטוריה אינסופית דרך git log. מגן מפני פריצה לחשבון Firebase.
+const _GH_BACKUP_INTERVAL_MS=7*24*60*60*1000;
+const _GH_BACKUP_OWNER='pinto1212121212-create';
+const _GH_BACKUP_REPO='diary-backup';
+
+async function weeklyGithubBackupCheck(){
+  try{
+    const ghToken=localStorage.getItem('gh_deploy_token')||'';
+    if(!ghToken)return;
+    const last=parseInt(localStorage.getItem('last_gh_backup_at')||'0');
+    if(Date.now()-last<_GH_BACKUP_INTERVAL_MS)return;
+    const ok=await performGithubBackup(ghToken);
+    if(ok)localStorage.setItem('last_gh_backup_at',String(Date.now()));
+  }catch(e){console.warn('[backup] weekly GH check failed:',e);}
+}
+
+async function performGithubBackup(ghToken){
+  const fbToken=await auth.getToken();
+  if(!fbToken)return false;
+  const data={};
+  for(const k of _BACKUP_KEYS){
+    try{
+      const r=await fetch(FB+'/'+k+'.json?auth='+encodeURIComponent(fbToken));
+      data[k]=r.ok?await r.json():null;
+    }catch(e){data[k]=null;}
+  }
+  const dateKey=new Date().toISOString().slice(0,10);
+  const body={
+    version:1,
+    app:'rinat-diary',
+    createdAt:new Date().toISOString(),
+    createdBy:(auth.user&&auth.user.email)||'unknown',
+    data
+  };
+  const json=JSON.stringify(body,null,2);
+  const encoded=btoa(unescape(encodeURIComponent(json)));
+  const path='backups/'+dateKey+'.json';
+  const apiUrl='https://api.github.com/repos/'+_GH_BACKUP_OWNER+'/'+_GH_BACKUP_REPO+'/contents/'+path;
+  // אם קיים גיבוי לאותו תאריך, צריך sha כדי לעדכן
+  let sha;
+  try{
+    const chk=await fetch(apiUrl,{headers:{'Authorization':'token '+ghToken,'Accept':'application/vnd.github.v3+json'}});
+    if(chk.ok){const d=await chk.json();sha=d.sha;}
+  }catch(e){}
+  const putBody={message:'Weekly backup '+dateKey,content:encoded};
+  if(sha)putBody.sha=sha;
+  const r=await fetch(apiUrl,{
+    method:'PUT',
+    headers:{
+      'Authorization':'token '+ghToken,
+      'Accept':'application/vnd.github.v3+json',
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify(putBody)
+  });
+  return r.ok;
+}
+
 // ── Main Render ───────────────────────────────────────
 function render(){
   let h='';
@@ -15608,8 +15669,10 @@ if(typeof window !== 'undefined'){
   if(dt&&typeof dt==='object')S.DT=dt;
   if(rt&&typeof rt==='object')S.RT=rt;
   render();
-  // גיבוי יומי אוטומטי — רץ ברקע, לא חוסם את ה-UI
-  dailyBackupCheck().catch(()=>{});
+  // גיבוי יומי אוטומטי + שבועי ל-GitHub — רץ ברקע, לא חוסם את ה-UI
+  dailyBackupCheck()
+    .then(()=>weeklyGithubBackupCheck())
+    .catch(()=>{});
 })();
 </script>
 

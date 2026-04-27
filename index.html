@@ -2659,11 +2659,18 @@ textarea:focus-visible,
 <div id="app" role="main" aria-label="היומן שלנו - אפליקציית ניהול קליניקה"><div class="loader" role="status" aria-live="polite"><div class="spinner" aria-hidden="true"></div><div style="color:#6d28d9;font-weight:bold;font-size:16px">טוען...</div></div></div>
 <script>
 // ── Firebase Auth — Email/Password + Login UI ─────────
-// כל משתמש (אוריאל/דניאל/רינת) מתחבר עם email+סיסמה משלו.
-// רישום חדש חסום מאחורי קוד הזמנה. ה-token מתחדש אוטומטית.
+// גישה מוגבלת ל-3 משתמשים בלבד (allowlist). רישום חדש חסום לחלוטין.
+// ה-token מתחדש אוטומטית. אכיפה משולבת: קליינט + Firebase Database Rules.
 const FB='https://diary-daniel-rinat-default-rtdb.firebaseio.com/diary';
 const FB_API_KEY='AIzaSyCsh6qM-WgbWn1LHx2FTVio35ZPvMQ0aG4';
-const INVITE_CODE='PINTORD5997@';
+
+// רשימת המייל המורשים — אסור להוסיף בלי גם לעדכן את Firebase Database Rules
+const ALLOWED_EMAILS=[
+  'pinto1212121212@gmail.com',
+  'rinatbu16@gmail.com',
+  'ggdaniel654@gmail.com'
+].map(e=>e.toLowerCase());
+function _isAllowedEmail(e){return !!e && ALLOWED_EMAILS.includes(String(e).toLowerCase());}
 
 // ── שכבה 8: הצפנת localStorage עם AES-GCM ──
 // כל נתון בקש מוצפן באופן שקוף. גם אם גנבו את הטלפון ופתחו DevTools — רואים רק ג'יבריש.
@@ -2874,6 +2881,12 @@ const auth={
     try{
       const saved=JSON.parse(localStorage.getItem('fb_auth')||'null');
       if(!saved || !saved.refresh) return null;
+      // שכבת הגנה: אם המייל ב-token השמור לא ברשימת המורשים — מנקה הכל
+      if(!_isAllowedEmail(saved.email)){
+        localStorage.removeItem('fb_auth');
+        this._cached=null;this.user=null;
+        return null;
+      }
       if(saved.exp > Date.now()+300000){
         this._cached=saved;
         this.user={uid:saved.uid,email:saved.email,name:saved.name||saved.email};
@@ -2905,6 +2918,11 @@ const auth={
   
   async signIn(email,password){
     rateLimit.check();
+    // שכבת הגנה לפני קריאת ה-API: חוסכים round-trip ולא נותנים אינדיקציה לתוקפים אם המייל קיים ב-Firebase
+    if(!_isAllowedEmail(email)){
+      rateLimit.fail();
+      throw new Error('גישה לא מאושרת — נא לפנות לבעל המערכת');
+    }
     const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+FB_API_KEY,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -2918,6 +2936,10 @@ const auth={
     }
     rateLimit.success();
     const d=await r.json();
+    // הגנה כפולה: גם אם איכשהו עברנו את הבדיקה הראשונה (טוקן ישיר וכו'), בודקים גם את התשובה מ-Firebase
+    if(!_isAllowedEmail(d.email)){
+      throw new Error('גישה לא מאושרת — נא לפנות לבעל המערכת');
+    }
     // קבלת שם המשתמש מ-DB
     let name=d.email;
     try{
@@ -2939,47 +2961,10 @@ const auth={
     return fresh;
   },
   
-  async signUp(email,password,name,inviteCode){
-    rateLimit.check();
-    if(inviteCode!==INVITE_CODE) throw new Error('קוד הזמנה לא נכון');
-    if(!name||name.trim().length<2) throw new Error('חובה למלא שם');
-    const pwCheck=passwordPolicy.check(password);
-    if(!pwCheck.ok) throw new Error(pwCheck.msg);
-    const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key='+FB_API_KEY,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({email,password,returnSecureToken:true})
-    });
-    if(!r.ok){
-      const err=await r.json();
-      throw new Error(this._errMsg(err));
-    }
-    const d=await r.json();
-    // שמירת השם ב-DB
-    try{
-      await fetch(FB+'/users/'+d.localId+'/name.json?auth='+encodeURIComponent(d.idToken),{
-        method:'PUT',body:JSON.stringify(name.trim())
-      });
-      await fetch(FB+'/users/'+d.localId+'/email.json?auth='+encodeURIComponent(d.idToken),{
-        method:'PUT',body:JSON.stringify(email)
-      });
-      await fetch(FB+'/users/'+d.localId+'/createdAt.json?auth='+encodeURIComponent(d.idToken),{
-        method:'PUT',body:JSON.stringify(new Date().toISOString())
-      });
-    }catch(e){}
-    const fresh={
-      token:d.idToken,
-      refresh:d.refreshToken,
-      exp:Date.now()+(parseInt(d.expiresIn)*1000),
-      uid:d.localId,
-      email:d.email,
-      name:name.trim()
-    };
-    localStorage.setItem('fb_auth',JSON.stringify(fresh));
-    this._cached=fresh;
-    this.user={uid:fresh.uid,email:fresh.email,name:fresh.name};
-    this._audit('signup');
-    return fresh;
+  async signUp(){
+    // רישום חסום לחלוטין — האפליקציה מוגבלת ל-3 משתמשים שכבר רשומים.
+    // לקבלת גישה — פנה לבעל המערכת. ההרשמה מבוטלת גם ב-Firebase Console (שכבה 3).
+    throw new Error('הרשמה סגורה — לקבלת גישה פנה לבעל המערכת');
   },
   
   async changePassword(newPassword){
@@ -3004,6 +2989,11 @@ const auth={
   },
   
   async resetPassword(email){
+    // שכבת הגנה: לא מאפשרים לתוקף להציף משתמש מורשה במיילי איפוס,
+    // וגם לא נותנים אינדיקציה אם המייל קיים אצלנו או לא.
+    if(!_isAllowedEmail(email)){
+      throw new Error('אם המייל רשום במערכת, ישלח אליו קישור איפוס');
+    }
     const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key='+FB_API_KEY,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -3336,17 +3326,11 @@ function renderLogin(mode){
     </div>`;
   }
   if(mode==='signup'){
+    // רישום חסום — מציג הודעה במקום הטופס
     return `<div class="login-box">
-      <div class="login-title">✍️ רישום חדש</div>
-      <div class="login-sub">היומן שלנו • הירשם כדי להתחיל</div>
-      <div id="login-msg"></div>
-      <div class="login-field"><label>שם מלא</label><input id="lg-name" type="text" data-rtl autocomplete="name"></div>
-      <div class="login-field"><label>Email</label><input id="lg-email" type="email" autocomplete="email"></div>
-      <div class="login-field"><label>סיסמה (לפחות 8 תווים, אותיות ומספרים)</label><input id="lg-pass" type="password" autocomplete="new-password" oninput="updatePwStrength()"><div id="pw-strength" style="height:4px;border-radius:2px;background:rgba(255,255,255,0.1);margin-top:6px;overflow:hidden"><div id="pw-bar" style="height:100%;width:0;background:#ef4444;transition:width .3s,background .3s"></div></div><div id="pw-hint" style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px"></div></div>
-      <div class="login-field"><label>🔒 אימות סיסמה</label><input id="lg-pass2" type="password" autocomplete="new-password" placeholder="הקלד את הסיסמה שוב"></div>
-      <div class="login-field"><label>🎟️ קוד הזמנה</label><input id="lg-code" type="text" autocomplete="off"></div>
-      <button class="login-btn" onclick="doSignup()">🚀 הירשם</button>
-      <div class="login-switch">כבר רשום? <a onclick="switchLogin('signin')">התחבר</a></div>
+      <div class="login-title">🔒 רישום סגור</div>
+      <div class="login-sub">המערכת פרטית • לקבלת גישה פנה לבעל המערכת</div>
+      <div class="login-switch"><a onclick="switchLogin('signin')">← חזרה לכניסה</a></div>
     </div>`;
   }
   if(mode==='reset'){
@@ -3367,7 +3351,6 @@ function renderLogin(mode){
     <div class="login-field"><label>Email</label><input id="lg-email" type="email" autocomplete="email" onkeydown="if(event.key==='Enter')document.getElementById('lg-pass').focus()"></div>
     <div class="login-field"><label>סיסמה</label><input id="lg-pass" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
     <button class="login-btn" onclick="doLogin()">🔓 כניסה</button>
-    <div class="login-switch">עדיין לא רשום? <a onclick="switchLogin('signup')">הירשם</a></div>
     <div class="login-switch" style="margin-top:8px"><a onclick="switchLogin('reset')">שכחתי סיסמה</a></div>
   </div>`;
 }
@@ -3621,19 +3604,8 @@ async function enableBiometric(){
 }
 
 async function doSignup(){
-  const name=document.getElementById('lg-name').value.trim();
-  const email=document.getElementById('lg-email').value.trim();
-  const pass=document.getElementById('lg-pass').value;
-  const pass2=document.getElementById('lg-pass2').value;
-  const code=document.getElementById('lg-code').value.trim();
-  if(!name||!email||!pass||!pass2||!code){_lgMsg('מלא את כל השדות');return;}
-  if(pass.length<6){_lgMsg('הסיסמה חייבת להיות לפחות 6 תווים');return;}
-  if(pass!==pass2){_lgMsg('הסיסמאות לא תואמות — בדוק שוב');return;}
-  _lgMsg('⏳ רושם...','ok');
-  try{
-    await auth.signUp(email,pass,name,code);
-    location.reload();
-  }catch(e){_lgMsg(e.message||'שגיאה');}
+  // רישום חסום — מציג הודעה במקום
+  _lgMsg('הרשמה סגורה — לקבלת גישה פנה לבעל המערכת');
 }
 
 async function doReset(){
@@ -3661,6 +3633,12 @@ async function openMyAccount(){
     <button class="login-btn" onclick="doChangePassword()">שמור סיסמה חדשה</button>
     <div id="ma-bio-wrap" style="display:none;margin-top:14px"></div>
     <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(251,171,32,0.15)"></div>
+    <div style="font-size:14px;color:rgba(255,255,255,0.85);font-weight:700;margin-bottom:6px">💾 גיבוי וייצוא</div>
+    <div id="backup-info" style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:10px;line-height:1.6"></div>
+    <button class="login-btn" style="background:linear-gradient(135deg,#0d9488,#0f766e);color:#fff;margin-bottom:8px" onclick="backupAllData()">📥 הורד גיבוי עכשיו</button>
+    <button class="login-btn" style="background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;margin-bottom:8px" onclick="shareBackupNow()">📤 שלח (וואטסאפ / מייל / Drive)</button>
+    <button class="login-btn" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff" onclick="showRestoreSheet()">↩️ שחזר מגיבוי</button>
+    <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(251,171,32,0.15)"></div>
     <button class="login-btn" style="background:linear-gradient(135deg,#334155,#1e293b);color:#fff" onclick="showAuditLog()">📋 יומן פעילות</button>
     <div style="margin-top:14px"></div>
     <button class="login-btn" style="background:linear-gradient(135deg,#64748b,#475569);color:#fff" onclick="auth.signOut()">🚪 התנתק</button>
@@ -3669,7 +3647,27 @@ async function openMyAccount(){
     <div class="login-switch" style="margin-top:16px"><a onclick="closeMyAccount()">← חזרה ליומן</a></div>
   </div>`;
   document.body.appendChild(box);
-  // מילוי אזור bio (אסינכרוני — לא חוסם)
+  // מילוי info של גיבוי (תאריך אחרון של כל אחד מהגיבויים האוטומטיים)
+  try{
+    const fbLast=parseInt(localStorage.getItem('last_backup_at')||'0');
+    const ghLast=parseInt(localStorage.getItem('last_gh_backup_at')||'0');
+    const fmt=ts=>{
+      if(!ts)return 'עוד לא בוצע';
+      const d=new Date(ts);
+      const diff=Date.now()-ts;
+      const hr=Math.floor(diff/(1000*60*60));
+      if(hr<1)return 'לפני פחות משעה';
+      if(hr<24)return `לפני ${hr} שעות`;
+      const days=Math.floor(hr/24);
+      return `לפני ${days} ימים (${d.toLocaleDateString('he-IL')})`;
+    };
+    const info=document.getElementById('backup-info');
+    if(info){
+      info.innerHTML=
+        `<div>• אוטומטי יומי (Firebase): ${fmt(fbLast)}</div>`+
+        `<div>• אוטומטי שבועי (GitHub): ${fmt(ghLast)}</div>`;
+    }
+  }catch(e){}
   try{
     if(await bioAuth.isAvailable()){
       const wrap=document.getElementById('ma-bio-wrap');
@@ -4181,6 +4179,238 @@ async function backupAllData(){
     if(btn){btn.textContent='❌';btn.disabled=false;}
     setTimeout(()=>{if(btn){btn.textContent='💾';}},2500);
   }
+}
+
+// ── Restore: שחזור נתונים מגיבוי ב-Firebase ────────────
+async function showRestoreSheet(){
+  try{
+    const token=await auth.getToken();
+    if(!token)return;
+    const r=await fetch(FB+'/backups.json?auth='+encodeURIComponent(token)+'&shallow=true');
+    const backups=r.ok?(await r.json()||{}):{};
+    const dateKeys=Object.keys(backups).sort().reverse();
+    const box=document.getElementById('login-screen');
+    if(!box)return;
+    if(dateKeys.length===0){
+      box.innerHTML=`<div class="login-box">
+        <div class="login-title">↩️ שחזור מגיבוי</div>
+        <div class="login-sub" style="color:#fca5a5;margin-top:14px">אין גיבויים זמינים עדיין.<br>הגיבוי האוטומטי הראשון ייווצר בכניסה הבאה.</div>
+        <div style="margin-top:14px"></div>
+        <button class="login-btn" style="background:linear-gradient(135deg,#64748b,#475569);color:#fff" onclick="openMyAccount()">← חזרה</button>
+      </div>`;
+      return;
+    }
+    const list=dateKeys.map(k=>
+      `<button class="login-btn" style="background:rgba(124,58,237,0.15);color:#fbab20;border:1px solid rgba(167,139,250,0.3);text-align:right;margin-bottom:6px;font-size:14px" onclick="restoreFromBackup('${k}')">📅 ${k}</button>`
+    ).join('');
+    box.innerHTML=`<div class="login-box">
+      <div class="login-title">↩️ שחזור מגיבוי</div>
+      <div class="login-sub">בחר תאריך לשחזור</div>
+      <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:10px;margin:14px 0;font-size:12px;color:#fca5a5;line-height:1.5">⚠️ <b>אזהרה:</b> השחזור ידרוס את כל הנתונים הנוכחיים. רצוי לעשות "📥 הורד גיבוי עכשיו" קודם, כדי לשמור את המצב הנוכחי כגיבוי גם הוא.</div>
+      <div style="max-height:50vh;overflow-y:auto;margin-top:10px">${list}</div>
+      <div style="margin-top:14px"></div>
+      <button class="login-btn" style="background:linear-gradient(135deg,#64748b,#475569);color:#fff" onclick="openMyAccount()">← חזרה</button>
+    </div>`;
+  }catch(e){alert('שגיאה: '+(e.message||''));}
+}
+
+async function restoreFromBackup(dateKey){
+  if(!confirm(`לשחזר נתונים מ-${dateKey}?\n\nכל הנתונים הנוכחיים יוחלפו!\nאם לא עשית גיבוי של המצב הנוכחי — חזור ועשה לפני!\n\nלהמשיך?`))return;
+  try{
+    const token=await auth.getToken();
+    if(!token)throw new Error('לא מחובר');
+    const r=await fetch(FB+'/backups/'+dateKey+'.json?auth='+encodeURIComponent(token));
+    if(!r.ok)throw new Error('שגיאה בטעינת הגיבוי');
+    const backup=await r.json();
+    if(!backup||!backup.data)throw new Error('גיבוי ריק או לא תקין');
+    for(const k of _BACKUP_KEYS){
+      const value=backup.data[k];
+      if(value!==undefined){
+        await fetch(FB+'/'+k+'.json?auth='+encodeURIComponent(token),{
+          method:'PUT',
+          body:JSON.stringify(value)
+        });
+      }
+    }
+    alert('✅ השחזור הושלם! האפליקציה תיטען מחדש.');
+    location.reload();
+  }catch(e){alert('❌ שגיאה בשחזור: '+(e.message||''));}
+}
+
+// ── Share Backup: שיתוף גיבוי דרך Web Share API (וואטסאפ/מייל/Drive) ──
+async function shareBackupNow(){
+  try{
+    const keys=['appts','tasks','goals','bgoals','clients','cancellations','packages','expenses','website'];
+    const backup={
+      version:1,
+      app:'rinat-diary',
+      createdAt:new Date().toISOString(),
+      data:{}
+    };
+    const token=await auth.getToken();
+    for(const k of keys){
+      try{
+        const url=FB+'/'+k+'.json'+(token?'?auth='+encodeURIComponent(token):'');
+        const r=await fetch(url);
+        backup.data[k]=r.ok?(await r.json()):null;
+      }catch(e){backup.data[k]=null;}
+    }
+    const json=JSON.stringify(backup,null,2);
+    const d=new Date();
+    const pad=n=>String(n).padStart(2,'0');
+    const stamp=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
+    const filename=`rinat-backup-${stamp}.json`;
+    const blob=new Blob([json],{type:'application/json'});
+    const file=new File([blob],filename,{type:'application/json'});
+    // Web Share API — פותח חלונית שיתוף של מערכת ההפעלה (וואטסאפ, מייל, Drive...)
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      try{
+        await navigator.share({
+          title:'גיבוי היומן',
+          text:`גיבוי מ-${d.toLocaleString('he-IL')}`,
+          files:[file]
+        });
+        return;
+      }catch(e){
+        if(e.name==='AbortError')return; // המשתמש סגר
+        console.warn('share failed, falling back to download:',e);
+      }
+    }
+    // Fallback: הורדה רגילה אם המכשיר לא תומך ב-Web Share API עם files
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download=filename;
+    a.click();
+    URL.revokeObjectURL(url);
+    alert('המכשיר שלך לא תומך בשיתוף ישיר. הקובץ הורד — תוכל לשלוח אותו ידנית.');
+  }catch(e){
+    console.error('share backup failed:',e);
+    alert('שגיאה ביצירת הגיבוי: '+(e.message||''));
+  }
+}
+
+// ── Auto-Backup: גיבוי יומי אוטומטי ב-Firebase ────────
+// בכל login בודק אם עבר 24 שעות מהגיבוי האחרון. אם כן — שומר snapshot
+// תחת /backups/{YYYY-MM-DD}.json. שומר 30 ימים אחרונים, מנקה ישנים אוטומטית.
+const _BACKUP_INTERVAL_MS=24*60*60*1000;
+const _BACKUP_RETENTION_DAYS=30;
+const _BACKUP_KEYS=['appts','tasks','goals','bgoals','clients','cancellations','packages','expenses','website'];
+
+async function dailyBackupCheck(){
+  try{
+    const last=parseInt(localStorage.getItem('last_backup_at')||'0');
+    if(Date.now()-last<_BACKUP_INTERVAL_MS)return;
+    const ok=await performDailyBackup();
+    if(ok){
+      localStorage.setItem('last_backup_at',String(Date.now()));
+      cleanupOldBackups().catch(()=>{});
+    }
+  }catch(e){console.warn('[backup] daily check failed:',e);}
+}
+
+async function performDailyBackup(){
+  const token=await auth.getToken();
+  if(!token)return false;
+  const data={};
+  for(const k of _BACKUP_KEYS){
+    try{
+      const r=await fetch(FB+'/'+k+'.json?auth='+encodeURIComponent(token));
+      data[k]=r.ok?await r.json():null;
+    }catch(e){data[k]=null;}
+  }
+  const dateKey=new Date().toISOString().slice(0,10);
+  const body={
+    version:1,
+    app:'rinat-diary',
+    createdAt:new Date().toISOString(),
+    createdBy:(auth.user&&auth.user.email)||'unknown',
+    data
+  };
+  const r=await fetch(FB+'/backups/'+dateKey+'.json?auth='+encodeURIComponent(token),{
+    method:'PUT',
+    body:JSON.stringify(body)
+  });
+  return r.ok;
+}
+
+async function cleanupOldBackups(){
+  const token=await auth.getToken();
+  if(!token)return;
+  const r=await fetch(FB+'/backups.json?auth='+encodeURIComponent(token)+'&shallow=true');
+  if(!r.ok)return;
+  const keys=Object.keys(await r.json()||{});
+  const cutoff=new Date();
+  cutoff.setDate(cutoff.getDate()-_BACKUP_RETENTION_DAYS);
+  const cutoffKey=cutoff.toISOString().slice(0,10);
+  for(const k of keys){
+    if(k<cutoffKey){
+      try{
+        await fetch(FB+'/backups/'+k+'.json?auth='+encodeURIComponent(token),{method:'DELETE'});
+      }catch(e){}
+    }
+  }
+}
+
+// ── Off-platform Backup: גיבוי שבועי ל-GitHub פרטי ────
+// פעם בשבוע, אוטומטית, מעלה snapshot מלא לריפו פרטי ב-GitHub.
+// משתמש ב-Token של הצינור (gh_deploy_token, נשמר באותו origin של GitHub Pages).
+// היסטוריה אינסופית דרך git log. מגן מפני פריצה לחשבון Firebase.
+const _GH_BACKUP_INTERVAL_MS=7*24*60*60*1000;
+const _GH_BACKUP_OWNER='pinto1212121212-create';
+const _GH_BACKUP_REPO='diary-backup';
+
+async function weeklyGithubBackupCheck(){
+  try{
+    const ghToken=localStorage.getItem('gh_deploy_token')||'';
+    if(!ghToken)return;
+    const last=parseInt(localStorage.getItem('last_gh_backup_at')||'0');
+    if(Date.now()-last<_GH_BACKUP_INTERVAL_MS)return;
+    const ok=await performGithubBackup(ghToken);
+    if(ok)localStorage.setItem('last_gh_backup_at',String(Date.now()));
+  }catch(e){console.warn('[backup] weekly GH check failed:',e);}
+}
+
+async function performGithubBackup(ghToken){
+  const fbToken=await auth.getToken();
+  if(!fbToken)return false;
+  const data={};
+  for(const k of _BACKUP_KEYS){
+    try{
+      const r=await fetch(FB+'/'+k+'.json?auth='+encodeURIComponent(fbToken));
+      data[k]=r.ok?await r.json():null;
+    }catch(e){data[k]=null;}
+  }
+  const dateKey=new Date().toISOString().slice(0,10);
+  const body={
+    version:1,
+    app:'rinat-diary',
+    createdAt:new Date().toISOString(),
+    createdBy:(auth.user&&auth.user.email)||'unknown',
+    data
+  };
+  const json=JSON.stringify(body,null,2);
+  const encoded=btoa(unescape(encodeURIComponent(json)));
+  const path='backups/'+dateKey+'.json';
+  const apiUrl='https://api.github.com/repos/'+_GH_BACKUP_OWNER+'/'+_GH_BACKUP_REPO+'/contents/'+path;
+  // אם קיים גיבוי לאותו תאריך, צריך sha כדי לעדכן
+  let sha;
+  try{
+    const chk=await fetch(apiUrl,{headers:{'Authorization':'token '+ghToken,'Accept':'application/vnd.github.v3+json'}});
+    if(chk.ok){const d=await chk.json();sha=d.sha;}
+  }catch(e){}
+  const putBody={message:'Weekly backup '+dateKey,content:encoded};
+  if(sha)putBody.sha=sha;
+  const r=await fetch(apiUrl,{
+    method:'PUT',
+    headers:{
+      'Authorization':'token '+ghToken,
+      'Accept':'application/vnd.github.v3+json',
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify(putBody)
+  });
+  return r.ok;
 }
 
 // ── Main Render ───────────────────────────────────────
@@ -15574,6 +15804,10 @@ if(typeof window !== 'undefined'){
   if(dt&&typeof dt==='object')S.DT=dt;
   if(rt&&typeof rt==='object')S.RT=rt;
   render();
+  // גיבוי יומי אוטומטי + שבועי ל-GitHub — רץ ברקע, לא חוסם את ה-UI
+  dailyBackupCheck()
+    .then(()=>weeklyGithubBackupCheck())
+    .catch(()=>{});
 })();
 </script>
 
